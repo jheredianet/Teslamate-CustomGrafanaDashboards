@@ -24,7 +24,7 @@ This is a repository with custom **Grafana Dashboards**, created especially to w
 
 ### [Current Drive View](./dashboards/CurrentDriveView.json)
 
-This is a special dashboar to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Drive" button at the right top, to enter in Kiosk mode:
+This is a special dashboar to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Drive" button at the top right corner, to enter in Kiosk mode:
 
 - If you are driving, you will see the information from the time the current drive started till now and it will refesh automatically every 30 seconds.
 - If you are just browsing (not driving) you will see the information of the last drive.  
