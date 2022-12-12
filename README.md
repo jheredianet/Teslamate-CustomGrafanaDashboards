@@ -38,7 +38,7 @@ If you are able to contibute with more Custom Grafana Dashboards just fork this 
 ## Credits
 
 - Author: [Juan Carlos Heredia](https://infoinnova.net/contacto/)
-- Based on/forked from [Adrian Kumpf](https://github.com/adriankumpf/teslamate) original code, with improvement of custom Grafana Dashboards (see [contributions history](graphs/contributors)).
+- Based on/forked from [Adrian Kumpf](https://github.com/adriankumpf/teslamate) original code, with improvement of custom Grafana Dashboards (see [contributions history](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/graphs/contributors)).
 
 ## License
 
