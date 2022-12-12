@@ -1,7 +1,5 @@
 # TeslaMate Custom Grafana Dashboards
 
-[![CI](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/workflows/CI/badge.svg?branch=main)](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/actions?query=workflow%3ACI)
-
 This is a repository with custom **Grafana Dashboards**, created especially to work with a Teslamate installation.
 
 ## TeslaMate
@@ -24,7 +22,7 @@ This is a repository with custom **Grafana Dashboards**, created especially to w
 
 ## Screenshots
 
-### Current Drive View
+### Current Drive View(./blob/main/dashboards/CurrentDriveView.json)
 
 This is a special dashboar to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Drive" button at the right top, to enter in Kiosk mode:
 
@@ -40,7 +38,7 @@ If you are able to contibute with more Custom Grafana Dashboards just fork this 
 ## Credits
 
 - Author: [Juan Carlos Heredia](https://infoinnova.net/contacto/)
-- Based on/forked from [Adrian Kumpf original code](https://github.com/adriankumpf/teslamate), with improvement of custom Grafana Dashboards (see [contributions history](./graphs/contributors)).
+- Based on/forked from [Adrian Kumpf](https://github.com/adriankumpf/teslamate) original code, with improvement of custom Grafana Dashboards (see [contributions history](./graphs/contributors)).
 
 ## License
 
