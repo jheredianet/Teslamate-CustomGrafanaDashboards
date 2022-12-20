@@ -46,7 +46,13 @@ Tip: Be aware that once this dashboard is imported you should edit and change th
 
 This dashboard is meant to have a look of all the charges in the last 10 years (by default). You can see the distance driven, number of charges, total charging cost, etc., both in summary or in separated lists as you can see in the following example.
 
-![Current Charge View](./screenshots/ChargingCostsStats.png)
+![Charging Costs Stats](./screenshots/ChargingCostsStats.png)
+
+### [Charging Curve Stats](./dashboards/ChargingCurveStats.json)
+
+This dashboard is meant to have a look of the charging curve sessions on Supercharges or other Fast Charging Station. Also, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session as shown in the following example.
+
+![Charging Curve Stats](./screenshots/ChargingCurveStats.png)
 
 ## Contributing
 
