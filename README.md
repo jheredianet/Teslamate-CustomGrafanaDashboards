@@ -1,5 +1,7 @@
 # TeslaMate Custom Grafana Dashboards
 
+[![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR)
+
 This is a repository with custom **Grafana Dashboards**, created especially to work with a Teslamate installation.
 
 ## TeslaMate
