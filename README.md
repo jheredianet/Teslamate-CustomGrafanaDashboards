@@ -15,6 +15,8 @@ This is a repository with custom **Grafana Dashboards**, created especially to w
 
 ## How to import these custom boards
 
+For Teslamate 1.2x or upper
+
 1. On Grafana (from Teslamate instance), Browse Dashboards then Import...
 2. Upload JSON file or import via panel json by pasting the raw content of te JSON file.
 3. On the next screen you may name the dashboard as you wish or accept the suggested one.
@@ -55,6 +57,13 @@ This dashboard is meant to have a look of all the charges in the last 10 years (
 This dashboard is meant to have a look of the charging curve sessions on Supercharges or other Fast Charging Station. Also, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session as shown in the following example.
 
 ![Charging Curve Stats](./screenshots/ChargingCurveStats.png)
+
+### [Battery Health](./dashboards/BatteryHealth.json)
+
+This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.
+Be aware that this information is just a calculation to have a reference, measured after every > 5kWh charged and with a monthly avarage based on the projected range.
+
+![Battery Health](./screenshots/BatteryHealth.png)
 
 ## Contributing
 
