@@ -68,7 +68,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672616989332,
+  "iteration": 1672617385240,
   "links": [
     {
       "icon": "dashboard",
@@ -344,7 +344,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  \n  $BatteryCapacity as \"Usefull\",\n  ($BatteryCapacity + ($BatteryCapacity * $Degradation / 100.0)) as \"Original\"\nFROM settings WHERE id=1",
+          "rawSql": "SELECT  \n  $BatteryCapacity as \"Usable\",\n  ($BatteryCapacity + ($BatteryCapacity * $Degradation / 100.0)) as \"Original\"\nFROM settings WHERE id=1",
           "refId": "A",
           "select": [
             [
@@ -941,6 +941,6 @@
   "timezone": "",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRz",
-  "version": 32,
+  "version": 33,
   "weekStart": ""
 }
