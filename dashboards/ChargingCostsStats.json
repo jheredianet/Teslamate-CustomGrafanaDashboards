@@ -23,7 +23,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 33,
-  "iteration": 1671434483763,
+  "iteration": 1672576506581,
   "links": [
     {
       "icon": "dashboard",
@@ -543,7 +543,8 @@
       "options": {
         "displayLabels": [
           "percent",
-          "name"
+          "name",
+          "value"
         ],
         "legend": {
           "displayMode": "hidden",
@@ -600,32 +601,73 @@
       "type": "piechart"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
-      },
+      "datasource": "TeslaMate",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-GrYlRd"
           },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "hidden",
+            "axisSoftMin": 0,
+            "fillOpacity": 80,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-green",
+                "color": "green",
                 "value": null
-              },
-              {
-                "color": "light-orange",
-                "value": 80
               }
             ]
           },
           "unit": "kwatth"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AC"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "DC"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 6,
@@ -633,46 +675,51 @@
         "x": 18,
         "y": 1
       },
-      "id": 48,
+      "id": 51,
+      "links": [],
+      "maxDataPoints": 3,
       "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "horizontal",
-        "reduceOptions": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 1,
+        "legend": {
           "calcs": [
-            "lastNotNull"
+            "sum"
           ],
-          "fields": "",
-          "values": true
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        "showUnfilled": true
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
-          },
-          "format": "table",
+          "format": "time_series",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE\n    WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city)) = 'Home' THEN 'Home'\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city)) = 'Work' THEN 'Work'\n\t  WHEN UPPER(COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city))) LIKE '%SUPERCHARGER%' THEN 'Supercharger'\n\t  ELSE 'Other'\n  END AS location,\n  SUM(charge_energy_added) AS Energy\nFROM\n\tcharging_processes c\nLEFT JOIN addresses address ON c.address_id = address.id\nLEFT JOIN geofences geofence ON geofence_id = geofence.id\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\n\tAND c.charge_energy_added >0\nGROUP BY 1\nORDER BY Energy DESC",
+          "rawSql": "WITH data AS (\n  SELECT\n\t\tcp.id,\n\t\tcp.charge_energy_added,\n\t\tCASE WHEN NULLIF(mode() within group (order by charger_phases),0) is null THEN 'DC'\n\t\t\t\t ELSE 'AC'\n\t\tEND AS current\n\tFROM charging_processes cp\n  RIGHT JOIN charges ON cp.id = charges.charging_process_id\n  WHERE\n\t  cp.car_id = $car_id\n\t  AND cp.charge_energy_added > 0.01\n\t  AND $__timeFilter(start_date)\n  GROUP BY 1,2\n)\nSELECT\n\tnow() AS time,\n\tsum(charge_energy_added) AS value,\n\tcurrent AS metric\nFROM data\nGROUP BY 3\nORDER BY metric DESC;",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "start_km"
+                  "latitude"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "drives",
-          "timeColumn": "start_date",
+          "table": "addresses",
+          "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
             {
@@ -683,7 +730,8 @@
           ]
         }
       ],
-      "type": "bargauge"
+      "title": "AC/DC – Energy added",
+      "type": "barchart"
     },
     {
       "datasource": "TeslaMate",
@@ -700,7 +748,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "€"
         },
         "overrides": []
       },
@@ -776,7 +825,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "€"
         },
         "overrides": []
       },
@@ -1585,8 +1635,12 @@
       {
         "current": {
           "selected": false,
-          "text": "761.85",
-          "value": "761.85"
+          "text": "777.81",
+          "value": "777.81"
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "SELECT\n\tsum(cost)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id;\n\t",
         "hide": 2,
@@ -1625,6 +1679,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 23,
+  "version": 27,
   "weekStart": ""
 }
