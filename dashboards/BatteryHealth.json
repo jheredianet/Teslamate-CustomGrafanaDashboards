@@ -344,7 +344,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  \n  $BatteryCapacity as \"Usefull\",\n  ($BatteryCapacity + ($BatteryCapacity * $Degradation / 100.0)) as \"Original\"\nFROM settings WHERE id=1",
+          "rawSql": "SELECT  \n  $BatteryCapacity as \"Usable\",\n  ($BatteryCapacity + ($BatteryCapacity * $Degradation / 100.0)) as \"Original\"\nFROM settings WHERE id=1",
           "refId": "A",
           "select": [
             [
