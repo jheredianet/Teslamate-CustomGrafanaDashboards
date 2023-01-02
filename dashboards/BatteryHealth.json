@@ -68,7 +68,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672617385240,
+  "iteration": 1672643134699,
   "links": [
     {
       "icon": "dashboard",
@@ -875,13 +875,13 @@
           "type": "postgres",
           "uid": "${DS_TESLAMATE}"
         },
-        "definition": "WITH lastTopCharges AS (\n  SELECT end_date, end_rated_range_km, end_battery_level, 100-((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)) as Battery_Degradation\n  FROM charging_processes \n WHERE end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "definition": "WITH lastTopCharges AS (\n  SELECT end_date, end_rated_range_km, end_battery_level, 100-((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)) as Battery_Degradation\n  FROM charging_processes \n WHERE car_id = $car_id AND end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "Degradation",
         "options": [],
-        "query": "WITH lastTopCharges AS (\n  SELECT end_date, end_rated_range_km, end_battery_level, 100-((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)) as Battery_Degradation\n  FROM charging_processes \n WHERE end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "query": "WITH lastTopCharges AS (\n  SELECT end_date, end_rated_range_km, end_battery_level, 100-((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)) as Battery_Degradation\n  FROM charging_processes \n WHERE car_id = $car_id AND end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -941,6 +941,6 @@
   "timezone": "",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRz",
-  "version": 33,
+  "version": 34,
   "weekStart": ""
 }
