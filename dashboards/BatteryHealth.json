@@ -68,7 +68,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672785366081,
+  "iteration": 1672788172251,
   "links": [
     {
       "icon": "dashboard",
@@ -494,6 +494,7 @@
               "mode": "off"
             }
           },
+          "decimals": 1,
           "links": [],
           "mappings": [],
           "min": 200,
@@ -657,6 +658,7 @@
               "mode": "area"
             }
           },
+          "decimals": 1,
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -728,7 +730,7 @@
           ]
         }
       ],
-      "title": "Battery Capacity",
+      "title": "Projected Battery Capacity",
       "type": "timeseries"
     }
   ],
@@ -909,6 +911,10 @@
       },
       {
         "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TESLAMATE}"
+        },
         "definition": "SELECT MAX((100.0 * charge_energy_added) / (end_battery_level - start_battery_level)) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = 1",
         "description": "Brand new Capacity",
         "hide": 2,
@@ -957,6 +963,6 @@
   "timezone": "",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRz",
-  "version": 39,
+  "version": 40,
   "weekStart": ""
 }
