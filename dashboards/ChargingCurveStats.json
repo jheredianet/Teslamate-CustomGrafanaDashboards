@@ -7,6 +7,13 @@
       "type": "datasource",
       "pluginId": "postgres",
       "pluginName": "PostgreSQL"
+    },
+    {
+      "name": "VAR_VERSION",
+      "type": "constant",
+      "label": "version",
+      "value": "1.0",
+      "description": ""
     }
   ],
   "__elements": [],
@@ -40,6 +47,12 @@
       "id": "table",
       "name": "Table",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
     }
   ],
   "annotations": {
@@ -66,7 +79,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672613474643,
+  "iteration": 1672872132017,
   "links": [
     {
       "icon": "dashboard",
@@ -197,7 +210,7 @@
         "uid": "${DS_TESLAMATE}"
       },
       "gridPos": {
-        "h": 21,
+        "h": 20,
         "w": 10,
         "x": 4,
         "y": 1
@@ -397,7 +410,7 @@
         "uid": "${DS_TESLAMATE}"
       },
       "gridPos": {
-        "h": 21,
+        "h": 20,
         "w": 10,
         "x": 14,
         "y": 1
@@ -635,7 +648,7 @@
         ]
       },
       "gridPos": {
-        "h": 15,
+        "h": 14,
         "w": 4,
         "x": 0,
         "y": 7
@@ -688,6 +701,73 @@
       ],
       "title": "Max Power sessions",
       "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 40,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 24,
+            "x": 0,
+            "y": 23
+          },
+          "id": 42,
+          "options": {
+            "content": "This dashboard is meant to have a look of the charging curve sessions on Supercharges or other Fast Charging Station. Also, you can see number of fast charging sessions you've done on each type of \nchargers and the count of max power (kW) reached on a session.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.5.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_TESLAMATE}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": false,
+              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "start_km"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "drives",
+              "timeColumn": "start_date",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "type": "text"
+        }
+      ],
+      "title": "$__dashboard v$version",
+      "type": "row"
     }
   ],
   "refresh": "",
@@ -743,6 +823,25 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "hide": 2,
+        "name": "version",
+        "query": "${VAR_VERSION}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VERSION}",
+          "text": "${VAR_VERSION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VERSION}",
+            "text": "${VAR_VERSION}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -779,6 +878,6 @@
   "timezone": "",
   "title": "Charging Curve Stats",
   "uid": "jchmXpkIkhmRz",
-  "version": 28,
+  "version": 30,
   "weekStart": ""
 }

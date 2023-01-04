@@ -7,6 +7,13 @@
       "type": "datasource",
       "pluginId": "postgres",
       "pluginName": "PostgreSQL"
+    },
+    {
+      "name": "VAR_VERSION",
+      "type": "constant",
+      "label": "version",
+      "value": "1.0",
+      "description": ""
     }
   ],
   "__elements": [],
@@ -33,6 +40,12 @@
       "type": "panel",
       "id": "stat",
       "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
       "version": ""
     },
     {
@@ -68,7 +81,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672856406057,
+  "iteration": 1672870828859,
   "links": [
     {
       "icon": "dashboard",
@@ -746,6 +759,73 @@
       ],
       "title": "Projected Battery Capacity",
       "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 19,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 24,
+            "x": 0,
+            "y": 18
+          },
+          "id": 21,
+          "options": {
+            "content": "This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.\n\nBe aware that this information is just a calculation to have a reference, \nmeasured after every > 5kWh charged and a monthly average based on the projected range.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.5.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_TESLAMATE}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": false,
+              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "start_km"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "drives",
+              "timeColumn": "start_date",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "type": "text"
+        }
+      ],
+      "title": "$__dashboard v$version",
+      "type": "row"
     }
   ],
   "refresh": false,
@@ -942,6 +1022,25 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "hide": 2,
+        "name": "version",
+        "query": "${VAR_VERSION}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VERSION}",
+          "text": "${VAR_VERSION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VERSION}",
+            "text": "${VAR_VERSION}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -977,6 +1076,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRz",
-  "version": 4,
+  "version": 10,
   "weekStart": ""
 }

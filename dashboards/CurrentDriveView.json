@@ -14,6 +14,13 @@
       "description": "",
       "type": "datasource",
       "pluginId": "__expr__"
+    },
+    {
+      "name": "VAR_VERSION",
+      "type": "constant",
+      "label": "version",
+      "value": "1.0",
+      "description": ""
     }
   ],
   "__elements": [],
@@ -55,6 +62,12 @@
     },
     {
       "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
       "id": "timeseries",
       "name": "Time series",
       "version": ""
@@ -85,7 +98,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672613552765,
+  "iteration": 1672872464884,
   "links": [
     {
       "icon": "dashboard",
@@ -1472,6 +1485,73 @@
       ],
       "title": "Firmware",
       "type": "stat"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 34,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 24,
+            "x": 0,
+            "y": 20
+          },
+          "id": 36,
+          "options": {
+            "content": "This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Drive\" button at the top right corner, to enter in Kiosk mode:\n\n- If you are driving, you will see the information from the start time of the current drive until now and it will refesh automatically every 30 seconds.\n- If you are just browsing (not driving) you will see the information of the last drive. \n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.5.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_TESLAMATE}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": false,
+              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "start_km"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "drives",
+              "timeColumn": "start_date",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "type": "text"
+        }
+      ],
+      "title": "$__dashboard v$version",
+      "type": "row"
     }
   ],
   "refresh": false,
@@ -1708,6 +1788,25 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "hide": 2,
+        "name": "version",
+        "query": "${VAR_VERSION}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VERSION}",
+          "text": "${VAR_VERSION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VERSION}",
+            "text": "${VAR_VERSION}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -1744,6 +1843,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 44,
+  "version": 45,
   "weekStart": ""
 }

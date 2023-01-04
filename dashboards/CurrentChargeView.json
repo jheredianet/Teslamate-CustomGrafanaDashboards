@@ -7,6 +7,13 @@
       "type": "datasource",
       "pluginId": "postgres",
       "pluginName": "PostgreSQL"
+    },
+    {
+      "name": "VAR_VERSION",
+      "type": "constant",
+      "label": "version",
+      "value": "1.0",
+      "description": ""
     }
   ],
   "__elements": [],
@@ -80,7 +87,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1672613519401,
+  "iteration": 1672872185954,
   "links": [
     {
       "asDropdown": true,
@@ -422,29 +429,38 @@
         "type": "postgres",
         "uid": "${DS_TESLAMATE}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
           "decimals": 2,
           "mappings": [],
-          "max": 49,
-          "min": 0,
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
+                "color": "super-light-blue",
                 "value": null
               }
             ]
           },
-          "unit": "kwatth"
+          "unit": "dthms"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Remaining Time"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
@@ -452,23 +468,166 @@
         "x": 15,
         "y": 0
       },
-      "id": 36,
+      "id": 30,
       "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.6",
+      "targets": [
+        {
+          "alias": "Elapsed Time",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "format": "table",
+          "group": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "ovms",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"utc\") - first(\"utc\") as Seconds FROM \"ovms\" WHERE $timeFilter  and  is_charging = true",
+          "rawQuery": true,
+          "rawSql": "WITH start_process AS (\n  SELECT date FROM charges \n\twhere charging_process_id=$charging_processes\n\tORDER BY DATE ASC\n \tLIMIT 1\n)\nSELECT\n   EXTRACT(EPOCH FROM (charges.date - start_process.date)) AS \"Elapsed\"\nFROM charges, start_process\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(charges.date)\norder by charges.date desc  \nLIMIT 1",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "utc"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TESLAMATE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^Added$/",
+          "fields": "",
           "values": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "text": {},
+        "textMode": "auto"
       },
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "alias": "kWh Added",
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_m_temp\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Motor: r._value }))\n",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(outside_temp, '$temp_unit')) as \"Outdoor\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
+          "refId": "Outdoor",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
           "datasource": {
             "type": "postgres",
             "uid": "${DS_TESLAMATE}"
@@ -477,10 +636,42 @@
           "group": [],
           "hide": false,
           "metricColumn": "none",
-          "query": "SELECT \"consumptionkwh\" FROM \"ovms\" WHERE $timeFilter",
+          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ovms\")\n  |> filter(fn: (r) => r[\"_field\"] == \"batt_temp\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Battery: r._value }))\n",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(charge_energy_added) as \"Added\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1\n",
-          "refId": "B",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(inside_temp, '$temp_unit')) AS \"Inside\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
+          "refId": "Inside",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_temp\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Charger: r._value }))\n",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\t$__timeGroupAlias(date,$__interval),\n\tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"Driver\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
+          "refId": "Driver",
           "select": [
             [
               {
@@ -494,89 +685,6 @@
           "table": "drives",
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Added",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "super-light-blue",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "super-light-blue",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 0
-      },
-      "id": 37,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^coalesce$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "8.5.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_voltage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Volt: r._value }))\n",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  COALESCE(g.name, CONCAT_WS(', ', COALESCE(addresses.name, CONCAT_WS(' ', addresses.road, addresses.house_number)), addresses.city))\nFROM\n\tcharging_processes c\n\tLEFT JOIN addresses ON addresses.id = c.address_id\n\tLEFT JOIN geofences g ON g.id = geofence_id\nWHERE\n\tc.id = $charging_processes",
-          "refId": "Voltage",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -879,38 +987,29 @@
         "type": "postgres",
         "uid": "${DS_TESLAMATE}"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
           "decimals": 2,
           "mappings": [],
+          "max": 49,
+          "min": 0,
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
+                "color": "light-orange",
                 "value": null
               }
             ]
           },
-          "unit": "dthms"
+          "unit": "kwatth"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Remaining Time"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -918,166 +1017,23 @@
         "x": 15,
         "y": 4
       },
-      "id": 30,
+      "id": 36,
       "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.6",
-      "targets": [
-        {
-          "alias": "Elapsed Time",
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
-          "format": "table",
-          "group": [],
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "ovms",
-          "metricColumn": "none",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT last(\"utc\") - first(\"utc\") as Seconds FROM \"ovms\" WHERE $timeFilter  and  is_charging = true",
-          "rawQuery": true,
-          "rawSql": "WITH start_process AS (\n  SELECT date FROM charges \n\twhere charging_process_id=$charging_processes\n\tORDER BY DATE ASC\n \tLIMIT 1\n)\nSELECT\n   EXTRACT(EPOCH FROM (charges.date - start_process.date)) AS \"Elapsed\"\nFROM charges, start_process\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(charges.date)\norder by charges.date desc  \nLIMIT 1",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "utc"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "celsius"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 4
-      },
-      "id": 24,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^Added$/",
           "values": false
         },
-        "text": {},
-        "textMode": "auto"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_m_temp\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Motor: r._value }))\n",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(outside_temp, '$temp_unit')) as \"Outdoor\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
-          "refId": "Outdoor",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
+          "alias": "kWh Added",
           "datasource": {
             "type": "postgres",
             "uid": "${DS_TESLAMATE}"
@@ -1086,42 +1042,10 @@
           "group": [],
           "hide": false,
           "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ovms\")\n  |> filter(fn: (r) => r[\"_field\"] == \"batt_temp\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Battery: r._value }))\n",
+          "query": "SELECT \"consumptionkwh\" FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(inside_temp, '$temp_unit')) AS \"Inside\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
-          "refId": "Inside",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_temp\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Charger: r._value }))\n",
-          "rawQuery": true,
-          "rawSql": "SELECT\n\t$__timeGroupAlias(date,$__interval),\n\tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"Driver\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
-          "refId": "Driver",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(charge_energy_added) as \"Added\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1\n",
+          "refId": "B",
           "select": [
             [
               {
@@ -1144,89 +1068,8 @@
           ]
         }
       ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "volt"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 8
-      },
-      "id": 31,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Volt$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_voltage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Volt: r._value }))\n",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(case when charger_voltage > 2 then charger_voltage else \n    charger_power / GREATEST(0.1, (((2.85 + (usable_battery_level * 0.013)) * 96.0) * charger_power / 100.0)) * 1000.0  end) \n    as \"Volt\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
-          "refId": "Voltage",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "type": "stat"
+      "title": "Added",
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -1258,7 +1101,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 8
+        "y": 4
       },
       "id": 5,
       "options": {
@@ -1415,6 +1258,170 @@
               "operator": "=",
               "value": "ovms_v_b_range_est"
             }
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TESLAMATE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "volt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 8
+      },
+      "id": 31,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Volt$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_voltage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Volt: r._value }))\n",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(case when charger_voltage > 2 then charger_voltage else \n    charger_power / GREATEST(0.1, (((2.85 + (usable_battery_level * 0.013)) * 96.0) * charger_power / 100.0)) * 1000.0  end) \n    as \"Volt\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
+          "refId": "Voltage",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TESLAMATE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "super-light-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 8
+      },
+      "id": 37,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^coalesce$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_voltage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Volt: r._value }))\n",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  COALESCE(g.name, CONCAT_WS(', ', COALESCE(addresses.name, CONCAT_WS(' ', addresses.road, addresses.house_number)), addresses.city))\nFROM\n\tcharging_processes c\n\tLEFT JOIN addresses ON addresses.id = c.address_id\n\tLEFT JOIN geofences g ON g.id = geofence_id\nWHERE\n\tc.id = $charging_processes",
+          "refId": "Voltage",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
           ],
           "timeColumn": "time",
           "where": [
@@ -1623,6 +1630,73 @@
         }
       ],
       "type": "stat"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 44,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 24,
+            "x": 0,
+            "y": 17
+          },
+          "id": 46,
+          "options": {
+            "content": "Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Charge\" button at the top right corner, to enter in Kiosk mode:\n\n- If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.\n- If you are just browsing (not charging) you will see the information of the last charge session.  \n\nTip: Be aware that once this dashboard is imported you should edit and change the image panel with a GIF of your own, because the charging car you will see is mine :-)\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.5.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_TESLAMATE}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": false,
+              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "start_km"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "drives",
+              "timeColumn": "start_date",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "type": "text"
+        }
+      ],
+      "title": "$__dashboard v$version",
+      "type": "row"
     }
   ],
   "refresh": "30s",
@@ -1766,6 +1840,25 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "hide": 2,
+        "name": "version",
+        "query": "${VAR_VERSION}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VERSION}",
+          "text": "${VAR_VERSION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VERSION}",
+            "text": "${VAR_VERSION}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -1788,6 +1881,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }
