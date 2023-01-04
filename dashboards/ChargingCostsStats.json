@@ -7,6 +7,13 @@
       "type": "datasource",
       "pluginId": "postgres",
       "pluginName": "PostgreSQL"
+    },
+    {
+      "name": "VAR_VERSION",
+      "type": "constant",
+      "label": "version",
+      "value": "1.0",
+      "description": ""
     }
   ],
   "__elements": [],
@@ -46,6 +53,12 @@
       "id": "table",
       "name": "Table",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
     }
   ],
   "annotations": {
@@ -72,7 +85,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672613431144,
+  "iteration": 1672871616405,
   "links": [
     {
       "icon": "dashboard",
@@ -1626,6 +1639,73 @@
       ],
       "title": "Top 10 Free Stations (Charged)",
       "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 53,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 24,
+            "x": 0,
+            "y": 20
+          },
+          "id": 55,
+          "options": {
+            "content": "This dashboard is meant to have a look of all the charges in the last 10 years (by default). You can see the distance driven, number of charges, total charging cost, etc., \nboth in summary or in separated lists.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.5.6",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_TESLAMATE}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": false,
+              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "start_km"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "drives",
+              "timeColumn": "start_date",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "type": "text"
+        }
+      ],
+      "title": "$__dashboard v$version",
+      "type": "row"
     }
   ],
   "refresh": "",
@@ -1722,6 +1802,25 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "hide": 2,
+        "name": "version",
+        "query": "${VAR_VERSION}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VERSION}",
+          "text": "${VAR_VERSION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VERSION}",
+            "text": "${VAR_VERSION}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -1747,6 +1846,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 27,
+  "version": 30,
   "weekStart": ""
 }

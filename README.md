@@ -26,7 +26,7 @@ For Teslamate 1.2x or upper
 
 ## Screenshots
 
-### [Current Drive View](./dashboards/CurrentDriveView.json)
+### [Current Drive View v1.0](./dashboards/CurrentDriveView.json)
 
 This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Drive" button at the top right corner, to enter in Kiosk mode:
 
@@ -35,7 +35,7 @@ This is a special dashboard to load while driving. When you open this dashboard 
 
 ![Current Drive View](./screenshots/CurrentDriveView.png)
 
-### [Current Charge View](./dashboards/CurrentChargeView.json)
+### [Current Charge View v1.0](./dashboards/CurrentChargeView.json)
 
 Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Charge" button at the top right corner, to enter in Kiosk mode:
 
@@ -46,22 +46,22 @@ Tip: Be aware that once this dashboard is imported you should edit and change th
 
 ![Current Charge View](./screenshots/CurrentChargeView.png)
 
-### [Charging Costs Stats](./dashboards/ChargingCostsStats.json)
+### [Charging Costs Stats v1.0](./dashboards/ChargingCostsStats.json)
 
 This dashboard is meant to have a look of all the charges in the last 10 years (by default). You can see the distance driven, number of charges, total charging cost, etc., both in summary or in separated lists as you can see in the following example.
 
 ![Charging Costs Stats](./screenshots/ChargingCostsStats.png)
 
-### [Charging Curve Stats](./dashboards/ChargingCurveStats.json)
+### [Charging Curve Stats v1.0](./dashboards/ChargingCurveStats.json)
 
 This dashboard is meant to have a look of the charging curve sessions on Supercharges or other Fast Charging Station. Also, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session as shown in the following example.
 
 ![Charging Curve Stats](./screenshots/ChargingCurveStats.png)
 
-### [Battery Health](./dashboards/BatteryHealth.json)
+### [Battery Health v1.0](./dashboards/BatteryHealth.json)
 
 This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.
-Be aware that this information is just a calculation to have a reference, measured after every > 5kWh charged and with a monthly avarage based on the projected range.
+Be aware that this information is just a calculation to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
