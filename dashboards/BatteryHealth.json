@@ -13,8 +13,8 @@
   "__requires": [
     {
       "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
+      "id": "bargauge",
+      "name": "Bar gauge",
       "version": ""
     },
     {
@@ -68,7 +68,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672833733657,
+  "iteration": 1672853350638,
   "links": [
     {
       "icon": "dashboard",
@@ -94,7 +94,7 @@
       "collapsed": false,
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "${DS_TESLAMATE}"
       },
       "gridPos": {
         "h": 1,
@@ -145,13 +145,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
+        "h": 4,
+        "w": 7,
         "x": 0,
         "y": 1
       },
       "id": 12,
       "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -160,8 +163,7 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showUnfilled": true
       },
       "pluginVersion": "8.5.6",
       "targets": [
@@ -199,7 +201,7 @@
         }
       ],
       "title": "Battery Health",
-      "type": "gauge"
+      "type": "bargauge"
     },
     {
       "datasource": {
@@ -218,8 +220,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
+                "color": "green",
                 "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 20
+              },
+              {
+                "color": "dark-red",
+                "value": 30
               }
             ]
           },
@@ -228,12 +242,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 6,
+        "h": 4,
+        "w": 3,
+        "x": 7,
         "y": 1
       },
-      "id": 9,
+      "id": 17,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -246,7 +260,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "8.5.6",
       "targets": [
@@ -259,7 +273,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  \n  (100 - $Degradation) as \"Health\",\n  $Degradation as \"Degradation\"\n  \nFROM settings WHERE id=1",
+          "rawSql": "SELECT  \n  $Degradation as \"Degradation\"\nFROM settings \nWHERE id = 1",
           "refId": "A",
           "select": [
             [
@@ -283,7 +297,7 @@
           ]
         }
       ],
-      "title": "Battery",
+      "title": "Degradation",
       "type": "stat"
     },
     {
@@ -313,9 +327,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 12,
+        "h": 4,
+        "w": 7,
+        "x": 10,
         "y": 1
       },
       "id": 13,
@@ -398,9 +412,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 18,
+        "h": 4,
+        "w": 7,
+        "x": 17,
         "y": 1
       },
       "id": 14,
@@ -528,7 +542,7 @@
         "h": 13,
         "w": 12,
         "x": 0,
-        "y": 6
+        "y": 5
       },
       "id": 2,
       "links": [],
@@ -678,7 +692,7 @@
         "h": 13,
         "w": 12,
         "x": 12,
-        "y": 6
+        "y": 5
       },
       "id": 15,
       "links": [],
@@ -960,7 +974,7 @@
       "30d"
     ]
   },
-  "timezone": "",
+  "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRz",
   "version": 41,
