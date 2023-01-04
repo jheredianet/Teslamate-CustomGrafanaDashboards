@@ -68,7 +68,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672853350638,
+  "iteration": 1672856406057,
   "links": [
     {
       "icon": "dashboard",
@@ -94,7 +94,7 @@
       "collapsed": false,
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "gridPos": {
         "h": 1,
@@ -145,8 +145,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 7,
+        "h": 3,
+        "w": 9,
         "x": 0,
         "y": 1
       },
@@ -242,9 +242,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 3,
-        "x": 7,
+        "x": 9,
         "y": 1
       },
       "id": 17,
@@ -327,9 +327,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 7,
-        "x": 10,
+        "h": 3,
+        "w": 6,
+        "x": 12,
         "y": 1
       },
       "id": 13,
@@ -382,7 +382,7 @@
           ]
         }
       ],
-      "title": "Capacity",
+      "title": "Battery Capacity",
       "type": "stat"
     },
     {
@@ -412,9 +412,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 7,
-        "x": 17,
+        "h": 3,
+        "w": 6,
+        "x": 18,
         "y": 1
       },
       "id": 14,
@@ -542,7 +542,7 @@
         "h": 13,
         "w": 12,
         "x": 0,
-        "y": 5
+        "y": 4
       },
       "id": 2,
       "links": [],
@@ -692,7 +692,7 @@
         "h": 13,
         "w": 12,
         "x": 12,
-        "y": 5
+        "y": 4
       },
       "id": 15,
       "links": [],
@@ -977,6 +977,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRz",
-  "version": 41,
+  "version": 4,
   "weekStart": ""
 }
