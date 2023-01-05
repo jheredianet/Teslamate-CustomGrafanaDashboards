@@ -100,7 +100,7 @@
       "collapsed": false,
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "${DS_TESLAMATE}"
       },
       "gridPos": {
         "h": 1,
