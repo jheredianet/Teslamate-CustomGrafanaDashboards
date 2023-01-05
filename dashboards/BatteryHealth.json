@@ -7,13 +7,6 @@
       "type": "datasource",
       "pluginId": "postgres",
       "pluginName": "PostgreSQL"
-    },
-    {
-      "name": "VAR_VERSION",
-      "type": "constant",
-      "label": "version",
-      "value": "1.1",
-      "description": ""
     }
   ],
   "__elements": [],
@@ -81,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672897660329,
+  "iteration": 1672911825699,
   "links": [
     {
       "icon": "dashboard",
@@ -107,7 +100,7 @@
       "collapsed": false,
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "gridPos": {
         "h": 1,
@@ -1024,23 +1017,26 @@
         "type": "query"
       },
       {
-        "hide": 2,
-        "name": "version",
-        "query": "${VAR_VERSION}",
-        "skipUrlSync": false,
-        "type": "constant",
         "current": {
-          "value": "${VAR_VERSION}",
-          "text": "${VAR_VERSION}",
-          "selected": false
+          "selected": false,
+          "text": "1.1",
+          "value": "1.1"
         },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "version",
         "options": [
           {
-            "value": "${VAR_VERSION}",
-            "text": "${VAR_VERSION}",
-            "selected": false
+            "selected": true,
+            "text": "1.1",
+            "value": "1.1"
           }
-        ]
+        ],
+        "query": "1.1",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -1075,7 +1071,7 @@
   },
   "timezone": "browser",
   "title": "Battery Health",
-  "uid": "jchmRiqUfXgRz",
-  "version": 2,
+  "uid": "jchmRiqUfXgRx",
+  "version": 3,
   "weekStart": ""
 }

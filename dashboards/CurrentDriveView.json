@@ -14,13 +14,6 @@
       "description": "",
       "type": "datasource",
       "pluginId": "__expr__"
-    },
-    {
-      "name": "VAR_VERSION",
-      "type": "constant",
-      "label": "version",
-      "value": "1.0",
-      "description": ""
     }
   ],
   "__elements": [],
@@ -98,7 +91,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672872464884,
+  "iteration": 1672912508026,
   "links": [
     {
       "icon": "dashboard",
@@ -1790,23 +1783,25 @@
         "type": "query"
       },
       {
-        "hide": 2,
-        "name": "version",
-        "query": "${VAR_VERSION}",
-        "skipUrlSync": false,
-        "type": "constant",
         "current": {
-          "value": "${VAR_VERSION}",
-          "text": "${VAR_VERSION}",
-          "selected": false
+          "selected": false,
+          "text": "1.0",
+          "value": "1.0"
         },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "version",
         "options": [
           {
-            "value": "${VAR_VERSION}",
-            "text": "${VAR_VERSION}",
-            "selected": false
+            "selected": true,
+            "text": "1.0",
+            "value": "1.0"
           }
-        ]
+        ],
+        "query": "1.0",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -1843,6 +1838,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 45,
+  "version": 46,
   "weekStart": ""
 }
