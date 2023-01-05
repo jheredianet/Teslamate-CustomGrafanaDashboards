@@ -7,13 +7,6 @@
       "type": "datasource",
       "pluginId": "postgres",
       "pluginName": "PostgreSQL"
-    },
-    {
-      "name": "VAR_VERSION",
-      "type": "constant",
-      "label": "version",
-      "value": "1.0",
-      "description": ""
     }
   ],
   "__elements": [],
@@ -85,7 +78,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672871616405,
+  "iteration": 1672912196894,
   "links": [
     {
       "icon": "dashboard",
@@ -1804,23 +1797,25 @@
         "type": "query"
       },
       {
-        "hide": 2,
-        "name": "version",
-        "query": "${VAR_VERSION}",
-        "skipUrlSync": false,
-        "type": "constant",
         "current": {
-          "value": "${VAR_VERSION}",
-          "text": "${VAR_VERSION}",
-          "selected": false
+          "selected": false,
+          "text": "1.0",
+          "value": "1.0"
         },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "version",
         "options": [
           {
-            "value": "${VAR_VERSION}",
-            "text": "${VAR_VERSION}",
-            "selected": false
+            "selected": true,
+            "text": "1.0",
+            "value": "1.0"
           }
-        ]
+        ],
+        "query": "1.0",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -1846,6 +1841,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 30,
+  "version": 31,
   "weekStart": ""
 }
