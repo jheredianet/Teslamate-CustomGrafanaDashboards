@@ -58,7 +58,7 @@ This dashboard is meant to have a look of the charging curve sessions on Superch
 
 ![Charging Curve Stats](./screenshots/ChargingCurveStats.png)
 
-### [Battery Health v1.1](./dashboards/BatteryHealth.json)
+### [Battery Health v1.2](./dashboards/BatteryHealth.json)
 
 This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.
 Be aware that this information is just a calculation to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.
