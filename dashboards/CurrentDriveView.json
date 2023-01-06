@@ -91,7 +91,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672912508026,
+  "iteration": 1673024254624,
   "links": [
     {
       "icon": "dashboard",
@@ -156,7 +156,7 @@
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 5,
-            "gradientMode": "opacity",
+            "gradientMode": "hue",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -175,7 +175,7 @@
             "spanNulls": true,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "line"
@@ -187,12 +187,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
+                "color": "transparent",
                 "value": null
-              },
-              {
-                "color": "super-light-green",
-                "value": 0
               }
             ]
           }
@@ -245,7 +241,31 @@
               },
               {
                 "id": "unit",
-                "value": "watt"
+                "value": "kwatt"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": null
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "min",
+                "value": -30
+              },
+              {
+                "id": "max",
+                "value": 30
               }
             ]
           },
@@ -258,6 +278,55 @@
               {
                 "id": "displayName",
                 "value": "Elevation"
+              },
+              {
+                "id": "unit",
+                "value": "lengthm"
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Rated Efficiency"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "kWh/100km"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "min",
+                "value": -30
+              },
+              {
+                "id": "max",
+                "value": 30
               }
             ]
           }
@@ -295,7 +364,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\t$__time(date),\n\tpower * 10.0 AS Power,\n\tbattery_heater::integer\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND\n $__timeFilter(date)\nORDER BY\n\tdate ASC",
+          "rawSql": "SELECT\n\t$__time(date),\n\tavg(power) AS Power,\n\tavg(battery_heater::integer) AS battery_heater,\n\tavg($efficiency / 10.0) AS \"Rated Efficiency\"\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND\n $__timeFilter(date)\nGROUP BY 1  \nORDER BY\n\tdate ASC",
           "refId": "Power",
           "select": [
             [
@@ -328,7 +397,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\t$__time(date),\n\tROUND(convert_m(elevation, '$alternative_length_unit')) AS elevation_[[alternative_length_unit]]\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND\n $__timeFilter(date)\nORDER BY\n\tdate ASC",
+          "rawSql": "SELECT\n\t$__time(date),\n\tAVG(ROUND(convert_m(elevation, '$alternative_length_unit'))) AS elevation_[[alternative_length_unit]]\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND\n $__timeFilter(date)\nGROUP BY 1 \nORDER BY\n\tdate ASC",
           "refId": "Elevation",
           "select": [
             [
@@ -732,7 +801,7 @@
           "policy": "default",
           "query": "SELECT last(\"soc\") * ($KonaBattery_kWh / 100) FROM \"ovms\" ",
           "rawQuery": true,
-          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as \"kWh\", date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1\n\n",
+          "rawSql": "SELECT\n  battery_level * $BatteryCapacity / 100 as \"kWh\"\nFROM\n  charges c\njoin\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\nORDER BY\n  c.ID DESC LIMIT 1",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1785,8 +1854,8 @@
       {
         "current": {
           "selected": false,
-          "text": "1.0",
-          "value": "1.0"
+          "text": "1.1",
+          "value": "1.1"
         },
         "hide": 2,
         "includeAll": false,
@@ -1795,11 +1864,11 @@
         "options": [
           {
             "selected": true,
-            "text": "1.0",
-            "value": "1.0"
+            "text": "1.1",
+            "value": "1.1"
           }
         ],
-        "query": "1.0",
+        "query": "1.1",
         "skipUrlSync": false,
         "type": "custom"
       }
@@ -1838,6 +1907,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 46,
+  "version": 68,
   "weekStart": ""
 }
