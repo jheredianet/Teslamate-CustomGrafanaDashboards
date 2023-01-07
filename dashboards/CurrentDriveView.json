@@ -91,7 +91,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673024254624,
+  "iteration": 1673113850146,
   "links": [
     {
       "icon": "dashboard",
@@ -801,7 +801,7 @@
           "policy": "default",
           "query": "SELECT last(\"soc\") * ($KonaBattery_kWh / 100) FROM \"ovms\" ",
           "rawQuery": true,
-          "rawSql": "SELECT\n  battery_level * $BatteryCapacity / 100 as \"kWh\"\nFROM\n  charges c\njoin\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\nORDER BY\n  c.ID DESC LIMIT 1",
+          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1854,8 +1854,8 @@
       {
         "current": {
           "selected": false,
-          "text": "1.1",
-          "value": "1.1"
+          "text": "1.2",
+          "value": "1.2"
         },
         "hide": 2,
         "includeAll": false,
@@ -1864,11 +1864,11 @@
         "options": [
           {
             "selected": true,
-            "text": "1.1",
-            "value": "1.1"
+            "text": "1.2",
+            "value": "1.2"
           }
         ],
-        "query": "1.1",
+        "query": "1.2",
         "skipUrlSync": false,
         "type": "custom"
       }
@@ -1907,6 +1907,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 68,
+  "version": 70,
   "weekStart": ""
 }
