@@ -80,7 +80,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1672912384101,
+  "iteration": 1673163185598,
   "links": [
     {
       "asDropdown": true,
@@ -1688,7 +1688,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v$version",
+      "title": "$__dashboard v1.1",
       "type": "row"
     }
   ],
@@ -1833,27 +1833,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "1.0",
-          "value": "1.0"
-        },
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "version",
-        "options": [
-          {
-            "selected": true,
-            "text": "1.0",
-            "value": "1.0"
-          }
-        ],
-        "query": "1.0",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
@@ -1876,6 +1855,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 15,
+  "version": 16,
   "weekStart": ""
 }

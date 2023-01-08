@@ -72,7 +72,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672912283911,
+  "iteration": 1673176590952,
   "links": [
     {
       "icon": "dashboard",
@@ -759,7 +759,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v$version",
+      "title": "$__dashboard v1.1",
       "type": "row"
     }
   ],
@@ -816,27 +816,6 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "1.0",
-          "value": "1.0"
-        },
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "version",
-        "options": [
-          {
-            "selected": true,
-            "text": "1.0",
-            "value": "1.0"
-          }
-        ],
-        "query": "1.0",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
@@ -873,6 +852,6 @@
   "timezone": "",
   "title": "Charging Curve Stats",
   "uid": "jchmXpkIkhmRz",
-  "version": 31,
+  "version": 32,
   "weekStart": ""
 }
