@@ -91,7 +91,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673113850146,
+  "iteration": 1673161989141,
   "links": [
     {
       "icon": "dashboard",
@@ -258,14 +258,6 @@
                     }
                   ]
                 }
-              },
-              {
-                "id": "min",
-                "value": -30
-              },
-              {
-                "id": "max",
-                "value": 30
               }
             ]
           },
@@ -1612,7 +1604,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v$version",
+      "title": "$__dashboard v1.3",
       "type": "row"
     }
   ],
@@ -1850,27 +1842,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "1.2",
-          "value": "1.2"
-        },
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "version",
-        "options": [
-          {
-            "selected": true,
-            "text": "1.2",
-            "value": "1.2"
-          }
-        ],
-        "query": "1.2",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
@@ -1907,6 +1878,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 70,
+  "version": 74,
   "weekStart": ""
 }

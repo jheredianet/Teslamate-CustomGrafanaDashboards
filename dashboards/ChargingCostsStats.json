@@ -78,7 +78,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1672912196894,
+  "iteration": 1673176662792,
   "links": [
     {
       "icon": "dashboard",
@@ -616,7 +616,7 @@
           "displayMode": "hidden",
           "placement": "bottom"
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -715,7 +715,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "green",
+                  "fixedColor": "semi-dark-green",
                   "mode": "fixed"
                 }
               }
@@ -730,7 +730,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "super-light-orange",
+                  "fixedColor": "light-orange",
                   "mode": "fixed"
                 }
               }
@@ -1697,7 +1697,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v$version",
+      "title": "$__dashboard v1.1",
       "type": "row"
     }
   ],
@@ -1795,27 +1795,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "1.0",
-          "value": "1.0"
-        },
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "version",
-        "options": [
-          {
-            "selected": true,
-            "text": "1.0",
-            "value": "1.0"
-          }
-        ],
-        "query": "1.0",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
@@ -1841,6 +1820,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 31,
+  "version": 32,
   "weekStart": ""
 }

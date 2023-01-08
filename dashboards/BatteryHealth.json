@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673113787147,
+  "iteration": 1673176920744,
   "links": [
     {
       "icon": "dashboard",
@@ -1068,7 +1068,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v$version",
+      "title": "$__dashboard v1.5",
       "type": "row"
     }
   ],
@@ -1266,28 +1266,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "1.4",
-          "value": "1.4"
-        },
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "version",
-        "options": [
-          {
-            "selected": true,
-            "text": "1.4",
-            "value": "1.4"
-          }
-        ],
-        "query": "1.4",
-        "queryValue": "",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
@@ -1323,6 +1301,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRx",
-  "version": 14,
+  "version": 15,
   "weekStart": ""
 }
