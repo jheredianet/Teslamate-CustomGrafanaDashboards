@@ -75,7 +75,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673259607981,
+  "iteration": 1673268472080,
   "links": [
     {
       "icon": "dashboard",
@@ -497,7 +497,6 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "displayName": "Duration",
           "mappings": [
             {
               "options": {
@@ -513,18 +512,50 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue",
+                "color": "light-purple",
                 "value": null
               }
             ]
-          },
-          "unit": "dthms"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sec_diff"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Duration"
+              },
+              {
+                "id": "unit",
+                "value": "dthms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "km"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 3,
-        "w": 3,
+        "w": 5,
         "x": 0,
         "y": 17
       },
@@ -543,7 +574,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "text": {
+          "titleSize": 10
+        },
+        "textMode": "value_and_name"
       },
       "pluginVersion": "8.5.6",
       "targets": [
@@ -578,88 +612,7 @@
               "type": "macro"
             }
           ]
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "displayName": "Consumption",
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 200
-              },
-              {
-                "color": "red",
-                "value": 250
-              }
-            ]
-          },
-          "unit": "none"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Wh/km"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Wh/mi"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 3,
-        "y": 17
-      },
-      "id": 18,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "/.*/",
-          "values": false
-        },
-        "textMode": "value_and_name"
-      },
-      "pluginVersion": "8.5.6",
-      "targets": [
         {
           "datasource": {
             "type": "postgres",
@@ -667,10 +620,11 @@
           },
           "format": "table",
           "group": [],
+          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select\n\t(NULLIF(GREATEST(start_[[preferred_range]]_range_km - end_[[preferred_range]]_range_km, 0), 0) * car.efficiency) *1000 /\n\t  convert_km(distance::numeric, '$length_unit') as \"$length_unit\"\nfrom drives d\nJOIN cars car ON car.id = car_id\nwhere d.id = $journey;",
-          "refId": "A",
+          "refId": "Distance",
           "select": [
             [
               {
@@ -704,7 +658,6 @@
       "fieldConfig": {
         "defaults": {
           "decimals": 2,
-          "displayName": "Distance",
           "mappings": [
             {
               "options": {
@@ -720,7 +673,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-green",
+                "color": "light-blue",
                 "value": null
               }
             ]
@@ -737,6 +690,10 @@
               {
                 "id": "unit",
                 "value": "lengthkm"
+              },
+              {
+                "id": "displayName",
+                "value": "Distance"
               }
             ]
           },
@@ -749,6 +706,42 @@
               {
                 "id": "unit",
                 "value": "lengthmi"
+              },
+              {
+                "id": "displayName",
+                "value": "Distance"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "speed_mih"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "velocitymih"
+              },
+              {
+                "id": "displayName",
+                "value": "Avg Speed"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "speed_kmh"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "velocitykmh"
+              },
+              {
+                "id": "displayName",
+                "value": "Avg Speed"
               }
             ]
           }
@@ -756,8 +749,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 3,
-        "x": 6,
+        "w": 4,
+        "x": 5,
         "y": 17
       },
       "id": 12,
@@ -769,11 +762,12 @@
         "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": [],
           "fields": "",
           "values": false
+        },
+        "text": {
+          "titleSize": 10
         },
         "textMode": "auto"
       },
@@ -810,6 +804,39 @@
               "type": "macro"
             }
           ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TESLAMATE}"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH journey AS (SELECT start_date, end_date FROM drives WHERE id = $journey)\nSELECT\n\tAVG(convert_km(speed::numeric, '$length_unit')) AS speed_[[length_unit]]h\nFROM\n\tpositions, journey\nWHERE\n  car_id = 1 AND (date BETWEEN journey.start_date AND journey.end_date)",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "type": "stat"
@@ -838,7 +865,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow",
+                "color": "semi-dark-orange",
                 "value": null
               }
             ]
@@ -868,7 +895,10 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "text": {
+          "titleSize": 10
+        },
+        "textMode": "value"
       },
       "pluginVersion": "8.5.6",
       "targets": [
@@ -905,6 +935,7 @@
           ]
         }
       ],
+      "title": "Energy used",
       "type": "stat"
     },
     {
@@ -949,7 +980,9 @@
           "fields": "/.*/",
           "values": false
         },
-        "text": {},
+        "text": {
+          "titleSize": 10
+        },
         "textMode": "value_and_name"
       },
       "pluginVersion": "8.5.6",
@@ -963,7 +996,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit'  as \"UP\" from height where diff > 0",
+          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit'  as \"Up\" from height where diff > 0",
           "refId": "A",
           "select": [
             [
@@ -996,7 +1029,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\n\t\n\t\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit' as \"DOWN\" from height where diff < 0",
+          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\n\t\n\t\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit' as \"Down\" from height where diff < 0",
           "refId": "B",
           "select": [
             [
@@ -1087,7 +1120,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v1.1",
+      "title": "$__dashboard v1.2",
       "type": "row"
     }
   ],
@@ -1269,6 +1302,6 @@
   "timezone": "",
   "title": "Tracking Drives",
   "uid": "jchmX8upc6ZRk",
-  "version": 50,
+  "version": 6,
   "weekStart": ""
 }
