@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673176920744,
+  "iteration": 1673294970071,
   "links": [
     {
       "icon": "dashboard",
@@ -875,7 +875,7 @@
           ]
         }
       ],
-      "title": "Actual Charge",
+      "title": "Current Charge",
       "type": "bargauge"
     },
     {
@@ -1001,7 +1001,7 @@
           ]
         }
       ],
-      "title": "Actual Capacity",
+      "title": "Current Capacity",
       "type": "bargauge"
     },
     {
@@ -1068,7 +1068,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v1.5",
+      "title": "$__dashboard v1.6",
       "type": "row"
     }
   ],
@@ -1253,14 +1253,14 @@
           "type": "postgres",
           "uid": "${DS_TESLAMATE}"
         },
-        "definition": "SELECT MAX((100.0 * charge_energy_added) / (end_battery_level - start_battery_level)) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = 1",
+        "definition": "SELECT MAX((100.0 * charge_energy_added) / (end_battery_level - start_battery_level)) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id",
         "description": "Brand new Capacity",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "BrandNewCapacity",
         "options": [],
-        "query": "SELECT MAX((100.0 * charge_energy_added) / (end_battery_level - start_battery_level)) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = 1",
+        "query": "SELECT MAX((100.0 * charge_energy_added) / (end_battery_level - start_battery_level)) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1301,6 +1301,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRx",
-  "version": 15,
+  "version": 18,
   "weekStart": ""
 }
