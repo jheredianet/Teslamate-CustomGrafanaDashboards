@@ -65,7 +65,7 @@ Be aware that this information is just a calculation to have a reference, measur
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
-### [Tracking Drives v1.0](./dashboards/TrackingDrives.json)
+### [Tracking Drives v1.1](./dashboards/TrackingDrives.json)
 
 This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph
 to see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map,
@@ -73,6 +73,8 @@ to see the speed, power, SOC, elevation and if battery heater was on.
 
 Be aware that the drive you select in the dropdown list from the top could be outside the time range of the Timeline graph,
 if its the case you have to click on the "Zoom to data" button on the graph in order to update it.
+
+Tip: On Grafana you can press "h" to get a keyboard shortcuts if you want to change the current Zoom out time range or use the mouse to select/change the time range.
 
 ![Tracking Drives](./screenshots/TrackingDrives.gif)
 
