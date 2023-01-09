@@ -65,7 +65,7 @@ Be aware that this information is just a calculation to have a reference, measur
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
-### [Tracking Drives v1.1](./dashboards/TrackingDrives.json)
+### [Tracking Drives v1.2](./dashboards/TrackingDrives.json)
 
 This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph
 to see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map,
