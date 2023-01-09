@@ -75,7 +75,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673200696635,
+  "iteration": 1673259607981,
   "links": [
     {
       "icon": "dashboard",
@@ -198,7 +198,7 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 17,
-        "w": 13,
+        "w": 15,
         "x": 0,
         "y": 0
       },
@@ -324,9 +324,9 @@
       },
       "defaultLayer": "OpenStreetMap",
       "gridPos": {
-        "h": 17,
-        "w": 11,
-        "x": 13,
+        "h": 20,
+        "w": 9,
+        "x": 15,
         "y": 0
       },
       "id": 6,
@@ -497,7 +497,6 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
           "displayName": "Duration",
           "mappings": [
             {
@@ -519,13 +518,13 @@
               }
             ]
           },
-          "unit": "dtdurations"
+          "unit": "dthms"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
-        "w": 4,
+        "h": 3,
+        "w": 3,
         "x": 0,
         "y": 17
       },
@@ -614,7 +613,7 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
+              "id": "byName",
               "options": "km"
             },
             "properties": [
@@ -626,7 +625,7 @@
           },
           {
             "matcher": {
-              "id": "byRegexp",
+              "id": "byName",
               "options": "mi"
             },
             "properties": [
@@ -639,17 +638,17 @@
         ]
       },
       "gridPos": {
-        "h": 2,
+        "h": 3,
         "w": 3,
-        "x": 4,
+        "x": 3,
         "y": 17
       },
       "id": 18,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -657,7 +656,7 @@
           "fields": "/.*/",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
       "pluginVersion": "8.5.6",
       "targets": [
@@ -756,9 +755,9 @@
         ]
       },
       "gridPos": {
-        "h": 2,
+        "h": 3,
         "w": 3,
-        "x": 7,
+        "x": 6,
         "y": 17
       },
       "id": 12,
@@ -849,9 +848,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 3,
         "w": 3,
-        "x": 10,
+        "x": 9,
         "y": 17
       },
       "id": 16,
@@ -932,9 +931,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
-        "w": 11,
-        "x": 13,
+        "h": 3,
+        "w": 3,
+        "x": 12,
         "y": 17
       },
       "id": 10,
@@ -997,7 +996,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND\n $__timeFilter(date)\nORDER BY\n\tdate ASC\n\t)\n\t\n\t\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit' as \"DOWN\" from height where diff < 0",
+          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\n\t\n\t\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit' as \"DOWN\" from height where diff < 0",
           "refId": "B",
           "select": [
             [
@@ -1021,7 +1020,7 @@
           ]
         }
       ],
-      "title": "Elevation Summary",
+      "title": "Elevation",
       "type": "stat"
     },
     {
@@ -1030,7 +1029,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 20
       },
       "id": 20,
       "panels": [
@@ -1088,7 +1087,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v1.0",
+      "title": "$__dashboard v1.1",
       "type": "row"
     }
   ],
@@ -1265,22 +1264,11 @@
   },
   "timepicker": {
     "hidden": true,
-    "refresh_intervals": [],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
+    "refresh_intervals": []
   },
   "timezone": "",
   "title": "Tracking Drives",
   "uid": "jchmX8upc6ZRk",
-  "version": 40,
+  "version": 50,
   "weekStart": ""
 }
