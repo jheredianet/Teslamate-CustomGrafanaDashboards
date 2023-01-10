@@ -90,7 +90,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673337825597,
+  "iteration": 1673337825602,
   "links": [
     {
       "icon": "dashboard",
@@ -236,7 +236,7 @@
           }
         }
       ],
-      "title": "$length_unit driven",
+      "title": "$length_unit Driven",
       "type": "stat"
     },
     {
@@ -410,7 +410,7 @@
           ]
         }
       ],
-      "title": "Total Charged",
+      "title": "Total Energy Charged",
       "type": "stat"
     },
     {
@@ -499,7 +499,7 @@
           "type": "math"
         }
       ],
-      "title": "Other DC Cost",
+      "title": "Charging Cost at DC Stations",
       "type": "stat"
     },
     {
@@ -587,7 +587,7 @@
           "type": "math"
         }
       ],
-      "title": "AC Cost",
+      "title": "Charging Cost at AC Stations",
       "type": "stat"
     },
     {
@@ -816,7 +816,7 @@
           }
         }
       ],
-      "title": "AC/DC – Energy added",
+      "title": "Summary AC/DC Energy Charged",
       "type": "barchart"
     },
     {
@@ -972,7 +972,7 @@
           }
         }
       ],
-      "title": "Average Cost per kWh",
+      "title": "Average kWh Cost",
       "type": "stat"
     },
     {
@@ -1059,7 +1059,7 @@
           ]
         }
       ],
-      "title": "Total Free charged",
+      "title": "Total Free Energy charged",
       "type": "stat"
     },
     {
@@ -1192,7 +1192,7 @@
           "type": "math"
         }
       ],
-      "title": "Total Charging Cost",
+      "title": "Total Charging Costs",
       "type": "stat"
     },
     {
@@ -2515,7 +2515,7 @@
             "h": 5,
             "w": 24,
             "x": 0,
-            "y": 36
+            "y": 22
           },
           "id": 55,
           "options": {
@@ -2560,7 +2560,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v1.3",
+      "title": "$__dashboard v1.4",
       "type": "row"
     }
   ],
@@ -2797,6 +2797,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 49,
+  "version": 51,
   "weekStart": ""
 }
