@@ -46,9 +46,15 @@ Tip: Be aware that once this dashboard is imported you should edit and change th
 
 ![Current Charge View](./screenshots/CurrentChargeView.png)
 
-### [Charging Costs Stats v1.2](./dashboards/ChargingCostsStats.json)
+### [Charging Costs Stats v1.3](./dashboards/ChargingCostsStats.json)
 
-This dashboard is meant to have a look of all the charges in the last 10 years (by default). You can see the distance driven, number of charges, total charging cost, etc., both in summary or in separated lists as you can see in the following example.
+This dashboard is meant to have a look of all the charges in a given period (last 10 years by default).
+You can see the distance driven, number of charges, total charging cost, etc., both in summary or in
+separated lists.
+
+You can expand/collapse the rows as needed.
+
+From the Monthly Stats row, you will have a table with links to other Teslamate Dashboards to have a look on a specific period, charge or trip.
 
 ![Charging Costs Stats](./screenshots/ChargingCostsStats.png)
 
