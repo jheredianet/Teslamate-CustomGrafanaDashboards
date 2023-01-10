@@ -75,7 +75,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673268472080,
+  "iteration": 1673376628618,
   "links": [
     {
       "icon": "dashboard",
@@ -971,7 +971,7 @@
       "options": {
         "colorMode": "value",
         "graphMode": "none",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -1075,11 +1075,11 @@
             "h": 5,
             "w": 24,
             "x": 0,
-            "y": 20
+            "y": 21
           },
           "id": 22,
           "options": {
-            "content": "This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph \nto see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map, \nto see the speed, power, SOC, elevation and if battery heater was on. \n\nBe aware that the drive you select in the dropdown list from the top could be outside the time range of the Timeline graph, \nif its the case you have to click on the \"Zoom to data\" button on the graph in order to update it.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
+            "content": "This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph\nto see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map,\nto see the speed, power, SOC, elevation and if battery heater was on.\n\nBe aware that the drive you select in the dropdown list from the top could be outside the time range of the Timeline graph,\nif its the case you have to click on the \"Zoom to data\" button on the graph in order to update it.\n\nTip: On Grafana you can press \"h\" to get a keyboard shortcuts if you want to change the current Zoom out time range or use the mouse to select/change the time range.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
             "mode": "markdown"
           },
           "pluginVersion": "8.5.6",
@@ -1120,7 +1120,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v1.2",
+      "title": "$__dashboard v1.3",
       "type": "row"
     }
   ],
@@ -1302,6 +1302,6 @@
   "timezone": "",
   "title": "Tracking Drives",
   "uid": "jchmX8upc6ZRk",
-  "version": 6,
+  "version": 9,
   "weekStart": ""
 }
