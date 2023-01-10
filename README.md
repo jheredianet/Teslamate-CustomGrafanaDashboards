@@ -46,7 +46,7 @@ Tip: Be aware that once this dashboard is imported you should edit and change th
 
 ![Current Charge View](./screenshots/CurrentChargeView.png)
 
-### [Charging Costs Stats v1.3](./dashboards/ChargingCostsStats.json)
+### [Charging Costs Stats v1.4](./dashboards/ChargingCostsStats.json)
 
 This dashboard is meant to have a look of all the charges in a given period (last 10 years by default).
 You can see the distance driven, number of charges, total charging cost, etc., both in summary or in
