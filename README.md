@@ -26,7 +26,7 @@ For Teslamate 1.2x or upper
 
 ## Screenshots
 
-### [Current Drive View v1.3](./dashboards/CurrentDriveView.json)
+### [Current Drive View v1.4](./dashboards/CurrentDriveView.json)
 
 This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Drive" button at the top right corner, to enter in Kiosk mode:
 

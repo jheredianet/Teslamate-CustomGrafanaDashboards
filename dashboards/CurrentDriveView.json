@@ -91,7 +91,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673161989141,
+  "iteration": 1673450054322,
   "links": [
     {
       "icon": "dashboard",
@@ -258,6 +258,14 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "min",
+                "value": -30
+              },
+              {
+                "id": "max",
+                "value": 30
               }
             ]
           },
@@ -274,10 +282,6 @@
               {
                 "id": "unit",
                 "value": "lengthm"
-              },
-              {
-                "id": "min",
-                "value": 0
               }
             ]
           },
@@ -1604,7 +1608,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v1.3",
+      "title": "$__dashboard v1.4",
       "type": "row"
     }
   ],
@@ -1878,6 +1882,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 74,
+  "version": 81,
   "weekStart": ""
 }
