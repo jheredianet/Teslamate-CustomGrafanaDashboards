@@ -2,7 +2,7 @@
 
 [![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR)
 
-This is a repository with custom **Grafana Dashboards**, created especially to work with a Teslamate installation.
+This is a repository with <u>custom Grafana Dashboards</u>, created especially to work with a **Teslamate installation**. So the main requirement for these dashboards to work is to have a **[Teslamate](https://docs.teslamate.org/)** running instance.
 
 ## TeslaMate
 
@@ -13,9 +13,55 @@ This is a repository with custom **Grafana Dashboards**, created especially to w
 - Visualization and data analysis with **Grafana**
 - Vehicle data is published to a local **MQTT** Broker
 
-## How to import these custom boards
+___
 
-For Teslamate 1.2x or upper
+## How to Auto-import these Custom Dashboards
+
+In order to auto-import all the dashboard files from this repository, considering that your are using the official  [Teslamate Docker install](https://docs.teslamate.org/docs/installation/docker) documentation guide, proceed as follows.
+
+**Note:** If you are using Teslamate without Docker you may skip these section and proceed to import manually.
+
+1. The following command will clone the source files from this repository. This should be run in an appropriate directory within which you would like to keep it. You should also record this path and provide it later in the following steps. To keep it easy, you may run this your home path (~/) or modify it accordingly
+
+```bash
+git clone https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards.git
+```
+
+2. Edit your Teslamate "docker-compose.yml" file and add these two new lines at the end of the "volumes" section of the grafana container
+
+```bash
+services:
+  ...
+  ...
+  grafana:
+    ...
+    ...
+    volumes:
+      - teslamate-grafana-data:/var/lib/grafana
+      - ~/teslamate-customgrafanadashboards/customdashboards.yml:/etc/grafana/provisioning/dashboards/customdashboards.yml
+      - ~/teslamate-customgrafanadashboards/dashboards:/dashboards_custom
+```
+
+1. Save your file and then **restart** Grafana container
+2. Browse the Grafana Dashboards from the Web and you should have a new "Custom Dashboards" folder
+
+## How to update the Dashboards
+
+If you want to be sure that you are using the latest version of the Dashboards:
+
+1. Pull again from the repository
+
+```bash
+git -C ~/teslamate-customgrafanadashboards pull
+```
+
+2. Then **restart** Grafana container
+
+___
+
+## How to manually import these custom dashboards
+
+The following steps let you import the JSON files into your setup:
 
 1. On Grafana (from Teslamate instance), Browse Dashboards then Import...
 2. Upload JSON file or import via panel json by pasting the raw content of te JSON file.
@@ -24,9 +70,11 @@ For Teslamate 1.2x or upper
 5. Then select the appropiate Teslamate datasource from the available droplist.
 6. Finally, press the "Import" button
 
-## Screenshots
+___
 
-### [Current Drive View v1.4](./dashboards/CurrentDriveView.json)
+# Screenshots
+
+### [Current Drive View v2.0](./dashboards/CurrentDriveView.json)
 
 This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Drive" button at the top right corner, to enter in Kiosk mode:
 
@@ -35,7 +83,7 @@ This is a special dashboard to load while driving. When you open this dashboard 
 
 ![Current Drive View](./screenshots/CurrentDriveView.png)
 
-### [Current Charge View v1.1](./dashboards/CurrentChargeView.json)
+### [Current Charge View v2.0](./dashboards/CurrentChargeView.json)
 
 Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Charge" button at the top right corner, to enter in Kiosk mode:
 
@@ -46,7 +94,7 @@ Tip: Be aware that once this dashboard is imported you should edit and change th
 
 ![Current Charge View](./screenshots/CurrentChargeView.png)
 
-### [Charging Costs Stats v1.4](./dashboards/ChargingCostsStats.json)
+### [Charging Costs Stats v2.0](./dashboards/ChargingCostsStats.json)
 
 This dashboard is meant to have a look of all the charges in a given period (last 10 years by default).
 You can see the distance driven, number of charges, total charging cost, etc., both in summary or in
@@ -58,20 +106,20 @@ From the Monthly Stats row, you will have a table with links to other Teslamate 
 
 ![Charging Costs Stats](./screenshots/ChargingCostsStats.png)
 
-### [Charging Curve Stats v1.1](./dashboards/ChargingCurveStats.json)
+### [Charging Curve Stats v2.0](./dashboards/ChargingCurveStats.json)
 
 This dashboard is meant to have a look of the charging curve sessions on Supercharges or other Fast Charging Station. Also, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session as shown in the following example.
 
 ![Charging Curve Stats](./screenshots/ChargingCurveStats.png)
 
-### [Battery Health v1.6](./dashboards/BatteryHealth.json)
+### [Battery Health v2.0](./dashboards/BatteryHealth.json)
 
 This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.
 Be aware that this information is just a calculation to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
-### [Tracking Drives v1.3](./dashboards/TrackingDrives.json)
+### [Tracking Drives v2.0](./dashboards/TrackingDrives.json)
 
 This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph
 to see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map,
