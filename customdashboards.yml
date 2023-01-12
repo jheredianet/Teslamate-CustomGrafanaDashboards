@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+- name: 'CustomGrafanaDashboards'
+  orgId: 1
+  folder: Custom Dashboards
+  folderUid: jchmTmCuGrDa
+  type: file
+  disableDeletion: false
+  editable: true
+  updateIntervalSeconds: 86400
+  options:
+    path: /dashboards_custom

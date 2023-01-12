@@ -1,53 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_TESLAMATE",
-      "label": "TeslaMate",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
-    }
-  ],
-  "__elements": [],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "bargauge",
-      "name": "Bar gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.5.6"
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -73,8 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
-  "iteration": 1673294970071,
+  "iteration": 1673555504638,
   "links": [
     {
       "icon": "dashboard",
@@ -97,27 +47,9 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
-      },
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 4,
-      "panels": [],
-      "repeat": "car_id",
-      "title": "$car_id",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "description": "",
       "fieldConfig": {
@@ -154,7 +86,7 @@
         "h": 3,
         "w": 9,
         "x": 0,
-        "y": 1
+        "y": 0
       },
       "id": 12,
       "options": {
@@ -176,7 +108,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "table",
           "group": [],
@@ -212,7 +144,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "description": "",
       "fieldConfig": {
@@ -251,7 +183,7 @@
         "h": 3,
         "w": 3,
         "x": 9,
-        "y": 1
+        "y": 0
       },
       "id": 17,
       "options": {
@@ -273,7 +205,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "table",
           "group": [],
@@ -309,7 +241,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "description": "",
       "fieldConfig": {
@@ -336,7 +268,7 @@
         "h": 3,
         "w": 6,
         "x": 12,
-        "y": 1
+        "y": 0
       },
       "id": 13,
       "options": {
@@ -358,7 +290,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "table",
           "group": [],
@@ -394,7 +326,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "description": "",
       "fieldConfig": {
@@ -421,7 +353,7 @@
         "h": 3,
         "w": 6,
         "x": 18,
-        "y": 1
+        "y": 0
       },
       "id": 14,
       "options": {
@@ -443,7 +375,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "table",
           "group": [],
@@ -479,7 +411,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "fieldConfig": {
         "defaults": {
@@ -538,7 +470,7 @@
         "h": 13,
         "w": 12,
         "x": 0,
-        "y": 4
+        "y": 3
       },
       "id": 15,
       "links": [],
@@ -561,7 +493,7 @@
           "alias": "",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "time_series",
           "group": [],
@@ -596,7 +528,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "fieldConfig": {
         "defaults": {
@@ -665,7 +597,7 @@
         "h": 13,
         "w": 12,
         "x": 12,
-        "y": 4
+        "y": 3
       },
       "id": 2,
       "links": [],
@@ -688,7 +620,7 @@
           "alias": "",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "time_series",
           "group": [],
@@ -719,7 +651,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "time_series",
           "group": [],
@@ -756,7 +688,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "fieldConfig": {
         "defaults": {
@@ -796,7 +728,7 @@
         "h": 2,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 16
       },
       "id": 25,
       "options": {
@@ -819,7 +751,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "table",
           "group": [],
@@ -881,7 +813,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "description": "",
       "fieldConfig": {
@@ -922,7 +854,7 @@
         "h": 2,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 16
       },
       "id": 27,
       "options": {
@@ -945,7 +877,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "table",
           "group": [],
@@ -1010,14 +942,14 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 18
       },
       "id": 23,
       "panels": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "gridPos": {
             "h": 5,
@@ -1035,7 +967,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "${DS_TESLAMATE}"
+                "uid": "PC98BA2F4D77E1A42"
               },
               "format": "time_series",
               "group": [],
@@ -1068,7 +1000,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v1.6",
+      "title": "$__dashboard v2.0",
       "type": "row"
     }
   ],
@@ -1081,14 +1013,18 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": "Ambrosio",
+          "value": "3"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
-        "hide": 2,
-        "includeAll": true,
+        "hide": 0,
+        "includeAll": false,
         "label": "Car",
         "multi": false,
         "name": "car_id",
@@ -1104,10 +1040,14 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "km",
+          "value": "km"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "select unit_of_length from settings limit 1;",
         "hide": 2,
@@ -1127,10 +1067,14 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "rated",
+          "value": "rated"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "select preferred_range from settings limit 1;",
         "hide": 2,
@@ -1149,10 +1093,14 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "http://192.168.193.93:4000",
+          "value": "http://192.168.193.93:4000"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "select base_url from settings limit 1;",
         "hide": 2,
@@ -1172,10 +1120,14 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "80.66666666666667",
+          "value": "80.66666666666667"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "WITH lastTopCharges AS (\n    SELECT (100.0 * charge_energy_added) / (end_battery_level - start_battery_level) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id\n    ORDER BY end_date DESC\n    LIMIT 5\n)\nSELECT Battery_Capacity FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
         "hide": 2,
@@ -1191,10 +1143,14 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "534.6190476190476",
+          "value": "534.6190476190476"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "WITH ProjectedRange AS (\nSELECT\n\t$__timeGroup(date, 12h) AS time,\n\tconvert_km((sum([[preferred_range]]_battery_range_km) / nullif(sum(coalesce(usable_battery_level,battery_level)),0) * 100)::numeric, '$length_unit') AS \"Projected [[preferred_range]] range [$length_unit]\"\nFROM\n\t(\n    select battery_level, usable_battery_level, date,\n      rated_battery_range_km, ideal_battery_range_km, outside_temp\n    from positions\n    where\n      car_id = $car_id and ideal_battery_range_km is not null\n    union all\n    select battery_level, coalesce(usable_battery_level,battery_level) as usable_battery_level, date,\n      rated_battery_range_km, ideal_battery_range_km, outside_temp\n    from charges c\n    join\n      charging_processes p ON p.id = c.charging_process_id \n    where\n       p.car_id = $car_id\n    ) as data\n\nGROUP BY\n\t1\nhaving convert_km((sum([[preferred_range]]_battery_range_km) / nullif(sum(coalesce(usable_battery_level,battery_level)),0) * 100)::numeric, '$length_unit') is not null\nORDER BY\n\t1,2  DESC )\nSELECT max(\"Projected [[preferred_range]] range [$length_unit]\") FROM ProjectedRange \n",
         "hide": 2,
@@ -1210,10 +1166,14 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "3.1179299902021875",
+          "value": "3.1179299902021875"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "WITH lastTopCharges AS (\n  SELECT 100-((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)) as Battery_Degradation\n  FROM charging_processes \n WHERE car_id = $car_id AND end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
         "hide": 2,
@@ -1229,10 +1189,14 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "513.375",
+          "value": "513.375"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "WITH ProjectedRange AS (\nSELECT\n\t$__timeGroup(date, 12h) AS time,\n\tconvert_km((sum([[preferred_range]]_battery_range_km) / nullif(sum(coalesce(usable_battery_level,battery_level)),0) * 100)::numeric, '$length_unit') AS \"Projected [[preferred_range]] range [$length_unit]\"\nFROM\n\t(\n    select battery_level, usable_battery_level, date,\n      rated_battery_range_km, ideal_battery_range_km, outside_temp\n    from positions\n    where\n      car_id = $car_id and $__timeFilter(date) and ideal_battery_range_km is not null\n    union all\n    select battery_level, coalesce(usable_battery_level,battery_level) as usable_battery_level, date,\n      rated_battery_range_km, ideal_battery_range_km, outside_temp\n    from charges c\n    join\n      charging_processes p ON p.id = c.charging_process_id \n    where\n      $__timeFilter(date) and p.car_id = $car_id\n    ) as data\n\nGROUP BY\n\t1\nhaving convert_km((sum([[preferred_range]]_battery_range_km) / nullif(sum(coalesce(usable_battery_level,battery_level)),0) * 100)::numeric, '$length_unit') is not null\nORDER BY\n\t1,2  DESC )\nSELECT \"Projected [[preferred_range]] range [$length_unit]\" FROM ProjectedRange ORDER BY time DESC LIMIT 1",
         "hide": 2,
@@ -1248,10 +1212,14 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "84",
+          "value": "84"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "SELECT MAX((100.0 * charge_energy_added) / (end_battery_level - start_battery_level)) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id",
         "description": "Brand new Capacity",
@@ -1301,6 +1269,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRx",
-  "version": 18,
+  "version": 1,
   "weekStart": ""
 }
