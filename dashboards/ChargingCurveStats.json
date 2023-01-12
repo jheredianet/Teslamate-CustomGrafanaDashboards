@@ -1,53 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_TESLAMATE",
-      "label": "TeslaMate",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
-    }
-  ],
-  "__elements": [],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.5.6"
-    },
-    {
-      "type": "panel",
-      "id": "natel-plotly-panel",
-      "name": "Plotly",
-      "version": "0.0.7"
-    },
-    {
-      "type": "panel",
-      "id": "piechart",
-      "name": "Pie chart",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -71,8 +22,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
-  "iteration": 1673176590952,
+  "iteration": 1673556462583,
   "links": [
     {
       "icon": "dashboard",
@@ -95,24 +45,9 @@
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
-      "datasource": "TeslaMate",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 12,
-      "panels": [],
-      "repeat": "car_id",
-      "title": "$car_id",
-      "type": "row"
-    },
-    {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "description": "",
       "fieldConfig": {
@@ -135,7 +70,7 @@
         "h": 6,
         "w": 4,
         "x": 0,
-        "y": 1
+        "y": 0
       },
       "id": 38,
       "options": {
@@ -164,7 +99,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "table",
           "group": [],
@@ -200,13 +135,13 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "gridPos": {
         "h": 20,
         "w": 10,
         "x": 4,
-        "y": 1
+        "y": 0
       },
       "id": 29,
       "links": [],
@@ -329,10 +264,7 @@
       "targets": [
         {
           "alias": "",
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
+          "datasource": "TeslaMate",
           "format": "table",
           "group": [],
           "hide": false,
@@ -360,10 +292,7 @@
           ]
         },
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
+          "datasource": "TeslaMate",
           "format": "table",
           "group": [],
           "hide": false,
@@ -400,13 +329,13 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "gridPos": {
         "h": 20,
         "w": 10,
         "x": 14,
-        "y": 1
+        "y": 0
       },
       "id": 32,
       "links": [],
@@ -529,10 +458,7 @@
       "targets": [
         {
           "alias": "",
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
+          "datasource": "TeslaMate",
           "format": "table",
           "group": [],
           "hide": false,
@@ -560,10 +486,7 @@
           ]
         },
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
-          },
+          "datasource": "TeslaMate",
           "format": "table",
           "group": [],
           "hide": false,
@@ -600,7 +523,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "PC98BA2F4D77E1A42"
       },
       "fieldConfig": {
         "defaults": {
@@ -644,7 +567,7 @@
         "h": 14,
         "w": 4,
         "x": 0,
-        "y": 7
+        "y": 6
       },
       "id": 34,
       "links": [],
@@ -664,7 +587,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "format": "table",
           "group": [],
@@ -701,14 +624,14 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 20
       },
       "id": 40,
       "panels": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "PC98BA2F4D77E1A42"
           },
           "gridPos": {
             "h": 5,
@@ -726,7 +649,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "${DS_TESLAMATE}"
+                "uid": "PC98BA2F4D77E1A42"
               },
               "format": "time_series",
               "group": [],
@@ -759,7 +682,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v1.1",
+      "title": "$__dashboard v2.0",
       "type": "row"
     }
   ],
@@ -772,14 +695,18 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": "Ambrosio",
+          "value": "3"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
-        "hide": 2,
-        "includeAll": true,
+        "hide": 0,
+        "includeAll": false,
         "label": "Car",
         "multi": false,
         "name": "car_id",
@@ -795,10 +722,14 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "http://192.168.193.93:4000",
+          "value": "http://192.168.193.93:4000"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "PC98BA2F4D77E1A42"
         },
         "definition": "select base_url from settings limit 1;",
         "hide": 2,
@@ -852,6 +783,6 @@
   "timezone": "",
   "title": "Charging Curve Stats",
   "uid": "jchmXpkIkhmRz",
-  "version": 32,
+  "version": 1,
   "weekStart": ""
 }
