@@ -259,6 +259,10 @@
                 "value": "velocitykmh"
               },
               {
+                "id": "displayName",
+                "value": "Speed"
+              },
+              {
                 "id": "custom.axisPlacement",
                 "value": "hidden"
               }
@@ -280,6 +284,10 @@
               {
                 "id": "unit",
                 "value": "velocitymih"
+              },
+              {
+                "id": "displayName",
+                "value": "Speed"
               },
               {
                 "id": "custom.axisPlacement",
