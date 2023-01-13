@@ -530,10 +530,7 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS___EXPR__}"
-          },
+          "datasource": "TeslaMate",
           "expression": "$efficiency",
           "hide": false,
           "refId": "Efficiency",
