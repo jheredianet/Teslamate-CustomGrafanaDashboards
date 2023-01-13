@@ -2,11 +2,6 @@
   "__elements": [],
   "__requires": [
     {
-      "type": "datasource",
-      "id": "__expr__",
-      "version": "1.0.0"
-    },
-    {
       "type": "panel",
       "id": "barchart",
       "name": "Bar chart",
@@ -73,7 +68,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673604145454,
+  "iteration": 1673618596474,
   "links": [
     {
       "icon": "dashboard",
@@ -186,6 +181,10 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
@@ -211,11 +210,7 @@
               "params": [],
               "type": "macro"
             }
-          ],
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          }
+          ]
         }
       ],
       "title": "$length_unit Driven",
@@ -273,6 +268,10 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -298,11 +297,7 @@
               "params": [],
               "type": "macro"
             }
-          ],
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          }
+          ]
         }
       ],
       "title": "Number of Charges",
@@ -439,7 +434,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "/.*/",
           "values": false
@@ -449,33 +444,36 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "conditions": [
-            {
-              "evaluator": {
-                "params": [
-                  0,
-                  0
-                ],
-                "type": "gt"
-              },
-              "operator": {
-                "type": "and"
-              },
-              "query": {
-                "params": []
-              },
-              "reducer": {
-                "params": [],
-                "type": "avg"
-              },
-              "type": "query"
-            }
-          ],
-          "datasource": "TeslaMate",
-          "expression": "$DCCost",
-          "hide": false,
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $DCCost\nFROM settings LIMIT 1",
           "refId": "A",
-          "type": "math"
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "title": "Charging Cost at DC Stations",
@@ -524,7 +522,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "/.*/",
           "values": false
@@ -534,33 +532,36 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "conditions": [
-            {
-              "evaluator": {
-                "params": [
-                  0,
-                  0
-                ],
-                "type": "gt"
-              },
-              "operator": {
-                "type": "and"
-              },
-              "query": {
-                "params": []
-              },
-              "reducer": {
-                "params": [],
-                "type": "avg"
-              },
-              "type": "query"
-            }
-          ],
-          "datasource": "TeslaMate",
-          "expression": "$ACCost",
-          "hide": false,
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $ACCost\nFROM settings LIMIT 1",
           "refId": "A",
-          "type": "math"
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "title": "Charging Cost at AC Stations",
@@ -760,6 +761,10 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
@@ -785,11 +790,7 @@
               "params": [],
               "type": "macro"
             }
-          ],
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          }
+          ]
         }
       ],
       "title": "Summary AC/DC Energy Charged",
@@ -842,6 +843,10 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -867,11 +872,7 @@
               "params": [],
               "type": "macro"
             }
-          ],
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          }
+          ]
         }
       ],
       "title": "Cost per 100 $length_unit",
@@ -926,6 +927,10 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -941,11 +946,7 @@
               "params": [],
               "type": "macro"
             }
-          ],
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          }
+          ]
         }
       ],
       "title": "Average kWh Cost",
@@ -1082,7 +1083,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "/.*/",
           "values": false
@@ -1092,11 +1093,36 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "datasource": "TeslaMate",
-          "expression": "$SucCost",
-          "hide": false,
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $SucCost\nFROM settings LIMIT 1",
           "refId": "A",
-          "type": "math"
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "title": "Charging Cost at SuC",
@@ -1145,7 +1171,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "/.*/",
           "values": false
@@ -1155,11 +1181,36 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "datasource": "TeslaMate",
-          "expression": "$TotalCost",
-          "hide": false,
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $TotalCost\nFROM settings LIMIT 1",
           "refId": "A",
-          "type": "math"
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "title": "Total Charging Costs",
@@ -1749,7 +1800,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "red"
+                    "color": "red",
+                    "value": null
                   },
                   {
                     "color": "#EAB839",
@@ -1821,7 +1873,8 @@
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "super-light-orange"
+                          "color": "super-light-orange",
+                          "value": null
                         },
                         {
                           "color": "light-orange",
@@ -1994,7 +2047,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "super-light-blue"
+                          "color": "super-light-blue",
+                          "value": null
                         },
                         {
                           "color": "super-light-green",
@@ -2764,6 +2818,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 1,
+  "version": 12,
   "weekStart": ""
 }
