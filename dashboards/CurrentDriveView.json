@@ -2,11 +2,6 @@
   "__elements": [],
   "__requires": [
     {
-      "type": "datasource",
-      "id": "__expr__",
-      "version": "1.0.0"
-    },
-    {
       "type": "panel",
       "id": "bargauge",
       "name": "Bar gauge",
@@ -74,7 +69,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673604237624,
+  "iteration": 1673628544158,
   "links": [
     {
       "icon": "dashboard",
@@ -92,6 +87,20 @@
       ],
       "title": "Dashboards",
       "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "TeslamateCustomDashboards"
+      ],
+      "targetBlank": false,
+      "title": "Custom Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
     },
     {
       "asDropdown": false,
@@ -259,6 +268,10 @@
                 "value": "velocitykmh"
               },
               {
+                "id": "displayName",
+                "value": "Speed"
+              },
+              {
                 "id": "custom.axisPlacement",
                 "value": "hidden"
               }
@@ -280,6 +293,10 @@
               {
                 "id": "unit",
                 "value": "velocitymih"
+              },
+              {
+                "id": "displayName",
+                "value": "Speed"
               },
               {
                 "id": "custom.axisPlacement",
@@ -1566,7 +1583,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v2.0",
+      "title": "$__dashboard v2.0.2",
       "type": "row"
     }
   ],
@@ -1574,7 +1591,7 @@
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
-    "tesla"
+    "TeslamateCustomDashboards"
   ],
   "templating": {
     "list": [
@@ -1840,6 +1857,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 1,
+  "version": 6,
   "weekStart": ""
 }

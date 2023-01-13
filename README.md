@@ -38,11 +38,11 @@ services:
     ...
     volumes:
       - teslamate-grafana-data:/var/lib/grafana
-      - ~/teslamate-customgrafanadashboards/customdashboards.yml:/etc/grafana/provisioning/dashboards/customdashboards.yml
-      - ~/teslamate-customgrafanadashboards/dashboards:/TeslamateCustomDashboards
+      - ~/Teslamate-CustomGrafanaDashboards/customdashboards.yml:/etc/grafana/provisioning/dashboards/customdashboards.yml
+      - ~/Teslamate-CustomGrafanaDashboards/dashboards:/TeslamateCustomDashboards
 ```
 
-3. Save your file and then **restart** Grafana container
+3. Save your file and then **recreate** Grafana container (docker-compose up -d)
 4. Browse the Grafana Dashboards from the Web and you should have a new "TeslaMate Custom Dashboards" folder
 
 ## How to update the Dashboards
@@ -55,7 +55,7 @@ If you want to be sure that you are using the latest version of the Dashboards:
 git -C ~/teslamate-customgrafanadashboards pull
 ```
 
-6. Then **restart** Grafana container
+6. Then **restart** Grafana container (docker-compose restart grafana)
 
 ___
 
