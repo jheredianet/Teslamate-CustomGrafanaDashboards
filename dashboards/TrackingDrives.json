@@ -579,7 +579,7 @@
           "values": false
         },
         "text": {
-          "titleSize": 10
+          "titleSize": 16
         },
         "textMode": "value_and_name"
       },
@@ -771,7 +771,7 @@
           "values": false
         },
         "text": {
-          "titleSize": 10
+          "titleSize": 16
         },
         "textMode": "auto"
       },
@@ -900,7 +900,7 @@
           "values": false
         },
         "text": {
-          "titleSize": 10
+          "titleSize": 16
         },
         "textMode": "value"
       },
@@ -985,7 +985,7 @@
           "values": false
         },
         "text": {
-          "titleSize": 10
+          "titleSize": 16
         },
         "textMode": "value_and_name"
       },
