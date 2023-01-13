@@ -1,4 +1,54 @@
 {
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "__expr__",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.6"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -22,7 +72,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "iteration": 1673556046826,
+  "id": null,
+  "iteration": 1673604145454,
   "links": [
     {
       "icon": "dashboard",
@@ -61,7 +112,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -160,14 +211,21 @@
               "params": [],
               "type": "macro"
             }
-          ]
+          ],
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          }
         }
       ],
       "title": "$length_unit Driven",
       "type": "stat"
     },
     {
-      "datasource": "TeslaMate",
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -240,7 +298,11 @@
               "params": [],
               "type": "macro"
             }
-          ]
+          ],
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          }
         }
       ],
       "title": "Number of Charges",
@@ -249,7 +311,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -300,7 +362,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -336,7 +398,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -409,10 +471,7 @@
               "type": "query"
             }
           ],
-          "datasource": {
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
+          "datasource": "TeslaMate",
           "expression": "$DCCost",
           "hide": false,
           "refId": "A",
@@ -425,7 +484,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -497,10 +556,7 @@
               "type": "query"
             }
           ],
-          "datasource": {
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
+          "datasource": "TeslaMate",
           "expression": "$ACCost",
           "hide": false,
           "refId": "A",
@@ -513,7 +569,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -567,7 +623,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -600,7 +656,10 @@
       "type": "piechart"
     },
     {
-      "datasource": "TeslaMate",
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -726,14 +785,21 @@
               "params": [],
               "type": "macro"
             }
-          ]
+          ],
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          }
         }
       ],
       "title": "Summary AC/DC Energy Charged",
       "type": "barchart"
     },
     {
-      "datasource": "TeslaMate",
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 2,
@@ -801,14 +867,21 @@
               "params": [],
               "type": "macro"
             }
-          ]
+          ],
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          }
         }
       ],
       "title": "Cost per 100 $length_unit",
       "type": "stat"
     },
     {
-      "datasource": "TeslaMate",
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -868,7 +941,11 @@
               "params": [],
               "type": "macro"
             }
-          ]
+          ],
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          }
         }
       ],
       "title": "Average kWh Cost",
@@ -877,7 +954,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -928,7 +1005,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -964,7 +1041,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -1015,10 +1092,7 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
+          "datasource": "TeslaMate",
           "expression": "$SucCost",
           "hide": false,
           "refId": "A",
@@ -1031,7 +1105,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -1081,10 +1155,7 @@
       "pluginVersion": "8.5.6",
       "targets": [
         {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "__expr__"
-          },
+          "datasource": "TeslaMate",
           "expression": "$TotalCost",
           "hide": false,
           "refId": "A",
@@ -1110,7 +1181,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -1211,7 +1282,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -1245,7 +1316,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -1346,7 +1417,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -1380,7 +1451,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -1481,7 +1552,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -1515,7 +1586,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -1616,7 +1687,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -1660,7 +1731,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "description": "",
           "fieldConfig": {
@@ -1678,8 +1749,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "red",
-                    "value": null
+                    "color": "red"
                   },
                   {
                     "color": "#EAB839",
@@ -1751,8 +1821,7 @@
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "super-light-orange",
-                          "value": null
+                          "color": "super-light-orange"
                         },
                         {
                           "color": "light-orange",
@@ -1925,8 +1994,7 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "super-light-blue",
-                          "value": null
+                          "color": "super-light-blue"
                         },
                         {
                           "color": "super-light-green",
@@ -2168,7 +2236,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "PC98BA2F4D77E1A42"
+                "uid": "TeslaMate"
               },
               "format": "table",
               "group": [],
@@ -2201,7 +2269,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "PC98BA2F4D77E1A42"
+                "uid": "TeslaMate"
               },
               "format": "table",
               "group": [],
@@ -2232,7 +2300,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "PC98BA2F4D77E1A42"
+                "uid": "TeslaMate"
               },
               "format": "table",
               "group": [],
@@ -2408,7 +2476,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "gridPos": {
             "h": 5,
@@ -2426,7 +2494,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "PC98BA2F4D77E1A42"
+                "uid": "TeslaMate"
               },
               "format": "time_series",
               "group": [],
@@ -2472,14 +2540,10 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": true,
-          "text": "Adrisar",
-          "value": "1"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
@@ -2499,14 +2563,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "http://192.168.193.93:4000",
-          "value": "http://192.168.193.93:4000"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "select base_url from settings limit 1;",
         "hide": 2,
@@ -2526,14 +2586,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "km",
-          "value": "km"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "select unit_of_length from settings limit 1;",
         "hide": 2,
@@ -2552,14 +2608,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "SELECT\n\tcoalesce(sum(cost), 0)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id;\n\t",
         "hide": 2,
@@ -2575,14 +2627,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\n\tWHERE \n\t        cp.car_id = $car_id AND c.fast_charger_present IS true\n\t\tAND c.charger_voltage = 2\n\t\tAND (UPPER(addr.display_name) LIKE '%SUPERCHARGER%' OR UPPER(geo.name) LIKE '%SUPERCHARGER%')\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost), 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
         "hide": 2,
@@ -2598,14 +2646,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n              cp.car_id = $car_id AND c.charger_voltage = 2\n             AND c.fast_charger_present IS true\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost) - $SucCost , 0)\t\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
         "hide": 2,
@@ -2621,14 +2665,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n\t\tcp.car_id = $car_id AND c.charger_voltage != 2\n        GROUP BY 1\n)\nSELECT\n       coalesce(sum(cp.cost) , 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.cost IS NOT NULL\n  AND cp.id IN (data.charging_process_id);",
         "hide": 2,
@@ -2644,14 +2684,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "Etc/UTC",
-          "value": "Etc/UTC"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "select current_setting('TIMEZONE'), name from pg_timezone_names where abbrev ~ '^[a-zA-Z]{3,4}$' and name not like 'posix%' order by 2;",
         "hide": 2,
@@ -2667,14 +2703,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "C",
-          "value": "C"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "select unit_of_temperature from settings limit 1;",
         "hide": 2,
@@ -2690,14 +2722,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "rated",
-          "value": "rated"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "select preferred_range from settings limit 1;",
         "hide": 2,

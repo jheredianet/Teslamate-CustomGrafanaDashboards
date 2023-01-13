@@ -1,4 +1,43 @@
 {
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.6"
+    },
+    {
+      "type": "panel",
+      "id": "natel-plotly-panel",
+      "name": "Plotly",
+      "version": "0.0.7"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -22,7 +61,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "iteration": 1673556462583,
+  "id": null,
+  "iteration": 1673604184179,
   "links": [
     {
       "icon": "dashboard",
@@ -47,7 +87,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "description": "",
       "fieldConfig": {
@@ -99,7 +139,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -135,7 +175,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "gridPos": {
         "h": 20,
@@ -264,7 +304,10 @@
       "targets": [
         {
           "alias": "",
-          "datasource": "TeslaMate",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "table",
           "group": [],
           "hide": false,
@@ -292,7 +335,10 @@
           ]
         },
         {
-          "datasource": "TeslaMate",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "table",
           "group": [],
           "hide": false,
@@ -329,7 +375,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "gridPos": {
         "h": 20,
@@ -458,7 +504,10 @@
       "targets": [
         {
           "alias": "",
-          "datasource": "TeslaMate",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "table",
           "group": [],
           "hide": false,
@@ -486,7 +535,10 @@
           ]
         },
         {
-          "datasource": "TeslaMate",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "table",
           "group": [],
           "hide": false,
@@ -523,7 +575,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "fieldConfig": {
         "defaults": {
@@ -587,7 +639,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
@@ -631,7 +683,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "PC98BA2F4D77E1A42"
+            "uid": "TeslaMate"
           },
           "gridPos": {
             "h": 5,
@@ -649,7 +701,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "PC98BA2F4D77E1A42"
+                "uid": "TeslaMate"
               },
               "format": "time_series",
               "group": [],
@@ -695,14 +747,10 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": true,
-          "text": "Ambrosio",
-          "value": "3"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
@@ -722,14 +770,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "http://192.168.193.93:4000",
-          "value": "http://192.168.193.93:4000"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "PC98BA2F4D77E1A42"
+          "uid": "TeslaMate"
         },
         "definition": "select base_url from settings limit 1;",
         "hide": 2,
