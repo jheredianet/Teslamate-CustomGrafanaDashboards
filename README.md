@@ -42,20 +42,20 @@ services:
       - ~/teslamate-customgrafanadashboards/dashboards:/TeslamateCustomDashboards
 ```
 
-1. Save your file and then **restart** Grafana container
-2. Browse the Grafana Dashboards from the Web and you should have a new "TeslaMate Custom Dashboards" folder
+3. Save your file and then **restart** Grafana container
+4. Browse the Grafana Dashboards from the Web and you should have a new "TeslaMate Custom Dashboards" folder
 
 ## How to update the Dashboards
 
 If you want to be sure that you are using the latest version of the Dashboards:
 
-1. Pull again from the repository
+5. Pull again from the repository
 
 ```bash
 git -C ~/teslamate-customgrafanadashboards pull
 ```
 
-2. Then **restart** Grafana container
+6. Then **restart** Grafana container
 
 ___
 
