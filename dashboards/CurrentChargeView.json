@@ -87,6 +87,20 @@
       "url": ""
     },
     {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "TeslamateCustomDashboards"
+      ],
+      "targetBlank": false,
+      "title": "Custom Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
       "asDropdown": false,
       "icon": "info",
       "includeVars": false,
@@ -1678,7 +1692,7 @@
           "type": "text"
         }
       ],
-      "title": "$__dashboard v2.0",
+      "title": "$__dashboard v2.0.2",
       "type": "row"
     }
   ],
@@ -1686,7 +1700,7 @@
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
-    "tesla"
+    "TeslamateCustomDashboards"
   ],
   "templating": {
     "list": [
