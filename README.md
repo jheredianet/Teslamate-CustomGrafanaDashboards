@@ -38,8 +38,8 @@ services:
     ...
     volumes:
       - teslamate-grafana-data:/var/lib/grafana
-      - ~/teslamate-customgrafanadashboards/customdashboards.yml:/etc/grafana/provisioning/dashboards/customdashboards.yml
-      - ~/teslamate-customgrafanadashboards/dashboards:/TeslamateCustomDashboards
+      - ~/Teslamate-CustomGrafanaDashboards/customdashboards.yml:/etc/grafana/provisioning/dashboards/customdashboards.yml
+      - ~/Teslamate-CustomGrafanaDashboards/dashboards:/TeslamateCustomDashboards
 ```
 
 3. Save your file and then **recreate** Grafana container (docker-compose up -d)
