@@ -52,7 +52,7 @@ If you want to be sure that you are using the latest version of the Dashboards:
 5. Pull again from the repository
 
 ```bash
-git -C ~/teslamate-customgrafanadashboards pull
+git -C ~/Teslamate-CustomGrafanaDashboards pull
 ```
 
 6. Then **restart** Grafana container (docker-compose restart grafana)
