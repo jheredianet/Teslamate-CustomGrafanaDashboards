@@ -1296,8 +1296,8 @@
     ]
   },
   "time": {
-    "from": "2023-01-08T11:56:54.314Z",
-    "to": "2023-01-08T12:24:59.571Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {
     "hidden": true,
