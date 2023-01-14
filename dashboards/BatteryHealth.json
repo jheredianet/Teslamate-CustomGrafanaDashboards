@@ -27,12 +27,6 @@
     },
     {
       "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    },
-    {
-      "type": "panel",
       "id": "timeseries",
       "name": "Time series",
       "version": ""
@@ -64,7 +58,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673602455096,
+  "iteration": 1673686237747,
   "links": [
     {
       "icon": "dashboard",
@@ -989,73 +983,6 @@
       ],
       "title": "Current Capacity",
       "type": "bargauge"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 18
-      },
-      "id": 23,
-      "panels": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 24,
-            "x": 0,
-            "y": 18
-          },
-          "id": 21,
-          "options": {
-            "content": "This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.\n\nBe aware that this information is just a calculation to have a reference, \nmeasured after every > 5kWh charged and a monthly average based on the projected range.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
-            "mode": "markdown"
-          },
-          "pluginVersion": "8.5.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "TeslaMate"
-              },
-              "format": "time_series",
-              "group": [],
-              "metricColumn": "none",
-              "rawQuery": false,
-              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
-              "refId": "A",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "start_km"
-                    ],
-                    "type": "column"
-                  }
-                ]
-              ],
-              "table": "drives",
-              "timeColumn": "start_date",
-              "timeColumnType": "timestamp",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "type": "text"
-        }
-      ],
-      "title": "$__dashboard v2.0.2",
-      "type": "row"
     }
   ],
   "refresh": false,

@@ -36,12 +36,6 @@
       "id": "table",
       "name": "Table",
       "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
     }
   ],
   "annotations": {
@@ -68,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673618596474,
+  "iteration": 1673686582620,
   "links": [
     {
       "icon": "dashboard",
@@ -1814,8 +1808,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "red",
-                    "value": null
+                    "color": "red"
                   },
                   {
                     "color": "#EAB839",
@@ -1887,8 +1880,7 @@
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "super-light-orange",
-                          "value": null
+                          "color": "super-light-orange"
                         },
                         {
                           "color": "light-orange",
@@ -2061,8 +2053,7 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "super-light-blue",
-                          "value": null
+                          "color": "super-light-blue"
                         },
                         {
                           "color": "super-light-green",
@@ -2530,73 +2521,6 @@
       ],
       "title": "Monthly Stats",
       "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 21
-      },
-      "id": 53,
-      "panels": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 24,
-            "x": 0,
-            "y": 22
-          },
-          "id": 55,
-          "options": {
-            "content": "This dashboard is meant to have a look of all the charges in a given period (last 10 years by default). \nYou can see the distance driven, number of charges, total charging cost, etc., both in summary or in \nseparated lists.\n\nYou can expand/collapse the rows as needed. \n\nFrom the Monthly Stats row, you will have a table with links to other Teslamate Dashboards to have a look on a specific period, charge or trip.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
-            "mode": "markdown"
-          },
-          "pluginVersion": "8.5.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "TeslaMate"
-              },
-              "format": "time_series",
-              "group": [],
-              "metricColumn": "none",
-              "rawQuery": false,
-              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
-              "refId": "A",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "start_km"
-                    ],
-                    "type": "column"
-                  }
-                ]
-              ],
-              "table": "drives",
-              "timeColumn": "start_date",
-              "timeColumnType": "timestamp",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "type": "text"
-        }
-      ],
-      "title": "$__dashboard v2.0.2",
-      "type": "row"
     }
   ],
   "refresh": "",
@@ -2832,6 +2756,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 12,
+  "version": 2,
   "weekStart": ""
 }
