@@ -30,12 +30,6 @@
       "id": "stat",
       "name": "Stat",
       "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
     }
   ],
   "annotations": {
@@ -65,7 +59,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673604286919,
+  "iteration": 1673686935148,
   "links": [
     {
       "icon": "dashboard",
@@ -579,7 +573,7 @@
           "values": false
         },
         "text": {
-          "titleSize": 10
+          "titleSize": 16
         },
         "textMode": "value_and_name"
       },
@@ -771,7 +765,7 @@
           "values": false
         },
         "text": {
-          "titleSize": 10
+          "titleSize": 16
         },
         "textMode": "auto"
       },
@@ -900,7 +894,7 @@
           "values": false
         },
         "text": {
-          "titleSize": 10
+          "titleSize": 16
         },
         "textMode": "value"
       },
@@ -985,7 +979,7 @@
           "values": false
         },
         "text": {
-          "titleSize": 10
+          "titleSize": 16
         },
         "textMode": "value_and_name"
       },
@@ -1059,73 +1053,6 @@
       ],
       "title": "Elevation",
       "type": "stat"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 20
-      },
-      "id": 20,
-      "panels": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 24,
-            "x": 0,
-            "y": 21
-          },
-          "id": 22,
-          "options": {
-            "content": "This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph\nto see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map,\nto see the speed, power, SOC, elevation and if battery heater was on.\n\nBe aware that the drive you select in the dropdown list from the top could be outside the time range of the Timeline graph,\nif its the case you have to click on the \"Zoom to data\" button on the graph in order to update it.\n\nTip: On Grafana you can press \"h\" to get a keyboard shortcuts if you want to change the current Zoom out time range or use the mouse to select/change the time range.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
-            "mode": "markdown"
-          },
-          "pluginVersion": "8.5.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "TeslaMate"
-              },
-              "format": "time_series",
-              "group": [],
-              "metricColumn": "none",
-              "rawQuery": false,
-              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
-              "refId": "A",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "start_km"
-                    ],
-                    "type": "column"
-                  }
-                ]
-              ],
-              "table": "drives",
-              "timeColumn": "start_date",
-              "timeColumnType": "timestamp",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "type": "text"
-        }
-      ],
-      "title": "$__dashboard v2.0.2",
-      "type": "row"
     }
   ],
   "refresh": false,
@@ -1296,8 +1223,8 @@
     ]
   },
   "time": {
-    "from": "2023-01-08T11:56:54.314Z",
-    "to": "2023-01-08T12:24:59.571Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {
     "hidden": true,
@@ -1306,6 +1233,6 @@
   "timezone": "",
   "title": "Tracking Drives",
   "uid": "jchmX8upc6ZRk",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673604214184,
+  "iteration": 1673686832326,
   "links": [
     {
       "asDropdown": true,
@@ -1627,73 +1627,6 @@
         }
       ],
       "type": "stat"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
-      "id": 44,
-      "panels": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 24,
-            "x": 0,
-            "y": 17
-          },
-          "id": 46,
-          "options": {
-            "content": "Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Charge\" button at the top right corner, to enter in Kiosk mode:\n\n- If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.\n- If you are just browsing (not charging) you will see the information of the last charge session.  \n\nTip: Be aware that once this dashboard is imported you should edit and change the image panel with a GIF of your own, because the charging car you will see is mine :-)\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
-            "mode": "markdown"
-          },
-          "pluginVersion": "8.5.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "TeslaMate"
-              },
-              "format": "time_series",
-              "group": [],
-              "metricColumn": "none",
-              "rawQuery": false,
-              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
-              "refId": "A",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "start_km"
-                    ],
-                    "type": "column"
-                  }
-                ]
-              ],
-              "table": "drives",
-              "timeColumn": "start_date",
-              "timeColumnType": "timestamp",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "type": "text"
-        }
-      ],
-      "title": "$__dashboard v2.0.2",
-      "type": "row"
     }
   ],
   "refresh": "30s",
@@ -1859,6 +1792,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

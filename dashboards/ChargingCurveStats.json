@@ -30,12 +30,6 @@
       "id": "table",
       "name": "Table",
       "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
     }
   ],
   "annotations": {
@@ -62,7 +56,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673604184179,
+  "iteration": 1673686741696,
   "links": [
     {
       "icon": "dashboard",
@@ -159,7 +153,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH charges_summary AS (\n    SELECT\n        cp.id,\n        COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.road, addr.house_number), '')), addr.city)) AS location,\n        COUNT(c.charging_process_id)\n    FROM\n        charging_processes cp\n    LEFT JOIN \n        addresses addr ON addr.id = address_id\n    LEFT JOIN\n        geofences geo ON geo.id = geofence_id\n    LEFT JOIN\n        charges c ON cp.id = c.charging_process_id\n    WHERE\n        $__timeFilter(date) AND\n        cp.car_id = $car_id AND cp.charge_energy_added > 0.01 AND c.fast_charger_present \n    GROUP BY 1, 2\n)\nSELECT \n    CASE\n        WHEN UPPER(location) LIKE '%SUPERCHARGER%' THEN 'Tesla Supercharger'\n        ELSE 'Other DC Stations' END AS location,\n    COUNT(location) AS n\nFROM charges_summary\nGROUP BY 1",
+          "rawSql": "WITH charges_summary AS (\n    SELECT\n        cp.id,\n        COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.road, addr.house_number), '')), addr.city)) AS location,\n        COUNT(c.charging_process_id)\n    FROM\n        charging_processes cp\n    LEFT JOIN \n        addresses addr ON addr.id = address_id\n    LEFT JOIN\n        geofences geo ON geo.id = geofence_id\n    LEFT JOIN\n        charges c ON cp.id = c.charging_process_id\n    WHERE\n        $__timeFilter(date) AND\n        cp.car_id = $car_id AND cp.charge_energy_added > 0.01 AND c.fast_charger_present \n    GROUP BY 1, 2\n)\nSELECT \n    CASE\n        WHEN location ILIKE '%supercharger%' THEN 'Tesla Supercharger'\n        ELSE 'Other DC Stations' END AS location,\n    COUNT(location) AS n\nFROM charges_summary\nGROUP BY 1",
           "refId": "A",
           "select": [
             [
@@ -327,7 +321,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND charger_power > 0\r\n AND c.fast_charger_present\r\n AND UPPER(COALESCE(g.name, a.name)) Like '%SUPERCHARGER%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
+          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND charger_power > 0\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) ILIKE '%supercharger%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
           "refId": "A",
           "select": [
             [
@@ -358,7 +352,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND charger_power > 0\n AND c.fast_charger_present\n AND UPPER(COALESCE(g.name, a.name)) Like '%SUPERCHARGER%' \nGROUP BY battery_level",
+          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND charger_power > 0\n AND c.fast_charger_present\n AND COALESCE(g.name, a.name) ILIKE '%supercharger%' \nGROUP BY battery_level",
           "refId": "B",
           "select": [
             [
@@ -527,7 +521,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND charger_power > 0\r\n AND c.fast_charger_present\r\n AND UPPER(COALESCE(g.name, a.name)) NOT Like '%SUPERCHARGER%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
+          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND charger_power > 0\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) NOT ILIKE '%supercharger%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
           "refId": "A",
           "select": [
             [
@@ -558,7 +552,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND charger_power > 0\n AND c.fast_charger_present\n AND UPPER(COALESCE(g.name, a.name)) NOT Like '%SUPERCHARGER%' \nGROUP BY battery_level",
+          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND charger_power > 0\n AND c.fast_charger_present\n AND COALESCE(g.name, a.name) NOT ILIKE '%supercharger%' \nGROUP BY battery_level",
           "refId": "B",
           "select": [
             [
@@ -683,73 +677,6 @@
       ],
       "title": "Max Power sessions",
       "type": "table"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 20
-      },
-      "id": 40,
-      "panels": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 24,
-            "x": 0,
-            "y": 23
-          },
-          "id": 42,
-          "options": {
-            "content": "This dashboard is meant to have a look of the charging curve sessions on Supercharges or other Fast Charging Station. Also, you can see number of fast charging sessions you've done on each type of \nchargers and the count of max power (kW) reached on a session.\n\nCheck if there is a new version at [TeslaMate Custom Grafana Dashboards](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards)",
-            "mode": "markdown"
-          },
-          "pluginVersion": "8.5.6",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "TeslaMate"
-              },
-              "format": "time_series",
-              "group": [],
-              "metricColumn": "none",
-              "rawQuery": false,
-              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
-              "refId": "A",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "start_km"
-                    ],
-                    "type": "column"
-                  }
-                ]
-              ],
-              "table": "drives",
-              "timeColumn": "start_date",
-              "timeColumnType": "timestamp",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "type": "text"
-        }
-      ],
-      "title": "$__dashboard v2.0.2",
-      "type": "row"
     }
   ],
   "refresh": "",
@@ -841,6 +768,6 @@
   "timezone": "",
   "title": "Charging Curve Stats",
   "uid": "jchmXpkIkhmRz",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
