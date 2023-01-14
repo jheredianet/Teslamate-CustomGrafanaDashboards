@@ -2,7 +2,7 @@
 
 [![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR)
 
-This is a repository with <u>custom Grafana Dashboards</u>, created especially to work with a **Teslamate installation**. So the main requirement for these dashboards to work is to have a **[Teslamate](https://docs.teslamate.org/)** running instance.
+This is a repository with **Custom Grafana Dashboards**, created especially to work with a **Teslamate installation**. So the main requirement for these dashboards to work, is to have a **[Teslamate](https://docs.teslamate.org/)** running instance.
 
 ## TeslaMate
 
@@ -129,6 +129,14 @@ if its the case you have to click on the "Zoom to data" button on the graph in o
 Tip: On Grafana you can press "h" to get a keyboard shortcuts if you want to change the current Zoom out time range or use the mouse to select/change the time range.
 
 ![Tracking Drives](./screenshots/TrackingDrives.gif)
+
+### [Mileage Stats](./dashboards/MileageStats.json)
+
+With this dashboard you may analize your mileage and number of drives by year, month, week or day.
+
+The dashboard shows a table with the selected period, time driven, distance, number of drives and efficiency then a bar chart to have a better look for comparison.  
+
+![Mileage Stats](./screenshots/MileageStats.png)
 
 ## Contributing
 
