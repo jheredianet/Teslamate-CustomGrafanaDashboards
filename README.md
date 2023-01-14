@@ -90,8 +90,6 @@ Load this dashboard to while you are in a charging sesion. When you open this da
 - If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.
 - If you are just browsing (not charging) you will see the information of the last charge session.  
 
-Tip: Be aware that once this dashboard is imported you should edit and change the image panel with a GIF of your own, because the charging car you will see is mine :-)
-
 ![Current Charge View](./screenshots/CurrentChargeView.png)
 
 ### [Charging Costs Stats](./dashboards/ChargingCostsStats.json)
