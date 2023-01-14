@@ -570,7 +570,7 @@
           ]
         }
       ],
-      "title": "Projected Battery Capacity",
+      "title": "Monthly Projected Battery Capacity",
       "type": "timeseries"
     },
     {
@@ -652,7 +652,10 @@
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "lastNotNull",
+            "min",
+            "max",
+            "mean"
           ],
           "displayMode": "list",
           "placement": "bottom"
@@ -855,7 +858,7 @@
           ]
         }
       ],
-      "title": "Current Charge",
+      "title": "Current SOC",
       "type": "bargauge"
     },
     {
