@@ -2,6 +2,12 @@
   "__elements": [],
   "__requires": [
     {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
@@ -17,12 +23,6 @@
       "type": "panel",
       "id": "table",
       "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
       "version": ""
     }
   ],
@@ -49,7 +49,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673687738423,
+  "iteration": 1673697907649,
   "links": [
     {
       "icon": "dashboard",
@@ -148,6 +148,10 @@
               {
                 "id": "decimals",
                 "value": 1
+              },
+              {
+                "id": "custom.align",
+                "value": "auto"
               }
             ]
           },
@@ -159,7 +163,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 195
+                "value": 200
               },
               {
                 "id": "links",
@@ -206,6 +210,14 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "custom.align",
+                "value": "auto"
+              },
+              {
+                "id": "custom.width",
+                "value": 80
               }
             ]
           },
@@ -224,6 +236,14 @@
                     "url": "d/Y8upc6ZRk/drives?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
                   }
                 ]
+              },
+              {
+                "id": "custom.align",
+                "value": "auto"
+              },
+              {
+                "id": "custom.width",
+                "value": 80
               }
             ]
           },
@@ -240,6 +260,10 @@
               {
                 "id": "displayName",
                 "value": "Distance"
+              },
+              {
+                "id": "custom.align",
+                "value": "auto"
               }
             ]
           },
@@ -256,78 +280,10 @@
               {
                 "id": "unit",
                 "value": "mi"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/efficiency_net_mi/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Avg consumption (drives)"
               },
               {
-                "id": "unit",
-                "value": "Wh/mi"
-              },
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/efficiency_charged_net_mi/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Avg consumption (charges)"
-              },
-              {
-                "id": "unit",
-                "value": "Wh/mi"
-              },
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.* at/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dateTimeAsLocal"
-              },
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/efficiency_charged_net_km/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Avg consumption (charges)"
-              },
-              {
-                "id": "unit",
-                "value": "Wh/km"
-              },
-              {
-                "id": "custom.width"
+                "id": "custom.align",
+                "value": "auto"
               }
             ]
           },
@@ -359,7 +315,7 @@
       },
       "gridPos": {
         "h": 14,
-        "w": 9,
+        "w": 8,
         "x": 0,
         "y": 1
       },
@@ -418,7 +374,7 @@
           ]
         }
       ],
-      "title": "per ${period}",
+      "title": "Stats per ${period}",
       "transformations": [
         {
           "id": "seriesToColumns",
@@ -546,79 +502,70 @@
     },
     {
       "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
+        "type": "datasource",
+        "uid": "-- Dashboard --"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "continuous-YlBl"
           },
           "custom": {
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "opacity",
+            "axisSoftMin": 0,
+            "fillOpacity": 80,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "stepAfter",
             "lineWidth": 1,
-            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
             }
           },
-          "decimals": 0,
-          "links": [],
           "mappings": [],
+          "noValue": "--",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
-              {
                 "color": "red",
-                "value": 80
+                "value": null
               }
             ]
-          },
-          "unit": "short"
+          }
         },
         "overrides": [
           {
             "matcher": {
               "id": "byRegexp",
-              "options": ".*_km$"
+              "options": "/sum_distance_km/"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "km"
+              },
+              {
+                "id": "displayName",
+                "value": "Distance"
               }
             ]
           },
           {
             "matcher": {
               "id": "byRegexp",
-              "options": ".*_mi$"
+              "options": "/sum_distance_mi/"
             },
             "properties": [
+              {
+                "id": "displayName",
+                "value": "Distance"
+              },
               {
                 "id": "unit",
                 "value": "mi"
@@ -627,13 +574,21 @@
           },
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "mileage_.*"
+              "id": "byName",
+              "options": "cnt"
             },
             "properties": [
               {
+                "id": "unit",
+                "value": "drives"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
                 "id": "displayName",
-                "value": "Mileage"
+                "value": "Count"
               }
             ]
           }
@@ -641,63 +596,62 @@
       },
       "gridPos": {
         "h": 14,
-        "w": 9,
-        "x": 9,
+        "w": 16,
+        "x": 8,
         "y": 1
       },
-      "id": 2,
-      "links": [],
+      "id": 27,
       "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [
-            "min",
-            "max"
+            "max",
+            "min"
           ],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom"
         },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
         "tooltip": {
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
-      "pluginVersion": "8.5.4",
+      "pluginVersion": "8.5.6",
+      "repeatDirection": "h",
       "targets": [
         {
-          "alias": "",
           "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
+            "type": "datasource",
+            "uid": "-- Dashboard --"
           },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH o AS (SELECT\n  start_date AS time,\n  car_id,\n  start_km  AS \"odometer\"\nFROM drives\nUNION ALL\nSELECT\n  end_date,\n  car_id,\n  end_km AS \"odometer\"\nFROM drives)\n\nSELECT\n  time, \n  convert_km(odometer::numeric, '$length_unit') as mileage_$length_unit\nFROM o\nWHERE\n\tcar_id = $car_id AND\n\t$__timeFilter(time)\norder by 1;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          "panelId": 10,
+          "refId": "A"
         }
       ],
-      "title": "Mileage",
-      "type": "timeseries"
+      "title": "${length_unit} & drives per ${period}",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "date",
+                "sum_distance_km",
+                "cnt",
+                "display"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "barchart"
     }
   ],
   "refresh": false,
@@ -846,6 +800,7 @@
       "30d"
     ]
   },
+  "timezone": "",
   "title": "Mileage Stats",
   "uid": "jchmNjtMTFx",
   "version": 2,
