@@ -45,6 +45,11 @@ services:
 - Save your file and then **recreate** Grafana container (docker-compose up -d)
 - Browse the Grafana Dashboards from the Web and you should have a new "TeslaMate Custom Dashboards" folder
 
+## FIX for remote path example GCC (vps terminal google)
+Attention! On remote servers use the full path because otherwise it could cause problems running Grafana, for example:
+- /home/user/Teslamate-CustomGrafanaDashboards/customdashboards.yml:/etc/grafana/provisioning/dashboards/customdashboards.yml
+- /home/user/Teslamate-CustomGrafanaDashboards/dashboards:/TeslamateCustomDashboards
+
 ## How to update the Dashboards
 
 If you want to be sure that you are using the latest version of the Dashboards:
