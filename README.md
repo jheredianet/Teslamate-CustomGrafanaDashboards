@@ -21,7 +21,7 @@ In order to auto-import all the dashboard files from this repository, considerin
 
 **Note:** If you are using Teslamate without Docker you may skip these section and proceed to import manually.
 
-- The following command will clone the source files from this repository. This should be run in an appropriate directory within which you would like to keep it. You should also record this path and provide it later in the following steps. To keep it easy, you may run this your home path (~/) or modify it accordingly
+- The following command will clone the source files from this repository. This should be run in an appropriate directory within which you would like to keep it. You should also record this path and provide it later in the following steps. To keep it easy, you may run this your home path (~/) or modify it accordingly.
 
 ```bash
 git clone https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards.git
@@ -44,6 +44,23 @@ services:
 
 - Save your file and then **recreate** Grafana container (docker-compose up -d)
 - Browse the Grafana Dashboards from the Web and you should have a new "TeslaMate Custom Dashboards" folder
+
+## Using other path for repository
+
+Attention! On some VPS from certain providers like Google GCC, the user running docker engine is not the current user so it's home folder is different, or maybe you just want to use a specific folder for your data. If this is the case, it's better to use the **full path** of the repository where you cloned it, instead of using the home path of the current user (~/). So, be sure to modify the path of the volumes section accordingly, as the sample given below:
+
+```bash
+services:
+  ...
+  ...
+  grafana:
+    ...
+    ...
+    volumes:
+      - teslamate-grafana-data:/var/lib/grafana
+      - /some/path/Teslamate-CustomGrafanaDashboards/customdashboards.yml:/etc/grafana/provisioning/dashboards/customdashboards.yml
+      - /some/path/Teslamate-CustomGrafanaDashboards/dashboards:/TeslamateCustomDashboards
+```
 
 ## How to update the Dashboards
 
