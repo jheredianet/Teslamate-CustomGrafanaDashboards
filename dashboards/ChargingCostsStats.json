@@ -416,8 +416,7 @@
                 "value": null
               }
             ]
-          },
-          "unit": "€"
+          }
         },
         "overrides": []
       },
@@ -504,8 +503,7 @@
                 "value": null
               }
             ]
-          },
-          "unit": "€"
+          }
         },
         "overrides": []
       },
@@ -822,8 +820,7 @@
                 "value": null
               }
             ]
-          },
-          "unit": "€"
+          }
         },
         "overrides": []
       },
@@ -906,8 +903,7 @@
                 "value": null
               }
             ]
-          },
-          "unit": "€"
+          }
         },
         "overrides": []
       },
@@ -1065,8 +1061,7 @@
                 "value": null
               }
             ]
-          },
-          "unit": "€"
+          }
         },
         "overrides": []
       },
@@ -1153,8 +1148,7 @@
                 "value": null
               }
             ]
-          },
-          "unit": "€"
+          }
         },
         "overrides": []
       },
@@ -1308,10 +1302,6 @@
                 "value": 110
               },
               {
-                "id": "unit",
-                "value": "€"
-              },
-              {
                 "id": "decimals",
                 "value": 2
               }
@@ -1443,10 +1433,6 @@
                 "value": 110
               },
               {
-                "id": "unit",
-                "value": "€"
-              },
-              {
                 "id": "decimals",
                 "value": 2
               }
@@ -1573,10 +1559,6 @@
               "options": "Cost"
             },
             "properties": [
-              {
-                "id": "unit",
-                "value": "€"
-              },
               {
                 "id": "custom.width",
                 "value": 110
@@ -1711,10 +1693,6 @@
               {
                 "id": "custom.width",
                 "value": 110
-              },
-              {
-                "id": "unit",
-                "value": "€"
               },
               {
                 "id": "decimals",
