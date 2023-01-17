@@ -91,23 +91,12 @@ ___
 
 ## Screenshots
 
-### [Current Drive View](./dashboards/CurrentDriveView.json)
+### [Battery Health](./dashboards/BatteryHealth.json)
 
-This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Drive" button at the top right corner, to enter in Kiosk mode:
+This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.
+Be aware that this information is just a calculation to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.
 
-- If you are driving, you will see the information from the start time of the current drive until now and it will refesh automatically every 30 seconds.
-- If you are just browsing (not driving) you will see the information of the last drive.  
-
-![Current Drive View](./screenshots/CurrentDriveView.png)
-
-### [Current Charge View](./dashboards/CurrentChargeView.json)
-
-Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Charge" button at the top right corner, to enter in Kiosk mode:
-
-- If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.
-- If you are just browsing (not charging) you will see the information of the last charge session.  
-
-![Current Charge View](./screenshots/CurrentChargeView.png)
+![Battery Health](./screenshots/BatteryHealth.png)
 
 ### [Charging Costs Stats](./dashboards/ChargingCostsStats.json)
 
@@ -127,12 +116,39 @@ This dashboard is meant to have a look of the charging curve sessions on Superch
 
 ![Charging Curve Stats](./screenshots/ChargingCurveStats.png)
 
-### [Battery Health](./dashboards/BatteryHealth.json)
+### [Current Charge View](./dashboards/CurrentChargeView.json)
 
-This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.
-Be aware that this information is just a calculation to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.
+Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Charge" button at the top right corner, to enter in Kiosk mode:
 
-![Battery Health](./screenshots/BatteryHealth.png)
+- If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.
+- If you are just browsing (not charging) you will see the information of the last charge session.  
+
+![Current Charge View](./screenshots/CurrentChargeView.png)
+
+### [Current Drive View](./dashboards/CurrentDriveView.json)
+
+This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Drive" button at the top right corner, to enter in Kiosk mode:
+
+- If you are driving, you will see the information from the start time of the current drive until now and it will refesh automatically every 30 seconds.
+- If you are just browsing (not driving) you will see the information of the last drive.  
+
+![Current Drive View](./screenshots/CurrentDriveView.png)
+
+### [Current State](./dashboards/CurrentState.json)
+
+This dasboard is just to see the current state of the car with the last data recorded by TeslaMate.
+
+Additionally, you can see the states stats of the selected period.
+
+![Current State](./screenshots/CurrentState.png)
+
+### [Mileage Stats](./dashboards/MileageStats.json)
+
+With this dashboard you may analize your mileage and number of drives by year, month, week or day.
+
+The dashboard shows a table with the selected period, time driven, distance, number of drives and efficiency then a bar chart to have a better look for comparison.  
+
+![Mileage Stats](./screenshots/MileageStats.png)
 
 ### [Tracking Drives](./dashboards/TrackingDrives.json)
 
@@ -146,14 +162,6 @@ if its the case you have to click on the "Zoom to data" button on the graph in o
 Tip: On Grafana you can press "h" to get a keyboard shortcuts if you want to change the current Zoom out time range or use the mouse to select/change the time range.
 
 ![Tracking Drives](./screenshots/TrackingDrives.gif)
-
-### [Mileage Stats](./dashboards/MileageStats.json)
-
-With this dashboard you may analize your mileage and number of drives by year, month, week or day.
-
-The dashboard shows a table with the selected period, time driven, distance, number of drives and efficiency then a bar chart to have a better look for comparison.  
-
-![Mileage Stats](./screenshots/MileageStats.png)
 
 ## Contributing
 
