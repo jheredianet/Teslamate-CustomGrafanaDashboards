@@ -58,7 +58,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1674028814435,
+  "iteration": 1674066641038,
   "links": [
     {
       "icon": "dashboard",
@@ -388,7 +388,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue"
+                "color": "super-light-blue",
+                "value": null
               }
             ]
           }
@@ -944,7 +945,6 @@
           },
           "decimals": 1,
           "mappings": [],
-          "max": 49,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -987,7 +987,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^kwh$/",
           "values": false
         },
         "showUnfilled": true,
@@ -1022,7 +1022,7 @@
           "policy": "default",
           "query": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "rawQuery": true,
-          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
+          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date, $BatteryCapacity as Total\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date, $BatteryCapacity as Total\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
