@@ -116,6 +116,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Drive\" button at the top right corner, to enter in Kiosk mode:\n\n - If you are driving, you will see the information from the start time of the current drive until now and it will refesh automatically every 30 seconds.\n\n - If you are just browsing (not driving) you will see the information of the last drive.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -665,7 +666,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
           "rawSql": "(SELECT battery_level, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "SOC",
@@ -681,13 +681,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_soc"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
@@ -790,7 +783,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") * ($KonaBattery_kWh / 100) FROM \"ovms\" ",
           "rawQuery": true,
           "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "A",
@@ -806,13 +798,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_soc"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
