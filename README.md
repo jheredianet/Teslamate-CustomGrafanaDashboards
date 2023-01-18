@@ -29,7 +29,7 @@ git clone https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards.git
 
 - Edit your Teslamate "docker-compose.yml" file and add these two new lines at the end of the "volumes" section of the grafana container
 
-```bash
+```yaml
 services:
   ...
   ...
@@ -49,7 +49,7 @@ services:
 
 Attention! On some VPS from certain providers like Google GCC, the user running docker engine is not the current user so it's home folder is different, or maybe you just want to use a specific folder for your data. If this is the case, it's better to use the **full path** of the repository where you cloned it, instead of using the home path of the current user (~/). So, be sure to modify the path of the volumes section accordingly, as the sample given below:
 
-```bash
+```yaml
 services:
   ...
   ...
@@ -93,8 +93,9 @@ ___
 
 ### [Battery Health](./dashboards/BatteryHealth.json)
 
-This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.
-Be aware that this information is just a calculation to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.
+This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate.
+So, the more data you have logged from your brand new car the better.
+Possible degradation is just an estimated value to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
@@ -112,7 +113,7 @@ From the Monthly Stats row, you will have a table with links to other Teslamate 
 
 ### [Charging Curve Stats](./dashboards/ChargingCurveStats.json)
 
-This dashboard is meant to have a look of the charging curve sessions on Supercharges or other Fast Charging Station. Also, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session as shown in the following example.
+This dashboard is meant to have a look of the charging curve sessions on Tesla Supercharges or other Fast Charging Station. Also, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session as shown in the following example.
 
 ![Charging Curve Stats](./screenshots/ChargingCurveStats.png)
 

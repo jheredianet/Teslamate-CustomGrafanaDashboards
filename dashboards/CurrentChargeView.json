@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673686832326,
+  "iteration": 1674037604628,
   "links": [
     {
       "asDropdown": true,
@@ -205,7 +205,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
           "rawSql": "SELECT\n  battery_level as \"SOC [%]\"\nFROM\n  charges c\njoin\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\nORDER BY\n  c.ID DESC LIMIT 1",
           "refId": "SOC",
@@ -221,13 +220,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_soc"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
@@ -332,7 +324,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") * ($KonaBattery_kWh / 100) FROM \"ovms\" ",
           "rawQuery": true,
           "rawSql": "SELECT\n  battery_level * $BatteryCapacity / 100 as \"kWh\"\nFROM\n  charges c\njoin\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\nORDER BY\n  c.ID DESC LIMIT 1",
           "refId": "A",
@@ -348,13 +339,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_soc"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
@@ -373,6 +357,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Charge\" button at the top right corner, to enter in Kiosk mode:\n\n- If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.\n\n- If you are just browsing (not charging) you will see the information of the last charge session.",
       "gridPos": {
         "h": 4,
         "w": 3,
@@ -505,11 +490,9 @@
               "type": "fill"
             }
           ],
-          "measurement": "ovms",
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"utc\") - first(\"utc\") as Seconds FROM \"ovms\" WHERE $timeFilter  and  is_charging = true",
           "rawQuery": true,
           "rawSql": "WITH start_process AS (\n  SELECT date FROM charges \n\twhere charging_process_id=$charging_processes\n\tORDER BY DATE ASC\n \tLIMIT 1\n)\nSELECT\n   EXTRACT(EPOCH FROM (charges.date - start_process.date)) AS \"Elapsed\"\nFROM charges, start_process\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(charges.date)\norder by charges.date desc  \nLIMIT 1",
           "refId": "A",
@@ -556,18 +539,77 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          },
-          "unit": "celsius"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_c|C/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_f|F/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "fahrenheit"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/outdoor_*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Outdoor"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/inside_*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Inside"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/driver_*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Driver"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
@@ -601,9 +643,8 @@
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_m_temp\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Motor: r._value }))\n",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(outside_temp, '$temp_unit')) as \"Outdoor\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(outside_temp, '$temp_unit')) as \"outdoor_$temp_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
           "refId": "Outdoor",
           "select": [
             [
@@ -633,9 +674,8 @@
           "group": [],
           "hide": false,
           "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ovms\")\n  |> filter(fn: (r) => r[\"_field\"] == \"batt_temp\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Battery: r._value }))\n",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(inside_temp, '$temp_unit')) AS \"Inside\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(inside_temp, '$temp_unit')) AS \"inside_$temp_unit\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
           "refId": "Inside",
           "select": [
             [
@@ -665,9 +705,8 @@
           "group": [],
           "hide": false,
           "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_temp\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Charger: r._value }))\n",
           "rawQuery": true,
-          "rawSql": "SELECT\n\t$__timeGroupAlias(date,$__interval),\n\tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"Driver\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
+          "rawSql": "SELECT\n\t$__timeGroupAlias(date,$__interval),\n\tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"driver_$temp_unit\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
           "refId": "Driver",
           "select": [
             [
@@ -845,11 +884,9 @@
               "type": "fill"
             }
           ],
-          "measurement": "ovms",
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "  from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ovms\")\n  |> filter(fn: (r) => r[\"_field\"] == \"power\" or r[\"_field\"] == \"is_charging\" or r[\"_field\"] == \"is_aux_recuperation\")\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> filter(fn: (r) =>    r.is_charging == true and  r.is_aux_recuperation == false )\n  |> map(fn: (r) => ({ _time: r._time, _value: r.power * -1.0 }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  \n",
           "rawQuery": true,
           "rawSql": "SELECT\n  $__time(date),\n  battery_level as \"SOC [%]\",\n    (case when charger_phases >= 1 then (case when charger_phases = 2 then 3 when charger_phases = 1 then 1 else 0 end) * charger_actual_current * charger_voltage / 1000.0 else charger_power end) as \"Power [kW]\",\n    (case when battery_heater_on then 10 when battery_heater then 10 else 0 end) as \"Battery heater\"\nFROM\n  charges c\nJOIN\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date) and\n  p.car_id = $car_id\nORDER BY 1",
           "refId": "Power",
@@ -943,7 +980,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
           "rawSql": " SELECT  battery_level as \"Initial SOC\" FROM charges \n\twhere charging_process_id=$charging_processes\n\tORDER BY DATE ASC\n \tLIMIT 1",
           "refId": "Inital SOC",
@@ -959,13 +995,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_range_ideal"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
@@ -1039,7 +1068,6 @@
           "group": [],
           "hide": false,
           "metricColumn": "none",
-          "query": "SELECT \"consumptionkwh\" FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
           "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(charge_energy_added) as \"Added\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1\n",
           "refId": "B",
@@ -1089,10 +1117,70 @@
                 "value": null
               }
             ]
-          },
-          "unit": "lengthkm"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_km/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_mi/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/est_.*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Estimated Range"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/rated_.*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Rated Range"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/init_.*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Initial Range"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
@@ -1132,9 +1220,8 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"Initial Range\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 asc\nlimit 1",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"init_$length_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 asc\nlimit 1",
           "refId": "Initial Range",
           "resultFormat": "time_series",
           "select": [
@@ -1150,13 +1237,6 @@
                 "type": "last"
               }
             ]
-          ],
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_range_ideal"
-            }
           ],
           "timeColumn": "time",
           "where": [
@@ -1181,9 +1261,8 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"Rated Range\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"rated_$length_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
           "refId": "Rated",
           "resultFormat": "time_series",
           "select": [
@@ -1199,13 +1278,6 @@
                 "type": "last"
               }
             ]
-          ],
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_range_ideal"
-            }
           ],
           "timeColumn": "time",
           "where": [
@@ -1230,9 +1302,8 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_est') ",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(est_battery_range_km, '$length_unit')) as \"Estimated Range\"\nFROM positions\nWHERE \n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(est_battery_range_km, '$length_unit')) as \"est_$length_unit\"\nFROM positions\nWHERE \n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
           "refId": "Estimated",
           "resultFormat": "time_series",
           "select": [
@@ -1248,13 +1319,6 @@
                 "type": "last"
               }
             ]
-          ],
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_range_est"
-            }
           ],
           "timeColumn": "time",
           "where": [
@@ -1324,7 +1388,6 @@
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_voltage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Volt: r._value }))\n",
           "rawQuery": true,
           "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(case when charger_voltage > 2 then charger_voltage else \n    charger_power / GREATEST(0.1, (((2.85 + (usable_battery_level * 0.013)) * 96.0) * charger_power / 100.0)) * 1000.0  end) \n    as \"Volt\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
           "refId": "Voltage",
@@ -1406,7 +1469,6 @@
           "format": "table",
           "group": [],
           "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_voltage\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Volt: r._value }))\n",
           "rawQuery": true,
           "rawSql": "SELECT\n  COALESCE(g.name, CONCAT_WS(', ', COALESCE(addresses.name, CONCAT_WS(' ', addresses.road, addresses.house_number)), addresses.city))\nFROM\n\tcharging_processes c\n\tLEFT JOIN addresses ON addresses.id = c.address_id\n\tLEFT JOIN geofences g ON g.id = geofence_id\nWHERE\n\tc.id = $charging_processes",
           "refId": "Voltage",
@@ -1502,7 +1564,6 @@
           "group": [],
           "hide": false,
           "metricColumn": "none",
-          "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_current\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Current: r._value }))\n",
           "rawQuery": true,
           "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(case when charger_voltage > 2 then charger_actual_current else ((2.85 + (usable_battery_level * 0.013)) * 96) * charger_power / 100 end) as \"Current\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
           "refId": "Current",
@@ -1540,6 +1601,7 @@
             "mode": "fixed"
           },
           "decimals": 0,
+          "displayName": "Odometer",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1549,10 +1611,34 @@
                 "value": null
               }
             ]
-          },
-          "unit": "Km"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "odometer_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "odometer_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
@@ -1592,9 +1678,8 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
-          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"Odometer\"\nfrom positions \nwhere car_id = $car_id \norder by date desc \nlimit 1;",
+          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id \norder by date desc \nlimit 1;",
           "refId": "odometer",
           "resultFormat": "time_series",
           "select": [
@@ -1608,13 +1693,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_range_ideal"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
