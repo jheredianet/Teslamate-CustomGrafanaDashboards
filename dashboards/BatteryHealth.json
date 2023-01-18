@@ -11,7 +11,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
+      "version": "8.5.6"
     },
     {
       "type": "datasource",
@@ -58,7 +58,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673907916737,
+  "iteration": 1674028814435,
   "links": [
     {
       "icon": "dashboard",
@@ -151,7 +151,7 @@
         },
         "showUnfilled": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -248,7 +248,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -333,7 +333,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -388,14 +388,61 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
-                "value": null
+                "color": "super-light-blue"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_km/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "lengthkm"
               }
             ]
           },
-          "unit": "lengthkm"
-        },
-        "overrides": []
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_mi/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "lengthmi"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/maxrange_.*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Brand new max range"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/currentrange_.*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Current max range"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 3,
@@ -418,7 +465,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -429,7 +476,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  \n  $MaxRange as \"Brand new max Range\",\n  $LastRange as \"Current max Range\"\nFROM settings WHERE id=1",
+          "rawSql": "SELECT  \n  $MaxRange as \"maxrange_$length_unit\",\n  $LastRange as \"currentrange_$length_unit\"\nFROM settings WHERE id=1",
           "refId": "A",
           "select": [
             [
@@ -827,7 +874,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -953,7 +1000,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
@@ -1161,13 +1208,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "WITH lastTopCharges AS (\n  SELECT 100-((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)) as Battery_Degradation\n  FROM charging_processes \n WHERE car_id = $car_id AND end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "definition": "WITH lastTopCharges AS (\n  SELECT 100 - convert_km(((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)), '$length_unit') as Battery_Degradation\n  FROM charging_processes \n WHERE car_id = $car_id AND end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "Degradation",
         "options": [],
-        "query": "WITH lastTopCharges AS (\n  SELECT 100-((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)) as Battery_Degradation\n  FROM charging_processes \n WHERE car_id = $car_id AND end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "query": "WITH lastTopCharges AS (\n  SELECT 100 - convert_km(((end_rated_range_km * 100.0)/(end_battery_level * $MaxRange / 100.0)), '$length_unit') as Battery_Degradation\n  FROM charging_processes \n WHERE car_id = $car_id AND end_date IS NOT NULL and  charge_energy_added > 5.0 \n  ORDER BY end_date DESC  \n  LIMIT 10\n)\nSELECT Battery_Degradation FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
