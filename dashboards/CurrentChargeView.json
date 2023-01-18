@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673686832326,
+  "iteration": 1674037604628,
   "links": [
     {
       "asDropdown": true,
@@ -556,18 +556,77 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          },
-          "unit": "celsius"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_c|C/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_f|F/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "fahrenheit"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/outdoor_*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Outdoor"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/inside_*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Inside"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/driver_*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Driver"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
@@ -603,7 +662,7 @@
           "metricColumn": "none",
           "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_m_temp\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Motor: r._value }))\n",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(outside_temp, '$temp_unit')) as \"Outdoor\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(outside_temp, '$temp_unit')) as \"outdoor_$temp_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
           "refId": "Outdoor",
           "select": [
             [
@@ -635,7 +694,7 @@
           "metricColumn": "none",
           "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ovms\")\n  |> filter(fn: (r) => r[\"_field\"] == \"batt_temp\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Battery: r._value }))\n",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(inside_temp, '$temp_unit')) AS \"Inside\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(inside_temp, '$temp_unit')) AS \"inside_$temp_unit\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
           "refId": "Inside",
           "select": [
             [
@@ -667,7 +726,7 @@
           "metricColumn": "none",
           "query": "from(bucket: \"homeassistant/autogen\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"entity_id\"] == \"ovms_v_c_temp\")\n  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ _time: r._time, Charger: r._value }))\n",
           "rawQuery": true,
-          "rawSql": "SELECT\n\t$__timeGroupAlias(date,$__interval),\n\tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"Driver\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
+          "rawSql": "SELECT\n\t$__timeGroupAlias(date,$__interval),\n\tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"driver_$temp_unit\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
           "refId": "Driver",
           "select": [
             [
@@ -1089,10 +1148,70 @@
                 "value": null
               }
             ]
-          },
-          "unit": "lengthkm"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_km/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_mi/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/est_.*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Estimated Range"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/rated_.*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Rated Range"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/init_.*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Initial Range"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
@@ -1134,7 +1253,7 @@
           "policy": "default",
           "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"Initial Range\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 asc\nlimit 1",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"init_$length_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 asc\nlimit 1",
           "refId": "Initial Range",
           "resultFormat": "time_series",
           "select": [
@@ -1183,7 +1302,7 @@
           "policy": "default",
           "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"Rated Range\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"rated_$length_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
           "refId": "Rated",
           "resultFormat": "time_series",
           "select": [
@@ -1232,7 +1351,7 @@
           "policy": "default",
           "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_est') ",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(est_battery_range_km, '$length_unit')) as \"Estimated Range\"\nFROM positions\nWHERE \n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
+          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(est_battery_range_km, '$length_unit')) as \"est_$length_unit\"\nFROM positions\nWHERE \n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
           "refId": "Estimated",
           "resultFormat": "time_series",
           "select": [
@@ -1540,6 +1659,7 @@
             "mode": "fixed"
           },
           "decimals": 0,
+          "displayName": "Odometer",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1549,10 +1669,34 @@
                 "value": null
               }
             ]
-          },
-          "unit": "Km"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "odometer_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "odometer_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
@@ -1594,7 +1738,7 @@
           "policy": "default",
           "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
-          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"Odometer\"\nfrom positions \nwhere car_id = $car_id \norder by date desc \nlimit 1;",
+          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id \norder by date desc \nlimit 1;",
           "refId": "odometer",
           "resultFormat": "time_series",
           "select": [
