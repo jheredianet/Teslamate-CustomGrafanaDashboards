@@ -29,7 +29,7 @@ git clone https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards.git
 
 - Edit your Teslamate "docker-compose.yml" file and add these two new lines at the end of the "volumes" section of the grafana container
 
-```bash
+```yaml
 services:
   ...
   ...
@@ -49,7 +49,7 @@ services:
 
 Attention! On some VPS from certain providers like Google GCC, the user running docker engine is not the current user so it's home folder is different, or maybe you just want to use a specific folder for your data. If this is the case, it's better to use the **full path** of the repository where you cloned it, instead of using the home path of the current user (~/). So, be sure to modify the path of the volumes section accordingly, as the sample given below:
 
-```bash
+```yaml
 services:
   ...
   ...
