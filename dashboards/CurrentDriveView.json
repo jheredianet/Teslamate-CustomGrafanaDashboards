@@ -63,7 +63,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673686895440,
+  "iteration": 1674038890365,
   "links": [
     {
       "icon": "dashboard",
@@ -545,10 +545,33 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
-          "expression": "$efficiency",
+          "format": "table",
+          "group": [],
           "hide": false,
-          "refId": "Efficiency",
-          "type": "math"
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $efficiency\nFROM settings\nWHERE id=1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "title": "Rated Efficiency",
