@@ -112,7 +112,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Only distinguishes betwen online, offline and asleep.",
+      "description": "This dasboard is just to see the current state of the car with the last data recorded by TeslaMate.\n\nAdditionally, you can see the states stats of the selected period.",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1542,7 +1542,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
           "rawSql": "(SELECT battery_level, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "SOC",
@@ -1558,13 +1557,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_soc"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
@@ -1668,7 +1660,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") * ($KonaBattery_kWh / 100) FROM \"ovms\" ",
           "rawQuery": true,
           "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100.0 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "A",
@@ -1684,13 +1675,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_soc"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [

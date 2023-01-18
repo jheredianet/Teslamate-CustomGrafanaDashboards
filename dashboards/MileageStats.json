@@ -505,7 +505,7 @@
         "type": "datasource",
         "uid": "-- Dashboard --"
       },
-      "description": "",
+      "description": "With this dashboard you may analize your mileage and number of drives by year, month, week or day.\n\nThe dashboard shows a table with the selected period, time driven, distance, number of drives and efficiency then a bar chart to have a better look for comparison.",
       "fieldConfig": {
         "defaults": {
           "color": {

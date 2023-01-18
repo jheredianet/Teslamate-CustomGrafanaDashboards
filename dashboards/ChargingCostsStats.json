@@ -117,6 +117,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "This dashboard is meant to have a look of all the charges in a given period (last 10 years by default). You can see the distance driven, number of charges, total charging cost, etc., both in summary or in separated lists.\n\nYou can expand/collapse the rows as needed.\n\nFrom the Monthly Stats row, you will have a table with links to other Teslamate Dashboards to have a look on a specific period, charge or trip.",
       "fieldConfig": {
         "defaults": {
           "mappings": [],

@@ -97,7 +97,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
+      "description": "This dashboard is meant to have a look of the charging curve sessions on Tesla Supercharges or other Fast Charging Station.\n\nAlso, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session.",
       "fieldConfig": {
         "defaults": {
           "color": {

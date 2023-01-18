@@ -194,7 +194,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
+      "description": "This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.\n\nPossible degradation is just an estimated value to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -901,7 +901,7 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") FROM \"ovms\" WHERE $timeFilter",
+          "query": "(SELECT battery_level, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "rawQuery": true,
           "rawSql": "(SELECT battery_level, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "SOC",
@@ -917,13 +917,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_soc"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
@@ -1027,7 +1020,7 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") * ($KonaBattery_kWh / 100) FROM \"ovms\" ",
+          "query": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "rawQuery": true,
           "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "A",
@@ -1043,13 +1036,6 @@
             ]
           ],
           "table": "drives",
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "ovms_v_b_soc"
-            }
-          ],
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
