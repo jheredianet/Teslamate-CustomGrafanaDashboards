@@ -173,12 +173,6 @@ Tip: On Grafana you can press "h" to get a keyboard shortcuts if you want to cha
 
 ![Tracking Drives](./screenshots/TrackingDrives.gif)
 
-## Donations
-
-Hey there! If you like my work and want to support me, buying me a coffee would be greatly appreciated! Your support helps me to keep creating and improving these dashboards. Thank you!
-
-[![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR)
-
 ## Contributing
 
 The following dashboards, queries and design are the result of many tests and hours of work.
@@ -187,6 +181,12 @@ Feel free to take them for your own personal use.
 If you are able to contibute or improve this project just fork the repository and make a pull request. I'll really apreciate any enhancement or suggestion.
 
 Do not take the dashboards much less upload or merge them to other repositories as if the original idea were yours, nor do you share it on social media without mentioning the author. Please, **respect the ingenuity and work of others**. Enjoy!
+
+## Donations
+
+Hey there! If you like my work and want to support me, buying me a coffee would be greatly appreciated! Your support helps me to keep creating and improving these dashboards. Thank you!
+
+[![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR)
 
 ## Credits
 
