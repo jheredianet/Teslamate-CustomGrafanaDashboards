@@ -1,8 +1,16 @@
 # TeslaMate Custom Grafana Dashboards
 
-[![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR)
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Stargazers][stars-shield]][stars-url][![Contributors][contributors-shield]][contributors-url][![Forks][forks-shield]][forks-url][![Issues][issues-shield]][issues-url][![Discussions][discussions-shield]][discussions-url][![MIT License][license-shield]][license-url]
 
-This is a repository with **Custom Grafana Dashboards**, created especially to work with a **Teslamate installation**. So the main requirement for these dashboards to work, is to have a **[Teslamate](https://docs.teslamate.org/)** running instance.
+This is a project with **Custom Grafana Dashboards**, created especially to work with a **Teslamate installation**. So the main requirement for these dashboards to work, is to have a **[Teslamate](https://docs.teslamate.org/)** running instance.
 
 ## TeslaMate
 
@@ -95,7 +103,8 @@ ___
 
 This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate.
 So, the more data you have logged from your brand new car the better.
-Possible degradation is just an estimated value to have a reference, measured after every > 5kWh charged and a monthly average based on the projected range.
+
+Possible degradation is just an estimated value to have a reference, measured on every charging session with enough kWh added according to the car efficiency and a monthly average based on the projected range.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
@@ -164,9 +173,20 @@ Tip: On Grafana you can press "h" to get a keyboard shortcuts if you want to cha
 
 ![Tracking Drives](./screenshots/TrackingDrives.gif)
 
+## Donations
+
+Hey there! If you like my work and want to support me, buying me a coffee would be greatly appreciated! Your support helps me to keep creating and improving these dashboards. Thank you!
+
+[![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR)
+
 ## Contributing
 
-If you are able to contibute with more Custom Grafana Dashboards just fork this repository and make a pull request. I'll really apreciate any improvement or suggestion.
+The following dashboards, queries and design are the result of many tests and hours of work.
+Feel free to take them for your own personal use.
+
+If you are able to contibute or improve this project just fork the repository and make a pull request. I'll really apreciate any enhancement or suggestion.
+
+Do not take the dashboards much less upload or merge them to other repositories as if the original idea were yours, nor do you share it on social media without mentioning the author. Please, **respect the ingenuity and work of others**. Enjoy!
 
 ## Credits
 
@@ -176,3 +196,18 @@ If you are able to contibute with more Custom Grafana Dashboards just fork this 
 ## License
 
 Licensed under the [MIT license](./LICENSE).
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
+[contributors-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
+[forks-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/network/members
+[stars-shield]: https://img.shields.io/github/stars/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
+[stars-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/stargazers
+[issues-shield]: https://img.shields.io/github/issues/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
+[issues-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/issue
+[discussions-shield]: https://img.shields.io/github/discussions/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
+[discussions-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/discussions
+[license-shield]: https://img.shields.io/github/license/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
+[license-url]: ./LICENS
