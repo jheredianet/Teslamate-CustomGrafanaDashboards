@@ -344,7 +344,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  \n  ('$aux'::json -> 'CurrentCapacity')::text::float as \"Usable Now\",\n  ('$aux'::json -> 'MaxCapacity')::text::float  as \"Original (Usable)\"",
+          "rawSql": "SELECT  \n  ('$aux'::json -> 'CurrentCapacity')::text::float as \"Usable (now)\",\n  ('$aux'::json -> 'MaxCapacity')::text::float  as \"Nominal (new)\"",
           "refId": "A",
           "select": [
             [
