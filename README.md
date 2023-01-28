@@ -106,6 +106,8 @@ So, the more data you have logged from your brand new car the better.
 
 Possible degradation is just an estimated value to have a reference, measured on every charging session with enough kWh added according to the car efficiency and a monthly average based on the projected range.
 
+Possible degradation is just an estimated value to have a reference, measured on every charging session with enough kWh added according to the car efficiency and a monthly average based on the projected range.
+
 ![Battery Health](./screenshots/BatteryHealth.png)
 
 ### [Charging Costs Stats](./dashboards/ChargingCostsStats.json)

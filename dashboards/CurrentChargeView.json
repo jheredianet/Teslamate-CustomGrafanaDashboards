@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1674037604628,
+  "iteration": 1674492241350,
   "links": [
     {
       "asDropdown": true,
@@ -110,7 +110,7 @@
       "title": "Current Charge",
       "tooltip": "Show Current Charge Data",
       "type": "link",
-      "url": "d/jchm9RxutVS7a/charge-data?orgId=1&kiosk&var-car_id=${car_id}&from=${current_charge_time}&to=${current_end_time}"
+      "url": "d/jchm9RxutVS7a/current-charge-view?orgId=1&kiosk&var-car_id=${car_id}&from=${current_charge_time}&to=${current_end_time}&var-BatteryCapacity=${BatteryCapacity}&var-charging_processes=${charging_processes}"
     }
   ],
   "liveNow": false,
@@ -246,7 +246,6 @@
           },
           "decimals": 1,
           "mappings": [],
-          "max": 49,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -289,7 +288,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^kWh$/",
           "values": false
         },
         "showUnfilled": true,
@@ -325,7 +324,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT\n  battery_level * $BatteryCapacity / 100 as \"kWh\"\nFROM\n  charges c\njoin\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\nORDER BY\n  c.ID DESC LIMIT 1",
+          "rawSql": "SELECT\n  battery_level * $BatteryCapacity / 100 as \"kWh\", $BatteryCapacity as Total\nFROM\n  charges c\njoin\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\nORDER BY\n  c.ID DESC LIMIT 1",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -539,7 +538,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1707,7 +1707,7 @@
       "type": "stat"
     }
   ],
-  "refresh": "30s",
+  "refresh": false,
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
@@ -1779,13 +1779,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "WITH lastTopCharges AS (\n    SELECT start_battery_level, end_battery_level, charge_energy_added, (100.0 * charge_energy_added) / (end_battery_level - start_battery_level) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id\n    ORDER BY end_date DESC\n    LIMIT 5\n)\nSELECT Battery_Capacity FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "definition": "WITH Aux AS\n(\n\tSELECT  CEIL(efficiency * 100) AS DiscardValue\n\tFROM cars\n\tWHERE id = $car_id \n), ChargesRAW AS\n(\n\tSELECT  cp.id\n\t       ,cp.end_date\n\t       ,cp.charge_energy_added\n\t       ,c.usable_battery_level\n\tFROM charging_processes cp\n\tINNER JOIN charges c\n\tON cp.id = c.charging_process_id\n\tWHERE cp.car_id = $car_id\n\tAND cp.charge_energy_added > (\n\tSELECT  DiscardValue\n\tFROM Aux)\n), PeriodCapacity AS\n(\n\tSELECT  (100.0 * charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS CurrentCapacity\n\tFROM ChargesRAW\n\tGROUP BY  id\n\t         ,charge_energy_added\n\t         ,end_date\n\tORDER BY end_date DESC\n\tLIMIT (\n\tSELECT  DiscardValue\n\tFROM Aux)\n), CurrentCapacity AS\n(\n\tSELECT  AVG(CurrentCapacity) AS CurrentCapacity\n\tFROM PeriodCapacity\n)\nSELECT CurrentCapacity FROM CurrentCapacity",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "BatteryCapacity",
         "options": [],
-        "query": "WITH lastTopCharges AS (\n    SELECT start_battery_level, end_battery_level, charge_energy_added, (100.0 * charge_energy_added) / (end_battery_level - start_battery_level) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id\n    ORDER BY end_date DESC\n    LIMIT 5\n)\nSELECT Battery_Capacity FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "query": "WITH Aux AS\n(\n\tSELECT  CEIL(efficiency * 100) AS DiscardValue\n\tFROM cars\n\tWHERE id = $car_id \n), ChargesRAW AS\n(\n\tSELECT  cp.id\n\t       ,cp.end_date\n\t       ,cp.charge_energy_added\n\t       ,c.usable_battery_level\n\tFROM charging_processes cp\n\tINNER JOIN charges c\n\tON cp.id = c.charging_process_id\n\tWHERE cp.car_id = $car_id\n\tAND cp.charge_energy_added > (\n\tSELECT  DiscardValue\n\tFROM Aux)\n), PeriodCapacity AS\n(\n\tSELECT  (100.0 * charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS CurrentCapacity\n\tFROM ChargesRAW\n\tGROUP BY  id\n\t         ,charge_energy_added\n\t         ,end_date\n\tORDER BY end_date DESC\n\tLIMIT (\n\tSELECT  DiscardValue\n\tFROM Aux)\n), CurrentCapacity AS\n(\n\tSELECT  AVG(CurrentCapacity) AS CurrentCapacity\n\tFROM PeriodCapacity\n)\nSELECT CurrentCapacity FROM CurrentCapacity",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1870,6 +1870,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 2,
+  "version": 33,
   "weekStart": ""
 }
