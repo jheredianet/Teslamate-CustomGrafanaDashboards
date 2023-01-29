@@ -104,9 +104,7 @@ ___
 This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate.
 So, the more data you have logged from your brand new car the better.
 
-Possible degradation is just an estimated value to have a reference, measured on every charging session with enough kWh added according to the car efficiency and a monthly average based on the projected range.
-
-Possible degradation is just an estimated value to have a reference, measured on every charging session with enough kWh added according to the car efficiency and a monthly average based on the projected range.
+**Possible degradation** is just an estimated value to have a reference, measured on **usable battery level** of every charging session with enough kWh added (in order to avoid dirty data form the sample), calculated daily according to the rated efficiency of the car. There are two charts showing the mean values based on the projected range - mileage with a **Monthly projected battery capacity** and a **Weekly projected range**.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
