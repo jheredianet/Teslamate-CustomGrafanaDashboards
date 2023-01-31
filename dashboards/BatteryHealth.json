@@ -64,7 +64,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1675001094697,
+  "iteration": 1675150684629,
   "links": [
     {
       "icon": "dashboard",
@@ -296,7 +296,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
+      "description": "**Usable (now)** is the estimated current battery capacity. \n\n**Nominal (new)** is the estimated Battery Capacity since you begun to use Teslamate. That's why, the more data you have logged from your brand new car the better. ",
       "fieldConfig": {
         "defaults": {
           "color": {
