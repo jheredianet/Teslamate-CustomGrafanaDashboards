@@ -71,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673955727518,
+  "iteration": 1674495988818,
   "links": [
     {
       "icon": "dashboard",
@@ -1584,7 +1584,6 @@
           },
           "decimals": 1,
           "mappings": [],
-          "max": 49,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -1627,7 +1626,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^kwh$/",
           "values": false
         },
         "showUnfilled": true,
@@ -1661,7 +1660,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100.0 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
+          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, $BatteryCapacity as Total, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100.0 as kWh, $BatteryCapacity as Total, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1807,13 +1806,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "WITH lastTopCharges AS (\n    SELECT (100.0 * charge_energy_added) / (end_battery_level - start_battery_level) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id\n    ORDER BY end_date DESC\n    LIMIT 5\n)\nSELECT Battery_Capacity FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "definition": "WITH Charges AS (\n    SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1, MAX(c.usable_battery_level) - MIN(c.usable_battery_level))) AS bc\n    FROM charging_processes cp INNER JOIN charges c ON cp.id = c.charging_process_id\n    WHERE cp.car_id = $car_id AND cp.charge_energy_added > $DiscardValue\n    GROUP BY cp.id\n    ORDER BY cp.end_date DESC\n),\nlastTop AS (\n    SELECT * FROM Charges LIMIT $DiscardValue\n)\nSELECT AVG(bc) FROM lastTop;",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "BatteryCapacity",
         "options": [],
-        "query": "WITH lastTopCharges AS (\n    SELECT (100.0 * charge_energy_added) / (end_battery_level - start_battery_level) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id\n    ORDER BY end_date DESC\n    LIMIT 5\n)\nSELECT Battery_Capacity FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "query": "WITH Charges AS (\n    SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1, MAX(c.usable_battery_level) - MIN(c.usable_battery_level))) AS bc\n    FROM charging_processes cp INNER JOIN charges c ON cp.id = c.charging_process_id\n    WHERE cp.car_id = $car_id AND cp.charge_energy_added > $DiscardValue\n    GROUP BY cp.id\n    ORDER BY cp.end_date DESC\n),\nlastTop AS (\n    SELECT * FROM Charges LIMIT $DiscardValue\n)\nSELECT AVG(bc) FROM lastTop;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1833,6 +1832,25 @@
         "name": "pressure_unit",
         "options": [],
         "query": "select unit_of_pressure from settings limit 1;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
+        "definition": "SELECT\n\tCEIL(efficiency * 100)\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "DiscardValue",
+        "options": [],
+        "query": "SELECT\n\tCEIL(efficiency * 100)\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1873,6 +1891,6 @@
   "timezone": "",
   "title": "Current State",
   "uid": "jchmo4BNRkZz",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
