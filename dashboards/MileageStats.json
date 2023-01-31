@@ -11,7 +11,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.6"
+      "version": "8.5.15"
     },
     {
       "type": "datasource",
@@ -49,7 +49,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673697907649,
+  "iteration": 1675152597479,
   "links": [
     {
       "icon": "dashboard",
@@ -338,7 +338,7 @@
           }
         ]
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "repeatDirection": "h",
       "targets": [
         {
@@ -502,8 +502,8 @@
     },
     {
       "datasource": {
-        "type": "datasource",
-        "uid": "-- Dashboard --"
+        "type": "postgres",
+        "uid": "TeslaMate"
       },
       "description": "With this dashboard you may analize your mileage and number of drives by year, month, week or day.\n\nThe dashboard shows a table with the selected period, time driven, distance, number of drives and efficiency then a bar chart to have a better look for comparison.",
       "fieldConfig": {
@@ -628,11 +628,35 @@
       "targets": [
         {
           "datasource": {
-            "type": "datasource",
-            "uid": "-- Dashboard --"
+            "type": "postgres",
+            "uid": "TeslaMate"
           },
-          "panelId": 10,
-          "refId": "A"
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH data AS (\nSELECT\n  duration_min > 1 AND\n  distance > 1 AND\n  ( \n    start_position.usable_battery_level IS NULL OR\n    (end_position.battery_level - end_position.usable_battery_level) = 0 \n  ) AS is_sufficiently_precise,\n  NULLIF(GREATEST(start_ideal_range_km - end_ideal_range_km, 0), 0) AS range_diff,\n  date_trunc('$period', start_date::TIMESTAMP) as local_period,\n  drives.*\nFROM drives\n  LEFT JOIN positions start_position ON start_position_id = start_position.id\n  LEFT JOIN positions end_position ON end_position_id = end_position.id)\nSELECT\n  EXTRACT(EPOCH FROM date_trunc('$period', local_period))*1000 AS date_from,\n  EXTRACT(EPOCH FROM date_trunc('$period', local_period + ('1 ' || '$period')::INTERVAL))*1000 AS date_to,\n  CASE '$period'\n    WHEN 'month' THEN to_char(local_period, 'YYYY Month')\n    WHEN 'year' THEN to_char(local_period, 'YYYY')\n    WHEN 'week' THEN 'week ' || to_char(local_period, 'WW') || ' starting ' || to_char(local_period, 'YYYY-MM-DD')\n    ELSE to_char(local_period, 'YYYY-MM-DD')\n  END AS \"Period\",\n  local_period AS date,\n  sum(duration_min)*60 AS sum_duration_h, \n  convert_km(max(end_km)::integer - min(start_km)::integer, '$length_unit') AS sum_distance_$length_unit,\n  count(*) AS cnt,\n  sum(distance)/sum(range_diff) AS efficiency\nFROM data WHERE\n  car_id = $car_id AND\n  $__timeFilter(start_date)\nGROUP BY date\nORDER BY date",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "title": "${length_unit} & drives per ${period}",
@@ -642,10 +666,9 @@
           "options": {
             "include": {
               "names": [
-                "date",
                 "sum_distance_km",
                 "cnt",
-                "display"
+                "Period"
               ]
             }
           }
@@ -803,6 +826,6 @@
   "timezone": "",
   "title": "Mileage Stats",
   "uid": "jchmNjtMTFx",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }

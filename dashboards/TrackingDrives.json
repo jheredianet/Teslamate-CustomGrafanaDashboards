@@ -5,7 +5,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.6"
+      "version": "8.5.15"
     },
     {
       "type": "panel",
@@ -23,7 +23,7 @@
       "type": "panel",
       "id": "pr0ps-trackmap-panel",
       "name": "TrackMap",
-      "version": "2.1.2"
+      "version": "2.1.3"
     },
     {
       "type": "panel",
@@ -59,7 +59,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1673686935148,
+  "iteration": 1675152920712,
   "links": [
     {
       "icon": "dashboard",
@@ -225,7 +225,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -578,7 +578,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -770,7 +770,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -899,7 +899,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -984,7 +984,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1131,13 +1131,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT TO_CHAR(start_date, 'YYYY') as year FROM drives\nGROUP BY 1\nORDER BY 1 DESC;",
+        "definition": "SELECT TO_CHAR(start_date, 'YYYY') as year FROM drives\nWHERE car_id = $car_id\nGROUP BY 1\nORDER BY 1 DESC;",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "Year",
         "options": [],
-        "query": "SELECT TO_CHAR(start_date, 'YYYY') as year FROM drives\nGROUP BY 1\nORDER BY 1 DESC;",
+        "query": "SELECT TO_CHAR(start_date, 'YYYY') as year FROM drives\nWHERE car_id = $car_id\nGROUP BY 1\nORDER BY 1 DESC;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1150,13 +1150,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "(SELECT TO_CHAR(start_date, 'MM') as month FROM drives ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE TO_CHAR(start_date, 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
+        "definition": "(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "Month",
         "options": [],
-        "query": "(SELECT TO_CHAR(start_date, 'MM') as month FROM drives ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE TO_CHAR(start_date, 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
+        "query": "(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1169,13 +1169,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "(SELECT TO_CHAR(start_date, 'DD') as day FROM drives ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'DD') as day FROM drives \nWHERE TO_CHAR(start_date, 'YYYY') = '$Year'  AND TO_CHAR(start_date, 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
+        "definition": "(SELECT TO_CHAR(start_date, 'DD') as day FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'DD') as day FROM drives \nWHERE  car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'  AND TO_CHAR(start_date, 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "Day",
         "options": [],
-        "query": "(SELECT TO_CHAR(start_date, 'DD') as day FROM drives ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'DD') as day FROM drives \nWHERE TO_CHAR(start_date, 'YYYY') = '$Year'  AND TO_CHAR(start_date, 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
+        "query": "(SELECT TO_CHAR(start_date, 'DD') as day FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'DD') as day FROM drives \nWHERE  car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'  AND TO_CHAR(start_date, 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

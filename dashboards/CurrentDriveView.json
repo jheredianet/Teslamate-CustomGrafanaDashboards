@@ -63,7 +63,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1674038890365,
+  "iteration": 1674494448084,
   "links": [
     {
       "icon": "dashboard",
@@ -106,7 +106,7 @@
       "title": "Current Drive",
       "tooltip": "Adjust to current drive",
       "type": "link",
-      "url": "d/jchmkOuP_Fggz/custom-current-drive?orgId=1&kiosk&var-car_id=${car_id}&from=${current_drive_start_time}&to=${current_drive_end_time}"
+      "url": "d/jchmkOuP_Fggz/current-drive-view?orgId=1&kiosk&var-car_id=${car_id}&from=${current_drive_start_time}&to=${current_drive_end_time}&var-current_drive=${current_drive}&var-BatteryCapacity=${BatteryCapacity}&var-efficiency=${efficiency}&var-preferred_range=${preferred_range}"
     }
   ],
   "liveNow": false,
@@ -707,7 +707,6 @@
           },
           "decimals": 1,
           "mappings": [],
-          "max": 49,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -750,7 +749,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^kwh$/",
           "values": false
         },
         "showUnfilled": true,
@@ -781,10 +780,9 @@
           ],
           "measurement": "%",
           "metricColumn": "none",
-          "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
+          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, date, $BatteryCapacity as Total\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100 as kWh, date, $BatteryCapacity as Total\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1525,7 +1523,7 @@
       "type": "stat"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
@@ -1678,7 +1676,7 @@
         "name": "current_drive",
         "options": [],
         "query": "SELECT drive_id FROM positions WHERE car_id = $car_id AND drive_id IS NOT NULL ORDER BY date DESC LIMIT 1;",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1697,7 +1695,7 @@
         "name": "current_drive_start_time",
         "options": [],
         "query": "SELECT \n  (round(extract(epoch FROM start_date) - 10) * 1000) AS start_date_ts\n  FROM drives \n   WHERE id = $current_drive",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1716,7 +1714,7 @@
         "name": "current_drive_end_time",
         "options": [],
         "query": "SELECT \n  CASE WHEN end_date IS NULL THEN 'now&refresh=30s' \n  ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END\n  FROM drives\n  WHERE id = $current_drive",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1728,14 +1726,14 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "WITH lastTopCharges AS (\n    SELECT start_battery_level, end_battery_level, charge_energy_added, (100.0 * charge_energy_added) / (end_battery_level - start_battery_level) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id\n    ORDER BY end_date DESC\n    LIMIT 5\n)\nSELECT Battery_Capacity FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
+        "definition": "WITH Aux AS\n(\n\tSELECT  CEIL(efficiency * 100) AS DiscardValue\n\tFROM cars\n\tWHERE id = $car_id \n), ChargesRAW AS\n(\n\tSELECT  cp.id\n\t       ,cp.end_date\n\t       ,cp.charge_energy_added\n\t       ,c.usable_battery_level\n\tFROM charging_processes cp\n\tINNER JOIN charges c\n\tON cp.id = c.charging_process_id\n\tWHERE cp.car_id = $car_id\n\tAND cp.charge_energy_added > (\n\tSELECT  DiscardValue\n\tFROM Aux)\n), PeriodCapacity AS\n(\n\tSELECT  (100.0 * charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS CurrentCapacity\n\tFROM ChargesRAW\n\tGROUP BY  id\n\t         ,charge_energy_added\n\t         ,end_date\n\tORDER BY end_date DESC\n\tLIMIT (\n\tSELECT  DiscardValue\n\tFROM Aux)\n), CurrentCapacity AS\n(\n\tSELECT  AVG(CurrentCapacity) AS CurrentCapacity\n\tFROM PeriodCapacity\n)\nSELECT CurrentCapacity FROM CurrentCapacity",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "BatteryCapacity",
         "options": [],
-        "query": "WITH lastTopCharges AS (\n    SELECT start_battery_level, end_battery_level, charge_energy_added, (100.0 * charge_energy_added) / (end_battery_level - start_battery_level) as Battery_Capacity\n    FROM charging_processes\n    WHERE charge_energy_added > 5  AND car_id = $car_id\n    ORDER BY end_date DESC\n    LIMIT 5\n)\nSELECT Battery_Capacity FROM lastTopCharges ORDER BY 1 DESC LIMIT 1",
-        "refresh": 1,
+        "query": "WITH Aux AS\n(\n\tSELECT  CEIL(efficiency * 100) AS DiscardValue\n\tFROM cars\n\tWHERE id = $car_id \n), ChargesRAW AS\n(\n\tSELECT  cp.id\n\t       ,cp.end_date\n\t       ,cp.charge_energy_added\n\t       ,c.usable_battery_level\n\tFROM charging_processes cp\n\tINNER JOIN charges c\n\tON cp.id = c.charging_process_id\n\tWHERE cp.car_id = $car_id\n\tAND cp.charge_energy_added > (\n\tSELECT  DiscardValue\n\tFROM Aux)\n), PeriodCapacity AS\n(\n\tSELECT  (100.0 * charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS CurrentCapacity\n\tFROM ChargesRAW\n\tGROUP BY  id\n\t         ,charge_energy_added\n\t         ,end_date\n\tORDER BY end_date DESC\n\tLIMIT (\n\tSELECT  DiscardValue\n\tFROM Aux)\n), CurrentCapacity AS\n(\n\tSELECT  AVG(CurrentCapacity) AS CurrentCapacity\n\tFROM PeriodCapacity\n)\nSELECT CurrentCapacity FROM CurrentCapacity",
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1754,7 +1752,7 @@
         "name": "efficiency",
         "options": [],
         "query": "SELECT\n\tCASE WHEN '$length_unit' = 'km' THEN efficiency\n\t     WHEN '$length_unit' = 'mi' THEN efficiency * 1.60934\n\tEND * 1000 as \"efficiency_$length_unit\"\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1795,6 +1793,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
