@@ -126,6 +126,14 @@ This dashboard is meant to have a look of the charging curve sessions on Tesla S
 
 ![Charging Curve Stats](./screenshots/ChargingCurveStats.png)
 
+### [Continuous Trips](./dashboards/ContinuousTrips.json)
+
+This dashboard has a table with all the trips you've made between charges sesions, so you can browse the longest or shortest mileage you travel.
+
+You may also take a look to a specific trip from the initial charge session (before the trip) to the end of the of the charge session (after the trip), through the link in the first column that will take you to the TeslaMate Trips dashboard.
+
+![Continuous Trips](./screenshots/ContinuousTrips.png)
+
 ### [Current Charge View](./dashboards/CurrentChargeView.json)
 
 Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the "Current Charge" button at the top right corner, to enter in Kiosk mode:
@@ -206,8 +214,8 @@ Licensed under the [MIT license](./LICENSE).
 [stars-shield]: https://img.shields.io/github/stars/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
 [stars-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/stargazers
 [issues-shield]: https://img.shields.io/github/issues/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
-[issues-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/issue
+[issues-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/issues
 [discussions-shield]: https://img.shields.io/github/discussions/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
 [discussions-url]: https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/discussions
 [license-shield]: https://img.shields.io/github/license/jheredianet/Teslamate-CustomGrafanaDashboards.svg?style=for-the-badge
-[license-url]: ./LICENS
+[license-url]: ./LICENSE
