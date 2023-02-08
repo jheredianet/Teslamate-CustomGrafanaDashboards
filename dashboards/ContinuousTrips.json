@@ -618,8 +618,8 @@
       {
         "current": {
           "selected": false,
-          "text": "150",
-          "value": "150"
+          "text": "0",
+          "value": "0"
         },
         "hide": 0,
         "includeAll": false,
@@ -628,11 +628,11 @@
         "options": [
           {
             "selected": true,
-            "text": "150",
-            "value": "150"
+            "text": "0",
+            "value": "0"
           }
         ],
-        "query": "150",
+        "query": "0",
         "skipUrlSync": false,
         "type": "textbox"
       },
