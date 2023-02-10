@@ -49,7 +49,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1675988245064,
+  "iteration": 1676066807636,
   "links": [
     {
       "icon": "dashboard",
@@ -143,11 +143,7 @@
             "properties": [
               {
                 "id": "unit",
-                "value": "clocks"
-              },
-              {
-                "id": "decimals",
-                "value": 1
+                "value": "dtdhms"
               },
               {
                 "id": "custom.align",
@@ -813,6 +809,6 @@
   "timezone": "",
   "title": "Mileage Stats",
   "uid": "jchmNjtMTFx",
-  "version": 4,
+  "version": 3,
   "weekStart": ""
 }
