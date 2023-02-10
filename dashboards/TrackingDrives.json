@@ -59,7 +59,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1675152920712,
+  "iteration": 1675984299045,
   "links": [
     {
       "icon": "dashboard",
@@ -530,7 +530,11 @@
               },
               {
                 "id": "unit",
-                "value": "dthms"
+                "value": "clocks"
+              },
+              {
+                "id": "decimals",
+                "value": 1
               }
             ]
           },

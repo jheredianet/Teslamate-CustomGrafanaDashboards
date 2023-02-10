@@ -17,7 +17,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.6"
+      "version": "8.5.15"
     },
     {
       "type": "datasource",
@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1674492241350,
+  "iteration": 1675984634161,
   "links": [
     {
       "asDropdown": true,
@@ -178,7 +178,7 @@
           "valueSize": 40
         }
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -296,7 +296,7 @@
           "valueSize": 40
         }
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -368,7 +368,7 @@
         "content": "<!-- <div id=\"tp\" hidden>${tires_preasure}</div>\n<div id=\"tt\" hidden>${tires_temp}</div>\n<div id=\"is_charging\" hidden>${is_charging}</div>\n<div id=\"is_locked\" hidden>${is_locked}</div> -->\n<table style=\"margin-left:auto;margin-right:auto;\">\n    <tr style=\"text-align:center\">\n        <td><img src=\"https://i.imgur.com/bVfT1QW.gif\" id=\"imageBox\" style=\"max-width: 160px\"/></td>\n    </tr>\n</table>\n",
         "mode": "html"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -440,6 +440,22 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Elapsed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "clocks"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
           }
         ]
       },
@@ -465,7 +481,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "alias": "Elapsed Time",
@@ -633,7 +649,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -964,7 +980,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "alias": "Real",
@@ -1056,7 +1072,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "alias": "kWh Added",
@@ -1204,7 +1220,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "alias": "Real",
@@ -1378,7 +1394,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1459,7 +1475,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1553,7 +1569,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1662,7 +1678,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "alias": "Real",
@@ -1870,6 +1886,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 33,
+  "version": 3,
   "weekStart": ""
 }
