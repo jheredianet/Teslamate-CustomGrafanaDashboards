@@ -49,7 +49,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1675152597479,
+  "iteration": 1675988245064,
   "links": [
     {
       "icon": "dashboard",
@@ -189,35 +189,22 @@
               },
               {
                 "id": "custom.displayMode",
-                "value": "color-text"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "percentage",
-                  "steps": [
-                    {
-                      "color": "super-light-orange",
-                      "value": null
-                    },
-                    {
-                      "color": "light-orange",
-                      "value": 65
-                    },
-                    {
-                      "color": "light-green",
-                      "value": 99
-                    }
-                  ]
-                }
+                "value": "gradient-gauge"
               },
               {
                 "id": "custom.align",
                 "value": "auto"
               },
               {
-                "id": "custom.width",
-                "value": 80
+                "id": "custom.width"
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "min",
+                "value": 0
               }
             ]
           },
@@ -826,6 +813,6 @@
   "timezone": "",
   "title": "Mileage Stats",
   "uid": "jchmNjtMTFx",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
