@@ -47,7 +47,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1675871074290,
+  "iteration": 1675983652347,
   "links": [
     {
       "icon": "dashboard",
@@ -226,11 +226,15 @@
               },
               {
                 "id": "unit",
-                "value": "m"
+                "value": "clocks"
               },
               {
                 "id": "custom.minWidth",
                 "value": 120
+              },
+              {
+                "id": "decimals",
+                "value": 1
               }
             ]
           },
@@ -560,7 +564,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH car AS (\n    SELECT efficiency FROM cars WHERE id = $car_id\n),\npos AS (\n    SELECT drive_id, MIN(usable_battery_level) AS end_usable_battery_level, MAX(usable_battery_level) AS start_usable_battery_level\n        FROM (\n            SELECT drive_id, usable_battery_level, ROW_NUMBER() OVER (PARTITION BY drive_id ORDER BY date) AS row_num\n            FROM positions WHERE $__timeFilter(date) AND car_id = $car_id AND drive_id IS NOT NULL\n    ) pos\n    GROUP BY drive_id\n),\ntrip AS (\n    -- Drives\n    SELECT start_date sd, end_date ed, convert_km(distance::numeric, '$length_unit') AS distance_$length_unit, duration_min, start_usable_battery_level, end_usable_battery_level, \n        convert_celsius(outside_temp_avg, '$temp_unit') AS avg_temp_$temp_unit, \n        power_max, convert_km(speed_max::numeric, '$length_unit') AS speed_max_$length_unit, start_rated_range_km, end_rated_range_km\n    FROM drives INNER JOIN pos ON pos.drive_id = drives.id\n    WHERE $__timeFilter(start_date) AND car_id = $car_id\n    ORDER BY start_date\n),\ncp AS (\n    -- Charges\n    SELECT start_date, end_date, COALESCE(LAG(start_date) OVER(ORDER BY start_date DESC), now()) next_date, start_battery_level, end_battery_level\n    FROM charging_processes WHERE $__timeFilter(start_date) AND car_id = $car_id\n),\ndriven AS (\nSELECT cp.start_date, cp.end_date, cp.next_date, MIN(trip.sd) trip_start_date, MAX(trip.ed) trip_end_date,\n        COALESCE(SUM(trip.distance_$length_unit), 0) AS distance_$length_unit, SUM(trip.duration_min) duration_min,\n        MAX(trip.start_usable_battery_level) start_soc, MIN(trip.end_usable_battery_level) end_soc, \n        AVG(trip.avg_temp_$temp_unit) AS avg_temp_$temp_unit, MAX(trip.power_max) power_max, MAX(trip.speed_max_$length_unit) speed_max_$length_unit,\n        MAX(trip.start_rated_range_km) - MIN(trip.end_rated_range_km) range_diff \n\tFROM cp\tINNER JOIN trip ON trip.sd BETWEEN cp.start_date and cp.next_date\n\tGROUP BY cp.start_date, cp.end_date, cp.next_date\n    HAVING SUM(trip.duration_min) > 0\n    --ORDER BY end_date\n)\nSELECT \n    ROUND(EXTRACT(epoch FROM start_date) - 10) * 1000 AS start_date_ts, ROUND(EXTRACT(epoch FROM next_date) + 10) * 1000 AS end_date_ts, start_date, next_date end_date,\n    distance_$length_unit, duration_min, (distance_$length_unit / duration_min * 60) speed_$length_unit, start_soc as \"% Start\", end_soc as \"% End\", avg_temp_$temp_unit, power_max, speed_max_$length_unit,\n    (range_diff * car.efficiency) consumption_kwh, \n    (range_diff * car.efficiency / distance_$length_unit * 1000.0 * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 1.60934 END) consumption_kWh_$length_unit,\n    (distance_$length_unit / range_diff) efficiency\nFROM driven, car\nWHERE $__timeFilter(start_date) AND distance_$length_unit >= $min_dist\nORDER BY start_date DESC\n",
+          "rawSql": "WITH car AS (\n    SELECT efficiency FROM cars WHERE id = $car_id\n),\npos AS (\n    SELECT drive_id, MIN(usable_battery_level) AS end_usable_battery_level, MAX(usable_battery_level) AS start_usable_battery_level\n        FROM (\n            SELECT drive_id, usable_battery_level, ROW_NUMBER() OVER (PARTITION BY drive_id ORDER BY date) AS row_num\n            FROM positions WHERE $__timeFilter(date) AND car_id = $car_id AND drive_id IS NOT NULL\n    ) pos\n    GROUP BY drive_id\n),\ntrip AS (\n    -- Drives\n    SELECT start_date sd, end_date ed, convert_km(distance::numeric, '$length_unit') AS distance_$length_unit, duration_min, start_usable_battery_level, end_usable_battery_level, \n        convert_celsius(outside_temp_avg, '$temp_unit') AS avg_temp_$temp_unit, \n        power_max, convert_km(speed_max::numeric, '$length_unit') AS speed_max_$length_unit, start_rated_range_km, end_rated_range_km\n    FROM drives INNER JOIN pos ON pos.drive_id = drives.id\n    WHERE $__timeFilter(start_date) AND car_id = $car_id\n    ORDER BY start_date\n),\ncp AS (\n    -- Charges\n    SELECT start_date, end_date, COALESCE(LAG(start_date) OVER(ORDER BY start_date DESC), now()) next_date, start_battery_level, end_battery_level\n    FROM charging_processes WHERE $__timeFilter(start_date) AND car_id = $car_id\n),\ndriven AS (\nSELECT cp.start_date, cp.end_date, cp.next_date, MIN(trip.sd) trip_start_date, MAX(trip.ed) trip_end_date,\n        COALESCE(SUM(trip.distance_$length_unit), 0) AS distance_$length_unit, SUM(trip.duration_min) duration_min,\n        MAX(trip.start_usable_battery_level) start_soc, MIN(trip.end_usable_battery_level) end_soc, \n        AVG(trip.avg_temp_$temp_unit) AS avg_temp_$temp_unit, MAX(trip.power_max) power_max, MAX(trip.speed_max_$length_unit) speed_max_$length_unit,\n        MAX(trip.start_rated_range_km) - MIN(trip.end_rated_range_km) range_diff \n\tFROM cp\tINNER JOIN trip ON trip.sd BETWEEN cp.start_date and cp.next_date\n\tGROUP BY cp.start_date, cp.end_date, cp.next_date\n    HAVING SUM(trip.duration_min) > 0\n    --ORDER BY end_date\n)\nSELECT \n    ROUND(EXTRACT(epoch FROM start_date) - 10) * 1000 AS start_date_ts, ROUND(EXTRACT(epoch FROM next_date) + 10) * 1000 AS end_date_ts, start_date, next_date end_date,\n    distance_$length_unit, duration_min * 60 as duration_min, (distance_$length_unit / duration_min * 60) speed_$length_unit, start_soc as \"% Start\", end_soc as \"% End\", avg_temp_$temp_unit, power_max, speed_max_$length_unit,\n    (range_diff * car.efficiency) consumption_kwh, \n    (range_diff * car.efficiency / distance_$length_unit * 1000.0 * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 1.60934 END) consumption_kWh_$length_unit,\n    (distance_$length_unit / range_diff) efficiency\nFROM driven, car\nWHERE $__timeFilter(start_date) AND distance_$length_unit >= $min_dist\nORDER BY start_date DESC\n",
           "refId": "A",
           "select": [
             [

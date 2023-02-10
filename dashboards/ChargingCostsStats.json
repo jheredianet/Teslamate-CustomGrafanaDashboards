@@ -11,7 +11,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.6"
+      "version": "8.5.15"
     },
     {
       "type": "panel",
@@ -62,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1673686582620,
+  "iteration": 1675984934973,
   "links": [
     {
       "icon": "dashboard",
@@ -187,7 +187,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -274,7 +274,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -361,7 +361,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -449,7 +449,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -536,7 +536,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -846,7 +846,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -929,7 +929,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1006,7 +1006,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1094,7 +1094,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1181,7 +1181,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1327,7 +1327,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1458,7 +1458,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1589,7 +1589,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1720,7 +1720,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1787,7 +1787,8 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "red"
+                    "color": "red",
+                    "value": null
                   },
                   {
                     "color": "#EAB839",
@@ -1824,10 +1825,6 @@
                 },
                 "properties": [
                   {
-                    "id": "custom.width",
-                    "value": 195
-                  },
-                  {
                     "id": "links",
                     "value": [
                       {
@@ -1836,6 +1833,9 @@
                         "url": "d/FkUpJpQZk/trip?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
                       }
                     ]
+                  },
+                  {
+                    "id": "custom.width"
                   }
                 ]
               },
@@ -1859,7 +1859,8 @@
                       "mode": "percentage",
                       "steps": [
                         {
-                          "color": "super-light-orange"
+                          "color": "super-light-orange",
+                          "value": null
                         },
                         {
                           "color": "light-orange",
@@ -2005,6 +2006,23 @@
                   {
                     "id": "custom.align",
                     "value": "auto"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "basic"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 8000
+                  },
+                  {
+                    "id": "custom.width"
                   }
                 ]
               },
@@ -2032,7 +2050,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "super-light-blue"
+                          "color": "super-light-blue",
+                          "value": null
                         },
                         {
                           "color": "super-light-green",
@@ -2058,16 +2077,33 @@
                 },
                 "properties": [
                   {
-                    "id": "displayName",
-                    "value": "Distance"
-                  },
-                  {
                     "id": "unit",
                     "value": "mi"
                   },
                   {
+                    "id": "displayName",
+                    "value": "Distance"
+                  },
+                  {
                     "id": "custom.align",
                     "value": "auto"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "basic"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 8000
+                  },
+                  {
+                    "id": "custom.width"
                   }
                 ]
               },
@@ -2086,7 +2122,8 @@
                     "value": "Wh/mi"
                   },
                   {
-                    "id": "custom.width"
+                    "id": "custom.width",
+                    "value": 200
                   },
                   {
                     "id": "custom.align",
@@ -2109,7 +2146,8 @@
                     "value": "Wh/mi"
                   },
                   {
-                    "id": "custom.width"
+                    "id": "custom.width",
+                    "value": 200
                   },
                   {
                     "id": "custom.align",
@@ -2147,7 +2185,8 @@
                     "value": "Wh/km"
                   },
                   {
-                    "id": "custom.width"
+                    "id": "custom.width",
+                    "value": 200
                   },
                   {
                     "id": "custom.align",
@@ -2170,7 +2209,8 @@
                     "value": "Wh/km"
                   },
                   {
-                    "id": "custom.width"
+                    "id": "custom.width",
+                    "value": 200
                   },
                   {
                     "id": "noValue",
@@ -2261,14 +2301,9 @@
             },
             "frameIndex": 1,
             "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Starting at"
-              }
-            ]
+            "sortBy": []
           },
-          "pluginVersion": "8.5.6",
+          "pluginVersion": "8.5.15",
           "repeatDirection": "h",
           "targets": [
             {
@@ -2449,7 +2484,7 @@
               "id": "organize",
               "options": {
                 "excludeByName": {
-                  "date": false,
+                  "date": true,
                   "date_from": false,
                   "date_to": false,
                   "efficiency_charged_net_km_temp": true,
@@ -2735,6 +2770,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
