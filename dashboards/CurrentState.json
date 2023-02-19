@@ -17,7 +17,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.6"
+      "version": "8.5.15"
     },
     {
       "type": "panel",
@@ -35,7 +35,7 @@
       "type": "panel",
       "id": "pr0ps-trackmap-panel",
       "name": "TrackMap",
-      "version": "2.1.2"
+      "version": "2.1.3"
     },
     {
       "type": "panel",
@@ -71,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1674495988818,
+  "iteration": 1676806530396,
   "links": [
     {
       "icon": "dashboard",
@@ -157,7 +157,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -245,7 +245,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -369,7 +369,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -491,7 +491,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -589,7 +589,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -632,9 +632,10 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -647,32 +648,7 @@
           },
           "unit": "none"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "odometer_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "km"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "odometer_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "mi"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -680,14 +656,8 @@
         "x": 21,
         "y": 0
       },
-      "id": 55,
-      "links": [
-        {
-          "targetBlank": true,
-          "title": "Mileage",
-          "url": "/d/NjtMTFggz/mileage?orgId=1"
-        }
-      ],
+      "id": 71,
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -704,99 +674,11 @@
             "mean"
           ],
           "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "8.5.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id \norder by date desc \nlimit 1;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Odometer",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 15,
-        "w": 12,
-        "x": 0,
-        "y": 3
-      },
-      "id": 41,
-      "options": {
-        "displayLabels": [
-          "name"
-        ],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "values": [
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "/^count$/",
           "values": true
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "textMode": "value_and_name"
       },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -807,7 +689,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH states AS (\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [2, 0]) AS state\n  FROM charging_processes\n  WHERE\n    car_id = $car_id AND $__timeFilter(end_date)\n  UNION\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [1, 0]) AS state\n  FROM drives\n  WHERE\n    car_id = $car_id AND $__timeFilter(end_date)\n  UNION\n  SELECT\n    start_date AS date,\n    CASE\n      WHEN state = 'offline' THEN 3\n      WHEN state = 'asleep' THEN 4\n      WHEN state = 'online' THEN 0\n    END AS state\n  FROM states\n  WHERE\n    car_id = $car_id AND $__timeFilter(start_date)\n  UNION\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [6, 0]) AS state\n  FROM updates\n  WHERE\n    car_id = $car_id AND $__timeFilter(end_date)\n)\nSELECT \n    CASE\n      WHEN state = 0 OR state = 5 THEN 'online'\n      WHEN state = 1 THEN 'driving'\n      WHEN state = 2 THEN 'charging'\n      WHEN state = 3 THEN 'offline'\n      WHEN state = 4 THEN 'asleep'\n      WHEN state = 6 THEN 'updating'\n    END AS state, COUNT(state) AS count\nFROM states\nWHERE \n  date IS NOT NULL AND $__timeFilter(date)\nGROUP BY state",
+          "rawSql": "SELECT\r\n    convert_tire_pressure(tpms_pressure_fl,'$pressure_unit') AS \"Front left\",\r\n    convert_tire_pressure(tpms_pressure_fr,'$pressure_unit') AS \"Front right\",\r\n    convert_tire_pressure(tpms_pressure_rl,'$pressure_unit') AS \"Rear left\",\r\n    convert_tire_pressure(tpms_pressure_rr,'$pressure_unit') AS \"Rear right\"\r\nFROM\r\n    positions\r\nWHERE\r\n    car_id = $car_id AND\r\n    $__timeFilter(date) AND\r\n    tpms_pressure_fl is not null\r\nORDER BY\r\n    date DESC LIMIT 1",
           "refId": "A",
           "select": [
             [
@@ -831,8 +713,98 @@
           ]
         }
       ],
-      "title": "States",
-      "type": "piechart"
+      "title": "Tire Pressure ($pressure_unit)",
+      "type": "stat"
+    },
+    {
+      "autoZoom": true,
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "defaultLayer": "OpenStreetMap",
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 3
+      },
+      "id": 77,
+      "lineColor": "red",
+      "maxDataPoints": 500,
+      "pluginVersion": "9.2.4",
+      "pointColor": "royalblue",
+      "scrollWheelZoom": false,
+      "showLayerChanger": true,
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__time(date),\n   latitude\nFROM positions\nWHERE \n  car_id = $car_id AND \n  $__timeFilter(date)\nORDER BY \n  date ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__time(date),\n  longitude\nFROM positions\nWHERE \n  car_id = $car_id AND \n  $__timeFilter(date)\nORDER BY \n  date ASC",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Last Drives",
+      "type": "pr0ps-trackmap-panel"
     },
     {
       "datasource": {
@@ -880,7 +852,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -964,7 +936,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1048,7 +1020,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1091,53 +1063,49 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
-          "decimals": 2,
+          "color": {
+            "fixedColor": "super-light-blue",
+            "mode": "fixed"
+          },
           "mappings": [],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "#c7d0d9",
+                "color": "super-light-blue",
                 "value": null
               }
             ]
-          },
-          "unit": "none"
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 3,
         "w": 3,
         "x": 12,
         "y": 7
       },
-      "id": 71,
-      "links": [],
-      "maxDataPoints": 100,
+      "id": 79,
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "first"
-          ]
-        },
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
-          "fields": "",
-          "values": true
+          "fields": "/^coalesce$/",
+          "values": false
         },
-        "textMode": "value_and_name"
+        "text": {},
+        "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1148,7 +1116,96 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n    convert_tire_pressure(tpms_pressure_fl,'$pressure_unit') AS \"Front left\",\r\n    convert_tire_pressure(tpms_pressure_fr,'$pressure_unit') AS \"Front right\",\r\n    convert_tire_pressure(tpms_pressure_rl,'$pressure_unit') AS \"Rear left\",\r\n    convert_tire_pressure(tpms_pressure_rr,'$pressure_unit') AS \"Rear right\"\r\nFROM\r\n    positions\r\nWHERE\r\n    car_id = $car_id AND\r\n    $__timeFilter(date) AND\r\n    tpms_pressure_fl is not null\r\nORDER BY\r\n    date DESC LIMIT 1",
+          "rawSql": "SELECT\n  COALESCE(g.name, CONCAT_WS(', ', COALESCE(addresses.name, CONCAT_WS(' ', addresses.road, addresses.house_number)), addresses.city))\n\tFROM drives d\n\tLEFT JOIN addresses ON addresses.id = d.end_address_id\n\tLEFT JOIN geofences g ON g.id = d.end_geofence_id\nWHERE\n\t $__timeFilter(d.end_date) AND d.car_id = $car_id \nORDER BY d.end_date DESC\nLIMIT 1",
+          "refId": "Voltage",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Location",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 9,
+        "x": 15,
+        "y": 7
+      },
+      "id": 41,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "/^count$/",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH states AS (\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [2, 0]) AS state\n  FROM charging_processes\n  WHERE\n    car_id = $car_id AND $__timeFilter(end_date)\n  UNION\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [1, 0]) AS state\n  FROM drives\n  WHERE\n    car_id = $car_id AND $__timeFilter(end_date)\n  UNION\n  SELECT\n    start_date AS date,\n    CASE\n      WHEN state = 'offline' THEN 3\n      WHEN state = 'asleep' THEN 4\n      WHEN state = 'online' THEN 0\n    END AS state\n  FROM states\n  WHERE\n    car_id = $car_id AND $__timeFilter(start_date)\n  UNION\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [6, 0]) AS state\n  FROM updates\n  WHERE\n    car_id = $car_id AND $__timeFilter(end_date)\n)\nSELECT \n    CASE\n      WHEN state = 0 OR state = 5 THEN 'online'\n      WHEN state = 1 THEN 'driving'\n      WHEN state = 2 THEN 'charging'\n      WHEN state = 3 THEN 'offline'\n      WHEN state = 4 THEN 'asleep'\n      WHEN state = 6 THEN 'updating'\n    END AS state, COUNT(state) AS count\nFROM states\nWHERE \n  date IS NOT NULL AND $__timeFilter(date)\nGROUP BY state",
           "refId": "A",
           "select": [
             [
@@ -1172,170 +1229,114 @@
           ]
         }
       ],
-      "title": "Tire Pressure ($pressure_unit)",
-      "type": "stat"
+      "title": "States",
+      "type": "piechart"
     },
     {
-      "autoZoom": true,
       "datasource": {
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "defaultLayer": "OpenStreetMap",
-      "gridPos": {
-        "h": 11,
-        "w": 9,
-        "x": 15,
-        "y": 7
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#c7d0d9",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "odometer_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "odometer_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          }
+        ]
       },
-      "id": 75,
-      "lineColor": "red",
-      "links": [],
-      "maxDataPoints": 5,
-      "pointColor": "royalblue",
-      "scrollWheelZoom": false,
-      "showLayerChanger": true,
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 12,
+        "y": 10
+      },
+      "id": 55,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "Mileage",
+          "url": "/d/NjtMTFggz/mileage?orgId=1"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "first"
+          ]
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
-          "alias": "",
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
           },
-          "format": "table",
-          "group": [
-            {
-              "params": [
-                "$__interval",
-                "none"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
+          "format": "time_series",
+          "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(date), latitude\nFROM positions\nWHERE \n    $__timeFilter(date) AND car_id = $car_id\nORDER BY \n  date DESC limit 5",
+          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id \norder by date desc \nlimit 1;",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "lat"
+                  "value"
                 ],
                 "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "lat"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "lng"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "lat"
-                ],
-                "type": "alias"
               }
             ]
           ],
-          "table": "pos",
-          "timeColumn": "Datum",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [
-            {
-              "params": [
-                "$__interval",
-                "none"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(date), longitude\nFROM positions\nWHERE \n  $__timeFilter(date) AND car_id = $car_id\nORDER BY \n  date DESC limit 5",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "lat"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "lat"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "lng"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "lat"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "table": "pos",
-          "timeColumn": "Datum",
-          "timeColumnType": "datetime",
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -1345,8 +1346,8 @@
           ]
         }
       ],
-      "title": "Location",
-      "type": "pr0ps-trackmap-panel"
+      "title": "Odometer",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -1383,10 +1384,10 @@
         ]
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 3,
         "x": 12,
-        "y": 14
+        "y": 13
       },
       "id": 57,
       "links": [
@@ -1416,7 +1417,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1497,7 +1498,7 @@
         "h": 2,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 16
       },
       "id": 65,
       "options": {
@@ -1515,7 +1516,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1614,7 +1615,7 @@
         "h": 2,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 16
       },
       "id": 67,
       "options": {
@@ -1632,7 +1633,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1860,7 +1861,7 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -1891,6 +1892,6 @@
   "timezone": "",
   "title": "Current State",
   "uid": "jchmo4BNRkZz",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
