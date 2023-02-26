@@ -56,7 +56,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1677447299568,
+  "iteration": 1677447299577,
   "links": [
     {
       "icon": "dashboard",
@@ -124,7 +124,8 @@
       "options": {
         "displayLabels": [
           "name",
-          "value"
+          "value",
+          "percent"
         ],
         "legend": {
           "displayMode": "hidden",
@@ -736,8 +737,8 @@
       {
         "current": {
           "selected": false,
-          "text": "100",
-          "value": "100"
+          "text": "1",
+          "value": "1"
         },
         "hide": 0,
         "label": "Power greater than or equal to",
@@ -745,11 +746,11 @@
         "options": [
           {
             "selected": true,
-            "text": "100",
-            "value": "100"
+            "text": "1",
+            "value": "1"
           }
         ],
-        "query": "100",
+        "query": "1",
         "skipUrlSync": false,
         "type": "textbox"
       }
@@ -760,19 +761,7 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
+   
     "time_options": [
       "5m",
       "15m",
