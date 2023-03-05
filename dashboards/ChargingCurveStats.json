@@ -56,7 +56,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1678007984149,
+  "iteration": 1678007984160,
   "links": [
     {
       "icon": "dashboard",
@@ -97,98 +97,10 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This dashboard is meant to have a look of the charging curve sessions on Tesla Supercharges or other Fast Charging Station.\n\nAlso, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
       "gridPos": {
-        "h": 6,
-        "w": 4,
+        "h": 14,
+        "w": 12,
         "x": 0,
-        "y": 0
-      },
-      "id": 38,
-      "options": {
-        "displayLabels": [
-          "value",
-          "percent"
-        ],
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH charges_summary AS (\n    SELECT\n        cp.id,\n        COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.road, addr.house_number), '')), addr.city)) AS location,\n        COUNT(c.charging_process_id)\n    FROM\n        charging_processes cp\n    LEFT JOIN \n        addresses addr ON addr.id = address_id\n    LEFT JOIN\n        geofences geo ON geo.id = geofence_id\n    LEFT JOIN\n        charges c ON cp.id = c.charging_process_id\n    WHERE\n        $__timeFilter(date) AND\n        cp.car_id = $car_id AND cp.charge_energy_added > 0.01 AND c.fast_charger_present \n    GROUP BY 1, 2\n)\nSELECT \n    CASE\n        WHEN location ILIKE '%supercharger%' THEN 'Tesla Supercharger'\n        ELSE 'Other DC Stations' END AS location,\n    COUNT(location) AS n\nFROM charges_summary\nGROUP BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "start_km"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "drives",
-          "timeColumn": "start_date",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Fast Charging Sessions",
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "gridPos": {
-        "h": 25,
-        "w": 10,
-        "x": 4,
         "y": 0
       },
       "id": 29,
@@ -386,9 +298,9 @@
         "uid": "TeslaMate"
       },
       "gridPos": {
-        "h": 25,
-        "w": 10,
-        "x": 14,
+        "h": 14,
+        "w": 12,
+        "x": 12,
         "y": 0
       },
       "id": 32,
@@ -581,6 +493,106 @@
       "version": 1
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 40,
+      "panels": [],
+      "title": "Fast Charging Sessions",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "This dashboard is meant to have a look of the charging curve sessions on Tesla Supercharges or other Fast Charging Station.\n\nAlso, you can see number of fast charging sessions you've done on each type of chargers and the count of max power (kW) reached on a session.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 0,
+        "y": 15
+      },
+      "id": 38,
+      "options": {
+        "displayLabels": [
+          "value",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH charges_summary AS (\n    SELECT\n        cp.id,\n        COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.road, addr.house_number), '')), addr.city)) AS location,\n        COUNT(c.charging_process_id)\n    FROM\n        charging_processes cp\n    LEFT JOIN \n        addresses addr ON addr.id = address_id\n    LEFT JOIN\n        geofences geo ON geo.id = geofence_id\n    LEFT JOIN\n        charges c ON cp.id = c.charging_process_id\n    WHERE\n        $__timeFilter(date) AND\n        cp.car_id = $car_id AND cp.charge_energy_added > 0.01 AND c.fast_charger_present \n    GROUP BY 1, 2\n)\nSELECT \n    CASE\n        WHEN location ILIKE '%supercharger%' THEN 'Tesla Supercharger'\n        ELSE 'Other DC Stations' END AS location,\n    COUNT(location) AS n\nFROM charges_summary\nGROUP BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "piechart"
+    },
+    {
       "datasource": {
         "type": "postgres",
         "uid": "TeslaMate"
@@ -646,10 +658,10 @@
         ]
       },
       "gridPos": {
-        "h": 19,
-        "w": 4,
-        "x": 0,
-        "y": 6
+        "h": 9,
+        "w": 20,
+        "x": 4,
+        "y": 15
       },
       "id": 34,
       "links": [],
@@ -706,7 +718,7 @@
           ]
         }
       ],
-      "title": "Max Power sessions",
+      "title": "Max Power",
       "type": "barchart"
     }
   ],
