@@ -56,7 +56,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1678007984160,
+  "iteration": 1678094146246,
   "links": [
     {
       "icon": "dashboard",
@@ -129,7 +129,7 @@
             "showgrid": true,
             "title": "kW",
             "type": "linear",
-            "zeroline": false
+            "zeroline": true
           },
           "zaxis": {
             "rangemode": "normal",
@@ -233,7 +233,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND c.battery_level >= $filter_soc\r\n AND charger_power >= $filter_power\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) ILIKE '%supercharger%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
+          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND c.battery_level >= $filter_soc_from AND c.battery_level <= $filter_soc_to\r\n AND charger_power >= $filter_power_from AND charger_power <= $filter_power_to\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) ILIKE '%supercharger%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
           "refId": "A",
           "select": [
             [
@@ -264,7 +264,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND c.battery_level >= $filter_soc\n AND charger_power >= $filter_power\n AND c.fast_charger_present\n AND COALESCE(g.name, a.name) ILIKE '%supercharger%' \nGROUP BY battery_level",
+          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND c.battery_level >= $filter_soc_from AND c.battery_level <= $filter_soc_to\n AND charger_power >= $filter_power_from AND charger_power <= $filter_power_to\n AND c.fast_charger_present\n AND COALESCE(g.name, a.name) ILIKE '%supercharger%' \nGROUP BY battery_level",
           "refId": "B",
           "select": [
             [
@@ -329,7 +329,7 @@
             "showgrid": true,
             "title": "kW",
             "type": "linear",
-            "zeroline": false
+            "zeroline": true
           },
           "zaxis": {
             "rangemode": "normal",
@@ -433,7 +433,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND charger_power >= $filter_power\r\n AND c.battery_level >= $filter_soc\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) NOT ILIKE '%supercharger%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
+          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND c.battery_level >= $filter_soc_from AND c.battery_level <= $filter_soc_to\r\n AND charger_power >= $filter_power_from AND charger_power <= $filter_power_to\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) NOT ILIKE '%supercharger%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
           "refId": "A",
           "select": [
             [
@@ -464,7 +464,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND charger_power >= $filter_power\n AND c.battery_level >= $filter_soc\n AND c.fast_charger_present\n AND COALESCE(g.name, a.name) NOT ILIKE '%supercharger%' \nGROUP BY battery_level",
+          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND c.battery_level >= $filter_soc_from AND c.battery_level <= $filter_soc_to\n AND charger_power >= $filter_power_from AND charger_power <= $filter_power_to\n AND c.fast_charger_present\n AND COALESCE(g.name, a.name) NOT ILIKE '%supercharger%' \nGROUP BY battery_level",
           "refId": "B",
           "select": [
             [
@@ -696,7 +696,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH power_summary AS (\n    SELECT ROUND(MAX(charges.charger_power) / 5, 0) * 5 AS \"power\"\n    FROM charging_processes\n    LEFT JOIN charges ON charging_processes.id = charges.charging_process_id\n    WHERE $__timeFilter(date) AND charging_processes.car_id = $car_id AND charging_processes.charge_energy_added > 0.01 AND charges.fast_charger_present\n    GROUP BY charging_processes.id\n)\nSELECT power_summary.power AS \"Power [kW]\", COUNT(power_summary.power) AS n\nFROM power_summary\nGROUP BY 1\nORDER BY 1 DESC\n",
+          "rawSql": "WITH power_summary AS (\n    SELECT ROUND(MAX(charges.charger_power) / 5, 0) * 5 AS \"power\"\n    FROM charging_processes\n    LEFT JOIN charges ON charging_processes.id = charges.charging_process_id\n    WHERE $__timeFilter(date) AND charging_processes.car_id = $car_id AND charging_processes.charge_energy_added > 0.01 AND charges.fast_charger_present\n    GROUP BY charging_processes.id\n)\nSELECT power_summary.power AS \"Power [kW]\", COUNT(power_summary.power) AS n\nFROM power_summary\nWHERE power_summary.power >= $filter_power_from AND power_summary.power <= $filter_power_to\nGROUP BY 1\nORDER BY 1 DESC\n",
           "refId": "A",
           "select": [
             [
@@ -783,8 +783,8 @@
           "value": "0"
         },
         "hide": 0,
-        "label": "Power greater than or equal to",
-        "name": "filter_power",
+        "label": "Power >=",
+        "name": "filter_power_from",
         "options": [
           {
             "selected": true,
@@ -799,12 +799,32 @@
       {
         "current": {
           "selected": false,
+          "text": "260",
+          "value": "260"
+        },
+        "hide": 0,
+        "label": "Power <=",
+        "name": "filter_power_to",
+        "options": [
+          {
+            "selected": true,
+            "text": "260",
+            "value": "260"
+          }
+        ],
+        "query": "260",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
           "text": "0",
           "value": "0"
         },
         "hide": 0,
-        "label": "SOC greater than or equal to",
-        "name": "filter_soc",
+        "label": "SOC >=",
+        "name": "filter_soc_from",
         "options": [
           {
             "selected": true,
@@ -813,6 +833,26 @@
           }
         ],
         "query": "0",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "100",
+          "value": "100"
+        },
+        "hide": 0,
+        "label": "SOC <=",
+        "name": "filter_soc_to",
+        "options": [
+          {
+            "selected": true,
+            "text": "100",
+            "value": "100"
+          }
+        ],
+        "query": "100",
         "skipUrlSync": false,
         "type": "textbox"
       }
@@ -838,6 +878,6 @@
   "timezone": "",
   "title": "Charging Curve Stats",
   "uid": "jchmXpkIkhmRz",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
