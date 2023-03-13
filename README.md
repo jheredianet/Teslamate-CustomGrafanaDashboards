@@ -108,6 +108,11 @@ So, the more data you have logged from your brand new car the better.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
+### [Browse Charges](./dashboards/BrowseCharges.json)
+
+This dasboard is used to browse your charges by Geofence, Location, Type, Cost and Duration in order to have an accurate Total of kWh added and their respective costs.
+
+![Battery Health](./screenshots/BrowseCharges.png)
 ### [Charging Costs Stats](./dashboards/ChargingCostsStats.json)
 
 This dashboard is meant to have a look of all the charges in a given period (last 10 years by default).
