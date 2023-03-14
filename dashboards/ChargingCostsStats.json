@@ -582,7 +582,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE\n    WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city)) = 'Home' THEN 'Home'\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city)) = 'Work' THEN 'Work'\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city)) ILIKE '%supercharger%' THEN 'Supercharger'\n\t  ELSE 'Other'\n  END AS location,\n  SUM(charge_energy_added) AS Energy\nFROM\n\tcharging_processes c\nLEFT JOIN addresses address ON c.address_id = address.id\nLEFT JOIN geofences geofence ON geofence_id = geofence.id\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\n\tAND c.charge_energy_added >0\nGROUP BY 1\nORDER BY Energy DESC",
+          "rawSql": "SELECT\n  CASE\n    WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city)) = 'Home' THEN 'Home'\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city)) = 'Work' THEN 'Work'\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.road, address.house_number), '')), address.city)) ILIKE '%supercharger%' THEN 'Supercharger'\n\t  ELSE 'Other'\n  END AS location,\n  SUM(charge_energy_added) AS Energy\nFROM\n\tcharging_processes c\nLEFT JOIN addresses address ON c.address_id = address.id\nLEFT JOIN geofences geofence ON geofence_id = geofence.id\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\n\tAND c.charge_energy_added >0\nGROUP BY 1\n\nUNION \nSELECT\n  'Free' AS location,\n\tsum(charge_energy_added) AS Energy\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\tAND cost = 0\nORDER BY Energy DESC\n",
           "refId": "A",
           "select": [
             [
@@ -2991,6 +2991,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
