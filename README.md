@@ -104,7 +104,9 @@ ___
 This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate.
 So, the more data you have logged from your brand new car the better.
 
-**Possible degradation** is just an estimated value to have a reference, measured on **usable battery level** of every charging session with enough kWh added (in order to avoid dirty data from the sample), calculated daily according to the rated efficiency of the car. There are two charts showing the mean values based on the projected range - mileage with a **Monthly projected battery capacity** and a **Weekly projected range**.
+**Degradation** is just an estimated value to have a reference, measured on **usable battery level** of every charging session with enough kWh added (in order to avoid dirty data from the sample), calculated according to the rated efficiency of the car. On the other hand, you'll see a plotly chart that represents the evolution of the car's battery capacity during its entire lifetime.
+
+Finally, there is an important improvement for those who have not used Teslamate since they got their car, or for those who have bought it second hand. Now it is possible to set the max range to 100% and the battery capacity of the car battery when it was new in order to get an accurate and better estimation.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
@@ -112,7 +114,8 @@ So, the more data you have logged from your brand new car the better.
 
 This dasboard is used to browse your charges by Geofence, Location, Type, Cost and Duration in order to have an accurate Total of kWh added and their respective costs.
 
-![Battery Health](./screenshots/BrowseCharges.png)
+![Browse Charges](./screenshots/BrowseCharges.png)
+
 ### [Charging Costs Stats](./dashboards/ChargingCostsStats.json)
 
 This dashboard is meant to have a look of all the charges in a given period (last 10 years by default).
@@ -197,9 +200,11 @@ Do not take the dashboards much less upload or merge them to other repositories 
 
 ## Donations
 
-If you like my work and want to support me, buying me a coffee would be greatly appreciated! Your support helps me to keep creating and improving these dashboards. Thank you!
-
-[![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR)
+|     |     |
+| --- | --- |
+| If you like my work and want to support me, buying me a coffee would be greatly appreciated! Your support helps me to keep creating and improving these dashboards. Thank you! | [![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR) |
+| Other way to support me is to use [my referral link](https://ts.la/juancarlos32618) to purchase a Tesla product and get Credits you can redeem for exclusive awards like Supercharging miles, merchandise, and accessories. | [![Tesla referral link](./screenshots/tesla.png)](https://ts.la/juancarlos32618) |
+|     |     |
 
 ## Credits
 
