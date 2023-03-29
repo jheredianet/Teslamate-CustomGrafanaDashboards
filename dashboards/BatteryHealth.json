@@ -64,7 +64,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1679994365001,
+  "iteration": 1680131359700,
   "links": [
     {
       "icon": "dashboard",
@@ -323,155 +323,110 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "gridPos": {
-        "h": 12,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 28,
-      "links": [],
-      "pconfig": {
-        "fixScale": "",
-        "layout": {
-          "dragmode": "zoom",
-          "font": {
-            "family": "\"Open Sans\", Helvetica, Arial, sans-serif"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          "hovermode": "closest",
-          "legend": {
-            "orientation": "h"
-          },
-          "showlegend": false,
-          "xaxis": {
-            "rangemode": "normal",
-            "showgrid": true,
-            "title": "Odometer",
-            "type": "linear",
-            "zeroline": false
-          },
-          "yaxis": {
-            "rangemode": "normal",
-            "showgrid": true,
-            "title": "kWh",
-            "type": "linear",
-            "zeroline": false
-          },
-          "zaxis": {
-            "rangemode": "normal",
-            "showgrid": true,
-            "type": "linear",
-            "zeroline": false
-          }
-        },
-        "loadFromCDN": false,
-        "settings": {
-          "displayModeBar": false,
-          "type": "scatter"
-        },
-        "showAnnotations": true,
-        "traces": [
-          {
-            "mapping": {
-              "color": "id",
-              "text": "title",
-              "x": "odometer",
-              "y": "kWh"
-            },
-            "name": "Mileage, kWh",
-            "settings": {
-              "color_option": "ramp",
-              "line": {
-                "color": "#C0D8FF",
-                "dash": "dashdot",
-                "shape": "linear",
-                "width": 1
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
               },
-              "marker": {
-                "color": "#33B5E5",
-                "colorscale": "Reds",
-                "line": {
-                  "color": "#DDD",
-                  "width": 0
-                },
-                "showscale": false,
-                "size": 10,
-                "sizemin": 3,
-                "sizemode": "diameter",
-                "sizeref": 0.2,
-                "symbol": "circle"
+              {
+                "color": "red",
+                "value": 80
               }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AC"
             },
-            "show": {
-              "line": true,
-              "lines": false,
-              "markers": true
-            }
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#73BF69",
+                  "mode": "fixed"
+                }
+              }
+            ]
           },
           {
-            "mapping": {
-              "color": "id",
-              "x": "M-Odometer",
-              "y": "M-kWh"
+            "matcher": {
+              "id": "byName",
+              "options": "DC"
             },
-            "name": "Median",
-            "settings": {
-              "color_option": "ramp",
-              "line": {
-                "color": "#C0D8FF",
-                "dash": "solid",
-                "shape": "linear",
-                "width": 2
-              },
-              "marker": {
-                "color": "#33B5E5",
-                "colorscale": "Reds",
-                "line": {
-                  "color": "#DDD",
-                  "width": 0
-                },
-                "showscale": false,
-                "size": 3,
-                "sizemin": 3,
-                "sizemode": "diameter",
-                "sizeref": 0.2,
-                "symbol": "circle"
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FADE2A",
+                  "mode": "fixed"
+                }
               }
-            },
-            "show": {
-              "line": true,
-              "lines": true,
-              "markers": false
-            }
+            ]
           }
         ]
       },
-      "pluginVersion": "8.5.6",
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 31,
+      "links": [],
+      "maxDataPoints": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
-          "alias": "",
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
           },
-          "format": "table",
+          "format": "time_series",
           "group": [],
-          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nROUND(convert_km(AVG(Odometer)::numeric,'$length_unit'),0) AS Odometer,\nROUND(AVG((convert_km([[preferred_range]]_battery_range_km,'$length_unit') * (('$aux'::json -> 'DiscardValue')::text::float / 100.0) / nullif(usable_battery_level / 100.0,0))::numeric),1) AS \"kWh\",\nMAX(id) AS id,\nto_char(date, 'YYYY-MM-dd') AS Title\nFROM positions WHERE  car_id = $car_id AND ([[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level IS NOT NULL) \nGROUP BY 4",
-          "refId": "Projected Range",
+          "rawSql": "WITH data AS (\n  SELECT\n\t\tcp.id,\n\t\tcp.charge_energy_added,\n\t\tCASE WHEN NULLIF(mode() within group (order by charger_phases),0) is null THEN 'DC'\n\t\t\t\t ELSE 'AC'\n\t\tEND AS current\n\tFROM charging_processes cp\n  RIGHT JOIN charges ON cp.id = charges.charging_process_id\n  WHERE\n\t  cp.car_id = $car_id\n\t  AND cp.charge_energy_added > 0.01\n  GROUP BY 1,2\n)\nSELECT\n\tnow() AS time,\n\tsum(charge_energy_added) AS value,\n\tcurrent AS metric\nFROM data\nGROUP BY 3\nORDER BY metric DESC;",
+          "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "value"
+                  "latitude"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "timeColumn": "time",
+          "table": "addresses",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
           "where": [
             {
               "name": "$__timeFilter",
@@ -479,20 +434,119 @@
               "type": "macro"
             }
           ]
+        }
+      ],
+      "title": "Total Energy Added",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              }
+            ]
+          }
         },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_km/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "lengthkm"
+              },
+              {
+                "id": "displayName",
+                "value": "Range added"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_mi/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "lengthmi"
+              },
+              {
+                "id": "displayName",
+                "value": "Range added"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Energy"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatth"
+              },
+              {
+                "id": "displayName",
+                "value": "Energy added"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 29,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
         {
-          "alias": "",
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
           },
           "format": "table",
           "group": [],
-          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  FLOOR(convert_km(Odometer::numeric,'$length_unit')/1000) * 1000 AS \"M-Odometer\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(\n    ORDER BY ROUND((convert_km([[preferred_range]]_battery_range_km,'$length_unit') * (('$aux'::json -> 'DiscardValue')::text::float/100.0) / nullif(usable_battery_level/100.0,0))::numeric,1)\n  ) AS \"M-kWh\"\nFROM positions \nWHERE  car_id = $car_id AND ([[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level IS NOT NULL) \nGROUP BY 1",
-          "refId": "Median",
+          "rawSql": "SELECT  \n  ('$aux'::json -> 'LastChargekWhAdded')::text::float  as \"Energy\",\n  ('$aux'::json -> 'LastMileageAdded')::text::float as \"range_$length_unit\"",
+          "refId": "A",
           "select": [
             [
               {
@@ -515,9 +569,8 @@
           ]
         }
       ],
-      "title": "Battery Capacity by Mileage",
-      "type": "natel-plotly-panel",
-      "version": 1
+      "title": "Last Charge Report",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -709,6 +762,207 @@
       ],
       "title": "Estimated Degradation",
       "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 28,
+      "links": [],
+      "pconfig": {
+        "fixScale": "",
+        "layout": {
+          "dragmode": "zoom",
+          "font": {
+            "family": "\"Open Sans\", Helvetica, Arial, sans-serif"
+          },
+          "hovermode": "closest",
+          "legend": {
+            "orientation": "h"
+          },
+          "showlegend": false,
+          "xaxis": {
+            "rangemode": "normal",
+            "showgrid": true,
+            "title": "Odometer",
+            "type": "linear",
+            "zeroline": false
+          },
+          "yaxis": {
+            "rangemode": "normal",
+            "showgrid": true,
+            "title": "kWh",
+            "type": "linear",
+            "zeroline": false
+          },
+          "zaxis": {
+            "rangemode": "normal",
+            "showgrid": true,
+            "type": "linear",
+            "zeroline": false
+          }
+        },
+        "loadFromCDN": false,
+        "settings": {
+          "displayModeBar": false,
+          "type": "scatter"
+        },
+        "showAnnotations": true,
+        "traces": [
+          {
+            "mapping": {
+              "color": "id",
+              "text": "title",
+              "x": "odometer",
+              "y": "kWh"
+            },
+            "name": "Mileage, kWh",
+            "settings": {
+              "color_option": "ramp",
+              "line": {
+                "color": "#C0D8FF",
+                "dash": "dashdot",
+                "shape": "linear",
+                "width": 1
+              },
+              "marker": {
+                "color": "#33B5E5",
+                "colorscale": "Reds",
+                "line": {
+                  "color": "#DDD",
+                  "width": 0
+                },
+                "showscale": false,
+                "size": 10,
+                "sizemin": 3,
+                "sizemode": "diameter",
+                "sizeref": 0.2,
+                "symbol": "circle"
+              }
+            },
+            "show": {
+              "line": true,
+              "lines": false,
+              "markers": true
+            }
+          },
+          {
+            "mapping": {
+              "color": "id",
+              "x": "M-Odometer",
+              "y": "M-kWh"
+            },
+            "name": "Median",
+            "settings": {
+              "color_option": "ramp",
+              "line": {
+                "color": "#C0D8FF",
+                "dash": "solid",
+                "shape": "linear",
+                "width": 2
+              },
+              "marker": {
+                "color": "#33B5E5",
+                "colorscale": "Reds",
+                "line": {
+                  "color": "#DDD",
+                  "width": 0
+                },
+                "showscale": false,
+                "size": 3,
+                "sizemin": 3,
+                "sizemode": "diameter",
+                "sizeref": 0.2,
+                "symbol": "circle"
+              }
+            },
+            "show": {
+              "line": true,
+              "lines": true,
+              "markers": false
+            }
+          }
+        ]
+      },
+      "pluginVersion": "8.5.6",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\nROUND(convert_km(AVG(Odometer)::numeric,'$length_unit'),0) AS Odometer,\nROUND(AVG((convert_km([[preferred_range]]_battery_range_km,'$length_unit') * (('$aux'::json -> 'DiscardValue')::text::float / 100.0) / nullif(usable_battery_level / 100.0,0))::numeric),1) AS \"kWh\",\nMAX(id) AS id,\nto_char(date, 'YYYY-MM-dd') AS Title\nFROM positions WHERE  car_id = $car_id AND ([[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level IS NOT NULL) \nGROUP BY 4",
+          "refId": "Projected Range",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  FLOOR(convert_km(Odometer::numeric,'$length_unit')/1000) * 1000 AS \"M-Odometer\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(\n    ORDER BY ROUND((convert_km([[preferred_range]]_battery_range_km,'$length_unit') * (('$aux'::json -> 'DiscardValue')::text::float/100.0) / nullif(usable_battery_level/100.0,0))::numeric,1)\n  ) AS \"M-kWh\"\nFROM positions \nWHERE  car_id = $car_id AND ([[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level IS NOT NULL) \nGROUP BY 1",
+          "refId": "Median",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Battery Capacity by Mileage",
+      "type": "natel-plotly-panel",
+      "version": 1
     },
     {
       "datasource": {
@@ -945,7 +1199,7 @@
       "type": "bargauge"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
@@ -1050,39 +1304,18 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "-- CONCATENATED QUERIES TO IMPROVE PERFORMANCE\nWITH PositionsCharges AS\n(\n\tSELECT  date\n        ,battery_level\n        ,usable_battery_level\n        ,rated_battery_range_km\n        ,ideal_battery_range_km\n\tFROM positions\n\tWHERE car_id = $car_id\n\tAND ideal_battery_range_km is not null \n\tUNION ALL\n\tSELECT  date\n        ,battery_level\n        ,coalesce(usable_battery_level,battery_level) AS usable_battery_level\n        ,rated_battery_range_km\n        ,ideal_battery_range_km\n\tFROM charges c\n\tJOIN charging_processes p\n\tON p.id = c.charging_process_id\n\tWHERE p.car_id = $car_id\n), AllRanges AS\n(\n\tSELECT  $__timeGroup(date,1d) AS time\n\t       ,convert_km((SUM([[preferred_range]]_battery_range_km) / nullif(SUM(coalesce(usable_battery_level,battery_level)),0) * 100)::numeric,'$length_unit') AS \"[[preferred_range]]_range_$length_unit\"\n\tFROM PositionsCharges\n\tGROUP BY  1\n\tHAVING convert_km((SUM([[preferred_range]]_battery_range_km) / nullif(SUM(coalesce(usable_battery_level, battery_level)), 0) * 100)::numeric, '$length_unit') is not null\n), MaxRange AS\n(\nSELECT CASE WHEN $custom_max_range > 0 THEN $custom_max_range ELSE MAX(\"[[preferred_range]]_range_$length_unit\") END AS \"max_[[preferred_range]]_range_$length_unit\"\n\tFROM AllRanges\n), CurrentRange AS\n(\n    SELECT convert_km([[preferred_range]]_battery_range_km,'$length_unit') /  nullif(coalesce(usable_battery_level,battery_level),0) * 100 AS \"current_[[preferred_range]]_range_$length_unit\",\n    usable_battery_level, convert_km([[preferred_range]]_battery_range_km,'$length_unit') AS \"[[preferred_range]]_battery_range_$length_unit\"\n    FROM positions WHERE  car_id = $car_id AND ([[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level IS NOT NULL AND battery_level IS NOT NULL)\n    ORDER BY \"date\" DESC LIMIT 1\n), Aux AS\n(\n    SELECT charge_energy_added / NULLIF(convert_km(end_[[preferred_range]]_range_km - start_[[preferred_range]]_range_km,'$length_unit'), 0) * 100.0 AS DiscardValue FROM charging_processes\n    WHERE car_id = $car_id AND end_date IS NOT NULL AND end_rated_range_km IS NOT NULL AND start_rated_range_km IS NOT NULL\n    ORDER BY end_date DESC LIMIT 1\n), ChargesRAW AS\n(\n\tSELECT  cp.id\n        ,cp.end_date\n        ,cp.charge_energy_added\n        ,c.usable_battery_level\n\tFROM charging_processes cp\n\tINNER JOIN charges c\n\tON cp.id = c.charging_process_id\n\tWHERE cp.car_id = $car_id AND cp.charge_energy_added > (SELECT  DiscardValue FROM Aux)\n), Charges AS\n(\n\tSELECT  (100.0 * charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS bc\n\tFROM ChargesRAW\n\tGROUP BY  id, charge_energy_added, end_date\n\tORDER BY end_date DESC\n), MaxCapacity AS\n(\n    SELECT CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE MAX(bc) END AS MaxCapacity FROM Charges\n), \nCurrentCapacity AS\n(\n    SELECT CurrentRange.\"[[preferred_range]]_battery_range_$length_unit\" * Aux.DiscardValue /  CurrentRange.usable_battery_level  AS CurrentCapacity\n    FROM CurrentRange, Aux\n), Battery AS\n(\n\tSELECT  (100.0 - (CurrentCapacity.CurrentCapacity * 100.0 / MaxCapacity.MaxCapacity)) AS Degradation FROM CurrentCapacity , MaxCapacity\n) \nSELECT  CONCAT('{\"MaxRange\": ',MaxRange.\"max_[[preferred_range]]_range_$length_unit\",', \"CurrentRange\": ',CurrentRange.\"current_[[preferred_range]]_range_$length_unit\",', \"MaxCapacity\": ',MaxCapacity.MaxCapacity,', \"CurrentCapacity\": ',CurrentCapacity.CurrentCapacity,', \"DiscardValue\": ',Aux.DiscardValue,', \"Degradation\": ',Battery.Degradation,'}') \nFROM MaxRange, CurrentRange, Aux, Battery, MaxCapacity, CurrentCapacity;\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 28/03/2023\n-- By @jheredianet - Twitter: @juanheredia",
+        "definition": "-- CONCATENATED QUERIES TO IMPROVE PERFORMANCE\nWITH  ChargesRAW AS\n(\n\tSELECT  c.date, cp.id, cp.end_date, cp.charge_energy_added, \n\t  c.usable_battery_level, c.battery_level, c.rated_battery_range_km, c.ideal_battery_range_km, \n\t  cp.start_[[preferred_range]]_range_km, cp.end_[[preferred_range]]_range_km, \n\t  NULLIF(convert_km(end_[[preferred_range]]_range_km - start_[[preferred_range]]_range_km,'$length_unit'), 0) AS added_range_$length_unit\n\tFROM charges c\n\tJOIN charging_processes cp\n\tON cp.id = c.charging_process_id\n\tWHERE cp.car_id = $car_id AND cp.end_date IS NOT NULL AND cp.end_[[preferred_range]]_range_km IS NOT NULL AND cp.start_[[preferred_range]]_range_km IS NOT NULL\n), PositionsCharges AS\n(\n\tSELECT date, battery_level, usable_battery_level, rated_battery_range_km, ideal_battery_range_km\n\tFROM positions\n\tWHERE car_id = $car_id AND ([[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level IS NOT NULL AND battery_level IS NOT NULL)\n\tAND ideal_battery_range_km is not null \n\tUNION ALL\n\tSELECT  date, battery_level, coalesce(usable_battery_level,battery_level) AS usable_battery_level, rated_battery_range_km, ideal_battery_range_km\n\tFROM ChargesRAW\n), AllRanges AS\n(\n\tSELECT $__timeGroup(date,1d) AS time\n\t       ,convert_km((SUM([[preferred_range]]_battery_range_km) / nullif(SUM(coalesce(usable_battery_level,battery_level)),0) * 100)::numeric,'$length_unit') AS \"[[preferred_range]]_range_$length_unit\"\n\tFROM PositionsCharges\n\tGROUP BY  1\n), MaxRange AS\n(\nSELECT CASE WHEN $custom_max_range > 0 THEN $custom_max_range ELSE MAX(\"[[preferred_range]]_range_$length_unit\") END AS \"max_[[preferred_range]]_range_$length_unit\"\n\tFROM AllRanges\n), CurrentRange AS\n(\n    SELECT convert_km([[preferred_range]]_battery_range_km,'$length_unit') /  nullif(coalesce(usable_battery_level,battery_level),0) * 100 AS \"current_[[preferred_range]]_range_$length_unit\",\n    usable_battery_level, convert_km([[preferred_range]]_battery_range_km,'$length_unit') AS \"[[preferred_range]]_battery_range_$length_unit\"\n    FROM PositionsCharges \n    ORDER BY \"date\" DESC LIMIT 1\n), Aux AS\n(\n    SELECT \n      charge_energy_added / added_range_$length_unit * 100.0 AS DiscardValue,\n      charge_energy_added,\n      added_range_$length_unit\n    FROM ChargesRAW \n    ORDER BY end_date DESC LIMIT 1\n), CapacityCharges AS\n(\n\tSELECT (100.0 * charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS bc\n\tFROM ChargesRAW\n\tWHERE charge_energy_added >= (SELECT  DiscardValue FROM Aux)\n\tGROUP BY  id, charge_energy_added, end_date\n\tORDER BY end_date DESC\n), MaxCapacity AS\n(\n    SELECT CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE MAX(bc) END AS MaxCapacity FROM CapacityCharges\n), \nCurrentCapacity AS\n(\n    SELECT CurrentRange.\"[[preferred_range]]_battery_range_$length_unit\" * Aux.DiscardValue /  CurrentRange.usable_battery_level  AS CurrentCapacity\n    FROM CurrentRange, Aux\n), Battery AS\n(\n\tSELECT  (100.0 - (CurrentCapacity.CurrentCapacity * 100.0 / MaxCapacity.MaxCapacity)) AS Degradation FROM CurrentCapacity , MaxCapacity\n) \nSELECT CONCAT('{\"LastChargekWhAdded\": ', Aux.charge_energy_added, ', \"LastMileageAdded\" : ', Aux.added_range_$length_unit,', \"MaxRange\": ',MaxRange.\"max_[[preferred_range]]_range_$length_unit\",', \"CurrentRange\": ',CurrentRange.\"current_[[preferred_range]]_range_$length_unit\",', \"MaxCapacity\": ',MaxCapacity.MaxCapacity,', \"CurrentCapacity\": ',CurrentCapacity.CurrentCapacity,', \"DiscardValue\": ',Aux.DiscardValue,', \"Degradation\": ',Battery.Degradation,'}') \nFROM MaxRange, CurrentRange, Aux, Battery, MaxCapacity, CurrentCapacity;\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 30/03/2023\n-- By @jheredianet - Twitter: @juanheredia",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "aux",
         "options": [],
-        "query": "-- CONCATENATED QUERIES TO IMPROVE PERFORMANCE\nWITH PositionsCharges AS\n(\n\tSELECT  date\n        ,battery_level\n        ,usable_battery_level\n        ,rated_battery_range_km\n        ,ideal_battery_range_km\n\tFROM positions\n\tWHERE car_id = $car_id\n\tAND ideal_battery_range_km is not null \n\tUNION ALL\n\tSELECT  date\n        ,battery_level\n        ,coalesce(usable_battery_level,battery_level) AS usable_battery_level\n        ,rated_battery_range_km\n        ,ideal_battery_range_km\n\tFROM charges c\n\tJOIN charging_processes p\n\tON p.id = c.charging_process_id\n\tWHERE p.car_id = $car_id\n), AllRanges AS\n(\n\tSELECT  $__timeGroup(date,1d) AS time\n\t       ,convert_km((SUM([[preferred_range]]_battery_range_km) / nullif(SUM(coalesce(usable_battery_level,battery_level)),0) * 100)::numeric,'$length_unit') AS \"[[preferred_range]]_range_$length_unit\"\n\tFROM PositionsCharges\n\tGROUP BY  1\n\tHAVING convert_km((SUM([[preferred_range]]_battery_range_km) / nullif(SUM(coalesce(usable_battery_level, battery_level)), 0) * 100)::numeric, '$length_unit') is not null\n), MaxRange AS\n(\nSELECT CASE WHEN $custom_max_range > 0 THEN $custom_max_range ELSE MAX(\"[[preferred_range]]_range_$length_unit\") END AS \"max_[[preferred_range]]_range_$length_unit\"\n\tFROM AllRanges\n), CurrentRange AS\n(\n    SELECT convert_km([[preferred_range]]_battery_range_km,'$length_unit') /  nullif(coalesce(usable_battery_level,battery_level),0) * 100 AS \"current_[[preferred_range]]_range_$length_unit\",\n    usable_battery_level, convert_km([[preferred_range]]_battery_range_km,'$length_unit') AS \"[[preferred_range]]_battery_range_$length_unit\"\n    FROM positions WHERE  car_id = $car_id AND ([[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level IS NOT NULL AND battery_level IS NOT NULL)\n    ORDER BY \"date\" DESC LIMIT 1\n), Aux AS\n(\n    SELECT charge_energy_added / NULLIF(convert_km(end_[[preferred_range]]_range_km - start_[[preferred_range]]_range_km,'$length_unit'), 0) * 100.0 AS DiscardValue FROM charging_processes\n    WHERE car_id = $car_id AND end_date IS NOT NULL AND end_rated_range_km IS NOT NULL AND start_rated_range_km IS NOT NULL\n    ORDER BY end_date DESC LIMIT 1\n), ChargesRAW AS\n(\n\tSELECT  cp.id\n        ,cp.end_date\n        ,cp.charge_energy_added\n        ,c.usable_battery_level\n\tFROM charging_processes cp\n\tINNER JOIN charges c\n\tON cp.id = c.charging_process_id\n\tWHERE cp.car_id = $car_id AND cp.charge_energy_added > (SELECT  DiscardValue FROM Aux)\n), Charges AS\n(\n\tSELECT  (100.0 * charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS bc\n\tFROM ChargesRAW\n\tGROUP BY  id, charge_energy_added, end_date\n\tORDER BY end_date DESC\n), MaxCapacity AS\n(\n    SELECT CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE MAX(bc) END AS MaxCapacity FROM Charges\n), \nCurrentCapacity AS\n(\n    SELECT CurrentRange.\"[[preferred_range]]_battery_range_$length_unit\" * Aux.DiscardValue /  CurrentRange.usable_battery_level  AS CurrentCapacity\n    FROM CurrentRange, Aux\n), Battery AS\n(\n\tSELECT  (100.0 - (CurrentCapacity.CurrentCapacity * 100.0 / MaxCapacity.MaxCapacity)) AS Degradation FROM CurrentCapacity , MaxCapacity\n) \nSELECT  CONCAT('{\"MaxRange\": ',MaxRange.\"max_[[preferred_range]]_range_$length_unit\",', \"CurrentRange\": ',CurrentRange.\"current_[[preferred_range]]_range_$length_unit\",', \"MaxCapacity\": ',MaxCapacity.MaxCapacity,', \"CurrentCapacity\": ',CurrentCapacity.CurrentCapacity,', \"DiscardValue\": ',Aux.DiscardValue,', \"Degradation\": ',Battery.Degradation,'}') \nFROM MaxRange, CurrentRange, Aux, Battery, MaxCapacity, CurrentCapacity;\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 28/03/2023\n-- By @jheredianet - Twitter: @juanheredia",
-        "refresh": 2,
+        "query": "-- CONCATENATED QUERIES TO IMPROVE PERFORMANCE\nWITH  ChargesRAW AS\n(\n\tSELECT  c.date, cp.id, cp.end_date, cp.charge_energy_added, \n\t  c.usable_battery_level, c.battery_level, c.rated_battery_range_km, c.ideal_battery_range_km, \n\t  cp.start_[[preferred_range]]_range_km, cp.end_[[preferred_range]]_range_km, \n\t  NULLIF(convert_km(end_[[preferred_range]]_range_km - start_[[preferred_range]]_range_km,'$length_unit'), 0) AS added_range_$length_unit\n\tFROM charges c\n\tJOIN charging_processes cp\n\tON cp.id = c.charging_process_id\n\tWHERE cp.car_id = $car_id AND cp.end_date IS NOT NULL AND cp.end_[[preferred_range]]_range_km IS NOT NULL AND cp.start_[[preferred_range]]_range_km IS NOT NULL\n), PositionsCharges AS\n(\n\tSELECT date, battery_level, usable_battery_level, rated_battery_range_km, ideal_battery_range_km\n\tFROM positions\n\tWHERE car_id = $car_id AND ([[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level IS NOT NULL AND battery_level IS NOT NULL)\n\tAND ideal_battery_range_km is not null \n\tUNION ALL\n\tSELECT  date, battery_level, coalesce(usable_battery_level,battery_level) AS usable_battery_level, rated_battery_range_km, ideal_battery_range_km\n\tFROM ChargesRAW\n), AllRanges AS\n(\n\tSELECT $__timeGroup(date,1d) AS time\n\t       ,convert_km((SUM([[preferred_range]]_battery_range_km) / nullif(SUM(coalesce(usable_battery_level,battery_level)),0) * 100)::numeric,'$length_unit') AS \"[[preferred_range]]_range_$length_unit\"\n\tFROM PositionsCharges\n\tGROUP BY  1\n), MaxRange AS\n(\nSELECT CASE WHEN $custom_max_range > 0 THEN $custom_max_range ELSE MAX(\"[[preferred_range]]_range_$length_unit\") END AS \"max_[[preferred_range]]_range_$length_unit\"\n\tFROM AllRanges\n), CurrentRange AS\n(\n    SELECT convert_km([[preferred_range]]_battery_range_km,'$length_unit') /  nullif(coalesce(usable_battery_level,battery_level),0) * 100 AS \"current_[[preferred_range]]_range_$length_unit\",\n    usable_battery_level, convert_km([[preferred_range]]_battery_range_km,'$length_unit') AS \"[[preferred_range]]_battery_range_$length_unit\"\n    FROM PositionsCharges \n    ORDER BY \"date\" DESC LIMIT 1\n), Aux AS\n(\n    SELECT \n      charge_energy_added / added_range_$length_unit * 100.0 AS DiscardValue,\n      charge_energy_added,\n      added_range_$length_unit\n    FROM ChargesRAW \n    ORDER BY end_date DESC LIMIT 1\n), CapacityCharges AS\n(\n\tSELECT (100.0 * charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS bc\n\tFROM ChargesRAW\n\tWHERE charge_energy_added >= (SELECT  DiscardValue FROM Aux)\n\tGROUP BY  id, charge_energy_added, end_date\n\tORDER BY end_date DESC\n), MaxCapacity AS\n(\n    SELECT CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE MAX(bc) END AS MaxCapacity FROM CapacityCharges\n), \nCurrentCapacity AS\n(\n    SELECT CurrentRange.\"[[preferred_range]]_battery_range_$length_unit\" * Aux.DiscardValue /  CurrentRange.usable_battery_level  AS CurrentCapacity\n    FROM CurrentRange, Aux\n), Battery AS\n(\n\tSELECT  (100.0 - (CurrentCapacity.CurrentCapacity * 100.0 / MaxCapacity.MaxCapacity)) AS Degradation FROM CurrentCapacity , MaxCapacity\n) \nSELECT CONCAT('{\"LastChargekWhAdded\": ', Aux.charge_energy_added, ', \"LastMileageAdded\" : ', Aux.added_range_$length_unit,', \"MaxRange\": ',MaxRange.\"max_[[preferred_range]]_range_$length_unit\",', \"CurrentRange\": ',CurrentRange.\"current_[[preferred_range]]_range_$length_unit\",', \"MaxCapacity\": ',MaxCapacity.MaxCapacity,', \"CurrentCapacity\": ',CurrentCapacity.CurrentCapacity,', \"DiscardValue\": ',Aux.DiscardValue,', \"Degradation\": ',Battery.Degradation,'}') \nFROM MaxRange, CurrentRange, Aux, Battery, MaxCapacity, CurrentCapacity;\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 30/03/2023\n-- By @jheredianet - Twitter: @juanheredia",
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
-        "description": "Set the max range to 100% of your car when it was new, in case you started using Teslamate after a while of having it. If not, leave it at 0, the degradation will be calculated with the data that is logged in Teslamate",
-        "hide": 0,
-        "label": "Custom Max Range when new",
-        "name": "custom_max_range",
-        "options": [
-          {
-            "selected": true,
-            "text": "0",
-            "value": "0"
-          }
-        ],
-        "query": "0",
-        "skipUrlSync": false,
-        "type": "textbox"
       },
       {
         "current": {
@@ -1104,8 +1337,33 @@
         "query": "0",
         "skipUrlSync": false,
         "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "0",
+          "value": "0"
+        },
+        "description": "Set the max range to 100% of your car when it was new, in case you started using Teslamate after a while of having it. If not, leave it at 0, the degradation will be calculated with the data that is logged in Teslamate",
+        "hide": 0,
+        "label": "Custom Max Range when new",
+        "name": "custom_max_range",
+        "options": [
+          {
+            "selected": true,
+            "text": "0",
+            "value": "0"
+          }
+        ],
+        "query": "0",
+        "skipUrlSync": false,
+        "type": "textbox"
       }
     ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
   },
   "timepicker": {
     "hidden": true,
@@ -1114,6 +1372,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRx",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
