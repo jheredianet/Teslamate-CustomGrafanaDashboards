@@ -3,12 +3,6 @@
   "__requires": [
     {
       "type": "panel",
-      "id": "bargauge",
-      "name": "Bar gauge",
-      "version": ""
-    },
-    {
-      "type": "panel",
       "id": "gauge",
       "name": "Gauge",
       "version": ""
@@ -77,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1680212129431,
+  "iteration": 1680365239300,
   "links": [
     {
       "icon": "dashboard",
@@ -118,94 +112,6 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This dasboard is just to see the current state of the car with the last data recorded by TeslaMate.\n\nAdditionally, you can see the states stats of the selected period.",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#c7d0d9",
-                "value": null
-              }
-            ]
-          },
-          "unit": "dateTimeAsSystem"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 8,
-        "x": 0,
-        "y": 0
-      },
-      "id": 2,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "mean"
-          ]
-        },
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "/^time$/",
-          "values": true
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "8.5.15",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select $__time(start_date), state from states where car_id = $car_id order by start_date desc limit 1;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "latitude"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "addresses",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Last state change",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
       "description": "Only distinguishes between online, offline and asleep.",
       "fieldConfig": {
         "defaults": {
@@ -226,7 +132,7 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 8,
+        "x": 0,
         "y": 0
       },
       "id": 6,
@@ -262,7 +168,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select $__time(start_date), state from states where car_id = $car_id order by start_date desc limit 1;",
+          "rawSql": "select $__time(start_date), state from states where car_id = $car_id AND $__timeFilter(start_date) order by start_date desc limit 1;",
           "refId": "A",
           "select": [
             [
@@ -287,6 +193,95 @@
         }
       ],
       "title": "Current State",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "This dasboard is just to see the current state of the car with the last data recorded by TeslaMate.\n\nAdditionally, you can see the states stats of the selected period.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "noValue": "-",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#c7d0d9",
+                "value": null
+              }
+            ]
+          },
+          "unit": "dateTimeAsSystem"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 8,
+        "x": 4,
+        "y": 0
+      },
+      "id": 2,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ]
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "/^time$/",
+          "values": true
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select $__time(start_date), state from states where car_id = $car_id AND $__timeFilter(start_date) order by start_date desc limit 1;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "addresses",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Last state change",
       "type": "stat"
     },
     {
@@ -348,7 +343,7 @@
         ]
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 3,
         "x": 12,
         "y": 0
@@ -386,7 +381,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT $__time(date), range as \"range_$length_unit\"\nFROM (\n\t(SELECT date, convert_km([[preferred_range]]_battery_range_km, '$length_unit') AS range\n\tFROM positions\n\tWHERE car_id = $car_id AND [[preferred_range]]_battery_range_km IS NOT NULL\n  ORDER BY date DESC\n\tLIMIT 1)\n\tUNION ALL\n\t(SELECT date, convert_km([[preferred_range]]_battery_range_km, '$length_unit') AS range\n\tFROM charges c\n\tJOIN charging_processes p ON p.id = c.charging_process_id\n\tWHERE p.car_id = $car_id\n\tORDER BY date DESC\n\tLIMIT 1)\n) AS data\nORDER BY date DESC\nLIMIT 1;",
+          "rawSql": "SELECT $__time(date), range as \"range_$length_unit\"\nFROM (\n\t(SELECT date, convert_km([[preferred_range]]_battery_range_km, '$length_unit') AS range\n\tFROM positions\n\tWHERE car_id = $car_id AND [[preferred_range]]_battery_range_km IS NOT NULL AND $__timeFilter(date)\n  ORDER BY date DESC\n\tLIMIT 1)\n\tUNION ALL\n\t(SELECT date, convert_km([[preferred_range]]_battery_range_km, '$length_unit') AS range\n\tFROM charges c\n\tJOIN charging_processes p ON p.id = c.charging_process_id\n\tWHERE p.car_id = $car_id AND $__timeFilter(date)\n\tORDER BY date DESC\n\tLIMIT 1)\n) AS data\nORDER BY date DESC\nLIMIT 1;",
           "refId": "A",
           "select": [
             [
@@ -470,7 +465,7 @@
         ]
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 3,
         "x": 15,
         "y": 0
@@ -508,7 +503,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT $__time(date), range as \"range_$length_unit\"\nFROM (\n\t(SELECT date, convert_km(est_battery_range_km, '$length_unit') AS range\n\tFROM positions\n\tWHERE car_id = $car_id AND est_battery_range_km IS NOT NULL\n  ORDER BY date DESC\n\tLIMIT 1)\n\tUNION ALL\n\t(SELECT date, convert_km(ideal_battery_range_km, '$length_unit') AS range\n\tFROM charges c\n\tJOIN charging_processes p ON p.id = c.charging_process_id\n\tWHERE p.car_id = $car_id\n\tORDER BY date DESC\n\tLIMIT 1)\n) AS data\nORDER BY date DESC\nLIMIT 1;",
+          "rawSql": "SELECT $__time(date), range as \"range_$length_unit\"\nFROM (\n\t(SELECT date, convert_km(est_battery_range_km, '$length_unit') AS range\n\tFROM positions\n\tWHERE car_id = $car_id AND est_battery_range_km IS NOT NULL AND $__timeFilter(date)\n  ORDER BY date DESC\n\tLIMIT 1)\n\tUNION ALL\n\t(SELECT date, convert_km(ideal_battery_range_km, '$length_unit') AS range\n\tFROM charges c\n\tJOIN charging_processes p ON p.id = c.charging_process_id\n\tWHERE p.car_id = $car_id AND $__timeFilter(date)\n\tORDER BY date DESC\n\tLIMIT 1)\n) AS data\nORDER BY date DESC\nLIMIT 1;",
           "refId": "A",
           "select": [
             [
@@ -538,62 +533,62 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "based on any data ever recorded.",
       "fieldConfig": {
         "defaults": {
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "max": 1,
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "",
+          "mappings": [],
+          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "#c7d0d9",
+                "color": "light-red",
                 "value": null
+              },
+              {
+                "color": "semi-dark-yellow",
+                "value": 10
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 20
+              },
+              {
+                "color": "semi-dark-yellow",
+                "value": 81
+              },
+              {
+                "color": "light-red",
+                "value": 91
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "percent"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 3,
         "x": 18,
         "y": 0
       },
-      "id": 8,
-      "links": [],
-      "maxDataPoints": 100,
+      "id": 85,
       "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "lastNotNull"
-          ]
-        },
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "mean"
           ],
           "fields": "",
-          "values": true
+          "values": false
         },
-        "textMode": "value"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
       "pluginVersion": "8.5.15",
       "targets": [
@@ -602,36 +597,30 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
-          "format": "time_series",
+          "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select 1 - sum(duration_min) / (EXTRACT(EPOCH  FROM (max(end_date) - min(start_date))) / 60), 1 as time from drives where car_id = $car_id;",
+          "rawSql": "(SELECT battery_level, date FROM positions WHERE car_id = $car_id AND $__timeFilter(date) ORDER BY date DESC LIMIT 1)\nUNION\nSELECT battery_level, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "latitude"
+                  "battery_level"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "addresses",
-          "timeColumn": "inserted_at",
+          "table": "positions",
+          "timeColumn": "date",
           "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          "where": []
         }
       ],
-      "title": "parked (%)",
-      "type": "stat"
+      "title": "Battery Level",
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -657,7 +646,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 3,
         "x": 21,
         "y": 0
@@ -730,7 +719,7 @@
       },
       "defaultLayer": "OpenStreetMap",
       "gridPos": {
-        "h": 13,
+        "h": 14,
         "w": 12,
         "x": 0,
         "y": 3
@@ -809,7 +798,7 @@
           ]
         }
       ],
-      "title": "Last Drives",
+      "title": "Drives in this period",
       "type": "pr0ps-trackmap-panel"
     },
     {
@@ -843,7 +832,7 @@
         "h": 4,
         "w": 3,
         "x": 12,
-        "y": 3
+        "y": 4
       },
       "id": 59,
       "options": {
@@ -869,7 +858,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\t$__time(date),\n\tconvert_celsius(driver_temp_setting, '$temp_unit') as \"Driver Temperature [°$temp_unit]\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id \nORDER BY date DESC\nLIMIT 1;",
+          "rawSql": "SELECT\n\t$__time(date),\n\tconvert_celsius(driver_temp_setting, '$temp_unit') as \"Driver Temperature [°$temp_unit]\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date)\nORDER BY date DESC\nLIMIT 1;",
           "refId": "A",
           "select": [
             [
@@ -927,7 +916,7 @@
         "h": 4,
         "w": 3,
         "x": 15,
-        "y": 3
+        "y": 4
       },
       "id": 63,
       "options": {
@@ -953,7 +942,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date,\n  convert_celsius(inside_temp, '$temp_unit') AS \"Inside Temperature [°$temp_unit]\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null \norder by date desc\nlimit 1 ",
+          "rawSql": "SELECT\n  date,\n  convert_celsius(inside_temp, '$temp_unit') AS \"Inside Temperature [°$temp_unit]\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null AND $__timeFilter(date)\norder by date desc\nlimit 1 ",
           "refId": "A",
           "select": [
             [
@@ -1011,7 +1000,7 @@
         "h": 4,
         "w": 3,
         "x": 18,
-        "y": 3
+        "y": 4
       },
       "id": 61,
       "options": {
@@ -1037,7 +1026,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH last_position AS (\n\tSELECT date, convert_celsius(outside_temp, '$temp_unit') AS \"Outside Temperature [°$temp_unit]\"\n\tFROM positions\n\tWHERE car_id = $car_id AND outside_temp IS NOT NULL\n\tORDER BY date DESC\n\tLIMIT 1\n),\nlast_charge AS (\n\tSELECT date, convert_celsius(outside_temp, '$temp_unit') AS \"Outside Temperature [°$temp_unit]\"\n\tFROM charges\n\tJOIN charging_processes ON charges.charging_process_id = charging_processes.id\n\tWHERE car_id = $car_id AND outside_temp IS NOT NULL\n\tORDER BY date DESC\n\tLIMIT 1\n)\nSELECT * FROM last_position\nUNION ALL\nSELECT * FROM last_charge\nORDER BY date DESC\nLIMIT 1;",
+          "rawSql": "WITH last_position AS (\n\tSELECT date, convert_celsius(outside_temp, '$temp_unit') AS \"Outside Temperature [°$temp_unit]\"\n\tFROM positions\n\tWHERE car_id = $car_id AND outside_temp IS NOT NULL AND $__timeFilter(date)\n\tORDER BY date DESC\n\tLIMIT 1\n),\nlast_charge AS (\n\tSELECT date, convert_celsius(outside_temp, '$temp_unit') AS \"Outside Temperature [°$temp_unit]\"\n\tFROM charges\n\tJOIN charging_processes ON charges.charging_process_id = charging_processes.id\n\tWHERE car_id = $car_id AND outside_temp IS NOT NULL AND $__timeFilter(date)\n\tORDER BY date DESC\n\tLIMIT 1\n)\nSELECT * FROM last_position\nUNION ALL\nSELECT * FROM last_charge\nORDER BY date DESC \nLIMIT 1;",
           "refId": "A",
           "select": [
             [
@@ -1093,7 +1082,7 @@
         "h": 3,
         "w": 3,
         "x": 12,
-        "y": 7
+        "y": 8
       },
       "id": 79,
       "options": {
@@ -1164,7 +1153,52 @@
               "viz": false
             }
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "super-light-blue",
+                  "index": 0,
+                  "text": "online"
+                },
+                "1": {
+                  "color": "purple",
+                  "index": 1,
+                  "text": "driving"
+                },
+                "2": {
+                  "color": "yellow",
+                  "index": 2,
+                  "text": "charging"
+                },
+                "3": {
+                  "color": "super-light-orange",
+                  "index": 3,
+                  "text": "offline"
+                },
+                "4": {
+                  "color": "green",
+                  "index": 4,
+                  "text": "asleep"
+                },
+                "5": {
+                  "color": "super-light-blue",
+                  "index": 5,
+                  "text": "online"
+                },
+                "6": {
+                  "color": "red",
+                  "index": 6,
+                  "text": "updating"
+                },
+                "null": {
+                  "index": 7,
+                  "text": "N/A"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "noValue": "0",
           "unit": "dtdhms"
         },
@@ -1174,7 +1208,7 @@
         "h": 9,
         "w": 9,
         "x": 15,
-        "y": 7
+        "y": 8
       },
       "id": 41,
       "options": {
@@ -1214,19 +1248,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH states AS (\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [2, 0]) AS state\n  FROM charging_processes\n  WHERE\n    car_id = $car_id AND \n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\n  UNION\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [1, 0]) AS state\n  FROM drives\n  WHERE\n    car_id = $car_id AND \n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\n  UNION\n  SELECT\n    start_date AS date,\n    CASE\n      WHEN state = 'offline' THEN 3\n      WHEN state = 'asleep' THEN 4\n      WHEN state = 'online' THEN 5\n    END AS state\n  FROM states\n  WHERE\n    car_id = $car_id AND \n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\n  UNION\n  SELECT\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\n    unnest(ARRAY [6, 0]) AS state\n  FROM updates\n  WHERE\n    car_id = $car_id AND \n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\n), allstates AS (\nSELECT date AS \"time\", state\nFROM states\nWHERE \n  date IS NOT NULL AND\n  ($__timeFrom() :: timestamp - interval '30 day') < date AND \n  date < ($__timeTo() :: timestamp + interval '30 day') \nORDER BY date ASC\n), aux AS (\nSELECT \n  time,\n  LAG(state) OVER (ORDER BY time) AS state,\n  LAG(time) OVER (ORDER BY time) AS previous_date,\n  time - LAG(time) OVER (ORDER BY time) AS elapsed_time\nFROM allstates\n) \nSELECT \n    CASE\n      WHEN state = 0 OR state = 5 THEN 'online'\n      WHEN state = 1 THEN 'driving'\n      WHEN state = 2 THEN 'charging'\n      WHEN state = 3 THEN 'offline'\n      WHEN state = 4 THEN 'asleep'\n      WHEN state = 6 THEN 'updating'\n    END AS state,\n    EXTRACT(EPOCH FROM SUM(elapsed_time)) as Total_Time\nFROM aux\nWHERE $__timeFilter(time)\nGROUP BY 1",
+          "rawSql": "WITH states AS (\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [2, 0]) AS state\r\n  FROM charging_processes\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [1, 0]) AS state\r\n  FROM drives\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    start_date AS date,\r\n    CASE\r\n      WHEN state = 'offline' THEN 3\r\n      WHEN state = 'asleep' THEN 4\r\n      WHEN state = 'online' THEN 5\r\n    END AS state\r\n  FROM states\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [6, 0]) AS state\r\n  FROM updates\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n), aux AS (\r\n  SELECT $__timeFrom() :: timestamp AS date, (SELECT state FROM states WHERE date <= $__timeFrom() ORDER BY date DESC LIMIT 1) AS state, false AS include\r\n  UNION\r\n  SELECT date, state, true AS include FROM states\r\n  UNION\r\n  SELECT $__timeTo() :: timestamp as date, NULL AS state, true as include\r\n  ORDER BY date\r\n), states_elapsed AS (\r\n  SELECT \r\n    date, state AS current_state, include,\r\n    LAG(state) OVER (ORDER BY date) AS state,\r\n    LAG(date) OVER (ORDER BY date) AS last_state_time,\r\n    date - LAG(date) OVER (ORDER BY date) AS elapsed_time\r\n  FROM aux \r\n)\r\nSELECT \r\n    CASE\r\n      WHEN state = 0 OR state = 5 THEN 'online'\r\n      WHEN state = 1 THEN 'driving'\r\n      WHEN state = 2 THEN 'charging'\r\n      WHEN state = 3 THEN 'offline'\r\n      WHEN state = 4 THEN 'asleep'\r\n      WHEN state = 6 THEN 'updating'\r\n    END AS state,\r\n    EXTRACT(EPOCH FROM SUM(elapsed_time)) as Total_Time\r\nFROM states_elapsed\r\nWHERE $__timeFilter(date) AND include\r\nGROUP BY 1\r\n\r\n",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "latitude"
+                  "efficiency"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "addresses",
+          "table": "cars",
           "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
@@ -1292,7 +1326,7 @@
         "h": 3,
         "w": 3,
         "x": 12,
-        "y": 10
+        "y": 11
       },
       "id": 55,
       "links": [
@@ -1333,7 +1367,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id \norder by date desc \nlimit 1;",
+          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id AND $__timeFilter(date)\norder by date desc \nlimit 1;",
           "refId": "A",
           "select": [
             [
@@ -1396,7 +1430,7 @@
         "h": 3,
         "w": 3,
         "x": 12,
-        "y": 13
+        "y": 14
       },
       "id": 57,
       "links": [
@@ -1437,7 +1471,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select split_part(version, ' ', 1) as version \nfrom updates \nwhere car_id = $car_id \norder by start_date desc \nlimit 1",
+          "rawSql": "select split_part(version, ' ', 1) as version \nfrom updates \nwhere car_id = $car_id AND $__timeFilter(date)\norder by start_date desc \nlimit 1",
           "refId": "A",
           "select": [
             [
@@ -1545,7 +1579,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 17
       },
       "id": 83,
       "links": [
@@ -1557,7 +1591,7 @@
       "options": {
         "alignValue": "center",
         "legend": {
-          "displayMode": "list",
+          "displayMode": "hidden",
           "placement": "bottom"
         },
         "mergeValues": true,
@@ -1570,7 +1604,11 @@
       },
       "targets": [
         {
-          "format": "time_series",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
@@ -1595,249 +1633,11 @@
               "params": [],
               "type": "macro"
             }
-          ],
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          }
+          ]
         }
       ],
       "title": "Timeline",
       "type": "state-timeline"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              },
-              {
-                "color": "semi-dark-green",
-                "value": 20
-              },
-              {
-                "color": "semi-dark-orange",
-                "value": 80
-              },
-              {
-                "color": "light-blue",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "%"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 12,
-        "x": 0,
-        "y": 21
-      },
-      "id": 65,
-      "options": {
-        "displayMode": "lcd",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "text": {}
-      },
-      "pluginVersion": "8.5.15",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "%",
-          "metricColumn": "none",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "rawQuery": true,
-          "rawSql": "(SELECT battery_level, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
-          "refId": "SOC",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "start_km"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "drives",
-          "timeColumn": "start_date",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Current SOC",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              },
-              {
-                "color": "dark-green",
-                "value": 7.84
-              },
-              {
-                "color": "semi-dark-orange",
-                "value": 31.36
-              },
-              {
-                "color": "light-blue",
-                "value": 35.28
-              }
-            ]
-          },
-          "unit": "kwatth"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 12,
-        "x": 12,
-        "y": 21
-      },
-      "id": 67,
-      "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^kwh$/",
-          "values": false
-        },
-        "showUnfilled": true,
-        "text": {}
-      },
-      "pluginVersion": "8.5.15",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "%",
-          "metricColumn": "none",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "rawQuery": true,
-          "rawSql": "(SELECT battery_level * $BatteryCapacity / 100 as kWh, $BatteryCapacity as Total, date\nFROM positions\nWHERE car_id = $car_id\nORDER BY date DESC\nLIMIT 1)\nUNION\nSELECT battery_level * $BatteryCapacity / 100.0 as kWh, $BatteryCapacity as Total, date\nFROM charges c\nJOIN charging_processes p ON p.id = c.charging_process_id\nWHERE $__timeFilter(date) AND p.car_id = $car_id\nORDER BY date DESC\nLIMIT 1",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "start_km"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "drives",
-          "timeColumn": "start_date",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Current Capacity",
-      "type": "bargauge"
     }
   ],
   "refresh": false,
@@ -2042,6 +1842,6 @@
   "timezone": "",
   "title": "Current State",
   "uid": "jchmo4BNRkZz",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
