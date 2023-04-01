@@ -1166,7 +1166,7 @@
           },
           "mappings": [],
           "noValue": "0",
-          "unit": "s"
+          "unit": "dtdhms"
         },
         "overrides": []
       },
@@ -2011,7 +2011,7 @@
     ]
   },
   "time": {
-    "from": "now/d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
