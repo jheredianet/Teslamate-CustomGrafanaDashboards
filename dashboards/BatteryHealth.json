@@ -64,7 +64,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1680131359700,
+  "iteration": 1680374359982,
   "links": [
     {
       "icon": "dashboard",
@@ -444,7 +444,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
+      "description": "Estimated charging cycles are based on the whole energy added to the battery. So the more data you logged the better. \n",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -510,6 +510,18 @@
                 "value": "Energy added"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Estimated charging cycles"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
           }
         ]
       },
@@ -559,6 +571,39 @@
           ],
           "table": "drives",
           "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\tceil(sum(charge_energy_added) / ('$aux'::json -> 'MaxCapacity')::text::float) AS \"Estimated charging cycles\"\nFROM charging_processes WHERE car_id = $car_id;",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "efficiency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "cars",
+          "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
             {
@@ -1372,6 +1417,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRx",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }
