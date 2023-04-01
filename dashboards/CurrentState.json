@@ -2011,7 +2011,7 @@
     ]
   },
   "time": {
-    "from": "now/d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
