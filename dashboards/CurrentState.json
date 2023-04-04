@@ -1471,7 +1471,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select split_part(version, ' ', 1) as version \nfrom updates \nwhere car_id = $car_id AND $__timeFilter(date)\norder by start_date desc \nlimit 1",
+          "rawSql": "select split_part(version, ' ', 1) as version \nfrom updates \nwhere car_id = $car_id AND start_date <= $__timeTo()\norder by start_date desc \nlimit 1",
           "refId": "A",
           "select": [
             [
