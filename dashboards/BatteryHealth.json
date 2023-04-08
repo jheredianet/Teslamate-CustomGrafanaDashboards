@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1680983721005,
+  "iteration": 1680985518511,
   "links": [
     {
       "icon": "dashboard",
@@ -466,7 +466,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow"
+                "color": "light-yellow",
+                "value": null
               }
             ]
           }
@@ -598,7 +599,8 @@
           },
           "decimals": 1,
           "mappings": [],
-          "max": 40,
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -634,10 +636,8 @@
       "options": {
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
+          "calcs": [],
+          "fields": "/^greatest$/",
           "values": false
         },
         "showThresholdLabels": false,
