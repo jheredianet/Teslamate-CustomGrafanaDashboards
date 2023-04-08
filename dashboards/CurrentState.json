@@ -71,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1680365239300,
+  "iteration": 1680975841806,
   "links": [
     {
       "icon": "dashboard",
@@ -1363,11 +1363,11 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
-          "format": "time_series",
+          "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id AND $__timeFilter(date)\norder by date desc \nlimit 1;",
+          "rawSql": "select convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id AND $__timeFilter(date)\norder by date desc \nlimit 1;",
           "refId": "A",
           "select": [
             [
@@ -1842,6 +1842,6 @@
   "timezone": "",
   "title": "Current State",
   "uid": "jchmo4BNRkZz",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }
