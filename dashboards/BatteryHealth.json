@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1680985518511,
+  "iteration": 1681039491922,
   "links": [
     {
       "icon": "dashboard",
@@ -393,7 +393,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(convert_km(SUM(distance)::numeric, '$length_unit'),0)|| ' $length_unit' as \"Logged\"\nfrom drives where car_id = $car_id;",
+          "rawSql": "SELECT ROUND(convert_km((max(odometer) - min(odometer))::numeric, '$length_unit'),0)|| ' $length_unit' as \"Logged\"\nfrom positions where car_id = $car_id;",
           "refId": "DistanceLogged",
           "select": [
             [
