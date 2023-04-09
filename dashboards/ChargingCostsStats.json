@@ -62,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1680301376391,
+  "iteration": 1681041797377,
   "links": [
     {
       "icon": "dashboard",
@@ -120,6 +120,7 @@
       "description": "This dashboard is meant to have a look of all the charges in a given period (last 10 years by default). You can see the distance driven, number of charges, total charging cost, etc., both in summary or in separated lists.\n\nYou can expand/collapse the rows as needed.\n\nFrom the Monthly Stats row, you will have a table with links to other Teslamate Dashboards to have a look on a specific period, charge or trip.",
       "fieldConfig": {
         "defaults": {
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -198,7 +199,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH since as (\n\tSELECT date FROM positions\n\tWHERE car_id = $car_id\n\tORDER BY date ASC\n\tLIMIT 1\n),\nactual AS (\n\tSELECT\n\t\tdate_trunc('day', date)::date AS date,\n\t\tmax(odometer) - min(odometer) AS distance\n\tFROM positions\n\tWHERE car_id = $car_id\n\tGROUP BY 1\n),\nbase_line AS (\n\tSELECT date_trunc('day', dd)::date AS date\n  FROM generate_series((select date from since) , now(), '1 day'::interval) dd\n)\nSELECT \n  sum(convert_km(COALESCE(distance, 0)::numeric, '$length_unit')) as \"distance_$length_unit\"\nFROM base_line\nLEFT JOIN actual ON actual.date = base_line.date\nWHERE $__timeFilter(base_line.date)",
+          "rawSql": "SELECT $distance_driven as \"distance_$length_unit\"",
           "refId": "A",
           "select": [
             [
@@ -818,7 +819,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH free_energy AS (\nSELECT sum(charge_energy_added) AS free_charged_kWh\nFROM charging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\n\tAND cost = 0),\nenergy as(\nSELECT\n\tsum(charge_energy_added) AS charged_kWh\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id),\nsince as (\n\tSELECT date FROM positions\n\tWHERE car_id = $car_id\n\tORDER BY date ASC\n\tLIMIT 1\n),\nactual AS (\n\tSELECT\n\t\tdate_trunc('day', date)::date AS date,\n\t\tmax(odometer) - min(odometer) AS distance\n\tFROM positions\n\tWHERE car_id = $car_id\n\tGROUP BY 1\n),\nbase_line AS (\n\tSELECT date_trunc('day', dd)::date AS date\n  FROM generate_series((select date from since) , now(), '1 day'::interval) dd\n),\ndistance AS (\nSELECT \n  sum(convert_km(COALESCE(distance, 0)::numeric, '$length_unit')) as \"distance_$length_unit\"\nFROM base_line\nLEFT JOIN actual ON actual.date = base_line.date\nWHERE $__timeFilter(base_line.date))\nSELECT (distance.\"distance_$length_unit\" * free_energy.free_charged_kWh / energy.charged_kWh) as \"distance_$length_unit\" FROM distance, energy, free_energy\n",
+          "rawSql": "WITH free_energy AS (\r\nSELECT sum(charge_energy_added) AS free_charged_kWh\r\nFROM charging_processes\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id\r\n\tAND cost = 0),\r\nenergy as(\r\nSELECT\r\n\tsum(charge_energy_added) AS charged_kWh\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id\r\n)\r\nSELECT ($distance_driven * free_energy.free_charged_kWh / energy.charged_kWh) as \"distance_$length_unit\" FROM energy, free_energy",
           "refId": "A",
           "select": [
             [
@@ -986,7 +987,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT (\n  SELECT sum(cost)\n  FROM charging_processes\n  WHERE $__timeFilter(end_date) AND car_id = $car_id\n) / (\n\tSELECT convert_km((max(odometer) - min(odometer))::numeric, '$length_unit')\n\tFROM positions\n\tWHERE $__timeFilter(date) AND car_id = $car_id\n) * 100",
+          "rawSql": "SELECT (\n  SELECT sum(cost)\n  FROM charging_processes\n  WHERE $__timeFilter(end_date) AND car_id = $car_id\n) / $distance_driven * 100",
           "refId": "A",
           "select": [
             [
@@ -1247,7 +1248,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH energy as(\nSELECT\n\tsum(charge_energy_added) AS charged_kWh\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id),\nsince as (\n\tSELECT date FROM positions\n\tWHERE car_id = $car_id\n\tORDER BY date ASC\n\tLIMIT 1\n),\nactual AS (\n\tSELECT\n\t\tdate_trunc('day', date)::date AS date,\n\t\tmax(odometer) - min(odometer) AS distance\n\tFROM positions\n\tWHERE car_id = $car_id\n\tGROUP BY 1\n),\nbase_line AS (\n\tSELECT date_trunc('day', dd)::date AS date\n  FROM generate_series((select date from since) , now(), '1 day'::interval) dd\n),\ndistance AS (\nSELECT \n  sum(convert_km(COALESCE(distance, 0)::numeric, '$length_unit')) as \"distance_$length_unit\"\nFROM base_line\nLEFT JOIN actual ON actual.date = base_line.date\nWHERE $__timeFilter(base_line.date))\nSELECT (energy.charged_kWh / distance.\"distance_$length_unit\") as \"kwh_per_$length_unit\" FROM distance, energy\n\n\n\n\n",
+          "rawSql": "WITH energy as(\r\nSELECT\r\n\tsum(charge_energy_added) AS charged_kWh\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id),\r\nsince as (\r\n\tSELECT date FROM positions\r\n\tWHERE car_id = $car_id\r\n\tORDER BY date ASC\r\n\tLIMIT 1\r\n)\r\nSELECT (energy.charged_kWh / $distance_driven) as \"kwh_per_$length_unit\" FROM energy",
           "refId": "A",
           "select": [
             [
@@ -1983,7 +1984,7 @@
       "type": "table"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1991,771 +1992,772 @@
         "y": 23
       },
       "id": 62,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "left",
+                "displayMode": "auto",
+                "filterable": false,
+                "inspect": false,
+                "width": 120
+              },
+              "mappings": [],
+              "noValue": "--",
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "red",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 50
+                  },
+                  {
+                    "color": "green",
+                    "value": 90
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time driven"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "clocks"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Period"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Trip",
+                        "url": "d/FkUpJpQZk/trip?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.width"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Efficiency"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-text"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "super-light-orange",
+                          "value": null
+                        },
+                        {
+                          "color": "light-orange",
+                          "value": 65
+                        },
+                        {
+                          "color": "light-green",
+                          "value": 99
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Energy charged"
+                },
+                "properties": [
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Charging stats",
+                        "url": "d/-pkIkhmRz/charging-stats?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "unit",
+                    "value": "kwatth"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg charged"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "kwatth"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Costs"
+                },
+                "properties": [
+                  {
+                    "id": "decimals",
+                    "value": 2
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "right"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "# charges"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Charges",
+                        "url": "d/TSmNYvRRk/charges?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "# drives"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Drives",
+                        "url": "d/Y8upc6ZRk/drives?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/sum_distance_km/"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "km"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Distance"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "basic"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 8000
+                  },
+                  {
+                    "id": "custom.width"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/avg_outside_temp_c/"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "celsius"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Temperature"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-text"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "super-light-blue",
+                          "value": null
+                        },
+                        {
+                          "color": "super-light-green",
+                          "value": 10
+                        },
+                        {
+                          "color": "super-light-red",
+                          "value": 20
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/sum_distance_mi/"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "mi"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Distance"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "basic"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 8000
+                  },
+                  {
+                    "id": "custom.width"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/efficiency_net_mi/"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Avg consumption (drives)"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "Wh/mi"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/efficiency_charged_net_mi/"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Avg consumption (charges)"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "Wh/mi"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/.* at/"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsSystem"
+                  },
+                  {
+                    "id": "custom.width"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/efficiency_net_km/"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Avg consumption (drives)"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "Wh/km"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/efficiency_charged_net_km/"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Avg consumption (charges)"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "Wh/km"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  },
+                  {
+                    "id": "noValue",
+                    "value": "--"
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "NaN": {
+                            "index": 0,
+                            "text": "--"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/avg_outside_temp_f/"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Temperature"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "fahrenheit"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "auto"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "date_from"
+                },
+                "properties": [
+                  {
+                    "id": "custom.hidden",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "date_to"
+                },
+                "properties": [
+                  {
+                    "id": "custom.hidden",
+                    "value": true
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 24
+          },
+          "id": 58,
+          "maxPerRow": 2,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "8.5.15",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "TeslaMate"
+              },
+              "format": "table",
+              "group": [],
+              "hide": false,
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "WITH data AS (\nSELECT\n  duration_min > 1 AND\n  distance > 1 AND\n  ( \n    start_position.usable_battery_level IS NULL OR\n    (end_position.battery_level - end_position.usable_battery_level) = 0 \n  ) AS is_sufficiently_precise,\n  NULLIF(GREATEST(start_ideal_range_km - end_ideal_range_km, 0), 0) AS range_diff,\n  date_trunc('month', (start_date::TIMESTAMP WITHOUT TIME ZONE) AT TIME ZONE '$timezone') as local_period,\n  drives.*\nFROM drives\n  LEFT JOIN positions start_position ON start_position_id = start_position.id\n  LEFT JOIN positions end_position ON end_position_id = end_position.id)\nSELECT\n  EXTRACT(EPOCH FROM date_trunc('month', local_period))*1000 AS date_from,\n  EXTRACT(EPOCH FROM date_trunc('month', local_period + ('1 ' || 'month')::INTERVAL))*1000 AS date_to,\n  CASE 'month'\n    WHEN 'month' THEN to_char(local_period, 'YYYY Month')\n    WHEN 'year' THEN to_char(local_period, 'YYYY')\n    WHEN 'week' THEN 'week ' || to_char(local_period, 'WW') || ' starting ' || to_char(local_period, 'YYYY-MM-DD')\n    ELSE to_char(local_period, 'YYYY-MM-DD')\n  END AS display,\n  local_period AS date,\n  convert_km(max(end_km)::integer - min(start_km)::integer, '$length_unit') AS sum_distance_$length_unit,\n  convert_celsius(avg(outside_temp_avg), '$temp_unit') AS avg_outside_temp_$temp_unit,\n  sum(distance)/sum(range_diff) AS efficiency\nFROM data WHERE\n  car_id = $car_id\nGROUP BY date\nORDER BY date DESC",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "start_km"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "drives",
+              "timeColumn": "start_date",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            },
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "TeslaMate"
+              },
+              "format": "table",
+              "group": [],
+              "hide": false,
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "WITH data AS (\n  SELECT\n    charging_processes.*,\n    date_trunc('month', (start_date::TIMESTAMP WITHOUT TIME ZONE) AT TIME ZONE '$timezone') as local_period\n    FROM charging_processes)\nSELECT\n  EXTRACT(EPOCH FROM date_trunc('month', local_period))*1000 AS date_from,\n  EXTRACT(EPOCH FROM date_trunc('month', local_period + ('1 ' || 'month')::INTERVAL))*1000 AS date_to,\n  CASE 'month'\n    WHEN 'month' THEN to_char(local_period, 'YYYY Month')\n    WHEN 'year' THEN to_char(local_period, 'YYYY')\n    WHEN 'week' THEN 'week ' || to_char(local_period, 'WW') || ' starting ' || to_char(local_period, 'YYYY-MM-DD')\n    ELSE to_char(local_period, 'YYYY-MM-DD')\n  END AS display,\n  local_period AS date,\n  sum(greatest(charge_energy_added,charge_energy_used)) AS sum_consumption_kwh,\n  sum(greatest(charge_energy_added,charge_energy_used)) / count(*) AS avg_consumption_kwh,\n  sum(cost) AS cost_charges,\n  count(*) AS cnt_charges\nFROM data WHERE\n  car_id = $car_id AND\n  (charge_energy_added IS NULL OR charge_energy_added > 0.1)\nGROUP BY date\nORDER BY date",
+              "refId": "B",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            },
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "TeslaMate"
+              },
+              "format": "table",
+              "group": [],
+              "hide": false,
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "WITH data AS (\n  SELECT\n    drives.*,\n    date_trunc('month', (start_date::TIMESTAMP WITHOUT TIME ZONE) AT TIME ZONE '$timezone') as local_period\n  FROM drives)\nSELECT\n  EXTRACT(EPOCH FROM date_trunc('month', local_period))*1000 AS date_from,\n  EXTRACT(EPOCH FROM date_trunc('month', local_period + ('1 ' || 'month')::INTERVAL))*1000 AS date_to,\n  CASE 'month'\n    WHEN 'month' THEN to_char(local_period, 'YYYY Month')\n    WHEN 'year' THEN to_char(local_period, 'YYYY')\n    WHEN 'week' THEN 'week ' || to_char(local_period, 'WW') || ' starting ' || to_char(local_period, 'YYYY-MM-DD')\n    ELSE to_char(local_period, 'YYYY-MM-DD')\n  END AS display,\n  local_period AS date,\n  sum(GREATEST(start_[[preferred_range]]_range_km - end_[[preferred_range]]_range_km, 0) * car.efficiency * 1000) / \n  convert_km(sum(distance)::numeric, '$length_unit') as efficiency_net_$length_unit\nFROM data\nJOIN cars car ON car.id = car_id\nWHERE\n  car_id = $car_id\nGROUP BY date\nORDER BY date",
+              "refId": "C",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "Stats per month",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "seriesToColumns",
+              "options": {
+                "byField": "date"
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "efficiency_charged_net_km_temp",
+                "binary": {
+                  "left": "sum_consumption_kwh",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "sum_distance_km"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": false
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "efficiency_charged_net_km",
+                "binary": {
+                  "left": "efficiency_charged_net_km_temp",
+                  "operator": "*",
+                  "reducer": "sum",
+                  "right": "1000"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "efficiency_charged_net_mi_temp",
+                "binary": {
+                  "left": "sum_consumption_kwh",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "sum_distance_mi"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": false
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "efficiency_charged_net_mi",
+                "binary": {
+                  "left": "efficiency_charged_net_mi_temp",
+                  "operator": "*",
+                  "reducer": "sum",
+                  "right": "1000"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "date": true,
+                  "date_from": false,
+                  "date_to": false,
+                  "efficiency_charged_net_km_temp": true,
+                  "efficiency_charged_net_mi_temp": true,
+                  "timezone": true
+                },
+                "indexByName": {
+                  "avg_consumption_kwh": 8,
+                  "avg_outside_temp_c": 3,
+                  "cnt_charges": 7,
+                  "cost_charges": 5,
+                  "date": 1,
+                  "date_from": 11,
+                  "date_to": 12,
+                  "display": 0,
+                  "efficiency": 4,
+                  "efficiency_charged_net_km": 10,
+                  "efficiency_charged_net_km_temp": 13,
+                  "efficiency_net_km": 9,
+                  "sum_consumption_kwh": 6,
+                  "sum_distance_km": 2
+                },
+                "renameByName": {
+                  "avg_consumption_kwh": "Avg charged",
+                  "avg_outside_temp_c": "",
+                  "cnt": "# drives",
+                  "cnt_charges": "# charges",
+                  "cost_charges": "Costs",
+                  "date": "Starting at",
+                  "date_from": "",
+                  "date_to": "",
+                  "display": "Period",
+                  "efficiency": "Efficiency",
+                  "efficiency_net_km": "",
+                  "sum_consumption_kwh": "Energy charged",
+                  "sum_distance_km": "",
+                  "sum_duration_h": "Time driven"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
       "title": "Monthly Stats",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "displayMode": "auto",
-            "filterable": false,
-            "inspect": false,
-            "width": 120
-          },
-          "mappings": [],
-          "noValue": "--",
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 50
-              },
-              {
-                "color": "green",
-                "value": 90
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time driven"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "clocks"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Period"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Trip",
-                    "url": "d/FkUpJpQZk/trip?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Efficiency"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percentunit"
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "color-text"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "percentage",
-                  "steps": [
-                    {
-                      "color": "super-light-orange",
-                      "value": null
-                    },
-                    {
-                      "color": "light-orange",
-                      "value": 65
-                    },
-                    {
-                      "color": "light-green",
-                      "value": 99
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Energy charged"
-            },
-            "properties": [
-              {
-                "id": "decimals",
-                "value": 1
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Charging stats",
-                    "url": "d/-pkIkhmRz/charging-stats?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
-                  }
-                ]
-              },
-              {
-                "id": "unit",
-                "value": "kwatth"
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Avg charged"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "kwatth"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Costs"
-            },
-            "properties": [
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "custom.align",
-                "value": "right"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "# charges"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Charges",
-                    "url": "d/TSmNYvRRk/charges?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
-                  }
-                ]
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "# drives"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Drives",
-                    "url": "d/Y8upc6ZRk/drives?orgId=1&from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/sum_distance_km/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "km"
-              },
-              {
-                "id": "displayName",
-                "value": "Distance"
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "basic"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "continuous-GrYlRd"
-                }
-              },
-              {
-                "id": "max",
-                "value": 8000
-              },
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/avg_outside_temp_c/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "celsius"
-              },
-              {
-                "id": "displayName",
-                "value": "Temperature"
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "color-text"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "super-light-blue",
-                      "value": null
-                    },
-                    {
-                      "color": "super-light-green",
-                      "value": 10
-                    },
-                    {
-                      "color": "super-light-red",
-                      "value": 20
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/sum_distance_mi/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "mi"
-              },
-              {
-                "id": "displayName",
-                "value": "Distance"
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "basic"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "continuous-GrYlRd"
-                }
-              },
-              {
-                "id": "max",
-                "value": 8000
-              },
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/efficiency_net_mi/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Avg consumption (drives)"
-              },
-              {
-                "id": "unit",
-                "value": "Wh/mi"
-              },
-              {
-                "id": "custom.width",
-                "value": 200
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/efficiency_charged_net_mi/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Avg consumption (charges)"
-              },
-              {
-                "id": "unit",
-                "value": "Wh/mi"
-              },
-              {
-                "id": "custom.width",
-                "value": 200
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.* at/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dateTimeAsSystem"
-              },
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/efficiency_net_km/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Avg consumption (drives)"
-              },
-              {
-                "id": "unit",
-                "value": "Wh/km"
-              },
-              {
-                "id": "custom.width",
-                "value": 200
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/efficiency_charged_net_km/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Avg consumption (charges)"
-              },
-              {
-                "id": "unit",
-                "value": "Wh/km"
-              },
-              {
-                "id": "custom.width",
-                "value": 200
-              },
-              {
-                "id": "noValue",
-                "value": "--"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "NaN": {
-                        "index": 0,
-                        "text": "--"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/avg_outside_temp_f/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Temperature"
-              },
-              {
-                "id": "unit",
-                "value": "fahrenheit"
-              },
-              {
-                "id": "custom.align",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date_from"
-            },
-            "properties": [
-              {
-                "id": "custom.hidden",
-                "value": true
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "date_to"
-            },
-            "properties": [
-              {
-                "id": "custom.hidden",
-                "value": true
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 15,
-        "w": 24,
-        "x": 0,
-        "y": 24
-      },
-      "id": 58,
-      "maxPerRow": 2,
-      "options": {
-        "footer": {
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "frameIndex": 1,
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "8.5.15",
-      "repeatDirection": "h",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH data AS (\nSELECT\n  duration_min > 1 AND\n  distance > 1 AND\n  ( \n    start_position.usable_battery_level IS NULL OR\n    (end_position.battery_level - end_position.usable_battery_level) = 0 \n  ) AS is_sufficiently_precise,\n  NULLIF(GREATEST(start_ideal_range_km - end_ideal_range_km, 0), 0) AS range_diff,\n  date_trunc('month', (start_date::TIMESTAMP WITHOUT TIME ZONE) AT TIME ZONE '$timezone') as local_period,\n  drives.*\nFROM drives\n  LEFT JOIN positions start_position ON start_position_id = start_position.id\n  LEFT JOIN positions end_position ON end_position_id = end_position.id)\nSELECT\n  EXTRACT(EPOCH FROM date_trunc('month', local_period))*1000 AS date_from,\n  EXTRACT(EPOCH FROM date_trunc('month', local_period + ('1 ' || 'month')::INTERVAL))*1000 AS date_to,\n  CASE 'month'\n    WHEN 'month' THEN to_char(local_period, 'YYYY Month')\n    WHEN 'year' THEN to_char(local_period, 'YYYY')\n    WHEN 'week' THEN 'week ' || to_char(local_period, 'WW') || ' starting ' || to_char(local_period, 'YYYY-MM-DD')\n    ELSE to_char(local_period, 'YYYY-MM-DD')\n  END AS display,\n  local_period AS date,\n  convert_km(max(end_km)::integer - min(start_km)::integer, '$length_unit') AS sum_distance_$length_unit,\n  convert_celsius(avg(outside_temp_avg), '$temp_unit') AS avg_outside_temp_$temp_unit,\n  sum(distance)/sum(range_diff) AS efficiency\nFROM data WHERE\n  car_id = $car_id\nGROUP BY date\nORDER BY date DESC",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "start_km"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "drives",
-          "timeColumn": "start_date",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH data AS (\n  SELECT\n    charging_processes.*,\n    date_trunc('month', (start_date::TIMESTAMP WITHOUT TIME ZONE) AT TIME ZONE '$timezone') as local_period\n    FROM charging_processes)\nSELECT\n  EXTRACT(EPOCH FROM date_trunc('month', local_period))*1000 AS date_from,\n  EXTRACT(EPOCH FROM date_trunc('month', local_period + ('1 ' || 'month')::INTERVAL))*1000 AS date_to,\n  CASE 'month'\n    WHEN 'month' THEN to_char(local_period, 'YYYY Month')\n    WHEN 'year' THEN to_char(local_period, 'YYYY')\n    WHEN 'week' THEN 'week ' || to_char(local_period, 'WW') || ' starting ' || to_char(local_period, 'YYYY-MM-DD')\n    ELSE to_char(local_period, 'YYYY-MM-DD')\n  END AS display,\n  local_period AS date,\n  sum(greatest(charge_energy_added,charge_energy_used)) AS sum_consumption_kwh,\n  sum(greatest(charge_energy_added,charge_energy_used)) / count(*) AS avg_consumption_kwh,\n  sum(cost) AS cost_charges,\n  count(*) AS cnt_charges\nFROM data WHERE\n  car_id = $car_id AND\n  (charge_energy_added IS NULL OR charge_energy_added > 0.1)\nGROUP BY date\nORDER BY date",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH data AS (\n  SELECT\n    drives.*,\n    date_trunc('month', (start_date::TIMESTAMP WITHOUT TIME ZONE) AT TIME ZONE '$timezone') as local_period\n  FROM drives)\nSELECT\n  EXTRACT(EPOCH FROM date_trunc('month', local_period))*1000 AS date_from,\n  EXTRACT(EPOCH FROM date_trunc('month', local_period + ('1 ' || 'month')::INTERVAL))*1000 AS date_to,\n  CASE 'month'\n    WHEN 'month' THEN to_char(local_period, 'YYYY Month')\n    WHEN 'year' THEN to_char(local_period, 'YYYY')\n    WHEN 'week' THEN 'week ' || to_char(local_period, 'WW') || ' starting ' || to_char(local_period, 'YYYY-MM-DD')\n    ELSE to_char(local_period, 'YYYY-MM-DD')\n  END AS display,\n  local_period AS date,\n  sum(GREATEST(start_[[preferred_range]]_range_km - end_[[preferred_range]]_range_km, 0) * car.efficiency * 1000) / \n  convert_km(sum(distance)::numeric, '$length_unit') as efficiency_net_$length_unit\nFROM data\nJOIN cars car ON car.id = car_id\nWHERE\n  car_id = $car_id\nGROUP BY date\nORDER BY date",
-          "refId": "C",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Stats per month",
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "date"
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "efficiency_charged_net_km_temp",
-            "binary": {
-              "left": "sum_consumption_kwh",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "sum_distance_km"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "efficiency_charged_net_km",
-            "binary": {
-              "left": "efficiency_charged_net_km_temp",
-              "operator": "*",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "efficiency_charged_net_mi_temp",
-            "binary": {
-              "left": "sum_consumption_kwh",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "sum_distance_mi"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "efficiency_charged_net_mi",
-            "binary": {
-              "left": "efficiency_charged_net_mi_temp",
-              "operator": "*",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "date": true,
-              "date_from": false,
-              "date_to": false,
-              "efficiency_charged_net_km_temp": true,
-              "efficiency_charged_net_mi_temp": true,
-              "timezone": true
-            },
-            "indexByName": {
-              "avg_consumption_kwh": 8,
-              "avg_outside_temp_c": 3,
-              "cnt_charges": 7,
-              "cost_charges": 5,
-              "date": 1,
-              "date_from": 11,
-              "date_to": 12,
-              "display": 0,
-              "efficiency": 4,
-              "efficiency_charged_net_km": 10,
-              "efficiency_charged_net_km_temp": 13,
-              "efficiency_net_km": 9,
-              "sum_consumption_kwh": 6,
-              "sum_distance_km": 2
-            },
-            "renameByName": {
-              "avg_consumption_kwh": "Avg charged",
-              "avg_outside_temp_c": "",
-              "cnt": "# drives",
-              "cnt_charges": "# charges",
-              "cost_charges": "Costs",
-              "date": "Starting at",
-              "date_from": "",
-              "date_to": "",
-              "display": "Period",
-              "efficiency": "Efficiency",
-              "efficiency_net_km": "",
-              "sum_consumption_kwh": "Energy charged",
-              "sum_distance_km": "",
-              "sum_duration_h": "Time driven"
-            }
-          }
-        }
-      ],
-      "type": "table"
     }
   ],
   "refresh": "",
@@ -2935,6 +2937,25 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
+        "definition": "SELECT convert_km((max(odometer) - min(odometer))::numeric, '$length_unit')\nfrom positions where car_id = $car_id AND $__timeFilter(date)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "distance_driven",
+        "options": [],
+        "query": "SELECT convert_km((max(odometer) - min(odometer))::numeric, '$length_unit')\nfrom positions where car_id = $car_id AND $__timeFilter(date)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
         "definition": "select unit_of_temperature from settings limit 1;",
         "hide": 2,
         "includeAll": false,
@@ -2991,6 +3012,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
