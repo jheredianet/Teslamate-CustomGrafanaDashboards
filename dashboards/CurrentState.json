@@ -71,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1680975841806,
+  "iteration": 1681676187987,
   "links": [
     {
       "icon": "dashboard",
@@ -1757,25 +1757,6 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "WITH Charges AS (\n    SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1, MAX(c.usable_battery_level) - MIN(c.usable_battery_level))) AS bc\n    FROM charging_processes cp INNER JOIN charges c ON cp.id = c.charging_process_id\n    WHERE cp.car_id = $car_id AND cp.charge_energy_added > $DiscardValue\n    GROUP BY cp.id\n    ORDER BY cp.end_date DESC\n),\nlastTop AS (\n    SELECT * FROM Charges LIMIT $DiscardValue\n)\nSELECT AVG(bc) FROM lastTop;",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "BatteryCapacity",
-        "options": [],
-        "query": "WITH Charges AS (\n    SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1, MAX(c.usable_battery_level) - MIN(c.usable_battery_level))) AS bc\n    FROM charging_processes cp INNER JOIN charges c ON cp.id = c.charging_process_id\n    WHERE cp.car_id = $car_id AND cp.charge_energy_added > $DiscardValue\n    GROUP BY cp.id\n    ORDER BY cp.end_date DESC\n),\nlastTop AS (\n    SELECT * FROM Charges LIMIT $DiscardValue\n)\nSELECT AVG(bc) FROM lastTop;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "postgres",
-          "uid": "TeslaMate"
-        },
         "definition": "select unit_of_pressure from settings limit 1;",
         "hide": 2,
         "includeAll": false,
@@ -1842,6 +1823,6 @@
   "timezone": "",
   "title": "Current State",
   "uid": "jchmo4BNRkZz",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
