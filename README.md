@@ -82,17 +82,25 @@ git -C ~/Teslamate-CustomGrafanaDashboards pull
 
 - Then **restart** Grafana container (docker-compose restart grafana)
 
+## How to use these Custom Dashboards
+
+In order to use these dashboards, once imported, you may want to go to the Grafana "Browse" option (from the left vertical bar), from there you will see a new folder with the imported dashboards.
+
+![Browse](./screenshots/help/browseoption.png) ![Custom Dashboards](./screenshots/help/customdasboardfolder.png)
+
+This Custom Dashboards have a special label so they don't get mixed up with the Teslamate defaults dashboards to distinguish easier and group together. When you are in a Custom Dashboard you will see in the upper right corner, a drop-down button from  you may access the rest dashboards as well.
+
+![DropDown](./screenshots/help/dropdownbutton.png)
 ___
 
 ## How to manually import these custom dashboards
 
-The following steps let you import the JSON files into your setup:
+The following steps let you import the JSON files into your setup if you don't want to auto-import them:
 
 - On Grafana (from Teslamate instance), Browse Dashboards then Import...
 - Upload JSON file or import via panel json by pasting the raw content of te JSON file.
 - On the next screen you may name the dashboard as you wish or accept the suggested one.
 - Try to keep UID as it is, because it could be linked inside the dashboard and to avoid duplicates UIDs.
-- Then select the appropiate Teslamate datasource from the available droplist.
 - Finally, press the "Import" button
 
 ___
@@ -203,7 +211,7 @@ Do not take the dashboards much less upload or merge them to other repositories 
 |     |     |
 | --- | --- |
 | If you like my work and want to support me, buying me a coffee would be greatly appreciated! Your support helps me to keep creating and improving these dashboards. Thank you! | [![Paypal Donate](https://img.shields.io/badge/Donate-PayPal-ff69b4.svg)](https://www.paypal.com/donate/?business=MAWY99TACEXSU&no_recurring=0&currency_code=EUR) |
-| Other way to support me is to use [my referral link](https://ts.la/juancarlos32618) to purchase a Tesla product and get Credits you can redeem for exclusive awards like Supercharging miles, merchandise, and accessories. | [![Tesla referral link](./screenshots/tesla.png)](https://ts.la/juancarlos32618) |
+| Other way to support me is to use [my referral link](https://ts.la/juancarlos32618) to purchase a Tesla product and get Credits you can redeem for exclusive awards like Supercharging miles, merchandise, and accessories. | [![Tesla referral link](./screenshots/help/tesla.png)](https://ts.la/juancarlos32618) |
 |     |     |
 
 ## Credits
