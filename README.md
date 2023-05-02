@@ -225,7 +225,7 @@ With great pride, I want to announce that this project has been considered among
 
 [TeslaMate electric vehicle monitoring dashboard (Juan Carlos Heredia)](https://grafana.com/golden-grot-awards)
 
-[TeslaMate electric vehicle monitoring dashboard (Juan Carlos Heredia)](https://i.imgur.com/uVl0yuX.png)
+[![TeslaMate electric vehicle monitoring dashboard (Juan Carlos Heredia)](https://i.imgur.com/uVl0yuX.png)](https://grafana.com/golden-grot-awards)
 
 ## License
 
