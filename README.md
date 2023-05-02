@@ -219,6 +219,14 @@ Do not take the dashboards much less upload or merge them to other repositories 
 - Author: [Juan Carlos Heredia](https://infoinnova.net/contacto/)
 - Based on/forked from [Adrian Kumpf](https://github.com/adriankumpf/teslamate) original code, with improvement of custom Grafana Dashboards (see [contributions history](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/graphs/contributors)).
 
+## Grafana Golden Grot Awards
+
+With great pride, I want to announce that this project has been considered among the 5 finalists in the Grafana Golden Grot Awards, celebrating a decade of Grafana dashboards. If you like this project please, Vote now! Polls close at 11:59 p.m. PDT on Friday, May 5.
+
+[TeslaMate electric vehicle monitoring dashboard (Juan Carlos Heredia)](https://grafana.com/golden-grot-awards)
+
+[TeslaMate electric vehicle monitoring dashboard (Juan Carlos Heredia)](https://i.imgur.com/uVl0yuX.png)
+
 ## License
 
 Licensed under the [MIT license](./LICENSE).
