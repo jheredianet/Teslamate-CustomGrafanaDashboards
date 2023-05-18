@@ -221,9 +221,7 @@ Do not take the dashboards much less upload or merge them to other repositories 
 
 ## Grafana Golden Grot Awards
 
-With great pride, I want to announce that this project has been considered among the 5 finalists in the Grafana Golden Grot Awards, celebrating a decade of Grafana dashboards. If you like this project please, Vote now! Polls close at 11:59 p.m. PDT on Friday, May 5.
-
-[TeslaMate electric vehicle monitoring dashboard (Juan Carlos Heredia)](https://grafana.com/golden-grot-awards)
+With great pride, I want to share with you that this project has been considered among the 5 finalists in the Grafana Golden Grot Awards (this year), celebrating a decade of Grafana dashboards.
 
 [![TeslaMate electric vehicle monitoring dashboard (Juan Carlos Heredia)](https://i.imgur.com/uVl0yuX.png)](https://grafana.com/golden-grot-awards)
 
