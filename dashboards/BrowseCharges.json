@@ -49,7 +49,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1684417207247,
+  "iteration": 1684419678936,
   "links": [
     {
       "icon": "dashboard",
@@ -1403,10 +1403,10 @@
         "current": {
           "selected": true,
           "text": [
-            "DC"
+            "All"
           ],
           "value": [
-            "DC"
+            "$__all"
           ]
         },
         "hide": 0,
@@ -1416,7 +1416,7 @@
         "name": "charge_type",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "All",
             "value": "$__all"
           },
@@ -1426,7 +1426,7 @@
             "value": "AC"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "DC",
             "value": "DC"
           }
