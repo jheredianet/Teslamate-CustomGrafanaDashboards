@@ -49,7 +49,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1678742770176,
+  "iteration": 1684419678936,
   "links": [
     {
       "icon": "dashboard",
@@ -97,9 +97,11 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
+            "align": "center",
             "displayMode": "auto",
-            "inspect": false
+            "filterable": false,
+            "inspect": false,
+            "minWidth": 150
           },
           "decimals": 2,
           "displayName": "",
@@ -148,8 +150,8 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 180
+                "id": "custom.minWidth",
+                "value": 160
               }
             ]
           },
@@ -172,8 +174,8 @@
                 "value": 2
               },
               {
-                "id": "custom.width",
-                "value": 100
+                "id": "custom.minWidth",
+                "value": 80
               }
             ]
           },
@@ -195,12 +197,12 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 65
-              },
-              {
                 "id": "decimals",
                 "value": 0
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 62
               }
             ]
           },
@@ -222,12 +224,12 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 65
-              },
-              {
                 "id": "decimals",
                 "value": 0
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 62
               }
             ]
           },
@@ -253,8 +255,8 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 90
+                "id": "custom.minWidth",
+                "value": 75
               }
             ]
           },
@@ -304,8 +306,8 @@
                 }
               },
               {
-                "id": "custom.width",
-                "value": 80
+                "id": "custom.minWidth",
+                "value": 70
               }
             ]
           },
@@ -341,12 +343,12 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 80
-              },
-              {
                 "id": "noValue",
                 "value": "-"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 65
               }
             ]
           },
@@ -429,7 +431,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 200
+                "value": 300
               }
             ]
           },
@@ -451,12 +453,12 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 80
-              },
-              {
                 "id": "decimals",
                 "value": 0
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 90
               }
             ]
           },
@@ -506,8 +508,8 @@
                 }
               },
               {
-                "id": "custom.width",
-                "value": 80
+                "id": "custom.minWidth",
+                "value": 70
               }
             ]
           },
@@ -529,12 +531,12 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 80
-              },
-              {
                 "id": "decimals",
                 "value": 0
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 70
               }
             ]
           },
@@ -560,8 +562,8 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 80
+                "id": "custom.minWidth",
+                "value": 70
               }
             ]
           },
@@ -583,12 +585,12 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 80
-              },
-              {
                 "id": "decimals",
                 "value": 0
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 90
               }
             ]
           },
@@ -610,8 +612,8 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 100
+                "id": "custom.minWidth",
+                "value": 70
               }
             ]
           },
@@ -660,8 +662,8 @@
                 "id": "custom.align"
               },
               {
-                "id": "custom.width",
-                "value": 100
+                "id": "custom.minWidth",
+                "value": 85
               }
             ]
           },
@@ -680,7 +682,8 @@
                 "value": "percentunit"
               },
               {
-                "id": "custom.align"
+                "id": "custom.align",
+                "value": "auto"
               },
               {
                 "id": "decimals",
@@ -699,6 +702,10 @@
               {
                 "id": "max",
                 "value": 1
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 100
               }
             ]
           },
@@ -760,11 +767,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Cost per kWh"
-              },
-              {
-                "id": "custom.width",
-                "value": 100
+                "value": "Cost/kWh"
               },
               {
                 "id": "decimals",
@@ -773,18 +776,14 @@
               {
                 "id": "noValue",
                 "value": "-"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "address"
-            },
-            "properties": [
+              },
               {
-                "id": "custom.width",
-                "value": 299
+                "id": "custom.minWidth",
+                "value": 80
+              },
+              {
+                "id": "custom.align",
+                "value": "right"
               }
             ]
           },
@@ -797,10 +796,6 @@
               {
                 "id": "displayName",
                 "value": "Type"
-              },
-              {
-                "id": "custom.width",
-                "value": 40
               },
               {
                 "id": "custom.displayMode",
@@ -816,6 +811,10 @@
                   "fixedColor": "super-light-blue",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 40
               }
             ]
           }
@@ -917,7 +916,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 8,
+        "w": 7,
         "x": 0,
         "y": 21
       },
@@ -1005,8 +1004,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 8,
-        "x": 8,
+        "w": 7,
+        "x": 7,
         "y": 21
       },
       "id": 12,
@@ -1094,8 +1093,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 8,
-        "x": 16,
+        "w": 5,
+        "x": 14,
         "y": 21
       },
       "id": 14,
@@ -1134,6 +1133,96 @@
             "include": {
               "names": [
                 "cost"
+              ]
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "m"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 19,
+        "y": 21
+      },
+      "id": 15,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 6,
+          "refId": "A"
+        }
+      ],
+      "title": "Average Duration",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "duration_min"
               ]
             }
           }
@@ -1301,8 +1390,8 @@
         "options": [
           {
             "selected": true,
-            "text": "Endesa",
-            "value": "Endesa"
+            "text": "",
+            "value": ""
           }
         ],
         "query": "",
@@ -1312,7 +1401,7 @@
       {
         "allValue": "",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -1390,7 +1479,7 @@
     ]
   },
   "time": {
-    "from": "now-6M",
+    "from": "now-1y",
     "to": "now"
   },
   "timepicker": {
@@ -1421,6 +1510,6 @@
   "timezone": "",
   "title": "Browse Charges",
   "uid": "jchmTSmNYvRRk",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
