@@ -103,6 +103,11 @@ The following steps let you import the JSON files into your setup if you don't w
 - Try to keep UID as it is, because it could be linked inside the dashboard and to avoid duplicates UIDs.
 - Finally, press the "Import" button
 
+## Tips on Dashboards
+
+Have in mind that each dashboard may have an "Information" icon (as shown in the following image). If you point on it, you'll have aditional information on the current panel. Try to check it while you are browsing or analizing your data.
+
+![InfoIcon](./screenshots/help/infoicon.png)
 ___
 
 ## Screenshots
@@ -176,6 +181,12 @@ This dasboard is just to see the current state of the car with the last data rec
 Additionally, you can see the states stats of the selected period.
 
 ![Current State](./screenshots/CurrentState.png)
+
+### [Incomplete Data](./dashboards/IncompleteData.json)
+
+With this dashboard you may find your incomplete drives or charges that have been interrupted by the connection or any other issue. So you may follow the official guide to fix it.
+
+![Incomplete Data](./screenshots/IncompleteData.png)
 
 ### [Mileage Stats](./dashboards/MileageStats.json)
 
