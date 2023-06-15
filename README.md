@@ -103,6 +103,11 @@ The following steps let you import the JSON files into your setup if you don't w
 - Try to keep UID as it is, because it could be linked inside the dashboard and to avoid duplicates UIDs.
 - Finally, press the "Import" button
 
+## Tips on Dashboards
+
+Have in mind that each dashboard may have an "Information" icon (as shown in the following image). If you point on it, you'll have aditional information on the current panel. Try to check it while you are browsing or analizing your data.
+
+![InfoIcon](./screenshots/help/infoicon.png)
 ___
 
 ## Screenshots
@@ -112,7 +117,8 @@ ___
 This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate.
 So, the more data you have logged from your brand new car the better.
 
-**Degradation** is just an estimated value to have a reference, measured on **usable battery level** of every charging session in the last month, with enough kWh added (in order to avoid dirty data from the sample), calculated according to the rated efficiency of the car. On the other hand, you'll see a plotly chart that represents the evolution of the car's battery capacity during its entire lifetime.
+**Degradation** is just an estimated value to have a reference, measured on **usable battery level** of every charging session in the last month, with enough kWh added (in order to avoid dirty data from the sample), calculated according to the rated efficiency of the car. So, it's important that you have at least on charge session with enough kWh in the last month.
+On the other hand, you'll see a plotly chart that represents the evolution of the car's battery capacity during its entire lifetime.
 
 Finally, there is an important improvement for those who have not used Teslamate since they got their car, or for those who have bought it second hand. Now it is possible to set the max range to 100% and the battery capacity of the car battery when it was new in order to get an accurate and better estimation.
 
@@ -175,6 +181,12 @@ This dasboard is just to see the current state of the car with the last data rec
 Additionally, you can see the states stats of the selected period.
 
 ![Current State](./screenshots/CurrentState.png)
+
+### [Incomplete Data](./dashboards/IncompleteData.json)
+
+With this dashboard you may find your incomplete drives or charges that have been interrupted by the connection or any other issue. So you may follow the official guide to fix it.
+
+![Incomplete Data](./screenshots/IncompleteData.png)
 
 ### [Mileage Stats](./dashboards/MileageStats.json)
 

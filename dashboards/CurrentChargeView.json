@@ -1852,13 +1852,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT \n  CASE WHEN end_date IS NULL THEN 'now&refresh=30s' ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END\n  FROM charging_processes\n  WHERE id = $charging_processes",
+        "definition": "SELECT \n  CASE WHEN end_date IS NULL THEN 'now&refresh=10s' ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END\n  FROM charging_processes\n  WHERE id = $charging_processes",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "current_end_time",
         "options": [],
-        "query": "SELECT \n  CASE WHEN end_date IS NULL THEN 'now&refresh=30s' ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END\n  FROM charging_processes\n  WHERE id = $charging_processes",
+        "query": "SELECT \n  CASE WHEN end_date IS NULL THEN 'now&refresh=10s' ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END\n  FROM charging_processes\n  WHERE id = $charging_processes",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1873,6 +1873,7 @@
   },
   "timepicker": {
     "refresh_intervals": [
+      "10s",
       "30s",
       "1m",
       "5m",
