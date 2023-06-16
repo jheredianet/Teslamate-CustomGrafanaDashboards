@@ -184,7 +184,7 @@
             },
             "id": 10,
             "options": {
-                "content": "#### Incomplete Data\n\nFrom here you can check if you have incomplete data of **Drives** and **Charges**. If so you may follow the official guide to fix it at [Manually fixing data](https://docs.teslamate.org/docs/maintenance/manually_fixing_data)",
+                "content": "#### Incomplete Data\n\nFrom here you can check if you have incomplete data of **Drives** and **Charges**. If so, you may follow the official guide by <a href='https://docs.teslamate.org/docs/maintenance/manually_fixing_data' target='_blank'>Manually fixing data</a>",
                 "mode": "markdown"
             },
             "pluginVersion": "8.5.15",
