@@ -80,7 +80,17 @@ If you want to be sure that you are using the latest version of the Dashboards:
 git -C ~/Teslamate-CustomGrafanaDashboards pull
 ```
 
-- Then **restart** Grafana container (docker-compose restart grafana)
+- Then **restart** Grafana container
+
+```bash
+docker compose restart grafana  
+```
+
+Or (if you are using a previous docker version)
+
+```bash
+docker-compose restart grafana  
+```
 
 ## How to use these Custom Dashboards
 
