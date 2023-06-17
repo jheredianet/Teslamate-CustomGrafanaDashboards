@@ -11,7 +11,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
+      "version": "8.5.26"
     },
     {
       "type": "panel",
@@ -29,7 +29,7 @@
       "type": "panel",
       "id": "pr0ps-trackmap-panel",
       "name": "TrackMap",
-      "version": "2.1.3"
+      "version": "2.1.4"
     },
     {
       "type": "panel",
@@ -71,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1681676187987,
+  "iteration": 1687016376857,
   "links": [
     {
       "icon": "dashboard",
@@ -157,7 +157,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -246,7 +246,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -370,7 +370,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -492,7 +492,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -590,7 +590,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -673,7 +673,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -847,7 +847,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -931,7 +931,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1015,7 +1015,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1100,7 +1100,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1356,7 +1356,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1460,7 +1460,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1769,25 +1769,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "postgres",
-          "uid": "TeslaMate"
-        },
-        "definition": "SELECT\n\tCEIL(efficiency * 100)\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "DiscardValue",
-        "options": [],
-        "query": "SELECT\n\tCEIL(efficiency * 100)\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
       }
     ]
   },
@@ -1823,6 +1804,6 @@
   "timezone": "",
   "title": "Current State",
   "uid": "jchmo4BNRkZz",
-  "version": 8,
+  "version": 9,
   "weekStart": ""
 }

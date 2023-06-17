@@ -62,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1686607468993,
+  "iteration": 1687016112935,
   "links": [
     {
       "icon": "dashboard",
@@ -2944,7 +2944,7 @@
         "name": "distance_driven",
         "options": [],
         "query": "SELECT convert_km((max(odometer) - min(odometer))::numeric, '$length_unit')\nfrom positions where car_id = $car_id AND $__timeFilter(date)",
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -3012,6 +3012,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }
