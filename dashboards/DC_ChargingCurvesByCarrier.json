@@ -1,0 +1,1053 @@
+{
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.15"
+    },
+    {
+      "type": "panel",
+      "id": "natel-plotly-panel",
+      "name": "Plotly",
+      "version": "0.0.7"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:75",
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "iteration": 1687041486682,
+  "links": [
+    {
+      "icon": "dashboard",
+      "tags": [],
+      "title": "TeslaMate",
+      "tooltip": "",
+      "type": "link",
+      "url": "[[base_url:raw]]"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "tags": [
+        "tesla"
+      ],
+      "title": "Dashboards",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "TeslamateCustomDashboards"
+      ],
+      "targetBlank": false,
+      "title": "Custom Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 20,
+        "x": 0,
+        "y": 0
+      },
+      "id": 32,
+      "links": [],
+      "pconfig": {
+        "fixScale": "",
+        "layout": {
+          "dragmode": "zoom",
+          "font": {
+            "family": "\"Open Sans\", Helvetica, Arial, sans-serif"
+          },
+          "hovermode": "closest",
+          "legend": {
+            "orientation": "h"
+          },
+          "showlegend": false,
+          "xaxis": {
+            "rangemode": "normal",
+            "showgrid": true,
+            "title": "SOC [%]",
+            "type": "linear",
+            "zeroline": false
+          },
+          "yaxis": {
+            "rangemode": "tozero",
+            "showgrid": true,
+            "title": "kW",
+            "type": "linear",
+            "zeroline": true
+          },
+          "zaxis": {
+            "rangemode": "normal",
+            "showgrid": true,
+            "type": "linear",
+            "zeroline": false
+          }
+        },
+        "loadFromCDN": false,
+        "settings": {
+          "displayModeBar": false,
+          "type": "scatter"
+        },
+        "showAnnotations": true,
+        "traces": [
+          {
+            "mapping": {
+              "color": "charging_process_id",
+              "text": "Charge",
+              "x": "SOC [%]",
+              "y": "Power [kW]"
+            },
+            "name": "Charge Curve",
+            "settings": {
+              "color_option": "ramp",
+              "line": {
+                "color": "#005f81",
+                "dash": "solid",
+                "shape": "linear",
+                "width": 6
+              },
+              "marker": {
+                "color": "#33B5E5",
+                "colorscale": "Electric",
+                "line": {
+                  "color": "#DDD",
+                  "width": 0
+                },
+                "showscale": false,
+                "size": 3,
+                "sizemin": 3,
+                "sizemode": "diameter",
+                "sizeref": 0.2,
+                "symbol": "diamond"
+              }
+            },
+            "show": {
+              "line": true,
+              "lines": false,
+              "markers": true
+            }
+          },
+          {
+            "mapping": {
+              "color": "charging_process_id",
+              "x": "B - SOC [%]",
+              "y": "B - Avg Power [kW]"
+            },
+            "name": "Median Power",
+            "settings": {
+              "color_option": "solid",
+              "line": {
+                "color": "#FF7383",
+                "dash": "solid",
+                "shape": "linear",
+                "width": 2
+              },
+              "marker": {
+                "color": "#33B5E5",
+                "colorscale": "Reds",
+                "line": {
+                  "color": "#DDD",
+                  "width": 0
+                },
+                "showscale": false,
+                "size": 2,
+                "sizemin": 3,
+                "sizemode": "diameter",
+                "sizeref": 0.2,
+                "symbol": "circle"
+              }
+            },
+            "show": {
+              "line": true,
+              "lines": true,
+              "markers": false
+            }
+          }
+        ]
+      },
+      "pluginVersion": "7.5.11",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  c.battery_level as \"B - SOC [%]\",\n  PERCENTILE_CONT(0.5) WITHIN GROUP(ORDER BY charger_power) as \"B - Avg Power [kW]\"\nFROM\n  charges c\nJOIN charging_processes p ON p.id = c.charging_process_id \nJOIN addresses a ON a.id = p.address_id\nLEFT JOIN geofences g ON g.id = p.geofence_id\nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\n AND c.fast_charger_present\n AND COALESCE(g.name, a.name) ILIKE '%$carrier%'\nGROUP BY battery_level",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "efficiency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "cars",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Charger Carrier Contains: $carrier",
+      "type": "natel-plotly-panel",
+      "version": 1
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 44,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH data AS (\r\nSELECT\r\n  COALESCE(g.name, a.name) name\r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id, g.name, a.name\r\n)\r\nSELECT name AS \"Charger Carrier\" FROM data GROUP BY name\r\n\r\n\r\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 16
+      },
+      "id": 35,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n AVG(p.charge_energy_added)\r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Avg. Energy Added",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 6,
+        "y": 16
+      },
+      "id": 36,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n AVG(p.charge_energy_used)\r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Avg. Energy Used",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "m"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 11,
+        "y": 16
+      },
+      "id": 34,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n AVG(duration_min)\r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Avg. Time",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 16
+      },
+      "id": 37,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n AVG(p.cost)\r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Avg. Cost",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 16
+      },
+      "id": 38,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.15",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH data AS (\r\nSELECT\r\n AVG(p.charge_energy_used) charge_energy_used, AVG(p.cost) cost \r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id\r\n)\r\nSELECT AVG(cost) / AVG(charge_energy_used) cost_kwh  FROM data",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Avg. Cost per kWh",
+      "transformations": [],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 42,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 24,
+            "x": 0,
+            "y": 21
+          },
+          "id": 40,
+          "options": {
+            "content": "#### DC Charing curves by Carrier\n\nTo analyse data with this dashboard, it's important that you \nhave Geo-Fences added related with the name of the carrier\nyou have recharged your car, or you may want to edit \nperiodically the **name** field of the **addresses** table,\nso that it contains its name. \n\nFor example, if **Teslamate** geolocates the name as \n*\"Esso Purley Way\"* you may modify it to \n*\"Esso Purley Way - IONITY\"* or *\"IONITY Esso Purley Way\"*, \nthen you can filter using\nthe textbox above as **IONITY** to show all the charging curves\nof all charging sessions at that carrier.",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.5.15",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "TeslaMate"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": false,
+              "rawSql": "SELECT\n  start_date AS \"time\",\n  start_km\nFROM drives\nWHERE\n  $__timeFilter(start_date)\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "start_km"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "drives",
+              "timeColumn": "start_date",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "type": "text"
+        }
+      ],
+      "title": "Help",
+      "type": "row"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [
+    "TeslamateCustomDashboards"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
+        "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Car",
+        "multi": false,
+        "name": "car_id",
+        "options": [],
+        "query": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
+        "definition": "select base_url from settings limit 1;",
+        "hide": 2,
+        "includeAll": false,
+        "label": "",
+        "multi": false,
+        "name": "base_url",
+        "options": [],
+        "query": "select base_url from settings limit 1;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "description": "Carrier Name",
+        "hide": 0,
+        "label": "Carrier",
+        "name": "carrier",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-10y",
+    "to": "now"
+  },
+  "timepicker": {
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "DC Charging Curves by Carrier",
+  "uid": "jchmXpkcccIkh",
+  "version": 3,
+  "weekStart": ""
+}
