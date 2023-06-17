@@ -192,6 +192,17 @@ Additionally, you can see the states stats of the selected period.
 
 ![Current State](./screenshots/CurrentState.png)
 
+### [DC Charging Curves By Carrier](./dashboards/DC_ChargingCurvesByCarrier.json)
+
+This dasboard is browse your DC charge sessions by charger carriers.
+
+It's important that you have Geo-Fences added related with the name of the carrier
+you have recharged your car, or you may want to edit periodically the **name** field of the **addresses** table, so that it contains its name.
+
+For example, if **Teslamate** geolocates the name as *"Esso Purley Way"* you may modify it to *"Esso Purley Way - IONITY"* or *"IONITY Esso Purley Way"*, then you can filter using the filter textbox **IONITY** to show all the charging curves of all charging sessions at that carrier.
+
+![DC Charging Curves By Carrier](./screenshots/DC_ChargingCurvesByCarrier.png)
+
 ### [Incomplete Data](./dashboards/IncompleteData.json)
 
 With this dashboard you may find your incomplete drives or charges that have been interrupted by the connection or any other issue. So you may follow the official guide to fix it.
