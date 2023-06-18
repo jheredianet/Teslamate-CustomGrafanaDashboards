@@ -354,7 +354,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH data AS (\r\nSELECT\r\n  COALESCE(g.name, a.name) name\r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id, g.name, a.name\r\n)\r\nSELECT name AS \"Charger Carrier\" FROM data GROUP BY name\r\n\r\n\r\n",
+          "rawSql": "WITH data AS (\r\nSELECT\r\n  COALESCE(g.name, a.name) AS name\r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id, g.name, a.name\r\n)\r\nSELECT name AS \"Charger Carrier\" FROM data GROUP BY name\r\n\r\n\r\n",
           "refId": "A",
           "select": [
             [
@@ -854,7 +854,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH data AS (\r\nSELECT\r\n AVG(p.charge_energy_used) charge_energy_used, AVG(p.cost) cost \r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id\r\n)\r\nSELECT AVG(cost) / AVG(charge_energy_used) cost_kwh  FROM data",
+          "rawSql": "WITH data AS (\r\nSELECT\r\n AVG(p.charge_energy_used) AS charge_energy_used, AVG(p.cost) AS cost \r\nFROM charging_processes p\r\n    LEFT JOIN charges c ON c.charging_process_id = p.id\r\n    LEFT JOIN addresses a ON a.id = p.address_id\r\n    LEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  p.car_id = $car_id \r\n  AND $__timeFilter(start_date)\r\n  AND c.fast_charger_present\r\n  AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY p.id\r\n)\r\nSELECT AVG(cost) / AVG(charge_energy_used) cost_kwh  FROM data",
           "refId": "A",
           "select": [
             [
