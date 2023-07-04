@@ -71,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1687016376857,
+  "iteration": 1688510255130,
   "links": [
     {
       "icon": "dashboard",
@@ -1640,7 +1640,7 @@
       "type": "state-timeline"
     }
   ],
-  "refresh": false,
+  "refresh": "30s",
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
@@ -1804,6 +1804,6 @@
   "timezone": "",
   "title": "Current State",
   "uid": "jchmo4BNRkZz",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }
