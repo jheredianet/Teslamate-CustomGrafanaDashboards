@@ -17,7 +17,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
+      "version": "8.5.26"
     },
     {
       "type": "panel",
@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1688509575235,
+  "iteration": 1688548740490,
   "links": [
     {
       "icon": "dashboard",
@@ -161,7 +161,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -306,7 +306,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -389,7 +389,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -466,7 +466,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
+      "description": "Estimated charging cycles are based on the whole energy added to the battery. So, the more data you logged the better. ",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -523,7 +523,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -651,7 +651,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -746,7 +746,7 @@
         },
         "showUnfilled": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -789,7 +789,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Estimated charging cycles are based on the whole energy added to the battery. So the more data you logged the better. \n",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -829,7 +829,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1052,7 +1052,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1169,7 +1169,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
