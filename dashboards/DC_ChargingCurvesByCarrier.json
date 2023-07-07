@@ -1029,7 +1029,7 @@
     ]
   },
   "time": {
-    "from": "now-10y",
+    "from": "now-6M",
     "to": "now"
   },
   "timepicker": {
@@ -1048,6 +1048,6 @@
   "timezone": "",
   "title": "DC Charging Curves by Carrier",
   "uid": "jchmXpkcccIkh",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }

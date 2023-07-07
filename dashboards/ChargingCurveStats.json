@@ -859,7 +859,7 @@
     ]
   },
   "time": {
-    "from": "now-10y",
+    "from": "now-6M",
     "to": "now"
   },
   "timepicker": {
@@ -878,6 +878,6 @@
   "timezone": "",
   "title": "Charging Curve Stats",
   "uid": "jchmXpkIkhmRz",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }
