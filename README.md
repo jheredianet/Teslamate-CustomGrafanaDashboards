@@ -235,7 +235,17 @@ Tip: On Grafana you can press "h" to get a keyboard shortcuts if you want to cha
 The following dashboards, queries and design are the result of many tests and hours of work.
 Feel free to take them for your own personal use.
 
-If you are able to contibute or improve this project just fork the repository and make a pull request. I'll really apreciate any enhancement or suggestion.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+If you are able to contibute or improve this project, please fork the repository and create a pull request. I'll really apreciate any enhancement or suggestion. Don't forget to give the project a star! Thanks again!
+
+### Steps to create a pull request
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/NewFeature`)
+3. Commit your Changes (`git commit -m 'Add some NewFeature'`)
+4. Push to the Branch (`git push origin feature/NewFeature`)
+5. Open a Pull Request
 
 Do not take the dashboards much less upload or merge them to other repositories as if the original idea were yours, nor do you share it on social media without mentioning the author. Please, **respect the ingenuity and work of others**. Enjoy!
 
