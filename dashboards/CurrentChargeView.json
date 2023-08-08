@@ -17,7 +17,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
+      "version": "8.5.26"
     },
     {
       "type": "datasource",
@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1681675891747,
+  "iteration": 1691491735775,
   "links": [
     {
       "asDropdown": true,
@@ -178,7 +178,7 @@
           "valueSize": 40
         }
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -296,7 +296,7 @@
           "valueSize": 40
         }
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -356,7 +356,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Load this dashboard to while you are in a charging sesion. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Charge\" button at the top right corner, to enter in Kiosk mode:\n\n- If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.\n\n- If you are just browsing (not charging) you will see the information of the last charge session.",
+      "description": "Load this dashboard to while you are in a charging session. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Charge\" button at the top right corner, to enter in Kiosk mode:\n\n- If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.\n\n- If you are just browsing (not charging) you will see the information of the last charge session.",
       "gridPos": {
         "h": 4,
         "w": 3,
@@ -365,10 +365,10 @@
       },
       "id": 42,
       "options": {
-        "content": "<!-- <div id=\"tp\" hidden>${tires_preasure}</div>\n<div id=\"tt\" hidden>${tires_temp}</div>\n<div id=\"is_charging\" hidden>${is_charging}</div>\n<div id=\"is_locked\" hidden>${is_locked}</div> -->\n<table style=\"margin-left:auto;margin-right:auto;\">\n    <tr style=\"text-align:center\">\n        <td><img src=\"https://i.imgur.com/bVfT1QW.gif\" id=\"imageBox\" style=\"max-width: 160px\"/></td>\n    </tr>\n</table>\n",
+        "content": "<center>\n<img src=\"https://raw.githubusercontent.com/jheredianet/Teslamate-CustomGrafanaDashboards/main/screenshots/help/BatteryCharging.gif\" />\n</center>",
         "mode": "html"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -481,7 +481,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "alias": "Elapsed Time",
@@ -649,7 +649,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -980,7 +980,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "alias": "Real",
@@ -1072,7 +1072,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "alias": "kWh Added",
@@ -1220,7 +1220,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "alias": "Real",
@@ -1394,7 +1394,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1475,7 +1475,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1569,7 +1569,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -1678,7 +1678,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "alias": "Real",
@@ -1887,6 +1887,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
