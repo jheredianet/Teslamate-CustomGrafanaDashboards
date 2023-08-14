@@ -69,7 +69,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1688549081559,
+  "iteration": 1692013378061,
   "links": [
     {
       "icon": "dashboard",
@@ -515,14 +515,37 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "efficiency_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
               }
             ]
           },
-          "unit": "Wh/km"
-        },
-        "overrides": []
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "efficiency_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 3,
@@ -557,7 +580,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $efficiency\nFROM settings\nWHERE id=1",
+          "rawSql": "SELECT\n\tCASE WHEN '$length_unit' = 'km' THEN $efficiency\n\t     WHEN '$length_unit' = 'mi' THEN $efficiency * 1.60934\n\tEND as \"efficiency_$length_unit\"\nFROM settings\nWHERE\tid = $car_id;\n",
           "refId": "A",
           "select": [
             [
@@ -581,7 +604,7 @@
           ]
         }
       ],
-      "title": "Rated Efficiency",
+      "title": "Current $preferred_range efficiency",
       "type": "stat"
     },
     {
@@ -1080,8 +1103,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#c7d0d9",
-                "value": null
+                "color": "#c7d0d9"
               }
             ]
           },
@@ -1091,7 +1113,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "odometer_km"
+              "options": "distance_km"
             },
             "properties": [
               {
@@ -1103,7 +1125,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "odometer_mi"
+              "options": "distance_mi"
             },
             "properties": [
               {
@@ -1159,7 +1181,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT max(odometer) - min(odometer) as distance\n  FROM positions\n  WHERE car_id = $car_id AND $__timeFilter(date)\n",
+          "rawSql": "SELECT convert_km((max(odometer) - min(odometer))::numeric, '$length_unit') as \"distance_$length_unit\"\n  FROM positions\n  WHERE car_id = $car_id AND $__timeFilter(date)",
           "refId": "A",
           "select": [
             [
@@ -1782,6 +1804,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
