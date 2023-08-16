@@ -70,7 +70,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1691491735775,
+  "iteration": 1692171606539,
   "links": [
     {
       "asDropdown": true,
@@ -365,7 +365,7 @@
       },
       "id": 42,
       "options": {
-        "content": "<center>\n<img src=\"https://raw.githubusercontent.com/jheredianet/Teslamate-CustomGrafanaDashboards/main/screenshots/help/BatteryCharging.gif\" />\n</center>",
+        "content": "<center>\n<img src=\"https://raw.githubusercontent.com/jheredianet/Teslamate-CustomGrafanaDashboards/main/screenshots/help/BatteryCharging.gif\"\nstyle=\"max-height: 125px\" />\n</center>",
         "mode": "html"
       },
       "pluginVersion": "8.5.26",
@@ -1795,13 +1795,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "WITH\naux\tAS\n(\n\tSELECT cp.car_id, cp.charge_energy_added / (cp.end_rated_range_km - cp.start_rated_range_km) * 100.0 AS rated_efficiency,\n\t\t(cp.end_rated_range_km - cp.start_rated_range_km) AS added_range_km\n\tFROM charging_processes cp\n\t\tJOIN (SELECT charging_process_id, MAX(date) as date\n\t\tFROM charges\n\t\tGROUP BY charging_process_id) AS last_charges\n\t\tON cp.id = last_charges.charging_process_id\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id AND c.date = last_charges.date\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.end_rated_range_km > cp.start_rated_range_km\n\tORDER BY cp.end_date DESC \n\tLIMIT 1\n),  \nCurrentCapacity\t AS\n(\n\tSELECT AVG(Capacity) AS CurrentCapacity FROM\n  (SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS Capacity\t\n    FROM charging_processes cp\n\t  INNER JOIN charges c\tON cp.id = c.charging_process_id\n    INNER JOIN aux ON cp.car_id = aux.car_id\n\t  WHERE cp.car_id = $car_id AND cp.charge_energy_added >= aux.rated_efficiency AND cp.end_date >= date_trunc('month', current_date - interval '1 month') \n    GROUP BY  cp.charge_energy_added, cp.end_date\n  ) AS lastEstimatedCapacity\n)\nSELECT CurrentCapacity FROM CurrentCapacity\t ",
+        "definition": "--- Extracted from Battery Health Dashboard",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "BatteryCapacity",
         "options": [],
-        "query": "WITH\naux\tAS\n(\n\tSELECT cp.car_id, cp.charge_energy_added / (cp.end_rated_range_km - cp.start_rated_range_km) * 100.0 AS rated_efficiency,\n\t\t(cp.end_rated_range_km - cp.start_rated_range_km) AS added_range_km\n\tFROM charging_processes cp\n\t\tJOIN (SELECT charging_process_id, MAX(date) as date\n\t\tFROM charges\n\t\tGROUP BY charging_process_id) AS last_charges\n\t\tON cp.id = last_charges.charging_process_id\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id AND c.date = last_charges.date\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.end_rated_range_km > cp.start_rated_range_km\n\tORDER BY cp.end_date DESC \n\tLIMIT 1\n),  \nCurrentCapacity\t AS\n(\n\tSELECT AVG(Capacity) AS CurrentCapacity FROM\n  (SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS Capacity\t\n    FROM charging_processes cp\n\t  INNER JOIN charges c\tON cp.id = c.charging_process_id\n    INNER JOIN aux ON cp.car_id = aux.car_id\n\t  WHERE cp.car_id = $car_id AND cp.charge_energy_added >= aux.rated_efficiency AND cp.end_date >= date_trunc('month', current_date - interval '1 month') \n    GROUP BY  cp.charge_energy_added, cp.end_date\n  ) AS lastEstimatedCapacity\n)\nSELECT CurrentCapacity FROM CurrentCapacity\t ",
+        "query": "SELECT AVG(Capacity) AS CurrentCapacity FROM\n  (SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS Capacity\t\n    FROM charging_processes cp\n\t  INNER JOIN charges c ON cp.id = c.charging_process_id\n\t  WHERE cp.car_id = $car_id AND \n            cp.charge_energy_added >= (SELECT efficiency FROM cars WHERE id = 1) * 100.0\n    GROUP BY  cp.charge_energy_added, cp.end_date\n    ORDER BY cp.end_date DESC \n    LIMIT 5) AS lastEstimatedCapacity;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1887,6 +1887,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
