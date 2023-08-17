@@ -270,7 +270,7 @@ With great pride, I want to share with you that this project has been considered
 
 ## License
 
-Licensed under the [MIT license](./LICENSE).
+Licensed under the [GPL-3.0 license](./LICENSE).
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
