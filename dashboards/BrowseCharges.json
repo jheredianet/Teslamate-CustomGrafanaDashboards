@@ -1479,7 +1479,7 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-1M",
     "to": "now"
   },
   "timepicker": {
@@ -1510,6 +1510,6 @@
   "timezone": "",
   "title": "Browse Charges",
   "uid": "jchmTSmNYvRRk",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
