@@ -62,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1689581134786,
+  "iteration": 1693037997328,
   "links": [
     {
       "icon": "dashboard",
@@ -547,7 +547,7 @@
         ]
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 7,
         "x": 12,
         "y": 1
@@ -665,7 +665,7 @@
         ]
       },
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 5,
         "x": 19,
         "y": 1
@@ -844,7 +844,7 @@
           ]
         }
       ],
-      "title": "Free $length_unit Driven",
+      "title": "Free $length_unit added",
       "type": "stat"
     },
     {
@@ -1107,6 +1107,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1114,14 +1115,39 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
+                "color": "green",
                 "value": null
               }
             ]
           },
           "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 3,
@@ -1129,14 +1155,14 @@
         "x": 0,
         "y": 7
       },
-      "id": 38,
+      "id": 67,
       "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "fieldOptions": {
           "calcs": [
-            "mean"
+            "sum"
           ]
         },
         "graphMode": "none",
@@ -1144,7 +1170,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "sum"
           ],
           "fields": "",
           "values": false
@@ -1162,19 +1188,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tcount(*)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND charge_energy_added > 0.01\n\tAND car_id = $car_id;",
+          "rawSql": "WITH suc_data AS (\r\n\tSELECT c.charging_process_id\r\n\tFROM charges c\r\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\r\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\r\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\r\n\tWHERE \r\n    cp.car_id = $car_id AND c.fast_charger_present IS true\r\n\t\tAND c.charger_voltage = 2\r\n\t\tAND COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.display_name), '')))) ILIKE '%supercharger%'\r\n    AND $__timeFilter(end_date)\r\n\tGROUP BY 1\r\n), suc_energy AS (\r\n  SELECT coalesce(sum(charge_energy_added), 0) AS charged_kWh\r\n  FROM  charging_processes cp\r\n  INNER JOIN suc_data ON suc_data.charging_process_id = cp.id\r\n), energy AS(\r\n  SELECT\r\n\t  sum(charge_energy_added) AS charged_kWh\r\n  FROM charging_processes\r\n  WHERE $__timeFilter(end_date)\tAND car_id = $car_id\r\n)\r\nSELECT ($distance_driven  * suc_energy.charged_kWh / energy.charged_kWh) as \"distance_$length_unit\" FROM energy, suc_energy;\r\n",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "efficiency"
+                  "latitude"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "cars",
+          "table": "addresses",
           "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
@@ -1186,7 +1212,7 @@
           ]
         }
       ],
-      "title": "Number of Charges",
+      "title": "$length_unit added at SuC",
       "type": "stat"
     },
     {
@@ -1448,12 +1474,212 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "Use the dropdown at the top to  choose the Geofence to display energy added from",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 10
+      },
+      "id": 66,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "sum"
+          ]
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH free_energy AS (\r\nSELECT sum(charge_energy_added) AS free_charged_kWh\r\nFROM charging_processes cp\r\nINNER JOIN geofences g ON g.id = cp.geofence_id\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id AND g.name = '$geofence'\r\nGROUP BY g.name),\r\nenergy as(\r\nSELECT\r\n\tsum(charge_energy_added) AS charged_kWh\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id\r\n)\r\nSELECT ($distance_driven * free_energy.free_charged_kWh / energy.charged_kWh) as \"distance_$length_unit\" FROM energy, free_energy",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "addresses",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "$length_unit added at $geofence",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 10
+      },
+      "id": 38,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ]
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\tcount(*)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND charge_energy_added > 0.01\n\tAND car_id = $car_id;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "efficiency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "cars",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Number of Charges",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 13
       },
       "id": 60,
       "panels": [],
@@ -1542,7 +1768,7 @@
         "h": 12,
         "w": 6,
         "x": 0,
-        "y": 11
+        "y": 14
       },
       "id": 46,
       "options": {
@@ -1673,7 +1899,7 @@
         "h": 12,
         "w": 6,
         "x": 6,
-        "y": 11
+        "y": 14
       },
       "id": 4,
       "options": {
@@ -1804,7 +2030,7 @@
         "h": 12,
         "w": 6,
         "x": 12,
-        "y": 11
+        "y": 14
       },
       "id": 34,
       "options": {
@@ -1935,7 +2161,7 @@
         "h": 12,
         "w": 6,
         "x": 18,
-        "y": 11
+        "y": 14
       },
       "id": 32,
       "options": {
@@ -1990,7 +2216,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 26
       },
       "id": 62,
       "panels": [],
@@ -2018,8 +2244,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "#EAB839",
@@ -2090,8 +2315,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "super-light-orange",
-                      "value": null
+                      "color": "super-light-orange"
                     },
                     {
                       "color": "light-orange",
@@ -2281,8 +2505,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "super-light-blue",
-                      "value": null
+                      "color": "super-light-blue"
                     },
                     {
                       "color": "super-light-green",
@@ -2517,7 +2740,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 27
       },
       "id": 58,
       "maxPerRow": 2,
@@ -2987,6 +3210,27 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
+        "definition": "SELECT name FROM geofences ORDER BY id",
+        "description": "Geofence to display energy added at",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Geofence",
+        "multi": false,
+        "name": "geofence",
+        "options": [],
+        "query": "SELECT name FROM geofences ORDER BY id",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -3012,6 +3256,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 11,
+  "version": 12,
   "weekStart": ""
 }
