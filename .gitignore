@@ -5,6 +5,11 @@
 .DS_Store
 __MACOSX
 
+# Windows executable
+*.exe
+*.bat
+*.com
+
 # VSCode cache/options directory
 .vs/
 
@@ -48,6 +53,10 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+# DNX
+project.lock.json
+project.fragment.lock.json
+artifacts/
 
 *_i.c
 *_p.c
@@ -84,8 +93,3 @@ ipch/
 *.opendb
 *.opensdf
 *.sdf
-
-# DNX
-project.lock.json
-project.fragment.lock.json
-artifacts/
