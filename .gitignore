@@ -88,3 +88,8 @@ ipch/
 *.opendb
 *.opensdf
 *.sdf
+
+# Windows executable
+*.exe
+*.bat
+*.com
