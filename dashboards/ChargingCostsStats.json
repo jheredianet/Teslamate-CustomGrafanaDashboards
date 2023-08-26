@@ -62,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1693037997328,
+  "iteration": 1693052961572,
   "links": [
     {
       "icon": "dashboard",
@@ -117,120 +117,6 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This dashboard is meant to have a look of all the charges in a given period (last 10 years by default). You can see the distance driven, number of charges, total charging cost, etc., both in summary or in separated lists.\n\nYou can expand/collapse the rows as needed.\n\nFrom the Monthly Stats row, you will have a table with links to other Teslamate Dashboards to have a look on a specific period, charge or trip.",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "distance_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "km"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "distance_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "mi"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 0,
-        "y": 1
-      },
-      "id": 36,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "sum"
-          ]
-        },
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "8.5.26",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT $distance_driven as \"distance_$length_unit\"",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "latitude"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "addresses",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "$length_unit Driven",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -250,7 +136,7 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 3,
+        "x": 0,
         "y": 1
       },
       "id": 10,
@@ -320,27 +206,27 @@
       },
       "fieldConfig": {
         "defaults": {
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
+                "color": "light-yellow",
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "kwatth"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 1
       },
-      "id": 27,
+      "id": 33,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -355,9 +241,9 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "mean"
           ],
-          "fields": "/.*/",
+          "fields": "",
           "values": false
         },
         "textMode": "value"
@@ -373,20 +259,20 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $TotalCost\n",
+          "rawSql": "SELECT\n\tsum(charge_energy_added)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\n\tAND cost = 0;\n",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "start_km"
+                  "efficiency"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "drives",
-          "timeColumn": "start_date",
+          "table": "cars",
+          "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
             {
@@ -397,7 +283,7 @@
           ]
         }
       ],
-      "title": "Total Charging Costs",
+      "title": "Total Free Energy charged",
       "type": "stat"
     },
     {
@@ -407,28 +293,27 @@
       },
       "fieldConfig": {
         "defaults": {
-          "decimals": 2,
           "mappings": [],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
+                "color": "light-yellow",
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "kwatth"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 1
       },
-      "id": 44,
+      "id": 64,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -443,9 +328,9 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "mean"
           ],
-          "fields": "/.*/",
+          "fields": "",
           "values": false
         },
         "textMode": "value"
@@ -461,20 +346,20 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $DCCost\n",
+          "rawSql": "WITH energy as(\r\nSELECT\r\n\tsum(charge_energy_added) AS charged_kWh\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id),\r\nsince as (\r\n\tSELECT date FROM positions\r\n\tWHERE car_id = $car_id\r\n\tORDER BY date ASC\r\n\tLIMIT 1\r\n)\r\nSELECT (energy.charged_kWh / $distance_driven) as \"kwh_per_$length_unit\" FROM energy",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "start_km"
+                  "efficiency"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "drives",
-          "timeColumn": "start_date",
+          "table": "cars",
+          "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
             {
@@ -485,7 +370,94 @@
           ]
         }
       ],
-      "title": "Charging Cost at DC Stations",
+      "title": "kWh per $length_unit",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-yellow",
+                "value": null
+              }
+            ]
+          },
+          "unit": "times"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 9,
+        "y": 1
+      },
+      "id": 38,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ]
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\tcount(*)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND charge_energy_added > 0.01\n\tAND car_id = $car_id;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "efficiency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "cars",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Number of Charges",
       "type": "stat"
     },
     {
@@ -548,7 +520,7 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 7,
+        "w": 6,
         "x": 12,
         "y": 1
       },
@@ -615,6 +587,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "This dashboard is meant to have a look of all the charges in a given period (last 10 years by default). You can see the distance driven, number of charges, total charging cost, etc., both in summary or in separated lists.\n\nYou can expand/collapse the rows as needed.\n\nFrom the Monthly Stats row, you will have a table with links to other Teslamate Dashboards to have a look on a specific period, charge or trip.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -666,8 +639,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 5,
-        "x": 19,
+        "w": 6,
+        "x": 18,
         "y": 1
       },
       "id": 51,
@@ -739,7 +712,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
+      "description": "Use the dropdown at the top to  choose the Geofence to display energy added from",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -785,6 +758,119 @@
         "h": 3,
         "w": 3,
         "x": 0,
+        "y": 4
+      },
+      "id": 66,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "sum"
+          ]
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH free_energy AS (\r\nSELECT sum(charge_energy_added) AS free_charged_kWh\r\nFROM charging_processes cp\r\nINNER JOIN geofences g ON g.id = cp.geofence_id\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id AND g.name = '$geofence'\r\nGROUP BY g.name),\r\nenergy as(\r\nSELECT\r\n\tsum(charge_energy_added) AS charged_kWh\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id\r\n)\r\nSELECT ($distance_driven * free_energy.free_charged_kWh / energy.charged_kWh) as \"distance_$length_unit\" FROM energy, free_energy",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "addresses",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Added at $geofence",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 3,
         "y": 4
       },
       "id": 65,
@@ -844,7 +930,7 @@
           ]
         }
       ],
-      "title": "Free $length_unit added",
+      "title": "Added free (no cost)",
       "type": "stat"
     },
     {
@@ -852,6 +938,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -859,29 +946,54 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow",
+                "color": "green",
                 "value": null
               }
             ]
           },
-          "unit": "kwatth"
+          "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 3,
+        "x": 6,
         "y": 4
       },
-      "id": 33,
+      "id": 67,
       "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "fieldOptions": {
           "calcs": [
-            "mean"
+            "sum"
           ]
         },
         "graphMode": "none",
@@ -889,7 +1001,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "sum"
           ],
           "fields": "",
           "values": false
@@ -907,19 +1019,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tsum(charge_energy_added)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\n\tAND cost = 0;\n",
+          "rawSql": "WITH suc_data AS (\r\n\tSELECT c.charging_process_id\r\n\tFROM charges c\r\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\r\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\r\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\r\n\tWHERE \r\n    cp.car_id = $car_id AND c.fast_charger_present IS true\r\n\t\tAND c.charger_voltage = 2\r\n\t\tAND COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.display_name), '')))) ILIKE '%supercharger%'\r\n    AND $__timeFilter(end_date)\r\n\tGROUP BY 1\r\n), suc_energy AS (\r\n  SELECT coalesce(sum(charge_energy_added), 0) AS charged_kWh\r\n  FROM  charging_processes cp\r\n  INNER JOIN suc_data ON suc_data.charging_process_id = cp.id\r\n), energy AS(\r\n  SELECT\r\n\t  sum(charge_energy_added) AS charged_kWh\r\n  FROM charging_processes\r\n  WHERE $__timeFilter(end_date)\tAND car_id = $car_id\r\n)\r\nSELECT ($distance_driven  * suc_energy.charged_kWh / energy.charged_kWh) as \"distance_$length_unit\" FROM energy, suc_energy;\r\n",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "efficiency"
+                  "latitude"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "cars",
+          "table": "addresses",
           "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
@@ -931,7 +1043,7 @@
           ]
         }
       ],
-      "title": "Total Free Energy charged",
+      "title": "Added at SuC",
       "type": "stat"
     },
     {
@@ -939,43 +1051,76 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
-          "decimals": 2,
-          "displayName": "",
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
+                "color": "green",
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 6,
+        "x": 9,
         "y": 4
       },
-      "id": 40,
+      "id": 36,
+      "links": [],
+      "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "sum"
+          ]
+        },
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "sum"
           ],
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value"
       },
       "pluginVersion": "8.5.26",
       "targets": [
@@ -988,19 +1133,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT (\n  SELECT sum(cost)\n  FROM charging_processes\n  WHERE $__timeFilter(end_date) AND car_id = $car_id\n) / $distance_driven * 100",
+          "rawSql": "SELECT $distance_driven as \"distance_$length_unit\"",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "efficiency"
+                  "latitude"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "cars",
+          "table": "addresses",
           "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
@@ -1012,7 +1157,7 @@
           ]
         }
       ],
-      "title": "Cost per 100 $length_unit",
+      "title": "Total Driven",
       "type": "stat"
     },
     {
@@ -1039,8 +1184,8 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 9,
-        "y": 4
+        "x": 0,
+        "y": 7
       },
       "id": 56,
       "links": [],
@@ -1107,132 +1252,20 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
+          "decimals": 2,
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "super-light-blue",
                 "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "distance_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "km"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "distance_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "mi"
               }
             ]
           }
-        ]
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 0,
-        "y": 7
-      },
-      "id": 67,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "sum"
-          ]
-        },
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "8.5.26",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH suc_data AS (\r\n\tSELECT c.charging_process_id\r\n\tFROM charges c\r\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\r\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\r\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\r\n\tWHERE \r\n    cp.car_id = $car_id AND c.fast_charger_present IS true\r\n\t\tAND c.charger_voltage = 2\r\n\t\tAND COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.display_name), '')))) ILIKE '%supercharger%'\r\n    AND $__timeFilter(end_date)\r\n\tGROUP BY 1\r\n), suc_energy AS (\r\n  SELECT coalesce(sum(charge_energy_added), 0) AS charged_kWh\r\n  FROM  charging_processes cp\r\n  INNER JOIN suc_data ON suc_data.charging_process_id = cp.id\r\n), energy AS(\r\n  SELECT\r\n\t  sum(charge_energy_added) AS charged_kWh\r\n  FROM charging_processes\r\n  WHERE $__timeFilter(end_date)\tAND car_id = $car_id\r\n)\r\nSELECT ($distance_driven  * suc_energy.charged_kWh / energy.charged_kWh) as \"distance_$length_unit\" FROM energy, suc_energy;\r\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "latitude"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "addresses",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "$length_unit added at SuC",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "light-yellow",
-                "value": null
-              }
-            ]
-          },
-          "unit": "kwatth"
         },
         "overrides": []
       },
@@ -1242,7 +1275,7 @@
         "x": 3,
         "y": 7
       },
-      "id": 64,
+      "id": 44,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -1257,9 +1290,9 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/.*/",
           "values": false
         },
         "textMode": "value"
@@ -1275,96 +1308,13 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH energy as(\r\nSELECT\r\n\tsum(charge_energy_added) AS charged_kWh\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id),\r\nsince as (\r\n\tSELECT date FROM positions\r\n\tWHERE car_id = $car_id\r\n\tORDER BY date ASC\r\n\tLIMIT 1\r\n)\r\nSELECT (energy.charged_kWh / $distance_driven) as \"kwh_per_$length_unit\" FROM energy",
+          "rawSql": "SELECT\n  $DCCost\n",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "efficiency"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "cars",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "kWh per $length_unit",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "light-orange",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 6,
-        "y": 7
-      },
-      "id": 42,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.26",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT (\n  SELECT sum(cost)\n  FROM charging_processes\n  WHERE $__timeFilter(end_date) AND car_id = $car_id\n) / (\n  SELECT sum(greatest(charge_energy_added, charge_energy_used))\n  FROM charging_processes\n  WHERE $__timeFilter(end_date) AND car_id = $car_id\n)",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
+                  "start_km"
                 ],
                 "type": "column"
               }
@@ -1382,7 +1332,7 @@
           ]
         }
       ],
-      "title": "Average kWh Cost",
+      "title": "Charging Cost at DC Stations",
       "type": "stat"
     },
     {
@@ -1410,7 +1360,7 @@
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 7
       },
       "id": 14,
@@ -1478,62 +1428,36 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Use the dropdown at the top to  choose the Geofence to display energy added from",
       "fieldConfig": {
         "defaults": {
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "super-light-blue",
                 "value": null
               }
             ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "distance_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "km"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "distance_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "mi"
-              }
-            ]
           }
-        ]
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 3,
-        "w": 6,
-        "x": 0,
-        "y": 10
+        "w": 3,
+        "x": 9,
+        "y": 7
       },
-      "id": 66,
+      "id": 27,
       "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "fieldOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ]
         },
         "graphMode": "none",
@@ -1541,9 +1465,9 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/.*/",
           "values": false
         },
         "textMode": "value"
@@ -1559,20 +1483,20 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH free_energy AS (\r\nSELECT sum(charge_energy_added) AS free_charged_kWh\r\nFROM charging_processes cp\r\nINNER JOIN geofences g ON g.id = cp.geofence_id\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id AND g.name = '$geofence'\r\nGROUP BY g.name),\r\nenergy as(\r\nSELECT\r\n\tsum(charge_energy_added) AS charged_kWh\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id\r\n)\r\nSELECT ($distance_driven * free_energy.free_charged_kWh / energy.charged_kWh) as \"distance_$length_unit\" FROM energy, free_energy",
+          "rawSql": "SELECT\n  $TotalCost\n",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "latitude"
+                  "start_km"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "addresses",
-          "timeColumn": "inserted_at",
+          "table": "drives",
+          "timeColumn": "start_date",
           "timeColumnType": "timestamp",
           "where": [
             {
@@ -1583,7 +1507,7 @@
           ]
         }
       ],
-      "title": "$length_unit added at $geofence",
+      "title": "Total Charging Costs",
       "type": "stat"
     },
     {
@@ -1593,39 +1517,33 @@
       },
       "fieldConfig": {
         "defaults": {
+          "decimals": 2,
+          "displayName": "",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
+                "color": "light-orange",
                 "value": null
               }
             ]
-          },
-          "unit": "none"
+          }
         },
         "overrides": []
       },
       "gridPos": {
         "h": 3,
-        "w": 6,
-        "x": 6,
+        "w": 3,
+        "x": 0,
         "y": 10
       },
-      "id": 38,
-      "links": [],
-      "maxDataPoints": 100,
+      "id": 40,
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "mean"
-          ]
-        },
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -1633,7 +1551,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "textMode": "auto"
       },
       "pluginVersion": "8.5.26",
       "targets": [
@@ -1646,7 +1564,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tcount(*)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND charge_energy_added > 0.01\n\tAND car_id = $car_id;",
+          "rawSql": "SELECT (\n  SELECT sum(cost)\n  FROM charging_processes\n  WHERE $__timeFilter(end_date) AND car_id = $car_id\n) / $distance_driven * 100",
           "refId": "A",
           "select": [
             [
@@ -1670,7 +1588,318 @@
           ]
         }
       ],
-      "title": "Number of Charges",
+      "title": "Cost per 100 $length_unit",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-orange",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 3,
+        "y": 10
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT (\n  SELECT sum(cost)\n  FROM charging_processes\n  WHERE $__timeFilter(end_date) AND car_id = $car_id\n) / (\n  SELECT sum(greatest(charge_energy_added, charge_energy_used))\n  FROM charging_processes\n  WHERE $__timeFilter(end_date) AND car_id = $car_id\n)",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Average kWh Cost",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "Net is the efficiency while driving",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-orange",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 6,
+        "y": 10
+      },
+      "id": 69,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ]
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  sum((start_[[preferred_range]]_range_km - end_[[preferred_range]]_range_km) * cars.efficiency) / sum(distance) * 1000 * \n    CASE WHEN '$length_unit' = 'km' THEN 1\n         WHEN '$length_unit' = 'mi' THEN 1.60934\n    END AS \"consumption_$length_unit\"\nfrom drives \ninner join cars on cars.id = car_id\nwhere \n  distance is not null and\n  start_[[preferred_range]]_range_km - end_[[preferred_range]]_range_km >= 0.1 and\n  car_id = $car_id",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "addresses",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ],
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          }
+        }
+      ],
+      "title": "Consumption (net)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "Gross is all consumption (including while idle, phantom drains, sentry mode, etc)",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-orange",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 9,
+        "y": 10
+      },
+      "id": 71,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ]
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH d1 AS (\n\tSELECT\n\t\tc.car_id,\n\t\tlag(end_[[preferred_range]]_range_km) OVER (ORDER BY start_date) - start_[[preferred_range]]_range_km AS range_loss,\n\t\tp.odometer - lag(p.odometer) OVER (ORDER BY start_date) AS distance\n\tFROM\n\t\tcharging_processes c\n\tLEFT JOIN positions p ON p.id = c.position_id \n\tWHERE\n\t  end_date IS NOT NULL AND\n\t  c.car_id = $car_id\n\tORDER BY\n\t\tstart_date\n),\nd2 AS (\nSELECT\n\tcar_id,\n\tsum(range_loss) AS range_loss,\n\tsum(distance) AS distance\nFROM\n\td1\nWHERE\n\tdistance >= 0 AND range_loss >= 0\nGROUP BY\n\tcar_id\n)\nSELECT\nrange_loss * c.efficiency / distance * 1000 *\n  CASE WHEN '$length_unit' = 'km' THEN 1\n       WHEN '$length_unit' = 'mi' THEN 1.60934\n  END AS \"consumption_$length_unit\"\nFROM\n\td2\n\tLEFT JOIN cars c ON c.id = car_id",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "addresses",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Consumption (gross) ",
       "type": "stat"
     },
     {
