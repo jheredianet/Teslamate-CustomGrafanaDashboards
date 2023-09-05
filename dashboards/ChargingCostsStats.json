@@ -62,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1693052961572,
+  "iteration": 1693925761682,
   "links": [
     {
       "icon": "dashboard",
@@ -120,6 +120,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -207,6 +208,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -294,6 +296,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -381,6 +384,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -716,6 +720,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -829,6 +834,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -942,6 +948,7 @@
       "fieldConfig": {
         "defaults": {
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1056,6 +1063,7 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1169,6 +1177,7 @@
         "defaults": {
           "decimals": 2,
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1432,6 +1441,7 @@
         "defaults": {
           "decimals": 2,
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1520,6 +1530,7 @@
           "decimals": 2,
           "displayName": "",
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1603,6 +1614,7 @@
           },
           "decimals": 2,
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1684,6 +1696,7 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1798,6 +1811,7 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
