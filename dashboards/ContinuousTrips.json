@@ -742,7 +742,7 @@
     ]
   },
   "time": {
-    "from": "now-6M",
+    "from": "now-1M",
     "to": "now"
   },
   "timepicker": {
@@ -773,6 +773,6 @@
   "timezone": "",
   "title": "Continuous Trips",
   "uid": "jchmY8upc6ZRk",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
