@@ -11,7 +11,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.26"
+      "version": "8.5.15"
     },
     {
       "type": "panel",
@@ -62,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1693925761685,
+  "iteration": 1695222857382,
   "links": [
     {
       "icon": "dashboard",
@@ -162,7 +162,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -250,7 +250,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -338,7 +338,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -426,7 +426,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -560,7 +560,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH AllCharges AS (\nSELECT\n  CASE\n    WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), '')))) ILIKE '%Home%' THEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), ''))))\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), '')))) ILIKE '%Work%' THEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), ''))))\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), '')))) ILIKE '%supercharger%' THEN 'Superchargers'\n\t  ELSE 'Other'\n  END AS location,\n  SUM(charge_energy_added) AS Energy\nFROM\n\tcharging_processes c\nLEFT JOIN addresses address ON c.address_id = address.id\nLEFT JOIN geofences geofence ON geofence_id = geofence.id\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\n\tAND c.charge_energy_added >0\nGROUP BY 1\nUNION \nSELECT\n  'Free' AS location,\n\tsum(charge_energy_added) AS Energy\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id\tAND cost = 0\n), Nominated AS (\n  SELECT SUM(energy) AS Nominated FROM AllCharges\n    WHERE location <> 'Other'\n), Total AS (\n  SELECT SUM(charge_energy_added) as Total FROM charging_processes\n    WHERE $__timeFilter(end_date)\n\t    AND car_id = $car_id\n)\nSELECT * FROM AllCharges\nWHERE location <> 'Other'\nUNION \nSELECT 'Other' AS location, (Total - Nominated) as energy FROM Total, Nominated\nORDER BY Energy DESC\n",
+          "rawSql": "WITH ChargeLocations AS (\r\nSELECT\r\n  CASE\r\n    WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), '')))) ILIKE '%Home%' THEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), ''))))\r\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), '')))) ILIKE '%Work%' THEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), ''))))\r\n\t  WHEN COALESCE(geofence.name, CONCAT_WS(', ', COALESCE(address.name, nullif(CONCAT_WS(' ', address.display_name), '')))) ILIKE '%supercharger%' THEN 'Superchargers'\r\n\t  ELSE 'Other'\r\n  END AS location, charge_energy_added, cost\r\nFROM\r\n\tcharging_processes c\r\nLEFT JOIN addresses address ON c.address_id = address.id\r\nLEFT JOIN geofences geofence ON geofence_id = geofence.id\r\nWHERE\r\n\t$__timeFilter(end_date)\r\n\tAND car_id = $car_id\r\n\tAND c.charge_energy_added > 0\r\n), AllCharges AS (\r\nSELECT\r\n  location, SUM(charge_energy_added) AS Energy\r\nFROM ChargeLocations\r\nGROUP BY 1\r\nUNION \r\nSELECT\r\n  'Free' AS location,\r\n\tsum(charge_energy_added) AS Energy\r\nFROM\r\n\tChargeLocations\r\nWHERE\r\n\tcost = 0 AND location NOT ILIKE '%supercharger%' \r\n), Nominated AS (\r\n  SELECT SUM(energy) AS Nominated FROM AllCharges\r\n    WHERE location <> 'Other'\r\n), Total AS (\r\n  SELECT SUM(charge_energy_added) as Total FROM ChargeLocations\r\n)\r\nSELECT * FROM AllCharges\r\nWHERE location <> 'Other'\r\nUNION \r\nSELECT 'Other' AS location, (Total - Nominated) as energy FROM Total, Nominated\r\nORDER BY Energy DESC",
           "refId": "A",
           "select": [
             [
@@ -787,7 +787,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -901,7 +901,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1015,7 +1015,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1130,7 +1130,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1218,7 +1218,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1306,7 +1306,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1394,7 +1394,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1482,7 +1482,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1564,7 +1564,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1648,7 +1648,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -1763,9 +1763,13 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -1791,11 +1795,7 @@
               "params": [],
               "type": "macro"
             }
-          ],
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          }
+          ]
         }
       ],
       "title": "Consumption (net)",
@@ -1878,7 +1878,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -2024,7 +2024,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -2155,7 +2155,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -2286,7 +2286,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -2417,7 +2417,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -2487,7 +2487,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -2558,7 +2559,8 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "super-light-orange"
+                      "color": "super-light-orange",
+                      "value": null
                     },
                     {
                       "color": "light-orange",
@@ -2748,7 +2750,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "super-light-blue"
+                      "color": "super-light-blue",
+                      "value": null
                     },
                     {
                       "color": "super-light-green",
@@ -3000,7 +3003,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "8.5.15",
       "repeatDirection": "h",
       "targets": [
         {
@@ -3499,6 +3502,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }
