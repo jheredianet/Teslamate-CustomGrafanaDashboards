@@ -217,6 +217,14 @@ The dashboard shows a table with the selected period, time driven, distance, num
 
 ![Mileage Stats](./screenshots/MileageStats.png)
 
+### [Speed Rates](./dashboards/SpeedRates.json)
+
+In this dashboard you can browse the efficiency of the car, in sections based on distance per hour. This way you can see at what speeds the car is most efficient in general. 
+Likewise, you can see the number of times it has been driven at an average speed and also the estimated average consumption in general.
+
+![Speed Rates](./screenshots/SpeedRates.png)
+
+
 ### [Tracking Drives](./dashboards/TrackingDrives.json)
 
 This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph
