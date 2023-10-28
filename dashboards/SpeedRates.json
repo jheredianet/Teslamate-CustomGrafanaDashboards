@@ -17,7 +17,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
+      "version": "8.5.26"
     },
     {
       "type": "datasource",
@@ -64,7 +64,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1695141921618,
+  "iteration": 1698267276181,
   "links": [
     {
       "icon": "dashboard",
@@ -401,7 +401,7 @@
           }
         ]
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -514,7 +514,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -623,7 +623,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -737,7 +737,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -851,7 +851,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -901,7 +901,7 @@
           },
           "custom": {
             "axisLabel": "",
-            "axisPlacement": "right",
+            "axisPlacement": "left",
             "axisSoftMin": 0,
             "fillOpacity": 90,
             "gradientMode": "scheme",
@@ -931,12 +931,24 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "n"
+              "options": "seconds_elapsed"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Number of times"
+                "value": "Duration"
+              },
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
+                "id": "decimals",
+                "value": 1
               }
             ]
           },
@@ -992,7 +1004,7 @@
           "placement": "bottom"
         },
         "orientation": "horizontal",
-        "showValue": "auto",
+        "showValue": "always",
         "stacking": "none",
         "tooltip": {
           "mode": "single",
@@ -1013,7 +1025,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH speed_summary AS (\r\n    SELECT ROUND(convert_km(speed_max::numeric, '$length_unit') / 10, 0) * 10 AS speed_$length_unit\r\n    FROM drives\r\n    WHERE \r\n        $__timeFilter(end_date)\r\n        AND car_id = $car_id\r\n        AND end_date IS NOT NULL\r\n    GROUP BY id\r\n)\r\nSELECT speed_[[length_unit]], COUNT(speed_[[length_unit]]) AS n\r\n  FROM speed_summary\r\n  WHERE speed_$length_unit > 0\r\n  GROUP BY 1\r\n  ORDER BY 1 DESC",
+          "rawSql": "WITH SpeedSections AS (\r\n    SELECT \r\n        p.\"date\",\r\n        ROUND(convert_km(p.speed::numeric, '$length_unit') / 10,0) * 10 AS speed_section\r\n    FROM drives d\r\n    INNER JOIN positions p ON p.drive_id = d.id\r\n    WHERE \r\n        $__timeFilter(d.start_date)\r\n        AND d.car_id = $car_id AND end_date IS NOT NULL\r\n        AND convert_km(d.distance::numeric, '$length_unit') >= $min_distance \r\n        AND d.start_rated_range_km - end_rated_range_km > 0.1\r\n)\r\nSELECT\r\n    speed_section AS speed_$length_unit,\r\n    SUM(seconds_elapsed) AS seconds_elapsed\r\nFROM (\r\n    SELECT\r\n        speed_section,\r\n        EXTRACT(EPOCH FROM (LEAD(\"date\") OVER (ORDER BY \"date\") - \"date\")) AS seconds_elapsed\r\n    FROM SpeedSections\r\n)  AS subquery\r\nWHERE speed_section > 1\r\nGROUP BY 1\r\nORDER BY 1 DESC;",
           "refId": "A",
           "select": [
             [
@@ -1117,8 +1129,8 @@
       {
         "current": {
           "selected": true,
-          "text": "1",
-          "value": "1"
+          "text": "25",
+          "value": "25"
         },
         "hide": 0,
         "includeAll": false,
@@ -1127,7 +1139,7 @@
         "name": "min_distance",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "1",
             "value": "1"
           },
@@ -1142,7 +1154,7 @@
             "value": "10"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "25",
             "value": "25"
           },
@@ -1198,7 +1210,7 @@
     ]
   },
   "time": {
-    "from": "now-10y",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {
@@ -1218,6 +1230,6 @@
   "timezone": "",
   "title": "Speed Rates",
   "uid": "jchmfu4SiQgWz",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
