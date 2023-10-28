@@ -58,7 +58,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1698527113778,
+  "iteration": 1698527779849,
   "links": [
     {
       "icon": "dashboard",
@@ -461,7 +461,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
+        "w": 10,
         "x": 14,
         "y": 0
       },
@@ -523,117 +523,6 @@
         }
       ],
       "title": "Logged Distance",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "light-green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "efficiency_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Wh/km"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "efficiency_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Wh/mi"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 4,
-        "x": 20,
-        "y": 0
-      },
-      "id": 14,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.26",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n\tCASE WHEN '$length_unit' = 'km' THEN efficiency\n\t     WHEN '$length_unit' = 'mi' THEN efficiency * 1.60934\n\tEND * 1000 as \"efficiency_$length_unit\"\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "charge_energy_added"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "charges",
-          "timeColumn": "date",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Current $preferred_range efficiency",
       "type": "stat"
     },
     {
@@ -862,6 +751,117 @@
         }
       ],
       "title": "Consumption (gross) ",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "efficiency_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "efficiency_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 20,
+        "y": 6
+      },
+      "id": 14,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\tCASE WHEN '$length_unit' = 'km' THEN efficiency\n\t     WHEN '$length_unit' = 'mi' THEN efficiency * 1.60934\n\tEND * 1000 as \"efficiency_$length_unit\"\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "charge_energy_added"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "charges",
+          "timeColumn": "date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Current $preferred_range efficiency",
       "type": "stat"
     },
     {

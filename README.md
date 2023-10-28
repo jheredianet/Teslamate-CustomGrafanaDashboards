@@ -219,8 +219,8 @@ The dashboard shows a table with the selected period, time driven, distance, num
 
 ### [Speed Rates](./dashboards/SpeedRates.json)
 
-In this dashboard you can browse the efficiency of the car, in sections based on distance per hour. This way you can see at what speeds the car is most efficient in general.
-Likewise, you can see the number of times it has been driven at an average speed and also the estimated average consumption in general.
+In this dashboard you can browse the speed rates by segments, based on terrain type: Flat, Uphill or Downhill. This way you can see the average consumtion by speed and its average distance.
+Likewise, you can see the Top speeds you reached and how long it lasted.
 
 ![Speed Rates](./screenshots/SpeedRates.png)
 
