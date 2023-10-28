@@ -112,7 +112,7 @@
       "title": "Current Drive",
       "tooltip": "Adjust to current drive",
       "type": "link",
-      "url": "d/jchmkOuP_Fggz/current-drive-view?orgId=1&kiosk&var-car_id=${car_id}&from=${current_drive_start_time}&to=${current_drive_end_time}&var-current_drive=${current_drive}&var-BatteryCapacity=${BatteryCapacity}&var-efficiency=${efficiency}&var-preferred_range=${preferred_range}"
+      "url": "d/jchmkOuP_Fggz/current-drive-view?kiosk&var-car_id=${car_id}&from=${current_drive_start_time}&to=${current_drive_end_time}&var-current_drive=${current_drive}&var-BatteryCapacity=${BatteryCapacity}&var-efficiency=${efficiency}&var-preferred_range=${preferred_range}"
     }
   ],
   "liveNow": false,
