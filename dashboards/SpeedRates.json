@@ -8,16 +8,10 @@
       "version": ""
     },
     {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
+      "version": "8.5.26"
     },
     {
       "type": "datasource",
@@ -64,7 +58,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1695141921618,
+  "iteration": 1698527779849,
   "links": [
     {
       "icon": "dashboard",
@@ -129,60 +123,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "efficiency"
+              "options": "avg_consumption_km"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Efficiency"
-              },
-              {
-                "id": "unit",
-                "value": "percentunit"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              },
-              {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "super-light-orange",
-                      "value": null
-                    },
-                    {
-                      "color": "light-orange",
-                      "value": 0.65
-                    },
-                    {
-                      "color": "light-green",
-                      "value": 0.99
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "max",
-                "value": 1.3
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "consumption_km"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Consumption"
+                "value": "Avg. Consumption"
               },
               {
                 "id": "unit",
@@ -191,18 +137,22 @@
               {
                 "id": "custom.width",
                 "value": 200
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "consumption_mi"
+              "options": "avg_consumption_mi"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Consumption"
+                "value": "Avg. Consumption"
               },
               {
                 "id": "unit",
@@ -211,6 +161,10 @@
               {
                 "id": "custom.width",
                 "value": 200
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
@@ -229,8 +183,24 @@
                 "value": "km"
               },
               {
-                "id": "custom.width",
-                "value": 200
+                "id": "custom.displayMode",
+                "value": "gradient-gauge"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "min"
+              },
+              {
+                "id": "max"
+              },
+              {
+                "id": "decimals",
+                "value": 1
               }
             ]
           },
@@ -249,88 +219,64 @@
                 "value": "mi"
               },
               {
-                "id": "custom.width",
-                "value": 200
+                "id": "custom.displayMode",
+                "value": "gradient-gauge"
+              },
+              {
+                "id": "max"
+              },
+              {
+                "id": "min"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 1
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "min_distance_km"
+              "options": "speed_range_km"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Min. Distance"
-              },
-              {
-                "id": "unit",
-                "value": "km"
+                "value": "Segment (km/h)"
               },
               {
                 "id": "custom.width",
-                "value": 200
+                "value": 120
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "min_distance_mi"
+              "options": "speed_range_mi"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Min. Distance"
-              },
-              {
-                "id": "unit",
-                "value": "mi"
+                "value": "Segment (mph)"
               },
               {
                 "id": "custom.width",
-                "value": 200
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "max_distance_km"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Max. Distance"
+                "value": 120
               },
               {
-                "id": "unit",
-                "value": "km"
-              },
-              {
-                "id": "custom.width",
-                "value": 200
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "max_distance_mi"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Max. Distance"
-              },
-              {
-                "id": "unit",
-                "value": "mi"
-              },
-              {
-                "id": "custom.width",
-                "value": 200
+                "id": "custom.align",
+                "value": "center"
               }
             ]
           },
@@ -342,7 +288,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Speed"
+                "value": "Avg Speed"
               },
               {
                 "id": "unit",
@@ -351,6 +297,10 @@
               {
                 "id": "custom.width",
                 "value": 120
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
@@ -362,7 +312,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Speed"
+                "value": "Avg. Speed"
               },
               {
                 "id": "unit",
@@ -371,13 +321,41 @@
               {
                 "id": "custom.width",
                 "value": 120
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_power"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              },
+              {
+                "id": "displayName",
+                "value": "Avg. Power"
+              },
+              {
+                "id": "unit",
+                "value": "kwatt"
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 25,
+        "h": 13,
         "w": 14,
         "x": 0,
         "y": 0
@@ -394,14 +372,9 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Temperature"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -412,7 +385,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH t AS (\r\n\tSELECT\r\n\t\tsum(start_ideal_range_km - end_ideal_range_km) AS total_ideal_range,\r\n\t\tsum(start_rated_range_km - end_rated_range_km) AS total_rated_range,\r\n\t\tsum(distance) AS total_distance,\r\n\t\tsum(duration_min) as duration,\r\n        CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 1.60934 END AS distance_factor,\r\n\t\tcar_id\r\n\tFROM\r\n\t\tdrives \r\n\tWHERE\r\n\t  $__timeFilter(end_date)\r\n\t\tAND distance IS NOT NULL\r\n\t\tAND drives.car_id = $car_id\r\n\t\tAND convert_km(distance::numeric, '$length_unit') >= $min_distance \r\n\t\tAND start_[[preferred_range]]_range_km - end_[[preferred_range]]_range_km > 0.1\r\n\tGROUP BY id\r\n),  data AS (\r\n    SELECT\r\n        total_distance / total_rated_range AS efficiency,\r\n    \ttotal_rated_range / total_distance * c.efficiency * 1000 * distance_factor AS consumption_$length_unit,\r\n        convert_km(total_distance::numeric, 'km') AS total_distance_$length_unit,\r\n    \t(total_distance / duration) * 60 / distance_factor AS avg_speed_$length_unit\r\n    FROM t\r\n    JOIN cars c ON t.car_id = c.id\r\n)\r\nSELECT \r\n    ROUND(cast(avg_speed_$length_unit AS numeric) / 5, 0) * 5 AS avg_speed_$length_unit, \r\n    avg(efficiency) AS efficiency, \r\n    avg(consumption_$length_unit) AS consumption_$length_unit, \r\n    avg(total_distance_$length_unit) AS avg_distance_$length_unit,\r\n    min(total_distance_$length_unit) AS min_distance_$length_unit, \r\n    max(total_distance_$length_unit) AS max_distance_$length_unit\r\nFROM data\r\nGROUP BY 1\r\nORDER BY 1 DESC;",
+          "rawSql": "SELECT\r\n    BinnedData.speed_bin AS speed_range_$length_unit,\r\n    convert_km(BinnedData.total_odometer_distance::numeric, '$length_unit') AS avg_distance_$length_unit,\r\n    BinnedData.avg_speed * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 0.621371 END AS avg_speed_$length_unit,\r\n    (BinnedData.total_energy_consumed / (BinnedData.total_distance * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 0.621371 END)) * 10 AS avg_consumption_$length_unit,\r\n    avg_power\r\nFROM\r\n    (SELECT\r\n        CASE\r\n            WHEN elevation_diff >= 1 THEN 'Uphill'\r\n            WHEN elevation_diff <= -1 THEN 'Downhill'\r\n            ELSE 'Flat'\r\n        END AS terrain_type,\r\n        ROUND(speed * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 0.621371 END / 10, 0) * 10 AS speed_bin,\r\n        AVG(power) AS avg_power,\r\n        SUM(power::integer * speed::integer / 60.0) AS total_energy_consumed,\r\n        SUM(speed / 60.0) AS total_distance,\r\n        SUM(odometer_distance) AS total_odometer_distance,\r\n        AVG(speed) AS avg_speed,\r\n        car_id\r\n    FROM\r\n        (SELECT\r\n            drives.car_id,\r\n            positions.speed,\r\n            positions.power,\r\n            positions.elevation - LAG(positions.elevation) OVER (PARTITION BY positions.drive_id ORDER BY positions.date) AS elevation_diff,\r\n            positions.odometer - LAG(positions.odometer) OVER (PARTITION BY positions.drive_id ORDER BY positions.date) AS odometer_distance\r\n        FROM\r\n            drives\r\n        JOIN positions ON drives.id = positions.drive_id\r\n        WHERE\r\n            $__timeFilter(drives.start_date)\r\n            AND drives.car_id = $car_id\r\n            AND drives.end_date IS NOT NULL\r\n            AND drives.distance >= convert_km($min_distance::numeric, '$length_unit')\r\n        ) AS DifferentialData\r\n    GROUP BY speed_bin, terrain_type, car_id\r\n    ) AS BinnedData\r\nJOIN cars ON BinnedData.car_id = cars.id\r\nWHERE BinnedData.terrain_type = '$terrain_type'\r\n    AND BinnedData.total_distance > 0 \r\n    AND BinnedData.total_odometer_distance > 0\r\n    AND BinnedData.speed_bin >= $min_speed_segment\r\nORDER BY BinnedData.speed_bin DESC;\r\n",
           "refId": "A",
           "select": [
             [
@@ -436,7 +409,7 @@
           ]
         }
       ],
-      "title": "Speed – Efficiency",
+      "title": "Consumption by speed - $terrain_type Terrain",
       "type": "table"
     },
     {
@@ -487,8 +460,8 @@
         ]
       },
       "gridPos": {
-        "h": 4,
-        "w": 6,
+        "h": 6,
+        "w": 10,
         "x": 14,
         "y": 0
       },
@@ -514,7 +487,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -551,115 +524,6 @@
       ],
       "title": "Logged Distance",
       "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "light-green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "efficiency_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Wh/km"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "efficiency_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Wh/mi"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 4,
-        "x": 20,
-        "y": 0
-      },
-      "id": 14,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "8.5.15",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n\tCASE WHEN '$length_unit' = 'km' THEN efficiency\n\t     WHEN '$length_unit' = 'mi' THEN efficiency * 1.60934\n\tEND * 1000 as \"efficiency_$length_unit\"\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "charge_energy_added"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "charges",
-          "timeColumn": "date",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Current $preferred_range efficiency",
-      "type": "gauge"
     },
     {
       "datasource": {
@@ -710,10 +574,10 @@
         ]
       },
       "gridPos": {
-        "h": 4,
+        "h": 7,
         "w": 3,
         "x": 14,
-        "y": 4
+        "y": 6
       },
       "id": 4,
       "links": [],
@@ -737,7 +601,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -824,10 +688,10 @@
         ]
       },
       "gridPos": {
-        "h": 4,
+        "h": 7,
         "w": 3,
         "x": 17,
-        "y": 4
+        "y": 6
       },
       "id": 8,
       "links": [],
@@ -851,7 +715,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "8.5.26",
       "targets": [
         {
           "datasource": {
@@ -897,11 +761,122 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "light-green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "efficiency_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "efficiency_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 20,
+        "y": 6
+      },
+      "id": 14,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.26",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\tCASE WHEN '$length_unit' = 'km' THEN efficiency\n\t     WHEN '$length_unit' = 'mi' THEN efficiency * 1.60934\n\tEND * 1000 as \"efficiency_$length_unit\"\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "charge_energy_added"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "charges",
+          "timeColumn": "date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Current $preferred_range efficiency",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "continuous-BlYlRd"
           },
           "custom": {
             "axisLabel": "",
-            "axisPlacement": "right",
+            "axisPlacement": "left",
             "axisSoftMin": 0,
             "fillOpacity": 90,
             "gradientMode": "scheme",
@@ -931,54 +906,34 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "n"
+              "options": "seconds_elapsed"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Number of times"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "speed_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "velocitykmh"
+                "value": "Duration"
               },
               {
-                "id": "displayName",
-                "value": "Speed"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "speed_mi"
-            },
-            "properties": [
-              {
                 "id": "unit",
-                "value": "velocitymph"
+                "value": "s"
               },
               {
-                "id": "displayName",
-                "value": "Speed"
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
+                "id": "decimals",
+                "value": 1
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 17,
-        "w": 10,
-        "x": 14,
-        "y": 8
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 13
       },
       "id": 16,
       "links": [],
@@ -992,13 +947,13 @@
           "placement": "bottom"
         },
         "orientation": "horizontal",
-        "showValue": "auto",
+        "showValue": "always",
         "stacking": "none",
         "tooltip": {
           "mode": "single",
           "sort": "none"
         },
-        "xField": "speed_km",
+        "xField": "speed",
         "xTickLabelRotation": 15,
         "xTickLabelSpacing": 0
       },
@@ -1013,7 +968,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH speed_summary AS (\r\n    SELECT ROUND(convert_km(speed_max::numeric, '$length_unit') / 10, 0) * 10 AS speed_$length_unit\r\n    FROM drives\r\n    WHERE \r\n        $__timeFilter(end_date)\r\n        AND car_id = $car_id\r\n        AND end_date IS NOT NULL\r\n    GROUP BY id\r\n)\r\nSELECT speed_[[length_unit]], COUNT(speed_[[length_unit]]) AS n\r\n  FROM speed_summary\r\n  WHERE speed_$length_unit > 0\r\n  GROUP BY 1\r\n  ORDER BY 1 DESC",
+          "rawSql": "SELECT \r\n    speed_section_$length_unit || CASE WHEN '$length_unit' = 'km' THEN ' km/h' WHEN '$length_unit' = 'mi' THEN ' mph' END AS speed,\r\n    SUM(seconds_elapsed) AS seconds_elapsed\r\nFROM (\r\n    SELECT\r\n        ROUND(convert_km(p.speed::numeric, '$length_unit') / 10,0) * 10 AS speed_section_$length_unit,\r\n        EXTRACT(EPOCH FROM (LEAD(p.\"date\") OVER (ORDER BY p.\"date\") - p.\"date\")) AS seconds_elapsed\r\n    FROM drives d\r\n    INNER JOIN positions p ON p.drive_id = d.id\r\n    WHERE\r\n        $__timeFilter(d.start_date)\r\n        AND d.car_id = $car_id \r\n        AND d.end_date IS NOT NULL\r\n        AND d.distance >= convert_km($min_distance::numeric,'$length_unit')\r\n        AND p.speed > 0.1\r\n) AS drivedata\r\nWHERE speed_section_$length_unit >= $min_speed_segment\r\nGROUP BY speed_section_$length_unit\r\nORDER BY speed_section_$length_unit DESC",
           "refId": "A",
           "select": [
             [
@@ -1035,7 +990,7 @@
           ]
         }
       ],
-      "title": "Top Speed",
+      "title": "Top Speeds",
       "type": "barchart"
     }
   ],
@@ -1117,17 +1072,60 @@
       {
         "current": {
           "selected": true,
-          "text": "1",
-          "value": "1"
+          "text": "50",
+          "value": "50"
         },
         "hide": 0,
         "includeAll": false,
-        "label": "min. distance per drive",
+        "label": "Min. speed segment",
+        "multi": false,
+        "name": "min_speed_segment",
+        "options": [
+          {
+            "selected": false,
+            "text": "10",
+            "value": "10"
+          },
+          {
+            "selected": false,
+            "text": "20",
+            "value": "20"
+          },
+          {
+            "selected": false,
+            "text": "30",
+            "value": "30"
+          },
+          {
+            "selected": false,
+            "text": "40",
+            "value": "40"
+          },
+          {
+            "selected": true,
+            "text": "50",
+            "value": "50"
+          }
+        ],
+        "query": "10,20,30,40,50",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "25",
+          "value": "25"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Min. driving distance",
         "multi": false,
         "name": "min_distance",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "1",
             "value": "1"
           },
@@ -1142,7 +1140,7 @@
             "value": "10"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "25",
             "value": "25"
           },
@@ -1167,7 +1165,7 @@
             "value": "200"
           }
         ],
-        "query": "1, 5, 10, 25, 50, 100, 150, 200",
+        "query": "1,5,10,25,50,100,150,200",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
@@ -1194,11 +1192,44 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "Flat",
+          "value": "Flat"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Terrain Type",
+        "multi": false,
+        "name": "terrain_type",
+        "options": [
+          {
+            "selected": true,
+            "text": "Flat",
+            "value": "Flat"
+          },
+          {
+            "selected": false,
+            "text": "Uphill",
+            "value": "Uphill"
+          },
+          {
+            "selected": false,
+            "text": "Downhill",
+            "value": "Downhill"
+          }
+        ],
+        "query": "Flat, Uphill, Downhill",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
   "time": {
-    "from": "now-10y",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {
@@ -1218,6 +1249,6 @@
   "timezone": "",
   "title": "Speed Rates",
   "uid": "jchmfu4SiQgWz",
-  "version": 4,
+  "version": 6,
   "weekStart": ""
 }

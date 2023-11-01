@@ -1333,7 +1333,7 @@
         {
           "targetBlank": true,
           "title": "Mileage",
-          "url": "/d/NjtMTFggz/mileage?orgId=1"
+          "url": "/d/NjtMTFggz/mileage?"
         }
       ],
       "maxDataPoints": 100,
@@ -1437,7 +1437,7 @@
         {
           "targetBlank": true,
           "title": "Updates",
-          "url": "/d/IiC07mgWz/updates?orgId=1"
+          "url": "/d/IiC07mgWz/updates?"
         }
       ],
       "maxDataPoints": 100,
