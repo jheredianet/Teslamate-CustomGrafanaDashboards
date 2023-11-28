@@ -252,7 +252,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 120
+                "value": 125
               },
               {
                 "id": "custom.align",
@@ -272,7 +272,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 120
+                "value": 125
               },
               {
                 "id": "custom.align",
@@ -1249,6 +1249,6 @@
   "timezone": "",
   "title": "Speed Rates",
   "uid": "jchmfu4SiQgWz",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

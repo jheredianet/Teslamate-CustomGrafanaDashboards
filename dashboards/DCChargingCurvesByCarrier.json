@@ -1,17 +1,11 @@
 {
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
-    },
-    {
-      "type": "panel",
-      "id": "natel-plotly-panel",
-      "name": "Plotly",
-      "version": "0.0.7"
+      "version": "10.1.2"
     },
     {
       "type": "datasource",
@@ -35,6 +29,12 @@
       "type": "panel",
       "id": "text",
       "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "xychart",
+      "name": "XY Chart",
       "version": ""
     }
   ],
@@ -62,7 +62,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1687041486682,
   "links": [
     {
       "icon": "dashboard",
@@ -103,6 +102,65 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "pointSize": {
+              "fixed": 5
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "show": "points"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Show charge details",
+                    "url": "d/BHhxFeZRz?from=${__data.fields.start_date.numeric}&to=${__data.fields.end_date.numeric}&var-car_id=${car_id}&var-charging_process_id=${__data.fields.charging_process_id.numeric}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 16,
         "w": 20,
@@ -111,120 +169,44 @@
       },
       "id": 32,
       "links": [],
-      "pconfig": {
-        "fixScale": "",
-        "layout": {
-          "dragmode": "zoom",
-          "font": {
-            "family": "\"Open Sans\", Helvetica, Arial, sans-serif"
-          },
-          "hovermode": "closest",
-          "legend": {
-            "orientation": "h"
-          },
-          "showlegend": false,
-          "xaxis": {
-            "rangemode": "normal",
-            "showgrid": true,
-            "title": "SOC [%]",
-            "type": "linear",
-            "zeroline": false
-          },
-          "yaxis": {
-            "rangemode": "tozero",
-            "showgrid": true,
-            "title": "kW",
-            "type": "linear",
-            "zeroline": true
-          },
-          "zaxis": {
-            "rangemode": "normal",
-            "showgrid": true,
-            "type": "linear",
-            "zeroline": false
-          }
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
-        "loadFromCDN": false,
-        "settings": {
-          "displayModeBar": false,
-          "type": "scatter"
-        },
-        "showAnnotations": true,
-        "traces": [
+        "series": [
           {
-            "mapping": {
-              "color": "charging_process_id",
-              "text": "Charge",
-              "x": "SOC [%]",
-              "y": "Power [kW]"
+            "pointColor": {
+              "field": "Power [kW]"
             },
-            "name": "Charge Curve",
-            "settings": {
-              "color_option": "ramp",
-              "line": {
-                "color": "#005f81",
-                "dash": "solid",
-                "shape": "linear",
-                "width": 6
-              },
-              "marker": {
-                "color": "#33B5E5",
-                "colorscale": "Electric",
-                "line": {
-                  "color": "#DDD",
-                  "width": 0
-                },
-                "showscale": false,
-                "size": 3,
-                "sizemin": 3,
-                "sizemode": "diameter",
-                "sizeref": 0.2,
-                "symbol": "diamond"
-              }
+            "pointSize": {
+              "fixed": 2,
+              "max": 100,
+              "min": 1
             },
-            "show": {
-              "line": true,
-              "lines": false,
-              "markers": true
-            }
+            "x": "SOC [%]",
+            "y": "Power [kW]"
           },
           {
-            "mapping": {
-              "color": "charging_process_id",
-              "x": "B - SOC [%]",
-              "y": "B - Avg Power [kW]"
+            "pointColor": {
+              "field": "B - Avg Power [kW]"
             },
-            "name": "Median Power",
-            "settings": {
-              "color_option": "solid",
-              "line": {
-                "color": "#FF7383",
-                "dash": "solid",
-                "shape": "linear",
-                "width": 2
-              },
-              "marker": {
-                "color": "#33B5E5",
-                "colorscale": "Reds",
-                "line": {
-                  "color": "#DDD",
-                  "width": 0
-                },
-                "showscale": false,
-                "size": 2,
-                "sizemin": 3,
-                "sizemode": "diameter",
-                "sizeref": 0.2,
-                "symbol": "circle"
-              }
+            "pointSize": {
+              "fixed": 12,
+              "max": 100,
+              "min": 1
             },
-            "show": {
-              "line": true,
-              "lines": true,
-              "markers": false
-            }
+            "x": "B - SOC [%]",
+            "y": "B - Avg Power [kW]"
           }
-        ]
+        ],
+        "seriesMapping": "manual",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "pluginVersion": "7.5.11",
       "targets": [
@@ -234,12 +216,13 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, to_char(c.date, 'YYYY-MM-dd')",
+          "rawSql": "SELECT\r\n  c.battery_level as \"SOC [%]\",\r\n  round(avg(c.charger_power), 0) as \"Power [kW]\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\",\r\n  p.start_date as \"start_date\",\r\n  p.end_date as \"end_date\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) ILIKE '%$carrier%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, p.start_date, p.end_date, to_char(c.date, 'YYYY-MM-dd')",
           "refId": "A",
           "select": [
             [
@@ -251,6 +234,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -295,8 +295,7 @@
         }
       ],
       "title": "Charger Carrier Contains: $carrier",
-      "type": "natel-plotly-panel",
-      "version": 1
+      "type": "xychart"
     },
     {
       "datasource": {
@@ -310,7 +309,9 @@
           },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -334,7 +335,9 @@
       },
       "id": 44,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -343,7 +346,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -441,7 +444,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -542,7 +545,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -643,7 +646,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -743,7 +746,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -843,7 +846,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -906,10 +909,15 @@
           },
           "id": 40,
           "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
             "content": "#### DC Charing curves by Carrier\n\nTo analyse data with this dashboard, it's important that you \nhave Geo-Fences added related with the name of the carrier\nyou have recharged your car, or you may want to edit \nperiodically the **name** field of the **addresses** table,\nso that it contains its name. \n\nFor example, if **Teslamate** geolocates the name as \n*\"Esso Purley Way\"* you may modify it to \n*\"Esso Purley Way - IONITY\"* or *\"IONITY Esso Purley Way\"*, \nthen you can filter using\nthe textbox above as **IONITY** to show all the charging curves\nof all charging sessions at that carrier.",
             "mode": "markdown"
           },
-          "pluginVersion": "8.5.15",
+          "pluginVersion": "10.1.2",
           "targets": [
             {
               "datasource": {
@@ -952,7 +960,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 36,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "TeslamateCustomDashboards"
@@ -1048,6 +1056,6 @@
   "timezone": "",
   "title": "DC Charging Curves by Carrier",
   "uid": "jchmXpkcccIkh",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
