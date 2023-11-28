@@ -1,17 +1,17 @@
 {
-  "__elements": [],
+  "__elements": {},
   "__requires": [
+    {
+      "type": "panel",
+      "id": "geomap",
+      "name": "Geomap",
+      "version": ""
+    },
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
+      "version": "10.1.2"
     },
     {
       "type": "datasource",
@@ -21,14 +21,14 @@
     },
     {
       "type": "panel",
-      "id": "pr0ps-trackmap-panel",
-      "name": "TrackMap",
-      "version": "2.1.3"
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
     },
     {
       "type": "panel",
-      "id": "stat",
-      "name": "Stat",
+      "id": "timeseries",
+      "name": "Time series",
       "version": ""
     }
   ],
@@ -57,9 +57,8 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": null,
-  "iteration": 1675984299045,
   "links": [
     {
       "icon": "dashboard",
@@ -96,19 +95,6 @@
   "liveNow": false,
   "panels": [
     {
-      "aliasColors": {
-        "Battery heater (On/Off)": "semi-dark-red",
-        "Elevation": "#ccccdc",
-        "Elevation (m)": "text",
-        "Power (kW)": "semi-dark-orange",
-        "Rated Efficiency (kWh/100km)": "dark-green",
-        "SOC (%)": "light-purple",
-        "Speed (km/h)": "light-blue",
-        "speed_kmh": "light-blue"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
         "type": "postgres",
         "uid": "TeslaMate"
@@ -116,7 +102,56 @@
       "description": "This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph to see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map, to see the speed, power, SOC, elevation and if battery heater was on.\n\nBe aware that the drive you select in the dropdown list from the top could be outside the time range of the Timeline graph, if its the case you have to click on the \"Zoom to data\" button on the graph in order to update it.\n\nTip: On Grafana you can press \"h\" to get a keyboard shortcuts if you want to change the current Zoom out time range or use the mouse to select/change the time range.",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
         },
         "overrides": [
           {
@@ -190,60 +225,183 @@
                 "value": "SOC (%)"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Battery heater (On/Off)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Elevation"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ccccdc",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Elevation (m)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Power (kW)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Rated Efficiency (kWh/100km)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SOC (%)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Speed (km/h)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "speed_kmh"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Elevation"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Elevation (m)"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
           }
         ]
       },
-      "fill": 0,
-      "fillGradient": 0,
       "gridPos": {
         "h": 17,
         "w": 15,
         "x": 0,
         "y": 0
       },
-      "hiddenSeries": false,
       "hideTimeOverride": false,
       "id": 8,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": false,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": false,
-        "min": false,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
       "options": {
-        "alertThreshold": false
-      },
-      "percentage": false,
-      "pluginVersion": "8.5.15",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "$$hashKey": "object:800",
-          "alias": "Elevation",
-          "yaxis": 2
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        {
-          "$$hashKey": "object:801",
-          "alias": "Elevation (m)",
-          "yaxis": 2
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      },
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "alias": "",
@@ -280,61 +438,123 @@
           ]
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Drive",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:432",
-          "format": "none",
-          "label": "",
-          "logBase": 1,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:433",
-          "decimals": 0,
-          "format": "none",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "autoZoom": true,
       "datasource": {
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "defaultLayer": "OpenStreetMap",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 20,
         "w": 9,
         "x": 15,
         "y": 0
       },
-      "id": 6,
-      "lineColor": "red",
+      "id": 18,
       "links": [],
       "maxDataPoints": 50000,
-      "pointColor": "royalblue",
-      "scrollWheelZoom": false,
-      "showLayerChanger": true,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "osm-standard"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "arrow": 0,
+              "style": {
+                "color": {
+                  "fixed": "dark-blue"
+                },
+                "lineWidth": 2,
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 3,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "field": "",
+                  "fixed": "",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "route",
+            "opacity": 1,
+            "tooltip": true,
+            "type": "route"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "alias": "",
@@ -342,6 +562,7 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "time_series",
           "group": [
             {
@@ -355,7 +576,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH journey AS (SELECT start_date, end_date FROM drives WHERE id = $journey)\nSELECT\n  $__time(date),\n   latitude\nFROM positions, journey\nWHERE \n    car_id = $car_id AND (date BETWEEN journey.start_date AND journey.end_date)\nORDER BY \n  date ASC",
+          "rawSql": "WITH journey AS (SELECT start_date, end_date FROM drives WHERE id = $journey)\nSELECT\n  $__time(date), latitude, longitude\nFROM positions, journey\nWHERE\n    car_id = $car_id AND (date BETWEEN journey.start_date AND journey.end_date)\nORDER BY date ASC",
           "refId": "A",
           "select": [
             [
@@ -399,80 +620,22 @@
               }
             ]
           ],
-          "table": "pos",
-          "timeColumn": "Datum",
-          "timeColumnType": "datetime",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "time_series",
-          "group": [
-            {
-              "params": [
-                "$__interval",
-                "none"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH journey AS (SELECT start_date, end_date FROM drives WHERE id = $journey)\nSELECT\n  $__time(date),\n  longitude\nFROM positions, journey\nWHERE \n  car_id = $car_id AND (date >= journey.start_date AND date <= journey.end_date)\nORDER BY \n  date ASC",
-          "refId": "B",
-          "select": [
-            [
+          "sql": {
+            "columns": [
               {
-                "params": [
-                  "lat"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "lat"
-                ],
-                "type": "alias"
+                "parameters": [],
+                "type": "function"
               }
             ],
-            [
+            "groupBy": [
               {
-                "params": [
-                  "lng"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "avg"
-                ],
-                "type": "aggregate"
-              },
-              {
-                "params": [
-                  "lat"
-                ],
-                "type": "alias"
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
               }
             ]
-          ],
+          },
           "table": "pos",
           "timeColumn": "Datum",
           "timeColumnType": "datetime",
@@ -485,8 +648,7 @@
           ]
         }
       ],
-      "title": "Map",
-      "type": "pr0ps-trackmap-panel"
+      "type": "geomap"
     },
     {
       "datasource": {
@@ -582,7 +744,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -774,7 +936,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -903,7 +1065,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -988,7 +1150,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1060,8 +1222,8 @@
       "type": "stat"
     }
   ],
-  "refresh": false,
-  "schemaVersion": 36,
+  "refresh": "",
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "TeslamateCustomDashboards"
@@ -1228,8 +1390,8 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2023-11-28T12:32:29.961Z",
+    "to": "2023-11-28T12:40:33.863Z"
   },
   "timepicker": {
     "hidden": true,
@@ -1238,6 +1400,6 @@
   "timezone": "",
   "title": "Tracking Drives",
   "uid": "jchmX8upc6ZRk",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }

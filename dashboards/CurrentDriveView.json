@@ -1,5 +1,5 @@
 {
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "panel",
@@ -14,22 +14,22 @@
       "version": ""
     },
     {
+      "type": "panel",
+      "id": "geomap",
+      "name": "Geomap",
+      "version": ""
+    },
+    {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.26"
+      "version": "10.1.2"
     },
     {
       "type": "datasource",
       "id": "postgres",
       "name": "PostgreSQL",
       "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "pr0ps-trackmap-panel",
-      "name": "TrackMap",
-      "version": "2.1.4"
     },
     {
       "type": "panel",
@@ -69,7 +69,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1692172018483,
   "links": [
     {
       "icon": "dashboard",
@@ -129,6 +128,8 @@
             "mode": "fixed"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -140,6 +141,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
@@ -319,7 +321,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -465,7 +468,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -515,7 +518,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -568,7 +572,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -666,9 +670,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -782,9 +787,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -884,7 +890,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -968,7 +974,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1052,7 +1058,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1103,7 +1109,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#c7d0d9"
+                "color": "#c7d0d9",
+                "value": null
               }
             ]
           },
@@ -1170,7 +1177,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1291,7 +1298,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1408,7 +1415,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1445,83 +1452,203 @@
       "type": "stat"
     },
     {
-      "autoZoom": true,
       "datasource": {
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "defaultLayer": "OpenStreetMap",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 11,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 15
       },
-      "id": 34,
-      "lineColor": "red",
-      "maxDataPoints": 500,
-      "pluginVersion": "9.2.4",
-      "pointColor": "royalblue",
-      "scrollWheelZoom": false,
-      "showLayerChanger": true,
+      "id": 33,
+      "links": [],
+      "maxDataPoints": 50000,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "osm-standard"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "arrow": 0,
+              "style": {
+                "color": {
+                  "fixed": "dark-blue"
+                },
+                "lineWidth": 2,
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 3,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "field": "",
+                  "fixed": "",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "route",
+            "opacity": 1,
+            "tooltip": true,
+            "type": "route"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "10.1.2",
       "targets": [
         {
+          "alias": "",
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "time_series",
-          "group": [],
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(date),\n   latitude\nFROM positions\nWHERE \n  car_id = $car_id AND \n  $__timeFilter(date)\nORDER BY \n  date ASC",
+          "rawSql": "SELECT\n  $__time(date),\n  latitude,\n  longitude\nFROM positions\nWHERE \n  car_id = $car_id AND \n  $__timeFilter(date)\nORDER BY \n  date ASC",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "start_km"
+                  "lat"
                 ],
                 "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "lat"
+                ],
+                "type": "alias"
               }
-            ]
-          ],
-          "table": "drives",
-          "timeColumn": "start_date",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(date),\n  longitude\nFROM positions\nWHERE \n  car_id = $car_id AND \n  $__timeFilter(date)\nORDER BY \n  date ASC",
-          "refId": "B",
-          "select": [
+            ],
             [
               {
                 "params": [
-                  "start_km"
+                  "lng"
                 ],
                 "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "lat"
+                ],
+                "type": "alias"
               }
             ]
           ],
-          "table": "drives",
-          "timeColumn": "start_date",
-          "timeColumnType": "timestamp",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "table": "pos",
+          "timeColumn": "Datum",
+          "timeColumnType": "datetime",
           "where": [
             {
               "name": "$__timeFilter",
@@ -1531,11 +1658,11 @@
           ]
         }
       ],
-      "type": "pr0ps-trackmap-panel"
+      "type": "geomap"
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 36,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "TeslamateCustomDashboards"
@@ -1804,6 +1931,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }

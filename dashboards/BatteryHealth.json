@@ -1,5 +1,5 @@
 {
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "panel",
@@ -17,13 +17,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.26"
-    },
-    {
-      "type": "panel",
-      "id": "natel-plotly-panel",
-      "name": "Plotly",
-      "version": "0.0.7"
+      "version": "10.1.2"
     },
     {
       "type": "panel",
@@ -41,6 +35,12 @@
       "type": "panel",
       "id": "stat",
       "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "xychart",
+      "name": "XY Chart",
       "version": ""
     }
   ],
@@ -70,7 +70,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1689940704136,
   "links": [
     {
       "icon": "dashboard",
@@ -161,7 +160,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -306,7 +305,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -389,7 +388,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -523,7 +522,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -651,7 +650,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -744,9 +743,10 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showUnfilled": true,
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -829,7 +829,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -937,8 +937,9 @@
           "value"
         ],
         "legend": {
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "pieType": "pie",
         "reduceOptions": {
@@ -1050,9 +1051,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1167,9 +1169,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1230,6 +1233,63 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "pointSize": {
+              "fixed": 6
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "show": "points"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Median"
+            },
+            "properties": [
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              },
+              {
+                "id": "custom.show",
+                "value": "lines"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -1238,120 +1298,41 @@
       },
       "id": 28,
       "links": [],
-      "pconfig": {
-        "fixScale": "",
-        "layout": {
-          "dragmode": "zoom",
-          "font": {
-            "family": "\"Open Sans\", Helvetica, Arial, sans-serif"
-          },
-          "hovermode": "closest",
-          "legend": {
-            "orientation": "h"
-          },
-          "showlegend": false,
-          "xaxis": {
-            "rangemode": "normal",
-            "showgrid": true,
-            "title": "Odometer",
-            "type": "linear",
-            "zeroline": false
-          },
-          "yaxis": {
-            "rangemode": "normal",
-            "showgrid": true,
-            "title": "kWh",
-            "type": "linear",
-            "zeroline": false
-          },
-          "zaxis": {
-            "rangemode": "normal",
-            "showgrid": true,
-            "type": "linear",
-            "zeroline": false
-          }
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
-        "loadFromCDN": false,
-        "settings": {
-          "displayModeBar": false,
-          "type": "scatter"
-        },
-        "showAnnotations": true,
-        "traces": [
+        "series": [
           {
-            "mapping": {
-              "color": "id",
-              "text": "title",
-              "x": "odometer",
-              "y": "kWh"
+            "name": "Odometer",
+            "pointColor": {
+              "field": "kWh"
             },
-            "name": "Mileage, kWh",
-            "settings": {
-              "color_option": "ramp",
-              "line": {
-                "color": "#C0D8FF",
-                "dash": "dashdot",
-                "shape": "linear",
-                "width": 1
-              },
-              "marker": {
-                "color": "#33B5E5",
-                "colorscale": "Reds",
-                "line": {
-                  "color": "#DDD",
-                  "width": 0
-                },
-                "showscale": false,
-                "size": 10,
-                "sizemin": 3,
-                "sizemode": "diameter",
-                "sizeref": 0.2,
-                "symbol": "circle"
-              }
+            "pointSize": {
+              "fixed": 5,
+              "max": 100,
+              "min": 1
             },
-            "show": {
-              "line": true,
-              "lines": false,
-              "markers": true
-            }
+            "x": "odometer",
+            "y": "kWh"
           },
           {
-            "mapping": {
-              "color": "id",
-              "x": "M-Odometer",
-              "y": "M-kWh"
+            "name": "Median Odometer",
+            "pointColor": {
+              "fixed": "dark-red"
             },
-            "name": "Median",
-            "settings": {
-              "color_option": "ramp",
-              "line": {
-                "color": "#C0D8FF",
-                "dash": "solid",
-                "shape": "linear",
-                "width": 2
-              },
-              "marker": {
-                "color": "#33B5E5",
-                "colorscale": "Reds",
-                "line": {
-                  "color": "#DDD",
-                  "width": 0
-                },
-                "showscale": false,
-                "size": 3,
-                "sizemin": 3,
-                "sizemode": "diameter",
-                "sizeref": 0.2,
-                "symbol": "circle"
-              }
-            },
-            "show": {
-              "line": true,
-              "lines": true,
-              "markers": false
-            }
+            "x": "M-Odometer",
+            "y": "M-kWh"
           }
-        ]
+        ],
+        "seriesMapping": "manual",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "8.5.6",
       "targets": [
@@ -1361,6 +1342,7 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "hide": false,
@@ -1378,6 +1360,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -1393,6 +1392,7 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "hide": false,
@@ -1410,6 +1410,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "drives",
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
@@ -1423,12 +1440,11 @@
         }
       ],
       "title": "Battery Capacity by Mileage",
-      "type": "natel-plotly-panel",
-      "version": 1
+      "type": "xychart"
     }
   ],
   "refresh": "",
-  "schemaVersion": 36,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "TeslamateCustomDashboards"
@@ -1567,6 +1583,10 @@
       }
     ]
   },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
   "timepicker": {
     "hidden": true,
     "refresh_intervals": []
@@ -1574,6 +1594,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRx",
-  "version": 14,
+  "version": 15,
   "weekStart": ""
 }
