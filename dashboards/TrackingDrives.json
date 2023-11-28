@@ -478,7 +478,7 @@
         "x": 15,
         "y": 0
       },
-      "id": 17,
+      "id": 18,
       "links": [],
       "maxDataPoints": 50000,
       "options": {
@@ -576,7 +576,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(date),\n  latitude,\n  longitude\nFROM positions\nWHERE \n  car_id = $car_id AND \n  $__timeFilter(date)\nORDER BY \n  date ASC",
+          "rawSql": "WITH journey AS (SELECT start_date, end_date FROM drives WHERE id = $journey)\nSELECT\n  $__time(date), latitude, longitude\nFROM positions, journey\nWHERE\n    car_id = $car_id AND (date BETWEEN journey.start_date AND journey.end_date)\nORDER BY date ASC",
           "refId": "A",
           "select": [
             [
@@ -1222,7 +1222,7 @@
       "type": "stat"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
@@ -1400,6 +1400,6 @@
   "timezone": "",
   "title": "Tracking Drives",
   "uid": "jchmX8upc6ZRk",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }

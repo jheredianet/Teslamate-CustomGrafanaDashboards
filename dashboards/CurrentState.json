@@ -770,7 +770,7 @@
               "arrow": 0,
               "style": {
                 "color": {
-                  "fixed": "red"
+                  "fixed": "dark-blue"
                 },
                 "lineWidth": 2,
                 "opacity": 1,
