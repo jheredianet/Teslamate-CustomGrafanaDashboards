@@ -1,5 +1,5 @@
 {
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "panel",
@@ -11,7 +11,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.26"
+      "version": "10.1.2"
     },
     {
       "type": "datasource",
@@ -58,7 +58,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1698527779849,
   "links": [
     {
       "icon": "dashboard",
@@ -103,7 +102,9 @@
         "defaults": {
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -183,8 +184,11 @@
                 "value": "km"
               },
               {
-                "id": "custom.displayMode",
-                "value": "gradient-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
               },
               {
                 "id": "color",
@@ -219,8 +223,11 @@
                 "value": "mi"
               },
               {
-                "id": "custom.displayMode",
-                "value": "gradient-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
               },
               {
                 "id": "max"
@@ -363,7 +370,9 @@
       "id": 2,
       "links": [],
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "enablePagination": false,
           "fields": "",
           "reducer": [
@@ -374,7 +383,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -487,7 +496,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -601,7 +610,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -715,7 +724,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -826,7 +835,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -872,9 +881,11 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-BlYlRd"
+            "mode": "continuous-greens"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "left",
             "axisSoftMin": 0,
@@ -888,6 +899,9 @@
             "lineWidth": 1,
             "scaleDistribution": {
               "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -940,14 +954,17 @@
       "options": {
         "barRadius": 0,
         "barWidth": 0.97,
+        "colorByField": "seconds_elapsed",
+        "fullHighlight": false,
         "groupWidth": 0,
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "orientation": "horizontal",
-        "showValue": "always",
+        "showValue": "auto",
         "stacking": "none",
         "tooltip": {
           "mode": "single",
@@ -964,6 +981,7 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -980,6 +998,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -1249,6 +1284,6 @@
   "timezone": "",
   "title": "Speed Rates",
   "uid": "jchmfu4SiQgWz",
-  "version": 8,
+  "version": 9,
   "weekStart": ""
 }
