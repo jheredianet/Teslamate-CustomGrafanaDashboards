@@ -1,5 +1,5 @@
 {
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "panel",
@@ -14,10 +14,16 @@
       "version": ""
     },
     {
+      "type": "panel",
+      "id": "geomap",
+      "name": "Geomap",
+      "version": ""
+    },
+    {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.26"
+      "version": "10.1.2"
     },
     {
       "type": "datasource",
@@ -70,7 +76,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1692171606539,
   "links": [
     {
       "asDropdown": true,
@@ -78,7 +83,7 @@
       "includeVars": false,
       "keepTime": false,
       "tags": [
-        "tesla"
+        "Custom"
       ],
       "targetBlank": false,
       "title": "Dashboards",
@@ -176,9 +181,10 @@
         "showUnfilled": true,
         "text": {
           "valueSize": 40
-        }
+        },
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -205,8 +211,9 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT last(\"soc\") FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "SELECT\n  battery_level as \"SOC [%]\"\nFROM\n  charges c\njoin\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\nORDER BY\n  c.ID DESC LIMIT 1",
+          "rawSql": "SELECT battery_level as \"SOC [%]\" FROM charges c join charging_processes p ON p.id = c.charging_process_id WHERE $__timeFilter(date) AND p.car_id = $car_id ORDER BY c.ID DESC LIMIT 1",
           "refId": "SOC",
           "resultFormat": "time_series",
           "select": [
@@ -294,9 +301,10 @@
         "showUnfilled": true,
         "text": {
           "valueSize": 40
-        }
+        },
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -324,7 +332,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT\n  battery_level * $BatteryCapacity / 100 as \"kWh\", $BatteryCapacity as Total\nFROM\n  charges c\njoin\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date)\n AND p.car_id = $car_id\nORDER BY\n  c.ID DESC LIMIT 1",
+          "rawSql": "SELECT battery_level * $BatteryCapacity / 100 as \"kWh\", $BatteryCapacity AS Total FROM charges c join charging_processes p ON p.id = c.charging_process_id WHERE $__timeFilter(date) AND p.car_id = $car_id ORDER BY c.ID DESC LIMIT 1",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -363,12 +371,17 @@
         "x": 12,
         "y": 0
       },
-      "id": 42,
+      "id": 51,
       "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
         "content": "<center>\n<img src=\"https://raw.githubusercontent.com/jheredianet/Teslamate-CustomGrafanaDashboards/main/screenshots/help/BatteryCharging.gif\"\nstyle=\"max-height: 125px\" />\n</center>",
         "mode": "html"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -410,54 +423,29 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
           "decimals": 2,
           "mappings": [],
+          "max": 49,
+          "min": 0,
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
+                "color": "light-orange",
                 "value": null
               }
             ]
           },
-          "unit": "dthms"
+          "unit": "kwatth"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Remaining Time"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Elapsed"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "clocks"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -465,223 +453,23 @@
         "x": 15,
         "y": 0
       },
-      "id": 30,
+      "id": 36,
       "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.26",
-      "targets": [
-        {
-          "alias": "Elapsed Time",
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "metricColumn": "none",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "rawQuery": true,
-          "rawSql": "WITH start_process AS (\n  SELECT date FROM charges \n\twhere charging_process_id=$charging_processes\n\tORDER BY DATE ASC\n \tLIMIT 1\n)\nSELECT\n   EXTRACT(EPOCH FROM (charges.date - start_process.date)) AS \"Elapsed\"\nFROM charges, start_process\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(charges.date)\norder by charges.date desc  \nLIMIT 1",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "utc"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.*_c|C/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "celsius"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.*_f|F/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "fahrenheit"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/outdoor_*/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Outdoor"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/inside_*/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Inside"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/driver_*/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Driver"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 0
-      },
-      "id": 24,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^Added$/",
           "values": false
         },
-        "text": {},
-        "textMode": "auto"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(outside_temp, '$temp_unit')) as \"outdoor_$temp_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
-          "refId": "Outdoor",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
+          "alias": "kWh Added",
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
@@ -690,40 +478,10 @@
           "group": [],
           "hide": false,
           "metricColumn": "none",
+          "query": "SELECT \"consumptionkwh\" FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_celsius(inside_temp, '$temp_unit')) AS \"inside_$temp_unit\"\nFROM positions\nWHERE\n  car_id = $car_id\n  and inside_temp is not null AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
-          "refId": "Inside",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n\t$__timeGroupAlias(date,$__interval),\n\tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"driver_$temp_unit\"\nFROM positions\nWHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
-          "refId": "Driver",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(charge_energy_added) as \"Added\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ",
+          "refId": "B",
           "select": [
             [
               {
@@ -746,6 +504,88 @@
           ]
         }
       ],
+      "title": "Added",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "super-light-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 37,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^coalesce$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "10.1.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(g.name, CONCAT_WS(', ', COALESCE(addresses.name, CONCAT_WS(' ', addresses.road, addresses.house_number)), addresses.city)) FROM \tcharging_processes c \tLEFT JOIN addresses ON addresses.id = c.address_id \tLEFT JOIN geofences g ON g.id = geofence_id WHERE \tc.id = $charging_processes",
+          "refId": "Voltage",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
       "type": "stat"
     },
     {
@@ -759,6 +599,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -770,6 +612,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -854,7 +697,7 @@
         ]
       },
       "gridPos": {
-        "h": 14,
+        "h": 20,
         "w": 12,
         "x": 0,
         "y": 2
@@ -869,7 +712,8 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -904,7 +748,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(date),\n  battery_level as \"SOC [%]\",\n    (case when charger_phases >= 1 then (case when charger_phases = 2 then 3 when charger_phases = 1 then 1 else 0 end) * charger_actual_current * charger_voltage / 1000.0 else charger_power end) as \"Power [kW]\",\n    (case when battery_heater_on then 10 when battery_heater then 10 else 0 end) as \"Battery heater\"\nFROM\n  charges c\nJOIN\n  charging_processes p ON p.id = c.charging_process_id \nWHERE\n  $__timeFilter(date) and\n  p.car_id = $car_id\nORDER BY 1",
+          "rawSql": "SELECT $__time(date), battery_level as \"SOC [%]\", (case when charger_phases >= 1 then (case when charger_phases = 2 then 3 when charger_phases = 1 then 1 else 0 end) * charger_actual_current * charger_voltage / 1000.0 else charger_power end) as \"Power [kW]\", (case when battery_heater_on then 10 when battery_heater then 10 else 0 end) as \"Battery heater\" FROM charges c JOIN charging_processes p ON p.id = c.charging_process_id WHERE $__timeFilter(date) and p.car_id = $car_id ORDER BY 1",
           "refId": "Power",
           "resultFormat": "time_series",
           "select": [
@@ -959,7 +803,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 6,
         "w": 3,
         "x": 12,
         "y": 4
@@ -980,7 +824,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "alias": "Real",
@@ -997,8 +841,445 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": " SELECT  battery_level as \"Initial SOC\" FROM charges \n\twhere charging_process_id=$charging_processes\n\tORDER BY DATE ASC\n \tLIMIT 1",
+          "rawSql": " SELECT battery_level as \"Initial SOC\" FROM charges \twhere charging_process_id=$charging_processes \tORDER BY DATE ASC \tLIMIT 1",
           "refId": "Inital SOC",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "start_km"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "drives",
+          "timeColumn": "start_date",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT battery_level - (SELECT battery_level as \"Added\" FROM charges where charging_process_id=$charging_processes\tORDER BY DATE ASC \tLIMIT 1) as \"Added\" FROM charges c join charging_processes p ON p.id = c.charging_process_id WHERE $__timeFilter(date) AND p.car_id = $car_id ORDER BY c.ID DESC LIMIT 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "efficiency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "cars",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "clocks"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 15,
+        "y": 4
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.2",
+      "targets": [
+        {
+          "alias": "Elapsed Time",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "table",
+          "group": [],
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "ovms",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "rawQuery": true,
+          "rawSql": "WITH start_process AS ( SELECT date FROM charges \twhere charging_process_id=$charging_processes \tORDER BY DATE ASC \tLIMIT 1 ) SELECT EXTRACT(EPOCH FROM (charges.date - start_process.date)) AS \"Elapsed\" FROM charges, start_process WHERE charging_process_id = $charging_processes AND $__timeFilter(charges.date) order by charges.date desc LIMIT 1",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "utc"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 6,
+        "x": 18,
+        "y": 4
+      },
+      "id": 50,
+      "links": [],
+      "maxDataPoints": 50000,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "osm-standard"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "arrow": 0,
+              "style": {
+                "color": {
+                  "fixed": "dark-blue"
+                },
+                "lineWidth": 2,
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 20,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "field": "",
+                  "fixed": "",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "route",
+            "opacity": 1,
+            "tooltip": true,
+            "type": "route"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "10.1.2",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__time(date),\n  latitude,\n  longitude\nFROM positions\nWHERE \n  car_id = $car_id AND \n  $__timeFilter(date)\nORDER BY \n  date ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "lat"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "lat"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "lng"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "lat"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "table": "pos",
+          "timeColumn": "Datum",
+          "timeColumnType": "datetime",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "super-light-yellow",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "Km"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 15,
+        "y": 7
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.2",
+      "targets": [
+        {
+          "alias": "Real",
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "hide": false,
+          "measurement": "km",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "rawQuery": true,
+          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit') as \"Odometer\" from positions where car_id = $car_id order by date desc limit 1;",
+          "refId": "odometer",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1033,94 +1314,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "max": 49,
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "light-orange",
-                "value": null
-              }
-            ]
-          },
-          "unit": "kwatth"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 15,
-        "y": 4
-      },
-      "id": 36,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Added$/",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "8.5.26",
-      "targets": [
-        {
-          "alias": "kWh Added",
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "time_series",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(charge_energy_added) as \"Added\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1\n",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "start_km"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "drives",
-          "timeColumn": "start_date",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Added",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "fixedColor": "blue",
             "mode": "palette-classic"
           },
@@ -1133,76 +1326,16 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "lengthkm"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.*_km/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "km"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.*_mi/"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "mi"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/est_.*/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Estimated Range"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/rated_.*/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Rated Range"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/init_.*/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Initial Range"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
         "w": 6,
-        "x": 18,
-        "y": 4
+        "x": 12,
+        "y": 10
       },
       "id": 5,
       "options": {
@@ -1220,7 +1353,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "alias": "Real",
@@ -1236,8 +1369,9 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"init_$length_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 asc\nlimit 1",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_km(rated_battery_range_km, '$length_unit')) as \"Initial Range\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 asc limit 1",
           "refId": "Initial Range",
           "resultFormat": "time_series",
           "select": [
@@ -1278,7 +1412,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(rated_battery_range_km, '$length_unit')) as \"rated_$length_unit\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_km(rated_battery_range_km, '$length_unit')) as \"Rated Range\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 desc limit 1",
           "refId": "Rated",
           "resultFormat": "time_series",
           "select": [
@@ -1319,7 +1453,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(convert_km(est_battery_range_km, '$length_unit')) as \"est_$length_unit\"\nFROM positions\nWHERE \n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 desc\nlimit 1",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_km(est_battery_range_km, '$length_unit')) as \"Estimated Range\" FROM positions WHERE $__timeFilter(date) GROUP BY 1 ORDER BY 1 desc limit 1",
           "refId": "Estimated",
           "resultFormat": "time_series",
           "select": [
@@ -1333,168 +1467,6 @@
               {
                 "params": [],
                 "type": "last"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "volt"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 8
-      },
-      "id": 31,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Volt$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.26",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(case when charger_voltage > 2 then charger_voltage else \n    charger_power / GREATEST(0.1, (((2.85 + (usable_battery_level * 0.013)) * 96.0) * charger_power / 100.0)) * 1000.0  end) \n    as \"Volt\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 \n",
-          "refId": "Voltage",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "super-light-blue",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "super-light-blue",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 8
-      },
-      "id": 37,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^coalesce$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "8.5.26",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  COALESCE(g.name, CONCAT_WS(', ', COALESCE(addresses.name, CONCAT_WS(' ', addresses.road, addresses.house_number)), addresses.city))\nFROM\n\tcharging_processes c\n\tLEFT JOIN addresses ON addresses.id = c.address_id\n\tLEFT JOIN geofences g ON g.id = geofence_id\nWHERE\n\tc.id = $charging_processes",
-          "refId": "Voltage",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
               }
             ]
           ],
@@ -1549,11 +1521,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
+        "w": 3,
         "x": 12,
-        "y": 12
+        "y": 14
       },
-      "id": 34,
+      "id": 49,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -1561,7 +1533,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -1569,7 +1541,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1581,7 +1553,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroupAlias(date,$__interval),\n  avg(case when charger_voltage > 2 then charger_actual_current else ((2.85 + (usable_battery_level * 0.013)) * 96) * charger_power / 100 end) as \"Current\"\nFROM charges\nWHERE \n  charging_process_id = $charging_processes AND\n  $__timeFilter(date)\nGROUP BY 1\nORDER BY 1 ",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(case when charger_voltage > 2 then charger_actual_current else ((2.85 + (usable_battery_level * 0.013)) * 96) * charger_power / 100 end) as \"Current\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
           "refId": "Current",
           "select": [
             [
@@ -1613,11 +1585,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "super-light-yellow",
-            "mode": "fixed"
+            "mode": "continuous-GrYlRd"
           },
-          "decimals": 0,
-          "displayName": "Odometer",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1627,77 +1596,276 @@
                 "value": null
               }
             ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "odometer_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "km"
-              }
-            ]
           },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "odometer_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "mi"
-              }
-            ]
-          }
-        ]
+          "unit": "volt"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 12
+        "w": 3,
+        "x": 15,
+        "y": 14
       },
-      "id": 16,
+      "id": 47,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "first"
+            "mean"
           ],
-          "fields": "",
-          "values": true
+          "fields": "/^Volt$/",
+          "values": false
         },
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.26",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
-          "alias": "Real",
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
           },
           "format": "time_series",
           "group": [],
-          "groupBy": [],
-          "hide": false,
-          "measurement": "km",
           "metricColumn": "none",
-          "orderByTime": "ASC",
-          "policy": "default",
           "rawQuery": true,
-          "rawSql": "select $__time(date), convert_km(odometer::numeric, '$length_unit')  as \"odometer_$length_unit\"\nfrom positions \nwhere car_id = $car_id \norder by date desc \nlimit 1;",
-          "refId": "odometer",
-          "resultFormat": "time_series",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(case when charger_voltage > 2 then charger_voltage else charger_power / GREATEST(0.1, (((2.85 + (usable_battery_level * 0.013)) * 96.0) * charger_power / 100.0)) * 1000.0 end) as \"Volt\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "refId": "Voltage",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 18
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(case when charger_phases >= 1 then (case when charger_phases = 2 then 3 when charger_phases = 1 then 1 else 0 end) * charger_actual_current * charger_voltage / 1000.0 else charger_power end) as \"Power\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "refId": "Current",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 18
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_celsius(outside_temp, '$temp_unit')) as \"Outdoor\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "refId": "Outdoor",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_celsius(inside_temp, '$temp_unit')) AS \"Inside\" FROM positions WHERE car_id = $car_id and inside_temp is not null AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "refId": "Inside",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT \t$__timeGroupAlias(date,$__interval), \tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"Driver\" FROM positions WHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "refId": "Driver",
           "select": [
             [
               {
@@ -1724,7 +1892,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 36,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "TeslamateCustomDashboards"
@@ -1814,13 +1982,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT \n  (round(extract(epoch FROM start_date) - 10) * 1000) AS start_date_ts\n  FROM charging_processes\n   WHERE id = $charging_processes",
+        "definition": "SELECT (round(extract(epoch FROM start_date) - 10) * 1000) AS start_date_ts FROM charging_processes WHERE id = $charging_processes",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "current_charge_time",
         "options": [],
-        "query": "SELECT \n  (round(extract(epoch FROM start_date) - 10) * 1000) AS start_date_ts\n  FROM charging_processes\n   WHERE id = $charging_processes",
+        "query": "SELECT (round(extract(epoch FROM start_date) - 10) * 1000) AS start_date_ts FROM charging_processes WHERE id = $charging_processes",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1833,13 +2001,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT id\n  FROM charging_processes\n  WHERE car_id = $car_id\n  ORDER BY start_date DESC LIMIT 1",
+        "definition": "SELECT id FROM charging_processes WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "charging_processes",
         "options": [],
-        "query": "SELECT id\n  FROM charging_processes\n  WHERE car_id = $car_id\n  ORDER BY start_date DESC LIMIT 1",
+        "query": "SELECT id FROM charging_processes WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1852,13 +2020,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT \n  CASE WHEN end_date IS NULL THEN 'now&refresh=10s' ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END\n  FROM charging_processes\n  WHERE id = $charging_processes",
+        "definition": "SELECT CASE WHEN end_date IS NULL THEN 'now&refresh=10s' ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END FROM charging_processes WHERE id = $charging_processes",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "current_end_time",
         "options": [],
-        "query": "SELECT \n  CASE WHEN end_date IS NULL THEN 'now&refresh=10s' ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END\n  FROM charging_processes\n  WHERE id = $charging_processes",
+        "query": "SELECT CASE WHEN end_date IS NULL THEN 'now&refresh=10s' ELSE CAST(round(extract(epoch FROM end_date) - 10) * 1000 AS VARCHAR(100)) END FROM charging_processes WHERE id = $charging_processes",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1887,6 +2055,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }
