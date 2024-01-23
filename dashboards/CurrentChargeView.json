@@ -211,7 +211,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"soc\") FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
           "rawSql": "SELECT battery_level as \"SOC [%]\" FROM charges c join charging_processes p ON p.id = c.charging_process_id WHERE $__timeFilter(date) AND p.car_id = $car_id ORDER BY c.ID DESC LIMIT 1",
           "refId": "SOC",
@@ -478,7 +477,6 @@
           "group": [],
           "hide": false,
           "metricColumn": "none",
-          "query": "SELECT \"consumptionkwh\" FROM \"ovms\" WHERE $timeFilter",
           "rawQuery": true,
           "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(charge_energy_added) as \"Added\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ",
           "refId": "B",
@@ -969,7 +967,6 @@
               "type": "fill"
             }
           ],
-          "measurement": "ovms",
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
@@ -1369,7 +1366,6 @@
           "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"km\" WHERE (\"entity_id\" = 'ovms_v_b_range_ideal') ",
           "rawQuery": true,
           "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_km(rated_battery_range_km, '$length_unit')) as \"Initial Range\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 asc limit 1",
           "refId": "Initial Range",
