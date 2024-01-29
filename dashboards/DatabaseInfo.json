@@ -240,6 +240,108 @@
         "x": 5,
         "y": 0
       },
+      "id": 39,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "10.1.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(id) as \"Total Updates\"\nFROM Updates \nWHERE car_id = $car_id\n",
+          "refId": "Count",
+          "select": [
+            [
+              {
+                "params": [
+                  "efficiency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "cars",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Software",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 0
+      },
       "id": 36,
       "options": {
         "colorMode": "value",
@@ -390,10 +492,10 @@
       "gridPos": {
         "h": 4,
         "w": 5,
-        "x": 10,
+        "x": 15,
         "y": 0
       },
-      "id": 39,
+      "id": 42,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -523,8 +625,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 5,
-        "x": 15,
+        "w": 4,
+        "x": 20,
         "y": 0
       },
       "id": 40,
@@ -574,108 +676,6 @@
       ],
       "title": "About incomplete data",
       "type": "text"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "super-light-blue",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 20,
-        "y": 0
-      },
-      "id": 35,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/.*/",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "10.1.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT \n    pg_size_pretty(SUM(pg_total_relation_size(relid))) As \"Size\"\nFROM \n    pg_catalog.pg_statio_user_tables;",
-          "refId": "DistanceLogged",
-          "select": [
-            [
-              {
-                "params": [
-                  "efficiency"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "sql": {
-            "columns": [
-              {
-                "parameters": [],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          },
-          "table": "cars",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Database Total Size",
-      "type": "stat"
     },
     {
       "collapsed": false,
@@ -742,7 +742,7 @@
         ]
       },
       "gridPos": {
-        "h": 19,
+        "h": 16,
         "w": 5,
         "x": 0,
         "y": 5
@@ -791,7 +791,6 @@
           }
         }
       ],
-      "title": "Table Sizes",
       "type": "table"
     },
     {
@@ -846,7 +845,7 @@
         ]
       },
       "gridPos": {
-        "h": 19,
+        "h": 16,
         "w": 5,
         "x": 5,
         "y": 5
@@ -895,7 +894,6 @@
           }
         }
       ],
-      "title": "Table Rows",
       "type": "table"
     },
     {
@@ -986,6 +984,108 @@
       ],
       "title": "Indexes",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "TeslaMate"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 10,
+        "x": 0,
+        "y": 21
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "10.1.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    pg_size_pretty(SUM(pg_total_relation_size(relid))) As \"Size\"\nFROM \n    pg_catalog.pg_statio_user_tables;",
+          "refId": "DistanceLogged",
+          "select": [
+            [
+              {
+                "params": [
+                  "efficiency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "cars",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Database Total Size",
+      "type": "stat"
     }
   ],
   "refresh": "",
