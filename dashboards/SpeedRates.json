@@ -887,7 +887,7 @@
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
-            "axisPlacement": "left",
+            "axisPlacement": "auto",
             "axisSoftMin": 0,
             "fillOpacity": 90,
             "gradientMode": "scheme",
@@ -944,7 +944,7 @@
         ]
       },
       "gridPos": {
-        "h": 12,
+        "h": 11,
         "w": 24,
         "x": 0,
         "y": 13
@@ -952,8 +952,8 @@
       "id": 16,
       "links": [],
       "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
+        "barRadius": 0.1,
+        "barWidth": 0.98,
         "colorByField": "seconds_elapsed",
         "fullHighlight": false,
         "groupWidth": 0,
@@ -964,14 +964,14 @@
           "showLegend": false
         },
         "orientation": "horizontal",
-        "showValue": "auto",
+        "showValue": "always",
         "stacking": "none",
         "tooltip": {
           "mode": "single",
           "sort": "none"
         },
         "xField": "speed",
-        "xTickLabelRotation": 15,
+        "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
       "pluginVersion": "8.5.15",
@@ -1029,7 +1029,8 @@
       "type": "barchart"
     }
   ],
-  "schemaVersion": 36,
+  "refresh": "",
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "TeslamateCustomDashboards"

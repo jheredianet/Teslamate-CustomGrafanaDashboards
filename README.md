@@ -192,6 +192,12 @@ Additionally, you can see the states stats of the selected period.
 
 ![Current State](./screenshots/CurrentState.png)
 
+### [Database Information](./dashboards/CurrentState.json)
+
+Unlike the other dashboards, this is a specific one to view database information: size, number of records, indexes, and generic information on drives and charges.
+
+![Database Information](./screenshots/DatabaseInfo.png)
+
 ### [DC Charging Curves By Carrier](./dashboards/DC_ChargingCurvesByCarrier.json)
 
 This dasboard is browse your DC charge sessions by charger carriers.
@@ -268,12 +274,6 @@ Do not take the dashboards much less upload or merge them to other repositories 
 
 - Author: [Juan Carlos Heredia](https://infoinnova.net/contacto/)
 - Based on/forked from [Adrian Kumpf](https://github.com/adriankumpf/teslamate) original code, with improvement of custom Grafana Dashboards (see [contributions history](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/graphs/contributors)).
-
-## Grafana Golden Grot Awards
-
-With great pride, I want to share with you that this project has been considered among the 5 finalists in the Grafana Golden Grot Awards (this year), celebrating a decade of Grafana dashboards.
-
-[![TeslaMate electric vehicle monitoring dashboard (Juan Carlos Heredia)](https://i.imgur.com/uVl0yuX.png)](https://grafana.com/golden-grot-awards)
 
 ## License
 
