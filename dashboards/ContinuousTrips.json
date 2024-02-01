@@ -88,7 +88,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This dashboard has a table with all the trips you've made between charges sessions, so you can browse the longest or shortest mileage you travel.\n\nYou may also take a look to a specific trip from the initial charge session (before the trip) to the end of the of the charge session (after the trip), through the link in the first column that will take you to the Trips dashboard.",
+      "description": "这个仪表板包含了一个表格，里面记录了您在充电会话之间进行的所有旅行，因此您可以浏览自己行驶的最长或最短里程。\n\n您还可以通过第一列中的链接查看特定的旅行，从旅行前的初始充电会话到旅行后的充电会话结束，该链接将带您前往“旅行”仪表板。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -124,7 +124,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Start Date"
+                "value": "开始日期"
               },
               {
                 "id": "unit",
@@ -135,7 +135,7 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "View Trip details",
+                    "title": "查看详情",
                     "url": "d/FkUpJpQZk?from=${__data.fields.start_date_ts.numeric}&to=${__data.fields.end_date_ts.numeric}"
                   }
                 ]
@@ -154,7 +154,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               },
               {
                 "id": "unit",
@@ -166,7 +166,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 100
+                "value": 125
               },
               {
                 "id": "custom.displayMode",
@@ -192,7 +192,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               },
               {
                 "id": "unit",
@@ -204,7 +204,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 100
+                "value": 125
               }
             ]
           },
@@ -220,7 +220,7 @@
               },
               {
                 "id": "displayName",
-                "value": "End Date"
+                "value": "结束日期"
               },
               {
                 "id": "unit",
@@ -236,7 +236,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Duration"
+                "value": "持续时间"
               },
               {
                 "id": "unit",
@@ -260,7 +260,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg Speed"
+                "value": "平均速度"
               },
               {
                 "id": "custom.minWidth",
@@ -280,7 +280,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg Speed"
+                "value": "平均速度"
               },
               {
                 "id": "custom.minWidth",
@@ -340,7 +340,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "max Power"
+                "value": "最大功率"
               },
               {
                 "id": "unit",
@@ -360,7 +360,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "max Speed"
+                "value": "最大速度"
               },
               {
                 "id": "unit",
@@ -404,7 +404,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Temp"
+                "value": "温度"
               },
               {
                 "id": "custom.minWidth",
@@ -448,7 +448,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Consumption gross"
+                "value": "总消耗"
               }
             ]
           },
@@ -468,7 +468,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Consumption gross"
+                "value": "总消耗"
               }
             ]
           },
@@ -480,7 +480,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Energy"
+                "value": "电量"
               },
               {
                 "id": "decimals",
@@ -504,7 +504,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Efficiency"
+                "value": "效率"
               },
               {
                 "id": "unit",
@@ -578,7 +578,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH \r\ntrip AS (\r\n    SELECT start_date sd, end_date ed, distance, duration_min, start_usable_battery_level, end_usable_battery_level, \r\n        outside_temp_avg, power_max, speed_max, start_rated_range_km, end_rated_range_km\r\n    FROM drives INNER JOIN (\r\n      SELECT drive_id, MIN(usable_battery_level) AS end_usable_battery_level, MAX(usable_battery_level) AS start_usable_battery_level\r\n        FROM (\r\n            SELECT drive_id, usable_battery_level, ROW_NUMBER() OVER (PARTITION BY drive_id ORDER BY date) AS row_num\r\n            FROM positions \r\n            WHERE drive_id IS NOT NULL\r\n        ) AS pos\r\n      GROUP BY drive_id\r\n    ) AS filter_positions\r\n    ON filter_positions.drive_id = drives.id\r\n    WHERE $__timeFilter(start_date) \r\n      AND car_id = $car_id \r\n      AND duration_min > 0\r\n      AND start_rated_range_km > end_rated_range_km\r\n),\r\ncp AS (\r\n    SELECT car_id, start_date, end_date, COALESCE(LAG(start_date) OVER(ORDER BY start_date DESC), now()) next_date, start_battery_level, end_battery_level\r\n    FROM charging_processes WHERE $__timeFilter(start_date) AND car_id = $car_id\r\n),\r\ndriven AS (\r\nSELECT cp.car_id, cp.start_date, cp.end_date, cp.next_date, \r\n        MIN(trip.sd) trip_start_date, \r\n        MAX(trip.ed) trip_end_date,\r\n        SUM(convert_km(trip.distance::numeric, '$length_unit')) AS distance_$length_unit, \r\n        MAX(convert_km(trip.speed_max::numeric, '$length_unit')) AS speed_max_$length_unit,\r\n        SUM(trip.duration_min) duration_min,\r\n        MAX(trip.start_usable_battery_level) start_soc, \r\n        MIN(trip.end_usable_battery_level) end_soc, \r\n        AVG(convert_celsius(trip.outside_temp_avg, '$temp_unit')) AS avg_temp_$temp_unit, \r\n        MAX(trip.power_max) AS power_max, \r\n        convert_km((MAX(trip.start_rated_range_km) - MIN(trip.end_rated_range_km))::numeric, '$length_unit') AS range_diff_$length_unit \r\n\tFROM cp\tINNER JOIN trip ON trip.sd BETWEEN cp.start_date and cp.next_date\r\n  GROUP BY cp.car_id, cp.start_date, cp.end_date, cp.next_date\r\n)\r\nSELECT \r\n    ROUND(EXTRACT(epoch FROM start_date) - 10) * 1000 AS start_date_ts, ROUND(EXTRACT(epoch FROM next_date) + 10) * 1000 AS end_date_ts, start_date, next_date end_date,\r\n    distance_$length_unit, duration_min * 60 as duration_min, \r\n    (distance_$length_unit / duration_min * 60) as speed_$length_unit, \r\n    start_soc as \"% Start\", end_soc as \"% End\", avg_temp_$temp_unit, power_max, speed_max_$length_unit,\r\n    (range_diff_$length_unit * car.efficiency) consumption_kwh, \r\n    (range_diff_$length_unit * car.efficiency / distance_$length_unit * 1000.0) consumption_kWh_$length_unit,\r\n    (distance_$length_unit / range_diff_$length_unit) efficiency\r\nFROM driven\r\nINNER JOIN cars car ON car.id = driven.car_id\r\nWHERE distance_$length_unit >= $min_dist AND (distance_$length_unit / duration_min * 60) >= $min_avg_speed\r\nORDER BY start_date DESC\r\n",
+          "rawSql": "WITH \r\ntrip AS (\r\n    SELECT start_date sd, end_date ed, distance, duration_min, start_usable_battery_level, end_usable_battery_level, \r\n        outside_temp_avg, power_max, speed_max, start_rated_range_km, end_rated_range_km\r\n    FROM drives INNER JOIN (\r\n      SELECT drive_id, MIN(usable_battery_level) AS end_usable_battery_level, MAX(usable_battery_level) AS start_usable_battery_level\r\n        FROM (\r\n            SELECT drive_id, usable_battery_level, ROW_NUMBER() OVER (PARTITION BY drive_id ORDER BY date) AS row_num\r\n            FROM positions \r\n            WHERE drive_id IS NOT NULL\r\n        ) AS pos\r\n      GROUP BY drive_id\r\n    ) AS filter_positions\r\n    ON filter_positions.drive_id = drives.id\r\n    WHERE $__timeFilter(start_date) \r\n      AND car_id = $car_id \r\n      AND duration_min > 0\r\n      AND start_rated_range_km > end_rated_range_km\r\n),\r\ncp AS (\r\n    SELECT car_id, start_date, end_date, COALESCE(LAG(start_date) OVER(ORDER BY start_date DESC), now()) next_date, start_battery_level, end_battery_level\r\n    FROM charging_processes WHERE $__timeFilter(start_date) AND car_id = $car_id\r\n),\r\ndriven AS (\r\nSELECT cp.car_id, cp.start_date, cp.end_date, cp.next_date, \r\n        MIN(trip.sd) trip_start_date, \r\n        MAX(trip.ed) trip_end_date,\r\n        SUM(convert_km(trip.distance::numeric, '$length_unit')) AS distance_$length_unit, \r\n        MAX(convert_km(trip.speed_max::numeric, '$length_unit')) AS speed_max_$length_unit,\r\n        SUM(trip.duration_min) duration_min,\r\n        MAX(trip.start_usable_battery_level) start_soc, \r\n        MIN(trip.end_usable_battery_level) end_soc, \r\n        AVG(convert_celsius(trip.outside_temp_avg, '$temp_unit')) AS avg_temp_$temp_unit, \r\n        MAX(trip.power_max) AS power_max, \r\n        convert_km((MAX(trip.start_rated_range_km) - MIN(trip.end_rated_range_km))::numeric, '$length_unit') AS range_diff_$length_unit \r\n\tFROM cp\tINNER JOIN trip ON trip.sd BETWEEN cp.start_date and cp.next_date\r\n  GROUP BY cp.car_id, cp.start_date, cp.end_date, cp.next_date\r\n)\r\nSELECT \r\n    ROUND(EXTRACT(epoch FROM start_date) - 10) * 1000 AS start_date_ts, ROUND(EXTRACT(epoch FROM next_date) + 10) * 1000 AS end_date_ts, start_date, next_date end_date,\r\n    distance_$length_unit, duration_min * 60 as duration_min, \r\n    (distance_$length_unit / duration_min * 60) as speed_$length_unit, \r\n    start_soc as \"% 开始\", end_soc as \"% 结束\", avg_temp_$temp_unit, power_max, speed_max_$length_unit,\r\n    (range_diff_$length_unit * car.efficiency) consumption_kwh, \r\n    (range_diff_$length_unit * car.efficiency / distance_$length_unit * 1000.0) consumption_kWh_$length_unit,\r\n    (distance_$length_unit / range_diff_$length_unit) efficiency\r\nFROM driven\r\nINNER JOIN cars car ON car.id = driven.car_id\r\nWHERE distance_$length_unit >= $min_dist AND (distance_$length_unit / duration_min * 60) >= $min_avg_speed\r\nORDER BY start_date DESC\r\n",
           "refId": "A",
           "select": [
             [
@@ -600,7 +600,7 @@
           ]
         }
       ],
-      "title": "Long Trips",
+      "title": "旅程",
       "transformations": [],
       "type": "table"
     }
@@ -622,7 +622,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -706,7 +706,7 @@
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Distance >=",
+        "label": "距离 >=",
         "name": "min_dist",
         "options": [
           {
@@ -726,7 +726,7 @@
           "value": "0"
         },
         "hide": 0,
-        "label": "Avg Speed >=",
+        "label": "平均速度 >=",
         "name": "min_avg_speed",
         "options": [
           {
@@ -771,7 +771,7 @@
     ]
   },
   "timezone": "",
-  "title": "Continuous Trips",
+  "title": "连续旅程",
   "uid": "jchmY8upc6ZRk",
   "version": 4,
   "weekStart": ""

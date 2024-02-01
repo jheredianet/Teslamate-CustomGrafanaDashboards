@@ -129,7 +129,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg. Consumption"
+                "value": "平均消耗"
               },
               {
                 "id": "unit",
@@ -137,7 +137,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 200
+                "value": 125
               },
               {
                 "id": "decimals",
@@ -153,7 +153,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg. Consumption"
+                "value": "平均消耗"
               },
               {
                 "id": "unit",
@@ -161,7 +161,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 200
+                "value": 125
               },
               {
                 "id": "decimals",
@@ -177,7 +177,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg. Distance"
+                "value": "平均里程"
               },
               {
                 "id": "unit",
@@ -204,7 +204,7 @@
               },
               {
                 "id": "decimals",
-                "value": 1
+                "value": 2
               }
             ]
           },
@@ -216,7 +216,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg. Distance"
+                "value": "平均里程"
               },
               {
                 "id": "unit",
@@ -243,7 +243,7 @@
               },
               {
                 "id": "decimals",
-                "value": 1
+                "value": 2
               }
             ]
           },
@@ -255,7 +255,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Segment (km/h)"
+                "value": "旅程 (km/h)"
               },
               {
                 "id": "custom.width",
@@ -295,7 +295,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg Speed"
+                "value": "平均速度"
               },
               {
                 "id": "unit",
@@ -319,7 +319,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg. Speed"
+                "value": "平均速度"
               },
               {
                 "id": "unit",
@@ -343,11 +343,11 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 200
+                "value": 100
               },
               {
                 "id": "displayName",
-                "value": "Avg. Power"
+                "value": "平均功率"
               },
               {
                 "id": "unit",
@@ -418,7 +418,7 @@
           ]
         }
       ],
-      "title": "Consumption by speed - $terrain_type Terrain",
+      "title": "速度消耗 - $terrain_type 地形",
       "type": "table"
     },
     {
@@ -531,7 +531,7 @@
           ]
         }
       ],
-      "title": "Logged Distance",
+      "title": "已记录里程",
       "type": "stat"
     },
     {
@@ -645,7 +645,7 @@
           ]
         }
       ],
-      "title": "Consumption (net)",
+      "title": "净消耗",
       "type": "stat"
     },
     {
@@ -759,7 +759,7 @@
           ]
         }
       ],
-      "title": "Consumption (gross) ",
+      "title": "总消耗",
       "type": "stat"
     },
     {
@@ -870,7 +870,7 @@
           ]
         }
       ],
-      "title": "Current $preferred_range efficiency",
+      "title": "当前 $preferred_range 效率",
       "type": "stat"
     },
     {
@@ -1025,7 +1025,7 @@
           ]
         }
       ],
-      "title": "Top Speeds",
+      "title": "最高速度",
       "type": "barchart"
     }
   ],
@@ -1046,7 +1046,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -1113,7 +1113,7 @@
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Min. speed segment",
+        "label": "最小速度旅程",
         "multi": false,
         "name": "min_speed_segment",
         "options": [
@@ -1156,7 +1156,7 @@
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Min. driving distance",
+        "label": "最小驾驶距离",
         "multi": false,
         "name": "min_distance",
         "options": [
@@ -1232,28 +1232,28 @@
       {
         "current": {
           "selected": true,
-          "text": "Flat",
+          "text": "平坦",
           "value": "Flat"
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Terrain Type",
+        "label": "地形类型",
         "multi": false,
         "name": "terrain_type",
         "options": [
           {
             "selected": true,
-            "text": "Flat",
+            "text": "平坦",
             "value": "Flat"
           },
           {
             "selected": false,
-            "text": "Uphill",
+            "text": "上坡",
             "value": "Uphill"
           },
           {
             "selected": false,
-            "text": "Downhill",
+            "text": "下坡",
             "value": "Downhill"
           }
         ],
@@ -1283,7 +1283,7 @@
     ]
   },
   "timezone": "",
-  "title": "Speed Rates",
+  "title": "速度等级",
   "uid": "jchmfu4SiQgWz",
   "version": 9,
   "weekStart": ""

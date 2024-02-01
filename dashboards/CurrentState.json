@@ -111,10 +111,36 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Only distinguishes between online, offline and asleep.",
+      "description": "仅区分在线、离线和休眠状态。",
       "fieldConfig": {
         "defaults": {
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 0,
+                  "text": "在线"
+                },
+                "3": {
+                  "index": 3,
+                  "text": "离线"
+                },
+                "4": {
+                  "index": 4,
+                  "text": "休眠"
+                },
+                "5": {
+                  "index": 5,
+                  "text": "在线"
+                },
+                "null": {
+                  "index": 7,
+                  "text": "N/A"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -167,7 +193,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select $__time(start_date), state from states where car_id = $car_id AND $__timeFilter(start_date) order by start_date desc limit 1;",
+          "rawSql": "select $__time(start_date), CASE\r\n      WHEN state = 'offline' THEN 3\r\n      WHEN state = 'asleep' THEN 4\r\n      WHEN state = 'online' THEN 5\r\n    END AS state\r\n from states where car_id = $car_id AND $__timeFilter(start_date) order by start_date desc limit 1;",
           "refId": "A",
           "select": [
             [
@@ -191,7 +217,7 @@
           ]
         }
       ],
-      "title": "Current State",
+      "title": "当前状态",
       "type": "stat"
     },
     {
@@ -199,7 +225,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This dasboard is just to see the current state of the car with the last data recorded by TeslaMate.\n\nAdditionally, you can see the states stats of the selected period.",
+      "description": "此仪表板仅用于查看汽车当前状态以及TeslaMate记录的最后数据。\n\n另外，您还可以查看所选时期的状态统计。",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -280,7 +306,7 @@
           ]
         }
       ],
-      "title": "Last state change",
+      "title": "最近状态变更",
       "type": "stat"
     },
     {
@@ -402,7 +428,7 @@
           ]
         }
       ],
-      "title": "$preferred_range range",
+      "title": "$preferred_range 续航里程",
       "type": "stat"
     },
     {
@@ -524,7 +550,7 @@
           ]
         }
       ],
-      "title": "estimated range",
+      "title": "预估续航里程",
       "type": "stat"
     },
     {
@@ -618,7 +644,7 @@
           "where": []
         }
       ],
-      "title": "Battery Level",
+      "title": "电池电量",
       "type": "gauge"
     },
     {
@@ -683,7 +709,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n    convert_tire_pressure(tpms_pressure_fl,'$pressure_unit') AS \"Front left\",\r\n    convert_tire_pressure(tpms_pressure_fr,'$pressure_unit') AS \"Front right\",\r\n    convert_tire_pressure(tpms_pressure_rl,'$pressure_unit') AS \"Rear left\",\r\n    convert_tire_pressure(tpms_pressure_rr,'$pressure_unit') AS \"Rear right\"\r\nFROM\r\n    positions\r\nWHERE\r\n    car_id = $car_id AND\r\n    $__timeFilter(date) AND\r\n    tpms_pressure_fl is not null\r\nORDER BY\r\n    date DESC LIMIT 1",
+          "rawSql": "SELECT\r\n    convert_tire_pressure(tpms_pressure_fl,'$pressure_unit') AS \"左前\",\r\n    convert_tire_pressure(tpms_pressure_fr,'$pressure_unit') AS \"右前\",\r\n    convert_tire_pressure(tpms_pressure_rl,'$pressure_unit') AS \"左后\",\r\n    convert_tire_pressure(tpms_pressure_rr,'$pressure_unit') AS \"右后\"\r\nFROM\r\n    positions\r\nWHERE\r\n    car_id = $car_id AND\r\n    $__timeFilter(date) AND\r\n    tpms_pressure_fl is not null\r\nORDER BY\r\n    date DESC LIMIT 1",
           "refId": "A",
           "select": [
             [
@@ -707,7 +733,7 @@
           ]
         }
       ],
-      "title": "Tire Pressure ($pressure_unit)",
+      "title": "胎压 ($pressure_unit)",
       "type": "stat"
     },
     {
@@ -1000,7 +1026,7 @@
           ]
         }
       ],
-      "title": "Driver Temp",
+      "title": "驾驶室温度",
       "type": "gauge"
     },
     {
@@ -1084,7 +1110,7 @@
           ]
         }
       ],
-      "title": "Inside Temp",
+      "title": "内部温度",
       "type": "gauge"
     },
     {
@@ -1168,7 +1194,7 @@
           ]
         }
       ],
-      "title": "Outside Temp",
+      "title": "外部温度",
       "type": "gauge"
     },
     {
@@ -1251,7 +1277,7 @@
           ]
         }
       ],
-      "title": "Location",
+      "title": "位置",
       "type": "stat"
     },
     {
@@ -1275,39 +1301,39 @@
             {
               "options": {
                 "0": {
-                  "color": "super-light-blue",
+                  "color": "#6ED0E0",
                   "index": 0,
-                  "text": "online"
+                  "text": "在线"
                 },
                 "1": {
-                  "color": "purple",
+                  "color": "#8F3BB8",
                   "index": 1,
-                  "text": "driving"
+                  "text": "驾驶"
                 },
                 "2": {
-                  "color": "yellow",
+                  "color": "#F2CC0C",
                   "index": 2,
-                  "text": "charging"
+                  "text": "充电"
                 },
                 "3": {
-                  "color": "super-light-orange",
+                  "color": "#FFB357",
                   "index": 3,
-                  "text": "offline"
+                  "text": "离线"
                 },
                 "4": {
-                  "color": "green",
+                  "color": "#56A64B",
                   "index": 4,
-                  "text": "asleep"
+                  "text": "休眠"
                 },
                 "5": {
-                  "color": "super-light-blue",
+                  "color": "#6ED0E0",
                   "index": 5,
-                  "text": "online"
+                  "text": "在线"
                 },
                 "6": {
-                  "color": "red",
+                  "color": "#E02F44",
                   "index": 6,
-                  "text": "updating"
+                  "text": "更新"
                 },
                 "null": {
                   "index": 7,
@@ -1367,7 +1393,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH states AS (\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [2, 0]) AS state\r\n  FROM charging_processes\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [1, 0]) AS state\r\n  FROM drives\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    start_date AS date,\r\n    CASE\r\n      WHEN state = 'offline' THEN 3\r\n      WHEN state = 'asleep' THEN 4\r\n      WHEN state = 'online' THEN 5\r\n    END AS state\r\n  FROM states\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [6, 0]) AS state\r\n  FROM updates\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n), aux AS (\r\n  SELECT $__timeFrom() :: timestamp AS date, (SELECT state FROM states WHERE date <= $__timeFrom() ORDER BY date DESC LIMIT 1) AS state, false AS include\r\n  UNION\r\n  SELECT date, state, true AS include FROM states\r\n  UNION\r\n  SELECT $__timeTo() :: timestamp as date, NULL AS state, true as include\r\n  ORDER BY date\r\n), states_elapsed AS (\r\n  SELECT \r\n    date, state AS current_state, include,\r\n    LAG(state) OVER (ORDER BY date) AS state,\r\n    LAG(date) OVER (ORDER BY date) AS last_state_time,\r\n    date - LAG(date) OVER (ORDER BY date) AS elapsed_time\r\n  FROM aux \r\n)\r\nSELECT \r\n    CASE\r\n      WHEN state = 0 OR state = 5 THEN 'online'\r\n      WHEN state = 1 THEN 'driving'\r\n      WHEN state = 2 THEN 'charging'\r\n      WHEN state = 3 THEN 'offline'\r\n      WHEN state = 4 THEN 'asleep'\r\n      WHEN state = 6 THEN 'updating'\r\n    END AS state,\r\n    EXTRACT(EPOCH FROM SUM(elapsed_time)) as Total_Time\r\nFROM states_elapsed\r\nWHERE $__timeFilter(date) AND include\r\nGROUP BY 1\r\n\r\n",
+          "rawSql": "WITH states AS (\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [2, 0]) AS state\r\n  FROM charging_processes\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [1, 0]) AS state\r\n  FROM drives\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    start_date AS date,\r\n    CASE\r\n      WHEN state = 'offline' THEN 3\r\n      WHEN state = 'asleep' THEN 4\r\n      WHEN state = 'online' THEN 5\r\n    END AS state\r\n  FROM states\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [6, 0]) AS state\r\n  FROM updates\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n), aux AS (\r\n  SELECT $__timeFrom() :: timestamp AS date, (SELECT state FROM states WHERE date <= $__timeFrom() ORDER BY date DESC LIMIT 1) AS state, false AS include\r\n  UNION\r\n  SELECT date, state, true AS include FROM states\r\n  UNION\r\n  SELECT $__timeTo() :: timestamp as date, NULL AS state, true as include\r\n  ORDER BY date\r\n), states_elapsed AS (\r\n  SELECT \r\n    date, state AS current_state, include,\r\n    LAG(state) OVER (ORDER BY date) AS state,\r\n    LAG(date) OVER (ORDER BY date) AS last_state_time,\r\n    date - LAG(date) OVER (ORDER BY date) AS elapsed_time\r\n  FROM aux \r\n)\r\nSELECT \r\n    CASE\r\n      WHEN state = 0 OR state = 5 THEN '5'\r\n      WHEN state = 1 THEN '1'\r\n      WHEN state = 2 THEN '2'\r\n      WHEN state = 3 THEN '3'\r\n      WHEN state = 4 THEN '4'\r\n      WHEN state = 6 THEN '6'\r\n    END AS state,\r\n    EXTRACT(EPOCH FROM SUM(elapsed_time)) as Total_Time\r\nFROM states_elapsed\r\nWHERE $__timeFilter(date) AND include\r\nGROUP BY 1\r\n\r\n",
           "refId": "A",
           "select": [
             [
@@ -1391,7 +1417,7 @@
           ]
         }
       ],
-      "title": "States",
+      "title": "状态记录",
       "type": "piechart"
     },
     {
@@ -1451,7 +1477,7 @@
       "links": [
         {
           "targetBlank": true,
-          "title": "Mileage",
+          "title": "里程",
           "url": "/d/NjtMTFggz/mileage?"
         }
       ],
@@ -1508,7 +1534,7 @@
           ]
         }
       ],
-      "title": "Odometer",
+      "title": "里程表",
       "type": "stat"
     },
     {
@@ -1555,7 +1581,7 @@
       "links": [
         {
           "targetBlank": true,
-          "title": "Updates",
+          "title": "更新记录",
           "url": "/d/IiC07mgWz/updates?"
         }
       ],
@@ -1614,7 +1640,7 @@
           ]
         }
       ],
-      "title": "Firmware",
+      "title": "软件版本",
       "type": "stat"
     },
     {
@@ -1644,37 +1670,37 @@
                 "0": {
                   "color": "#6ED0E0",
                   "index": 0,
-                  "text": "online"
+                  "text": "在线"
                 },
                 "1": {
                   "color": "#8F3BB8",
                   "index": 1,
-                  "text": "driving"
+                  "text": "驾驶"
                 },
                 "2": {
                   "color": "#F2CC0C",
                   "index": 2,
-                  "text": "charging"
+                  "text": "充电"
                 },
                 "3": {
                   "color": "#FFB357",
                   "index": 3,
-                  "text": "offline"
+                  "text": "离线"
                 },
                 "4": {
                   "color": "#56A64B",
                   "index": 4,
-                  "text": "asleep"
+                  "text": "休眠"
                 },
                 "5": {
                   "color": "#6ED0E0",
                   "index": 5,
-                  "text": "online"
+                  "text": "在线"
                 },
                 "6": {
                   "color": "#E02F44",
                   "index": 6,
-                  "text": "updating"
+                  "text": "更新"
                 },
                 "null": {
                   "index": 7,
@@ -1709,7 +1735,7 @@
       "id": 83,
       "links": [
         {
-          "title": "States",
+          "title": "状态记录",
           "url": "/d/xo4BNRkZz/states"
         }
       ],
@@ -1762,7 +1788,7 @@
           ]
         }
       ],
-      "title": "Timeline",
+      "title": "时间线",
       "type": "state-timeline"
     }
   ],
@@ -1783,7 +1809,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -1928,7 +1954,7 @@
     ]
   },
   "timezone": "",
-  "title": "Current State",
+  "title": "当前状态",
   "uid": "jchmo4BNRkZz",
   "version": 11,
   "weekStart": ""

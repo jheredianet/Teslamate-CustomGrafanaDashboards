@@ -90,7 +90,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Browse your charges by Geofence, Location, Type, Cost and Duration in order to have an accurate Total of kWh added and their respective costs",
+      "description": "通过地理围栏、位置、类型、支出和持续时间浏览您的充电记录，以便准确统计添加的总千瓦时数及其相应的支出。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -130,7 +130,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Date"
+                "value": "日期"
               },
               {
                 "id": "unit",
@@ -163,7 +163,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Added"
+                "value": "充电量"
               },
               {
                 "id": "unit",
@@ -175,7 +175,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 80
+                "value": 95
               }
             ]
           },
@@ -187,7 +187,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "% Start"
+                "value": "% 开始"
               },
               {
                 "id": "unit",
@@ -214,7 +214,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "% End"
+                "value": "% 结束"
               },
               {
                 "id": "unit",
@@ -241,7 +241,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Duration"
+                "value": "持续时间"
               },
               {
                 "id": "unit",
@@ -268,7 +268,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Temp"
+                "value": "温度"
               },
               {
                 "id": "unit",
@@ -319,7 +319,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Cost"
+                "value": "支出"
               },
               {
                 "id": "unit",
@@ -334,7 +334,7 @@
                 "value": [
                   {
                     "targetBlank": false,
-                    "title": "Set Cost",
+                    "title": "设置支出",
                     "url": "[[base_url:raw]]/charge-cost/${__data.fields.id.numeric}"
                   }
                 ]
@@ -406,7 +406,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Location"
+                "value": "位置"
               },
               {
                 "id": "unit",
@@ -431,7 +431,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 300
+                "value": 85
               }
             ]
           },
@@ -443,7 +443,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Driven"
+                "value": "行驶里程"
               },
               {
                 "id": "unit",
@@ -575,7 +575,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Driven"
+                "value": "形式里程"
               },
               {
                 "id": "unit",
@@ -648,7 +648,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Used"
+                "value": "使用量"
               },
               {
                 "id": "unit",
@@ -663,7 +663,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 85
+                "value": 95
               }
             ]
           },
@@ -675,7 +675,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Efficiency"
+                "value": "效率"
               },
               {
                 "id": "unit",
@@ -767,7 +767,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Cost/kWh"
+                "value": "支出/kWh"
               },
               {
                 "id": "decimals",
@@ -795,7 +795,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Type"
+                "value": "类型"
               },
               {
                 "id": "custom.displayMode",
@@ -872,7 +872,7 @@
           ]
         }
       ],
-      "title": "Charges: $charge_type",
+      "title": "充电记录: $charge_type",
       "transformations": [],
       "type": "table"
     },
@@ -948,7 +948,7 @@
           "refId": "A"
         }
       ],
-      "title": "Energy added",
+      "title": "总充电量",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -1036,7 +1036,7 @@
           "refId": "A"
         }
       ],
-      "title": "Energy used",
+      "title": "总用电量",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -1125,7 +1125,7 @@
           "refId": "A"
         }
       ],
-      "title": "Cost",
+      "title": "总支出",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -1215,7 +1215,7 @@
           "refId": "A"
         }
       ],
-      "title": "Average Duration",
+      "title": "平均充电时间",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -1249,7 +1249,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -1363,7 +1363,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM geofences ORDER BY name COLLATE \"C\" ASC;",
         "hide": 0,
         "includeAll": true,
-        "label": "Geofence",
+        "label": "地理围栏",
         "multi": true,
         "name": "geofence",
         "options": [],
@@ -1383,9 +1383,9 @@
           "text": "",
           "value": ""
         },
-        "description": "Type a text contained in Location",
+        "description": "在“位置”中输入文本",
         "hide": 0,
-        "label": "Location",
+        "label": "位置",
         "name": "location",
         "options": [
           {
@@ -1411,7 +1411,7 @@
         },
         "hide": 0,
         "includeAll": true,
-        "label": "Type",
+        "label": "类型",
         "multi": true,
         "name": "charge_type",
         "options": [
@@ -1443,7 +1443,7 @@
           "value": "0"
         },
         "hide": 0,
-        "label": "Cost >=",
+        "label": "支出 >=",
         "name": "cost",
         "options": [
           {
@@ -1463,7 +1463,7 @@
           "value": "0"
         },
         "hide": 0,
-        "label": "Duration (minutes) >=",
+        "label": "持续时间 (分钟) >=",
         "name": "min_duration_min",
         "options": [
           {
@@ -1508,7 +1508,7 @@
     ]
   },
   "timezone": "",
-  "title": "Browse Charges",
+  "title": "浏览充电记录",
   "uid": "jchmTSmNYvRRk",
   "version": 4,
   "weekStart": ""

@@ -99,7 +99,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph to see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map, to see the speed, power, SOC, elevation and if battery heater was on.\n\nBe aware that the drive you select in the dropdown list from the top could be outside the time range of the Timeline graph, if its the case you have to click on the \"Zoom to data\" button on the graph in order to update it.\n\nTip: On Grafana you can press \"h\" to get a keyboard shortcuts if you want to change the current Zoom out time range or use the mouse to select/change the time range.",
+      "description": "这个仪表板旨在根据您选择的日期来分析驾驶数据，然后您可以将指针悬停在图表上的线条上以查看数据详细信息，地图上会显示一个蓝色点来跟踪路线。通过这个选项，您可以分析地图上的特定位置，查看速度、功率、SOC（电池状态）、海拔以及电池加热是否开启。\n\n请注意，您从顶部下拉列表中选择的驾驶可能会超出时间轴图的时间范围，如果是这种情况，您需要点击图表上的\"Zoom to data\"按钮以更新它。\n\n提示：在Grafana上，您可以按“h”键获取键盘快捷键，如果您想更改当前的时间范围缩小或使用鼠标选择/更改时间范围。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -162,7 +162,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Battery heater (On/Off)"
+                "value": "电池加热 (On/Off)"
               }
             ]
           },
@@ -174,7 +174,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Power (kW)"
+                "value": "效率 (kW)"
               }
             ]
           },
@@ -186,7 +186,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Elevation (m)"
+                "value": "海拔 (m)"
               }
             ]
           },
@@ -198,7 +198,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Speed (km/h)"
+                "value": "速度 (km/h)"
               }
             ]
           },
@@ -210,7 +210,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Speed (mi/h)"
+                "value": "速度 (mi/h)"
               }
             ]
           },
@@ -222,14 +222,14 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "SOC (%)"
+                "value": "荷电状态 (%)"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Battery heater (On/Off)"
+              "options": "电池加热 (On/Off)"
             },
             "properties": [
               {
@@ -259,7 +259,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Elevation (m)"
+              "options": "海拔 (m)"
             },
             "properties": [
               {
@@ -274,7 +274,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Power (kW)"
+              "options": "效率 (kW)"
             },
             "properties": [
               {
@@ -365,7 +365,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Elevation (m)"
+              "options": "海拔 (m)"
             },
             "properties": [
               {
@@ -438,7 +438,7 @@
           ]
         }
       ],
-      "title": "Drive",
+      "title": "驾驶",
       "type": "timeseries"
     },
     {
@@ -688,7 +688,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Duration"
+                "value": "持续时间"
               },
               {
                 "id": "unit",
@@ -708,7 +708,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Consumption"
+                "value": "消耗"
               },
               {
                 "id": "unit",
@@ -858,7 +858,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               }
             ]
           },
@@ -874,7 +874,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               }
             ]
           },
@@ -890,7 +890,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Avg Speed"
+                "value": "均速"
               }
             ]
           },
@@ -906,7 +906,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Avg Speed"
+                "value": "均速"
               }
             ]
           }
@@ -1014,7 +1014,7 @@
       "fieldConfig": {
         "defaults": {
           "decimals": 2,
-          "displayName": "Energy used",
+          "displayName": "电量消耗",
           "mappings": [
             {
               "options": {
@@ -1100,7 +1100,7 @@
           ]
         }
       ],
-      "title": "Energy used",
+      "title": "电量消耗",
       "type": "stat"
     },
     {
@@ -1161,7 +1161,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit'  as \"Up\" from height where diff > 0",
+          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit'  as \"高\" from height where diff > 0",
           "refId": "A",
           "select": [
             [
@@ -1194,7 +1194,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\n\t\n\t\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit' as \"Down\" from height where diff < 0",
+          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\n\t\n\t\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit' as \"低\" from height where diff < 0",
           "refId": "B",
           "select": [
             [
@@ -1218,7 +1218,7 @@
           ]
         }
       ],
-      "title": "Elevation",
+      "title": "海拔",
       "type": "stat"
     }
   ],
@@ -1277,7 +1277,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -1300,6 +1300,7 @@
         "definition": "SELECT TO_CHAR(start_date, 'YYYY') as year FROM drives\nWHERE car_id = $car_id\nGROUP BY 1\nORDER BY 1 DESC;",
         "hide": 0,
         "includeAll": false,
+        "label": "年",
         "multi": false,
         "name": "Year",
         "options": [],
@@ -1319,6 +1320,7 @@
         "definition": "(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
         "hide": 0,
         "includeAll": false,
+        "label": "月",
         "multi": false,
         "name": "Month",
         "options": [],
@@ -1338,6 +1340,7 @@
         "definition": "(SELECT TO_CHAR(start_date, 'DD') as day FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'DD') as day FROM drives \nWHERE  car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'  AND TO_CHAR(start_date, 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
         "hide": 0,
         "includeAll": false,
+        "label": "日",
         "multi": false,
         "name": "Day",
         "options": [],
@@ -1357,7 +1360,7 @@
         "definition": "WITH data AS (\n  SELECT\n    drives.id as drive_id,\n    start_date,\n    COALESCE(start_geofence.name, CONCAT_WS(', ', COALESCE(start_address.name, nullif(CONCAT_WS(' ', start_address.road, start_address.house_number), '')), start_address.city)) AS start_address,\n    COALESCE(end_geofence.name, CONCAT_WS(', ', COALESCE(end_address.name, nullif(CONCAT_WS(' ', end_address.road, end_address.house_number), '')), end_address.city)) AS end_address\n  FROM drives\n  LEFT JOIN addresses start_address ON start_address_id = start_address.id\n  LEFT JOIN addresses end_address ON end_address_id = end_address.id\n  LEFT JOIN positions start_position ON start_position_id = start_position.id\n  LEFT JOIN positions end_position ON end_position_id = end_position.id\n  LEFT JOIN geofences start_geofence ON start_geofence_id = start_geofence.id\n  LEFT JOIN geofences end_geofence ON end_geofence_id = end_geofence.id\n  LEFT JOIN cars car ON car.id = drives.car_id\n  WHERE drives.car_id = $car_id AND start_date::date = '$Year-$Month-$Day' AND distance > 0 \n  ORDER BY start_date DESC\n)\nSELECT\n    'route=\"' || to_char(start_date:: timestamp, 'YYYY-MM-DD')  || ' ' || start_address || ' ---> ' || end_address || '\" id=\"' || drive_id || '\"'AS journey\nFROM data;",
         "hide": 0,
         "includeAll": false,
-        "label": "Journey",
+        "label": "旅程",
         "multi": false,
         "name": "journey",
         "options": [],
@@ -1398,7 +1401,7 @@
     "refresh_intervals": []
   },
   "timezone": "",
-  "title": "Tracking Drives",
+  "title": "行驶追踪",
   "uid": "jchmX8upc6ZRk",
   "version": 3,
   "weekStart": ""

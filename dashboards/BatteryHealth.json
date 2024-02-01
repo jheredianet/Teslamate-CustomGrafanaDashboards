@@ -110,7 +110,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "**Usable (now)** is the estimated current battery capacity. It is calculated based on the last 5 long charging sessions to have a better estimation.\n\nIf you see just '1.0 kWh' here, it means that you need at least a long charge session.\n\n**Usable (new)** is the estimated Battery Capacity since you begun to use Teslamate. That's why, the more data you have logged from your brand new car the better. For those who have not used Teslamate since they got their new car, or for those who have bought it second hand,  it's possible to set the max range to 100% and the battery capacity of the car battery when it was new in order to get a better and accurate estimation.",
+      "description": "**可用 (当前)** 是估计的当前电池容量。这是基于最近的5次长时间充电会话来计算的，以便有一个更好的估算。\n\n如果你在这里只看到“1.0 kWh”，这意味着你需要至少一次长时间的充电会话。\n\n**可用 (新车)** 是自从你开始使用TeslaMate以来估算的电池容量。这就是为什么，从你全新车辆开始记录的数据越多越好。对于那些没有从新车开始就使用TeslaMate的人，或者是购买了二手车的人，可以将最大续航里程设置为100%，并输入车辆新电池的容量，以获得更准确的估算。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -171,7 +171,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  \n  CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE ('$aux'::json -> 'MaxCapacity')::text::float END as \"Usable (new)\", \n  ('$aux'::json -> 'CurrentCapacity')::text::float as \"Usable (now)\",\n  ('$aux'::json -> 'CurrentCapacity')::text::float - CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE ('$aux'::json -> 'MaxCapacity')::text::float END as \"Difference\"\n  \n  \n  \n  \n   \n  \n  ",
+          "rawSql": "SELECT  \n  CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE ('$aux'::json -> 'MaxCapacity')::text::float END as \"可用 (新车)\", \n  ('$aux'::json -> 'CurrentCapacity')::text::float as \"可用 (当前)\",\n  ('$aux'::json -> 'CurrentCapacity')::text::float - CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE ('$aux'::json -> 'MaxCapacity')::text::float END as \"差异\"\n  \n  \n  \n  \n   \n  \n  ",
           "refId": "A",
           "select": [
             [
@@ -195,7 +195,7 @@
           ]
         }
       ],
-      "title": "Battery Capacity",
+      "title": "电池容量",
       "type": "stat"
     },
     {
@@ -254,7 +254,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Max range (new)"
+                "value": "最大续航里程 (新车)"
               }
             ]
           },
@@ -266,7 +266,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Max range (now)"
+                "value": "最大续航里程 (当前)"
               }
             ]
           },
@@ -278,7 +278,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Range lost"
+                "value": "续航里程丢失"
               }
             ]
           }
@@ -340,7 +340,7 @@
           ]
         }
       ],
-      "title": "Ranges",
+      "title": "续航里程",
       "type": "stat"
     },
     {
@@ -400,7 +400,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(convert_km((max(odometer) - min(odometer))::numeric, '$length_unit'),0)|| ' $length_unit' as \"Logged\"\nfrom positions where car_id = $car_id;",
+          "rawSql": "SELECT ROUND(convert_km((max(odometer) - min(odometer))::numeric, '$length_unit'),0)|| ' $length_unit' as \"已记录\"\nfrom positions where car_id = $car_id;",
           "refId": "DistanceLogged",
           "select": [
             [
@@ -433,7 +433,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select ROUND(convert_km(ROUND(odometer::numeric,0), '$length_unit'),0) || ' $length_unit'  as \"Odometer\"\nfrom positions \nwhere car_id = $car_id\norder by date desc \nlimit 1;",
+          "rawSql": "select ROUND(convert_km(ROUND(odometer::numeric,0), '$length_unit'),0) || ' $length_unit'  as \"里程表\"\nfrom positions \nwhere car_id = $car_id\norder by date desc \nlimit 1;",
           "refId": "Odometer",
           "select": [
             [
@@ -457,7 +457,7 @@
           ]
         }
       ],
-      "title": "Mileage",
+      "title": "里程",
       "type": "stat"
     },
     {
@@ -465,7 +465,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Estimated charging cycles are based on the whole energy added to the battery. So, the more data you logged the better. ",
+      "description": "估算的充电周期是基于添加到电池的总能量。因此，您记录的数据越多越好。",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -533,7 +533,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tsum(charge_energy_added) as \"Total energy added\"\nFROM\n\tcharging_processes\nWHERE\n\tcar_id = $car_id;",
+          "rawSql": "SELECT\n\tsum(charge_energy_added) as \"总充电量 (kWh)\"\nFROM\n\tcharging_processes\nWHERE\n\tcar_id = $car_id;",
           "refId": "A",
           "select": [
             [
@@ -566,7 +566,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tround(ceil(sum(charge_energy_added) / ('$aux'::json -> 'MaxCapacity')::text::numeric),0) AS \"Estimated charging cycles\"\nFROM charging_processes WHERE car_id = $car_id;",
+          "rawSql": "SELECT\n\tround(ceil(sum(charge_energy_added) / ('$aux'::json -> 'MaxCapacity')::text::numeric),0) AS \"预估充电周期\"\nFROM charging_processes WHERE car_id = $car_id;",
           "refId": "B",
           "select": [
             [
@@ -590,7 +590,7 @@
           ]
         }
       ],
-      "title": "Battery Stats",
+      "title": "电池统计",
       "type": "stat"
     },
     {
@@ -598,7 +598,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.\n\n**Degradation** is just an estimated value to have a reference, measured on **usable battery level** of every charging session with enough kWh added (in order to avoid dirty data form the sample), calculated according to the rated efficiency of the car.",
+      "description": "这个仪表板旨在根据记录在TeslaMate中的数据来查看电池健康状况。因此，从您全新的车辆中记录的数据越多越好。\n\n**损耗** 只是一个估算值，用于参考，根据每次充电会话的**可用电池水平**以及增加了足够多的千瓦时（为了避免样本中的不准确数据）来计算，按照汽车的额定效率计算得出。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -685,7 +685,7 @@
           ]
         }
       ],
-      "title": "Estimated Degradation",
+      "title": "预估损耗",
       "type": "gauge"
     },
     {
@@ -781,7 +781,7 @@
           ]
         }
       ],
-      "title": "Battery Health",
+      "title": "电池健康",
       "type": "bargauge"
     },
     {
@@ -840,7 +840,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  \n  round(('$aux'::json -> 'LastChargekWhAdded')::text::numeric,1) || ' kWh' as \"Last Energy added\",\n  round(('$aux'::json -> 'LastMileageAdded')::text::numeric,1) || ' $length_unit' as \"Last Range added\"",
+          "rawSql": "SELECT  \n  round(('$aux'::json -> 'LastChargekWhAdded')::text::numeric,1) || ' kWh' as \"最近一次充电量\",\n  round(('$aux'::json -> 'LastMileageAdded')::text::numeric,1) || ' $length_unit' as \"最近一次增加航程\"",
           "refId": "LastChanging",
           "select": [
             [
@@ -864,7 +864,7 @@
           ]
         }
       ],
-      "title": "Charges",
+      "title": "充电记录",
       "type": "stat"
     },
     {
@@ -989,7 +989,7 @@
           ]
         }
       ],
-      "title": "Summary AC/DC Energy Added",
+      "title": "AC/DC 充电摘要",
       "type": "piechart"
     },
     {
@@ -1107,7 +1107,7 @@
           ]
         }
       ],
-      "title": "Current SOC",
+      "title": "当前荷电状态",
       "type": "bargauge"
     },
     {
@@ -1243,7 +1243,7 @@
           ]
         }
       ],
-      "title": "Current Capacity",
+      "title": "当前容量",
       "type": "bargauge"
     },
     {
@@ -1457,7 +1457,7 @@
           ]
         }
       ],
-      "title": "Battery Capacity by Mileage",
+      "title": "里程计算电池容量",
       "type": "xychart"
     }
   ],
@@ -1478,7 +1478,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -1563,9 +1563,9 @@
           "text": "0",
           "value": "0"
         },
-        "description": "Set the capacity of your car battery when it was new, in case you started using Teslamate after a while of having it. If not, leave it at 0, it will be calculated with the data that is logged in Teslamate",
+        "description": "设置您的汽车电池在全新时的容量，以防您在使用汽车一段时间后才开始使用TeslaMate。如果没有，就将其保留为0，它将通过记录在TeslaMate中的数据来计算。",
         "hide": 0,
-        "label": "Custom Battery Capacity (kWh) when new",
+        "label": "新车自定义电池容量 (kWh)",
         "name": "custom_kwh_new",
         "options": [
           {
@@ -1584,9 +1584,9 @@
           "text": "0",
           "value": "0"
         },
-        "description": "Set the max range to 100% of your car when it was new, in case you started using Teslamate after a while of having it. If not, leave it at 0, the degradation will be calculated with the data that is logged in Teslamate",
+        "description": "设置您的汽车在全新时的最大续航里程为100%，以防您在购车一段时间后才开始使用TeslaMate。如果没有，则保留为0，车辆的性能退化将通过记录在TeslaMate中的数据来计算。",
         "hide": 0,
-        "label": "Custom Max Range when new",
+        "label": "新车自定义最大续航里程",
         "name": "custom_max_range",
         "options": [
           {
@@ -1601,11 +1601,11 @@
       }
     ]
   },
-    "timepicker": {
+  "timepicker": {
     "hidden": true
   },
   "timezone": "browser",
-  "title": "Battery Health",
+  "title": "电池健康",
   "uid": "jchmRiqUfXgRx",
   "version": 18,
   "weekStart": ""
