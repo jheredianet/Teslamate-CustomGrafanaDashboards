@@ -428,7 +428,7 @@
           ]
         }
       ],
-      "title": "$preferred_range 续航里程",
+      "title": "$preferred_range 续航",
       "type": "stat"
     },
     {
@@ -550,7 +550,7 @@
           ]
         }
       ],
-      "title": "预估续航里程",
+      "title": "预估续航",
       "type": "stat"
     },
     {
@@ -644,7 +644,7 @@
           "where": []
         }
       ],
-      "title": "电池电量",
+      "title": "电量",
       "type": "gauge"
     },
     {
@@ -1954,7 +1954,7 @@
     ]
   },
   "timezone": "",
-  "title": "当前状态",
+  "title": "实时状态",
   "uid": "jchmo4BNRkZz",
   "version": 11,
   "weekStart": ""

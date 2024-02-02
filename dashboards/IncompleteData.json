@@ -146,7 +146,7 @@
                     "hide": false,
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "SELECT 'Car ID: ' || id as id, 'Name: '|| name as name , 'Model: '|| model as model, 'VIN: '|| vin as vin, \n  'Color: '|| exterior_color as color, 'Wheels: '|| wheel_type, 'Efficiency: '|| efficiency as efficiency \nFROM cars\nWHERE id = $car_id",
+                    "rawSql": "SELECT 'Car ID: ' || id as id, '名称: '|| name as name , 'Model: '|| model as model, '序列号: '|| vin as vin, \n  '颜色: '|| exterior_color as color, '轮毂: '|| wheel_type, '效率: '|| efficiency as efficiency \nFROM cars\nWHERE id = $car_id",
                     "refId": "A",
                     "select": [
                         [
@@ -168,7 +168,7 @@
                     ]
                 }
             ],
-            "title": "Car Information 🚘",
+            "title": "车辆信息 🚘",
             "type": "table"
         },
         {
@@ -184,7 +184,7 @@
             },
             "id": 10,
             "options": {
-                "content": "#### Incomplete Data\n\nFrom here you can check if you have incomplete data of **Drives** and **Charges**. If so, you may follow the official guide by <a href='https://docs.teslamate.org/docs/maintenance/manually_fixing_data' target='_blank'>Manually fixing data</a>",
+                "content": "#### 待完善数据\n\n从这里，您可以检查是否有**行程**和**充电**的数据不完整。如果是这样，您可以按照官方指南 <a href='https://docs.teslamate.org/docs/maintenance/manually_fixing_data' target='_blank'>手动修复数据</a>",
                 "mode": "markdown"
             },
             "pluginVersion": "8.5.15",
@@ -308,7 +308,7 @@
                     ]
                 }
             ],
-            "title": "Incomplete Drives 🛣️",
+            "title": "待完善驾驶记录 🛣️",
             "type": "table"
         },
         {
@@ -395,14 +395,16 @@
                     ]
                 }
             ],
-            "title": "Incomplete Charges 🪫",
+            "title": "待完善充电记录 🪫",
             "type": "table"
         }
     ],
     "refresh": false,
     "schemaVersion": 36,
     "style": "dark",
-    "tags": ["TeslamateCustomDashboards"],
+    "tags": [
+        "TeslamateCustomDashboards"
+    ],
     "templating": {
         "list": [
             {
@@ -413,7 +415,7 @@
                 },
                 "hide": 0,
                 "includeAll": false,
-                "label": "Car",
+                "label": "车辆",
                 "multi": false,
                 "name": "car_id",
                 "options": [],
@@ -456,7 +458,7 @@
         "refresh_intervals": []
     },
     "timezone": "",
-    "title": "Incomplete Data",
+    "title": "待完善数据",
     "uid": "jchmIDopVO_mgz",
     "version": 1,
     "weekStart": ""

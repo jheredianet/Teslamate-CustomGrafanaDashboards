@@ -294,7 +294,7 @@
           ]
         }
       ],
-      "title": "Charger Carrier Contains: $carrier",
+      "title": "充电存储情况: $carrier",
       "type": "xychart"
     },
     {
@@ -479,7 +479,7 @@
           ]
         }
       ],
-      "title": "Avg. Energy Added",
+      "title": "平均充电量",
       "transformations": [],
       "transparent": true,
       "type": "stat"
@@ -580,7 +580,7 @@
           ]
         }
       ],
-      "title": "Avg. Energy Used",
+      "title": "平均用电量",
       "transformations": [],
       "transparent": true,
       "type": "stat"
@@ -681,7 +681,7 @@
           ]
         }
       ],
-      "title": "Avg. Time",
+      "title": "平均时间",
       "transformations": [],
       "transparent": true,
       "type": "stat"
@@ -781,7 +781,7 @@
           ]
         }
       ],
-      "title": "Avg. Cost",
+      "title": "平均支出",
       "transformations": [],
       "transparent": true,
       "type": "stat"
@@ -881,7 +881,7 @@
           ]
         }
       ],
-      "title": "Avg. Cost per kWh",
+      "title": "平均支出/kWh",
       "transformations": [],
       "transparent": true,
       "type": "stat"
@@ -914,7 +914,7 @@
               "showLineNumbers": false,
               "showMiniMap": false
             },
-            "content": "#### DC Charing curves by Carrier\n\nTo analyse data with this dashboard, it's important that you \nhave Geo-Fences added related with the name of the carrier\nyou have recharged your car, or you may want to edit \nperiodically the **name** field of the **addresses** table,\nso that it contains its name. \n\nFor example, if **Teslamate** geolocates the name as \n*\"Esso Purley Way\"* you may modify it to \n*\"Esso Purley Way - IONITY\"* or *\"IONITY Esso Purley Way\"*, \nthen you can filter using\nthe textbox above as **IONITY** to show all the charging curves\nof all charging sessions at that carrier.",
+            "content": "#### 直流充电曲线\n\n为了使用这个仪表板来分析数据，重要的是你需要添加与充电站名称相关的地理围栏（Geo-Fences），或者你可能需要定期编辑**地址**表中的**名称**字段，以确保它包含充电站的名称。\n\n例如，如果**TeslaMate**将名称定位为*“Esso Purley Way”*，你可以修改它为*“Esso Purley Way - IONITY”*或*“IONITY Esso Purley Way”*，然后你可以在上方的文本框中使用**IONITY**来筛选，以显示在该充电站的所有充电会话的充电曲线。",
             "mode": "markdown"
           },
           "pluginVersion": "10.1.2",
@@ -955,7 +955,7 @@
           "type": "text"
         }
       ],
-      "title": "Help",
+      "title": "帮助",
       "type": "row"
     }
   ],
@@ -976,7 +976,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -1021,7 +1021,7 @@
         },
         "description": "Carrier Name",
         "hide": 0,
-        "label": "Carrier",
+        "label": "充电器",
         "name": "carrier",
         "options": [
           {
@@ -1054,7 +1054,7 @@
     ]
   },
   "timezone": "",
-  "title": "DC Charging Curves by Carrier",
+  "title": "直流充电曲线",
   "uid": "jchmXpkcccIkh",
   "version": 6,
   "weekStart": ""

@@ -107,7 +107,7 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": "left",
+            "align": "auto",
             "cellOptions": {
               "type": "auto"
             },
@@ -139,7 +139,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Time driven"
+              "options": "驾驶时间"
             },
             "properties": [
               {
@@ -162,7 +162,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Period"
+              "options": "周期"
             },
             "properties": [
               {
@@ -184,7 +184,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Efficiency"
+              "options": "效率"
             },
             "properties": [
               {
@@ -218,7 +218,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "# drives"
+              "options": "# 驾驶次数"
             },
             "properties": [
               {
@@ -253,7 +253,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               },
               {
                 "id": "custom.align",
@@ -269,7 +269,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               },
               {
                 "id": "unit",
@@ -370,7 +370,7 @@
           ]
         }
       ],
-      "title": "Stats per ${period}",
+      "title": "统计数据按 ${period}",
       "transformations": [
         {
           "id": "seriesToColumns",
@@ -478,18 +478,18 @@
             "renameByName": {
               "avg_consumption_kwh": "Avg charged",
               "avg_outside_temp_c": "",
-              "cnt": "# drives",
+              "cnt": "# 驾驶次数",
               "cnt_charges": "# charges",
               "cost_charges": "Costs",
               "date": "Starting at",
               "date_from": "",
               "date_to": "",
-              "display": "Period",
-              "efficiency": "Efficiency",
+              "display": "周期",
+              "efficiency": "效率",
               "efficiency_net_km": "",
               "sum_consumption_kwh": "Energy charged",
               "sum_distance_km": "",
-              "sum_duration_h": "Time driven"
+              "sum_duration_h": "驾驶时间"
             }
           }
         }
@@ -501,7 +501,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "With this dashboard you may analize your mileage and number of drives by year, month, week or day.\n\nThe dashboard shows a table with the selected period, time driven, distance, number of drives and efficiency then a bar chart to have a better look for comparison.",
+      "description": "通过这个仪表板，您可以按年、月、周或日来分析您的里程数和驾驶次数。\n\n仪表板显示了一个表格，其中包括所选时间段、驾驶时间、行驶距离、驾驶次数和效率，然后还有一张柱状图，以便更好地进行比较。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -553,7 +553,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               }
             ]
           },
@@ -565,7 +565,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "距离"
               },
               {
                 "id": "unit",
@@ -589,7 +589,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Count"
+                "value": "次数"
               }
             ]
           }
@@ -662,7 +662,7 @@
           ]
         }
       ],
-      "title": "${length_unit} & drives per ${period}",
+      "title": "${length_unit} & 驾驶次数按 ${period}",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -760,33 +760,33 @@
       {
         "current": {
           "selected": true,
-          "text": "month",
+          "text": "月",
           "value": "month"
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Period",
+        "label": "周期",
         "multi": false,
         "name": "period",
         "options": [
           {
             "selected": true,
-            "text": "month",
+            "text": "月",
             "value": "month"
           },
           {
             "selected": false,
-            "text": "year",
+            "text": "年",
             "value": "year"
           },
           {
             "selected": false,
-            "text": "day",
+            "text": "日",
             "value": "day"
           },
           {
             "selected": false,
-            "text": "week",
+            "text": "周",
             "value": "week"
           }
         ],
@@ -827,7 +827,7 @@
     ]
   },
   "timezone": "",
-  "title": "Mileage Stats",
+  "title": "里程统计",
   "uid": "jchmNjtMTFx",
   "version": 4,
   "weekStart": ""

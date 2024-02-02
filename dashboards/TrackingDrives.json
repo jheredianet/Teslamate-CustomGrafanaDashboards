@@ -274,7 +274,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "效率 (kW)"
+              "options": "功率 (kW)"
             },
             "properties": [
               {

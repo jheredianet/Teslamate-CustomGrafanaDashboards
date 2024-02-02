@@ -150,7 +150,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(convert_km((max(odometer) - min(odometer))::numeric, '$length_unit'),0)|| ' $length_unit' as \"Logged\"\nfrom positions where car_id = $car_id;",
+          "rawSql": "SELECT ROUND(convert_km((max(odometer) - min(odometer))::numeric, '$length_unit'),0)|| ' $length_unit' as \"已记录\"\nfrom positions where car_id = $car_id;",
           "refId": "DistanceLogged",
           "select": [
             [
@@ -183,7 +183,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select ROUND(convert_km(ROUND(odometer::numeric,0), '$length_unit'),0) || ' $length_unit'  as \"Odometer\"\nfrom positions \nwhere car_id = $car_id\norder by date desc \nlimit 1;",
+          "rawSql": "select ROUND(convert_km(ROUND(odometer::numeric,0), '$length_unit'),0) || ' $length_unit'  as \"里程表\"\nfrom positions \nwhere car_id = $car_id\norder by date desc \nlimit 1;",
           "refId": "Odometer",
           "select": [
             [
@@ -207,7 +207,7 @@
           ]
         }
       ],
-      "title": "Mileage",
+      "title": "里程",
       "type": "stat"
     },
     {
@@ -268,7 +268,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(id) as \"Total Updates\"\nFROM Updates \nWHERE car_id = $car_id\n",
+          "rawSql": "SELECT COUNT(id) as \"累计更新\"\nFROM Updates \nWHERE car_id = $car_id\n",
           "refId": "Count",
           "select": [
             [
@@ -309,7 +309,7 @@
           ]
         }
       ],
-      "title": "Software",
+      "title": "软件",
       "type": "stat"
     },
     {
@@ -370,7 +370,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(id) AS \"Charges\" FROM charging_processes WHERE car_id=$car_id \n",
+          "rawSql": "SELECT COUNT(id) AS \"充电\" FROM charging_processes WHERE car_id=$car_id \n",
           "refId": "Charges",
           "select": [
             [
@@ -421,7 +421,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(id) AS \"Drives\" FROM drives WHERE car_id=$car_id ",
+          "rawSql": "SELECT COUNT(id) AS \"驾驶\" FROM drives WHERE car_id=$car_id ",
           "refId": "Drives",
           "select": [
             [
@@ -462,7 +462,7 @@
           ]
         }
       ],
-      "title": "Stats",
+      "title": "统计",
       "type": "stat"
     },
     {
@@ -523,7 +523,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(id) as \"Charges not closed\"\nFROM charging_processes \nWHERE car_id = $car_id AND end_date is null\n",
+          "rawSql": "SELECT COUNT(id) as \"未结束的充电\"\nFROM charging_processes \nWHERE car_id = $car_id AND end_date is null\n",
           "refId": "Charges",
           "select": [
             [
@@ -574,7 +574,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(id) AS \"Drives not closed\"\r\nFROM drives \r\nWHERE car_id = $car_id AND end_date is null",
+          "rawSql": "SELECT COUNT(id) AS \"未结束的驾驶\"\r\nFROM drives \r\nWHERE car_id = $car_id AND end_date is null",
           "refId": "Drives",
           "select": [
             [
@@ -615,7 +615,7 @@
           ]
         }
       ],
-      "title": "Incomplete Data",
+      "title": "待完善数据",
       "type": "stat"
     },
     {
@@ -636,7 +636,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "You can go to the <a href='./d/jchmIDopVO_mgz/incomplete-data'  target='_blank'>\nIncomplete Data dashboard</a> <br />\nto see details of the **Drives** or **Charges** not closed.\n",
+        "content": "您可以转到 <a href='./d/jchmIDopVO_mgz/incomplete-data'  target='_blank'>\n待完善数据仪表板</a> <br />\n查看未结束的\"驾驶\"或\"充电\"详细信息。\n",
         "mode": "markdown"
       },
       "pluginVersion": "10.1.2",
@@ -674,7 +674,7 @@
           ]
         }
       ],
-      "title": "About incomplete data",
+      "title": "关于未完善数据",
       "type": "text"
     },
     {
@@ -687,7 +687,7 @@
       },
       "id": 34,
       "panels": [],
-      "title": "Database Information",
+      "title": "数据库信息",
       "type": "row"
     },
     {
@@ -901,7 +901,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "These statistics can help you evaluate the efficiency of your indexes.\n\nYou should reindex all the database periodically.",
+      "description": "这些统计数据可以帮助您评估您的索引效率。\n\n您应该定期重新索引整个数据库。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -982,7 +982,7 @@
           }
         }
       ],
-      "title": "Indexes",
+      "title": "索引",
       "type": "table"
     },
     {
@@ -1084,7 +1084,7 @@
           ]
         }
       ],
-      "title": "Database Total Size",
+      "title": "数据库总大小",
       "type": "stat"
     }
   ],
@@ -1129,7 +1129,7 @@
         "description": "",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -1151,7 +1151,7 @@
     "refresh_intervals": []
   },
   "timezone": "browser",
-  "title": "Database Information",
+  "title": "数据库信息",
   "uid": "jchm_dbInfo",
   "version": 1,
   "weekStart": ""

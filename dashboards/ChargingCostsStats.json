@@ -109,7 +109,7 @@
       },
       "id": 12,
       "panels": [],
-      "title": "Summary",
+      "title": "摘要",
       "type": "row"
     },
     {
@@ -197,7 +197,7 @@
           ]
         }
       ],
-      "title": "Total Energy Charged",
+      "title": "累计充电量",
       "type": "stat"
     },
     {
@@ -285,7 +285,7 @@
           ]
         }
       ],
-      "title": "Total Free Energy charged",
+      "title": "累计免费充电量",
       "type": "stat"
     },
     {
@@ -373,7 +373,7 @@
           ]
         }
       ],
-      "title": "kWh per $length_unit",
+      "title": "kWh 每 $length_unit",
       "type": "stat"
     },
     {
@@ -461,7 +461,7 @@
           ]
         }
       ],
-      "title": "Number of Charges",
+      "title": "充电次数",
       "type": "stat"
     },
     {
@@ -469,7 +469,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "For this section, it's important that you have geo-fences called \"Home\" and \"Work\" if you want to see a bar with the energy charged on those places.",
+      "description": "对于这个部分，如果您想要看到在\"家\"和\"工作\"这两个地方充电的能量柱状图，很重要的是您必须有名为\"家\"和\"工作\"的地理围栏。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -591,7 +591,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This dashboard is meant to have a look of all the charges in a given period (last 10 years by default). You can see the distance driven, number of charges, total charging cost, etc., both in summary or in separated lists.\n\nYou can expand/collapse the rows as needed.\n\nFrom the Monthly Stats row, you will have a table with links to other Teslamate Dashboards to have a look on a specific period, charge or trip.",
+      "description": "这个仪表板旨在查看在特定时期（默认为过去的10年）内的所有充电情况。您可以查看驾驶距离、充电次数、总充电费用等信息，无论是以汇总形式还是以单独的列表形式。\n\n您可以根据需要展开/折叠行。\n\n在\"月度统计\"行下，您将看到一个包含链接的表格，链接到其他TeslaMate仪表板，以查看特定时期、充电或行程的情况。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -708,7 +708,7 @@
           ]
         }
       ],
-      "title": "Summary AC/DC Energy Charged",
+      "title": "AC/DC 充电摘要",
       "type": "piechart"
     },
     {
@@ -716,7 +716,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Use the dropdown at the top to  choose the Geofence to display energy added from",
+      "description": "请使用顶部的下拉菜单来选择要显示添加能量来源的地理围栏。",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -822,7 +822,7 @@
           ]
         }
       ],
-      "title": "Added at $geofence",
+      "title": "$geofence 充电",
       "type": "stat"
     },
     {
@@ -936,7 +936,7 @@
           ]
         }
       ],
-      "title": "Added free (no cost)",
+      "title": "免费充电 (无支出)",
       "type": "stat"
     },
     {
@@ -1050,7 +1050,7 @@
           ]
         }
       ],
-      "title": "Added at SuC",
+      "title": "超充",
       "type": "stat"
     },
     {
@@ -1165,7 +1165,7 @@
           ]
         }
       ],
-      "title": "Total Driven",
+      "title": "累计驾驶",
       "type": "stat"
     },
     {
@@ -1253,7 +1253,7 @@
           ]
         }
       ],
-      "title": "Charging Cost at AC Stations",
+      "title": "AC支出",
       "type": "stat"
     },
     {
@@ -1341,7 +1341,7 @@
           ]
         }
       ],
-      "title": "Charging Cost at DC Stations",
+      "title": "DC支出",
       "type": "stat"
     },
     {
@@ -1429,7 +1429,7 @@
           ]
         }
       ],
-      "title": "Charging Cost at SuC",
+      "title": "超充支出",
       "type": "stat"
     },
     {
@@ -1517,7 +1517,7 @@
           ]
         }
       ],
-      "title": "Total Charging Costs",
+      "title": "总支出",
       "type": "stat"
     },
     {
@@ -1599,7 +1599,7 @@
           ]
         }
       ],
-      "title": "Cost per 100 $length_unit",
+      "title": "每100 $length_unit 支出",
       "type": "stat"
     },
     {
@@ -1683,7 +1683,7 @@
           ]
         }
       ],
-      "title": "Average kWh Cost",
+      "title": "平均每kWh支出",
       "type": "stat"
     },
     {
@@ -1691,7 +1691,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Net is the efficiency while driving",
+      "description": "净效率是在驾驶时的效率",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -1798,7 +1798,7 @@
           ]
         }
       ],
-      "title": "Consumption (net)",
+      "title": "消耗 (净)",
       "type": "stat"
     },
     {
@@ -1806,7 +1806,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Gross is all consumption (including while idle, phantom drains, sentry mode, etc)",
+      "description": "总消耗包括所有（包括空闲时、虚假耗电、哨兵模式等）",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -1913,21 +1913,8 @@
           ]
         }
       ],
-      "title": "Consumption (gross) ",
+      "title": "消耗 (总量) ",
       "type": "stat"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 13
-      },
-      "id": 60,
-      "panels": [],
-      "title": "Top 10 Charges",
-      "type": "row"
     },
     {
       "datasource": {
@@ -1965,7 +1952,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Location"
+                "value": "位置"
               }
             ]
           },
@@ -1977,7 +1964,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Charged"
+                "value": "已充电量"
               },
               {
                 "id": "custom.width",
@@ -1995,6 +1982,10 @@
               "options": "Cost"
             },
             "properties": [
+              {
+                "id": "displayName",
+                "value": "支出"
+              },
               {
                 "id": "custom.width",
                 "value": 110
@@ -2057,7 +2048,7 @@
           ]
         }
       ],
-      "title": "Top 10 General Charging Stations (Charged)",
+      "title": "前10 充电站 (已充电)",
       "type": "table"
     },
     {
@@ -2096,7 +2087,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Location"
+                "value": "位置"
               }
             ]
           },
@@ -2108,7 +2099,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Charged"
+                "value": "已充电量"
               },
               {
                 "id": "custom.width",
@@ -2126,6 +2117,10 @@
               "options": "Cost"
             },
             "properties": [
+              {
+                "id": "displayName",
+                "value": "支出"
+              },
               {
                 "id": "custom.width",
                 "value": 110
@@ -2188,7 +2183,7 @@
           ]
         }
       ],
-      "title": "Top 10 Paid Stations (Charged)",
+      "title": "前10 付费充电站 (已充电)",
       "type": "table"
     },
     {
@@ -2227,7 +2222,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Location"
+                "value": "位置"
               }
             ]
           },
@@ -2239,7 +2234,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Charged"
+                "value": "已充电量"
               },
               {
                 "id": "custom.width",
@@ -2257,6 +2252,10 @@
               "options": "Cost"
             },
             "properties": [
+              {
+                "id": "displayName",
+                "value": "支出"
+              },
               {
                 "id": "custom.width",
                 "value": 110
@@ -2319,7 +2318,7 @@
           ]
         }
       ],
-      "title": "Top 10 SuperCharger Stations (Charged)",
+      "title": "前10 超充站 (已充电)",
       "type": "table"
     },
     {
@@ -2358,7 +2357,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Location"
+                "value": "位置"
               }
             ]
           },
@@ -2370,7 +2369,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Charged"
+                "value": "已充电量"
               },
               {
                 "id": "custom.width",
@@ -2388,6 +2387,10 @@
               "options": "Cost"
             },
             "properties": [
+              {
+                "id": "displayName",
+                "value": "支出"
+              },
               {
                 "id": "custom.width",
                 "value": 110
@@ -2450,7 +2453,7 @@
           ]
         }
       ],
-      "title": "Top 10 Free Stations (Charged)",
+      "title": "前10 免费充电站 (已充电)",
       "type": "table"
     },
     {
@@ -2463,7 +2466,7 @@
       },
       "id": 62,
       "panels": [],
-      "title": "Monthly Stats",
+      "title": "月度统计",
       "type": "row"
     },
     {
@@ -2536,6 +2539,10 @@
               },
               {
                 "id": "custom.width"
+              },
+              {
+                "id": "displayName",
+                "value": "周期"
               }
             ]
           },
@@ -2580,6 +2587,10 @@
               {
                 "id": "decimals",
                 "value": 1
+              },
+              {
+                "id": "displayName",
+                "value": "消耗"
               }
             ]
           },
@@ -2610,6 +2621,10 @@
               {
                 "id": "custom.align",
                 "value": "auto"
+              },
+              {
+                "id": "displayName",
+                "value": "充电量"
               }
             ]
           },
@@ -2630,6 +2645,10 @@
               {
                 "id": "custom.align",
                 "value": "auto"
+              },
+              {
+                "id": "displayName",
+                "value": "平均充电量"
               }
             ]
           },
@@ -2646,6 +2665,10 @@
               {
                 "id": "custom.align",
                 "value": "right"
+              },
+              {
+                "id": "displayName",
+                "value": "支出"
               }
             ]
           },
@@ -2668,6 +2691,10 @@
               {
                 "id": "custom.align",
                 "value": "auto"
+              },
+              {
+                "id": "displayName",
+                "value": "# 充电次数"
               }
             ]
           },
@@ -2686,6 +2713,10 @@
                     "url": "d/Y8upc6ZRk/drives?from=${__data.fields.date_from}&to=${__data.fields.date_to}&var-car_id=$car_id"
                   }
                 ]
+              },
+              {
+                "id": "displayName",
+                "value": "# 驾驶次数"
               }
             ]
           },
@@ -2723,6 +2754,10 @@
               },
               {
                 "id": "custom.width"
+              },
+              {
+                "id": "displayName",
+                "value": "距离"
               }
             ]
           },
@@ -2738,7 +2773,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Temperature"
+                "value": "温度"
               },
               {
                 "id": "custom.displayMode",
@@ -2804,6 +2839,10 @@
               },
               {
                 "id": "custom.width"
+              },
+              {
+                "id": "displayName",
+                "value": "距离"
               }
             ]
           },
@@ -2815,7 +2854,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg consumption (drives)"
+                "value": "平均耗电量 (驾驶)"
               },
               {
                 "id": "unit",
@@ -2839,7 +2878,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg consumption (charges)"
+                "value": "平均耗电量 (充电)"
               },
               {
                 "id": "unit",
@@ -2878,7 +2917,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg consumption (drives)"
+                "value": "平均耗电量 (驾驶)"
               },
               {
                 "id": "unit",
@@ -2902,7 +2941,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg consumption (charges)"
+                "value": "平均耗电量 (充电)"
               },
               {
                 "id": "unit",
@@ -2944,7 +2983,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Temperature"
+                "value": "温度"
               },
               {
                 "id": "unit",
@@ -3102,7 +3141,7 @@
           ]
         }
       ],
-      "title": "Stats per month",
+      "title": "每月统计",
       "transformations": [
         {
           "id": "merge",
@@ -3246,7 +3285,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -3464,10 +3503,10 @@
           "uid": "TeslaMate"
         },
         "definition": "SELECT name FROM geofences ORDER BY id",
-        "description": "Geofence to display energy added at",
+        "description": "显示添加能量的地理围栏",
         "hide": 0,
         "includeAll": false,
-        "label": "Geofence",
+        "label": "地理围栏",
         "multi": false,
         "name": "geofence",
         "options": [],
@@ -3500,7 +3539,7 @@
     ]
   },
   "timezone": "",
-  "title": "Charging Costs Stats",
+  "title": "充电支出统计",
   "uid": "jchmDdLe5uFVk",
   "version": 14,
   "weekStart": ""

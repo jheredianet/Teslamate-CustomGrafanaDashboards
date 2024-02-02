@@ -108,8 +108,8 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Current Drive",
-      "tooltip": "Adjust to current drive",
+      "title": "本次驾驶",
+      "tooltip": "显示本次驾驶",
       "type": "link",
       "url": "d/jchmkOuP_Fggz/current-drive-view?kiosk&var-car_id=${car_id}&from=${current_drive_start_time}&to=${current_drive_end_time}&var-current_drive=${current_drive}&var-BatteryCapacity=${BatteryCapacity}&var-efficiency=${efficiency}&var-preferred_range=${preferred_range}"
     }
@@ -121,7 +121,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Drive\" button at the top right corner, to enter in Kiosk mode:\n\n - If you are driving, you will see the information from the start time of the current drive until now and it will refesh automatically every 30 seconds.\n\n - If you are just browsing (not driving) you will see the information of the last drive.",
+      "description": "这是一个专为驾驶时加载的特殊仪表板。当您打开这个仪表板时，它会显示最近的15分钟数据，但您应该点击右上角的\"当前行程\"按钮，以进入Kiosk模式:\n\n - 如果您正在驾驶，您将看到从当前行程的开始时间到现在的信息，并且它将每30秒自动刷新。\n\n - 如果您只是浏览而不在驾驶，您将看到上次行程的信息。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -177,7 +177,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Battery heater"
+              "options": "电池加热"
             },
             "properties": [
               {
@@ -205,7 +205,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Power"
+                "value": "功率"
               },
               {
                 "id": "color",
@@ -245,7 +245,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Elevation"
+                "value": "海拔"
               },
               {
                 "id": "unit",
@@ -272,7 +272,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Speed"
+                "value": "速度"
               },
               {
                 "id": "custom.axisPlacement",
@@ -299,7 +299,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Speed"
+                "value": "速度"
               },
               {
                 "id": "custom.axisPlacement",
@@ -342,7 +342,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\t$__time(date),\n\tavg(power) AS Power,\n\tavg(battery_heater::integer) AS \"Battery heater\",\n\tavg(convert_km(speed::numeric, '$length_unit')) AS speed_[[length_unit]]h\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND\n $__timeFilter(date)\nGROUP BY 1  \nORDER BY\n\tdate ASC",
+          "rawSql": "SELECT\n\t$__time(date),\n\tavg(power) AS Power,\n\tavg(battery_heater::integer) AS \"电池加热\",\n\tavg(convert_km(speed::numeric, '$length_unit')) AS speed_[[length_unit]]h\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND\n $__timeFilter(date)\nGROUP BY 1  \nORDER BY\n\tdate ASC",
           "refId": "Power",
           "select": [
             [
@@ -399,7 +399,7 @@
           ]
         }
       ],
-      "title": "Power",
+      "title": "功率",
       "type": "timeseries"
     },
     {
@@ -503,7 +503,7 @@
           ]
         }
       ],
-      "title": "Current Consumption",
+      "title": "当前能耗",
       "type": "stat"
     },
     {
@@ -608,7 +608,7 @@
           ]
         }
       ],
-      "title": "Current $preferred_range efficiency",
+      "title": "当前 $preferred_range 效率",
       "type": "stat"
     },
     {
@@ -925,7 +925,7 @@
           ]
         }
       ],
-      "title": "Outside Temp",
+      "title": "外部温度",
       "type": "gauge"
     },
     {
@@ -1009,7 +1009,7 @@
           ]
         }
       ],
-      "title": "Inside Temp",
+      "title": "内部温度",
       "type": "gauge"
     },
     {
@@ -1093,7 +1093,7 @@
           ]
         }
       ],
-      "title": "Driver Temp",
+      "title": "驾驶室温度",
       "type": "gauge"
     },
     {
@@ -1153,7 +1153,7 @@
       "links": [
         {
           "targetBlank": true,
-          "title": "Mileage",
+          "title": "里程",
           "url": "/d/NjtMTFggz/mileage?"
         }
       ],
@@ -1210,7 +1210,7 @@
           ]
         }
       ],
-      "title": "Distance",
+      "title": "距离",
       "type": "stat"
     },
     {
@@ -1331,7 +1331,7 @@
           ]
         }
       ],
-      "title": "Range",
+      "title": "续航",
       "type": "stat"
     },
     {
@@ -1391,7 +1391,7 @@
       "links": [
         {
           "targetBlank": true,
-          "title": "Mileage",
+          "title": "里程",
           "url": "/d/NjtMTFggz/mileage?"
         }
       ],
@@ -1448,7 +1448,7 @@
           ]
         }
       ],
-      "title": "Odometer",
+      "title": "里程表",
       "type": "stat"
     },
     {
@@ -1678,7 +1678,7 @@
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "hide": 0,
         "includeAll": false,
-        "label": "Car",
+        "label": "车辆",
         "multi": false,
         "name": "car_id",
         "options": [],
@@ -1929,7 +1929,7 @@
     ]
   },
   "timezone": "",
-  "title": "Current Drive View",
+  "title": "本次驾驶",
   "uid": "jchmkOuP_Fggz",
   "version": 8,
   "weekStart": ""
