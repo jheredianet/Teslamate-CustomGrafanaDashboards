@@ -167,7 +167,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 200
+                "value": 170
               },
               {
                 "id": "links",
@@ -237,7 +237,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 80
+                "value": 90
               }
             ]
           },
@@ -258,6 +258,10 @@
               {
                 "id": "custom.align",
                 "value": "auto"
+              },
+              {
+                "id": "custom.width",
+                "value": 80
               }
             ]
           },
@@ -278,6 +282,10 @@
               {
                 "id": "custom.align",
                 "value": "auto"
+              },
+              {
+                "id": "custom.width",
+                "value": 80
               }
             ]
           },
@@ -554,6 +562,10 @@
               {
                 "id": "displayName",
                 "value": "距离"
+              },
+              {
+                "id": "custom.width",
+                "value": 80
               }
             ]
           },
@@ -570,6 +582,10 @@
               {
                 "id": "unit",
                 "value": "mi"
+              },
+              {
+                "id": "custom.width",
+                "value": 80
               }
             ]
           },
