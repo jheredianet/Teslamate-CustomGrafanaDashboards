@@ -3,8 +3,8 @@
   "__requires": [
     {
       "type": "panel",
-      "id": "barchart",
-      "name": "Bar chart",
+      "id": "bargauge",
+      "name": "Bar gauge",
       "version": ""
     },
     {
@@ -881,28 +881,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-greens"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMin": 0,
-            "fillOpacity": 90,
-            "gradientMode": "scheme",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "continuous-GrYlRd"
           },
           "mappings": [],
           "noValue": "0",
@@ -924,16 +903,8 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Duration"
-              },
-              {
                 "id": "unit",
                 "value": "s"
-              },
-              {
-                "id": "custom.axisPlacement",
-                "value": "hidden"
               },
               {
                 "id": "decimals",
@@ -952,29 +923,21 @@
       "id": 16,
       "links": [],
       "options": {
-        "barRadius": 0.1,
-        "barWidth": 0.98,
-        "colorByField": "seconds_elapsed",
-        "fullHighlight": false,
-        "groupWidth": 0,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
-        "showValue": "always",
-        "stacking": "none",
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
         },
-        "xField": "speed",
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
+        "showUnfilled": false,
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1026,7 +989,7 @@
         }
       ],
       "title": "Top Speeds",
-      "type": "barchart"
+      "type": "bargauge"
     }
   ],
   "refresh": "",
@@ -1285,6 +1248,6 @@
   "timezone": "",
   "title": "Speed Rates",
   "uid": "jchmfu4SiQgWz",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }

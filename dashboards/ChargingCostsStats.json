@@ -1,17 +1,17 @@
 {
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "panel",
-      "id": "barchart",
-      "name": "Bar chart",
+      "id": "bargauge",
+      "name": "Bar gauge",
       "version": ""
     },
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.15"
+      "version": "10.1.2"
     },
     {
       "type": "panel",
@@ -62,7 +62,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1695222857382,
   "links": [
     {
       "icon": "dashboard",
@@ -162,7 +161,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -250,7 +249,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -338,7 +337,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -426,7 +425,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -475,52 +474,19 @@
           "color": {
             "mode": "continuous-GrYlRd"
           },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "right",
-            "axisSoftMin": 0,
-            "fillOpacity": 80,
-            "gradientMode": "scheme",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            }
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "text",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
           "unit": "kwatth"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "energy"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "hidden"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 12,
@@ -530,32 +496,26 @@
       },
       "id": 49,
       "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "groupWidth": 0.7,
-        "legend": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "vertical",
+        "reduceOptions": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "fields": "/^energy$/",
+          "values": true
         },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "text": {},
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
+        "showUnfilled": false,
+        "valueMode": "color"
       },
-      "pluginVersion": "8.5.6",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -572,6 +532,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "drives",
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
@@ -584,7 +561,8 @@
           ]
         }
       ],
-      "type": "barchart"
+      "title": "Locations",
+      "type": "bargauge"
     },
     {
       "datasource": {
@@ -657,8 +635,9 @@
           "value"
         ],
         "legend": {
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "pieType": "pie",
         "reduceOptions": {
@@ -787,7 +766,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -901,7 +880,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1015,7 +994,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1130,7 +1109,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1218,7 +1197,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1306,7 +1285,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1394,7 +1373,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1482,7 +1461,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1564,7 +1543,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1648,7 +1627,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1763,7 +1742,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1878,7 +1857,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -1938,7 +1917,9 @@
         "defaults": {
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -2015,7 +1996,9 @@
       },
       "id": 46,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -2024,7 +2007,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -2069,7 +2052,9 @@
         "defaults": {
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -2146,7 +2131,9 @@
       },
       "id": 4,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -2155,7 +2142,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -2200,7 +2187,9 @@
         "defaults": {
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -2277,7 +2266,9 @@
       },
       "id": 34,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -2286,7 +2277,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -2331,7 +2322,9 @@
         "defaults": {
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -2408,7 +2401,9 @@
       },
       "id": 32,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -2417,7 +2412,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -2476,7 +2471,9 @@
         "defaults": {
           "custom": {
             "align": "left",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false,
             "width": 120
@@ -2550,8 +2547,10 @@
                 "value": "percentunit"
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-text"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
               },
               {
                 "id": "thresholds",
@@ -2708,8 +2707,11 @@
                 "value": "auto"
               },
               {
-                "id": "custom.displayMode",
-                "value": "basic"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
               },
               {
                 "id": "color",
@@ -2741,8 +2743,10 @@
                 "value": "Temperature"
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-text"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
               },
               {
                 "id": "thresholds",
@@ -2789,8 +2793,11 @@
                 "value": "auto"
               },
               {
-                "id": "custom.displayMode",
-                "value": "basic"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
               },
               {
                 "id": "color",
@@ -2991,7 +2998,9 @@
       "id": 58,
       "maxPerRow": 2,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "enablePagination": true,
           "fields": "",
           "reducer": [
@@ -3003,7 +3012,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "10.1.2",
       "repeatDirection": "h",
       "targets": [
         {
@@ -3230,7 +3239,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 36,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "TeslamateCustomDashboards"
@@ -3502,6 +3511,6 @@
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 14,
+  "version": 15,
   "weekStart": ""
 }
