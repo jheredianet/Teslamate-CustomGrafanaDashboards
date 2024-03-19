@@ -17,19 +17,19 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.1.2"
+      "version": "10.4.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-postgresql-datasource",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
     },
     {
       "type": "panel",
       "id": "piechart",
       "name": "Pie chart",
       "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
     },
     {
       "type": "panel",
@@ -107,7 +107,7 @@
   "panels": [
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "description": "**Usable (now)** is the estimated current battery capacity. It is calculated based on the last 5 long charging sessions to have a better estimation.\n\nIf you see just '1.0 kWh' here, it means that you need at least a long charge session.\n\n**Usable (new)** is the estimated Battery Capacity since you begun to use Teslamate. That's why, the more data you have logged from your brand new car the better. For those who have not used Teslamate since they got their new car, or for those who have bought it second hand,  it's possible to set the max range to 100% and the battery capacity of the car battery when it was new in order to get a better and accurate estimation.",
@@ -162,11 +162,11 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "format": "table",
@@ -202,7 +202,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "description": "",
@@ -309,11 +309,11 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "format": "table",
@@ -349,7 +349,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "description": "\"Logged\" is the distance traveled that is saved on Teslamate database.\n\n\"Mileage\" is the distance the car has traveled since using Teslamate.\n\nSo, if there is a difference between both values, it is the distance that for some reason a drive hasn't been fully recorded, for example due to a bug or an unexpected restart and that Teslamate has not been able to record, either due to lack of connection, areas without signal, or that it has been out of service.",
@@ -394,11 +394,11 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -427,7 +427,7 @@
         },
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -478,7 +478,7 @@
         },
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "format": "table",
@@ -515,7 +515,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -606,7 +606,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -660,7 +660,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "description": "This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.\n\n**Degradation** is just an estimated value to have a reference, measured on **usable battery level** of every charging session with enough kWh added (in order to avoid dirty data form the sample), calculated according to the rated efficiency of the car.",
@@ -718,11 +718,11 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "format": "table",
@@ -758,7 +758,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "description": "",
@@ -817,11 +817,11 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "format": "table",
@@ -857,10 +857,10 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
-      "description": "Estimated charging cycles are based on the whole energy added to the battery. So, the more data you logged the better. ",
+      "description": "\"Charging cycles\" are estimations based on the whole energy added to the battery.\n\n\"Charge Efficiency\" is estimated on the difference between energy used from the charger and energy added to the battery.",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -942,11 +942,11 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -996,7 +996,7 @@
         },
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -1025,7 +1025,7 @@
         },
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -1054,7 +1054,7 @@
         },
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -1105,7 +1105,7 @@
         },
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -1138,7 +1138,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -1201,11 +1201,11 @@
         "text": {},
         "valueMode": "color"
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "format": "table",
@@ -1259,7 +1259,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "description": "",
@@ -1322,11 +1322,11 @@
         "text": {},
         "valueMode": "color"
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -1398,7 +1398,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -1407,6 +1407,7 @@
             "mode": "continuous-RdYlGr"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1506,7 +1507,7 @@
         {
           "alias": "",
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -1556,7 +1557,7 @@
         {
           "alias": "",
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -1611,8 +1612,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -1621,7 +1621,7 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC",
@@ -1644,7 +1644,7 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
         "definition": "SELECT unit_of_length FROM settings LIMIT 1",
@@ -1667,7 +1667,7 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
         "definition": "SELECT preferred_range FROM settings LIMIT 1",
@@ -1686,7 +1686,7 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
         "definition": "SELECT base_url FROM settings LIMIT 1",
@@ -1709,7 +1709,7 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
         "definition": "-- CONCATENATED JOIN QUERIES TO IMPROVE PERFORMANCE\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 2024-03-19\n-- By @jheredianet - Twitter: @juanheredia",
@@ -1775,6 +1775,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRx",
-  "version": 21,
+  "version": 22,
   "weekStart": ""
 }
