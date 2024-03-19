@@ -504,7 +504,7 @@
           ]
         }
       ],
-      "title": "Distance",
+      "title": "Trips",
       "type": "stat"
     },
     {
@@ -512,121 +512,134 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "Estimated charging cycles are based on the whole energy added to the battery. So, the more data you logged the better. ",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 2,
           "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "light-yellow",
-                "value": null
-              }
-            ]
-          }
+          "unit": "kwatth"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Total energy added"
+              "options": "AC"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "kwatth"
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "DC"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-orange",
+                  "mode": "fixed"
+                }
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 13,
         "w": 6,
         "x": 18,
         "y": 0
       },
-      "id": 36,
+      "id": 34,
       "links": [],
-      "maxDataPoints": 100,
+      "maxDataPoints": 3,
       "options": {
-        "colorMode": "value",
-        "fieldOptions": {
-          "calcs": [
-            "mean"
+        "displayLabels": [
+          "name",
+          "percent",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false,
+          "values": [
+            "value"
           ]
         },
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
+        "pieType": "pie",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "8.5.6",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
           },
-          "format": "table",
+          "editorMode": "code",
+          "format": "time_series",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tsum(charge_energy_added) as \"Total energy added\"\nFROM\n\tcharging_processes\nWHERE\n\tcar_id = $car_id;",
+          "rawSql": "WITH data AS (\n  SELECT\n\t\tcp.id,\n\t\tcp.charge_energy_added,\n\t\tCASE WHEN NULLIF(mode() within group (order by charger_phases),0) is null THEN 'DC'\n\t\t\t\t ELSE 'AC'\n\t\tEND AS current,\n\t\tcp.charge_energy_used\n\tFROM charging_processes cp\n  RIGHT JOIN charges ON cp.id = charges.charging_process_id\n  WHERE\n\t  cp.car_id = $car_id\n\t  AND cp.charge_energy_added > 0.01\n  GROUP BY 1,2\n)\nSELECT\n\tnow() AS time,\n\tSUM(GREATEST(charge_energy_added, charge_energy_used)) AS value,\n\tcurrent AS metric\nFROM data\nGROUP BY 3\nORDER BY metric DESC;",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "efficiency"
+                  "latitude"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "cars",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n\tround(ceil(sum(charge_energy_added) / ('$aux'::json -> 'MaxCapacity')::text::numeric),0) AS \"Estimated charging cycles\"\nFROM charging_processes WHERE car_id = $car_id;",
-          "refId": "B",
-          "select": [
-            [
+          "sql": {
+            "columns": [
               {
-                "params": [
-                  "start_km"
-                ],
-                "type": "column"
+                "parameters": [],
+                "type": "function"
               }
-            ]
-          ],
-          "table": "drives",
-          "timeColumn": "start_date",
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "addresses",
+          "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
           "where": [
             {
@@ -637,8 +650,8 @@
           ]
         }
       ],
-      "title": "Battery Stats",
-      "type": "stat"
+      "title": "Summary AC/DC Energy Used",
+      "type": "piechart"
     },
     {
       "datasource": {
@@ -836,24 +849,58 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
+      "description": "Estimated charging cycles are based on the whole energy added to the battery. So, the more data you logged the better. ",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
+                "color": "light-yellow",
                 "value": null
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total energy added"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatth"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total energy used"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatth"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Charge Efficiency"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -861,17 +908,24 @@
         "x": 12,
         "y": 6
       },
-      "id": 29,
+      "id": 36,
+      "links": [],
+      "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ]
+        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "mean"
           ],
-          "fields": "/.*/",
+          "fields": "",
           "values": false
         },
         "textMode": "value_and_name"
@@ -883,12 +937,122 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  \n  round(('$aux'::json -> 'LastChargekWhAdded')::text::numeric,1) || ' kWh' as \"Last Energy added\",\n  round(('$aux'::json -> 'LastMileageAdded')::text::numeric,1) || ' $length_unit' as \"Last Range added\"",
-          "refId": "LastChanging",
+          "rawSql": "SELECT\n\tsum(charge_energy_added) as \"Total energy added\"\nFROM\n\tcharging_processes\nWHERE\n\tcar_id = $car_id AND charge_energy_added > 0.01",
+          "refId": "Total energy added",
+          "select": [
+            [
+              {
+                "params": [
+                  "efficiency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "cars",
+          "timeColumn": "inserted_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n\tSUM(charge_energy_used) AS \"Total energy used\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND charge_energy_added > 0.01\r\n",
+          "refId": "Total energy used",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n\tCOUNT(*) AS \"Total charges\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND charge_energy_added > 0.01\r\n\t",
+          "refId": "Total charges",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n\tfloor(sum(charge_energy_added) / CASE WHEN $custom_kwh_new > 0 THEN $custom_kwh_new ELSE ('$aux'::json -> 'MaxCapacity')::text::float END) AS \"Estimated charging cycles\"\nFROM charging_processes WHERE car_id = $car_id AND charge_energy_added > 0.01",
+          "refId": "Estimated charging cycles",
           "select": [
             [
               {
@@ -899,6 +1063,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "drives",
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
@@ -909,135 +1090,39 @@
               "type": "macro"
             }
           ]
-        }
-      ],
-      "title": "Charges",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "decimals": 2,
-          "mappings": [],
-          "unit": "kwatth"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AC"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "DC"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 18,
-        "y": 6
-      },
-      "id": 34,
-      "links": [],
-      "maxDataPoints": 3,
-      "options": {
-        "displayLabels": [
-          "name",
-          "percent",
-          "value"
-        ],
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.5.6",
-      "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "TeslaMate"
           },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
           "rawQuery": true,
-          "rawSql": "WITH data AS (\n  SELECT\n\t\tcp.id,\n\t\tcp.charge_energy_added,\n\t\tCASE WHEN NULLIF(mode() within group (order by charger_phases),0) is null THEN 'DC'\n\t\t\t\t ELSE 'AC'\n\t\tEND AS current\n\tFROM charging_processes cp\n  RIGHT JOIN charges ON cp.id = charges.charging_process_id\n  WHERE\n\t  cp.car_id = $car_id\n\t  AND cp.charge_energy_added > 0.01\n  GROUP BY 1,2\n)\nSELECT\n\tnow() AS time,\n\tsum(charge_energy_added) AS value,\n\tcurrent AS metric\nFROM data\nGROUP BY 3\nORDER BY metric DESC;",
+          "rawSql": "SELECT\r\n\tSUM(charge_energy_added) * 100 / SUM(charge_energy_used) AS \"Charge Efficiency\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND charge_energy_added > 0.01\r\n",
           "refId": "A",
-          "select": [
-            [
+          "sql": {
+            "columns": [
               {
-                "params": [
-                  "latitude"
-                ],
-                "type": "column"
+                "parameters": [],
+                "type": "function"
               }
-            ]
-          ],
-          "table": "addresses",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
         }
       ],
-      "title": "Summary AC/DC Energy Added",
-      "type": "piechart"
+      "title": "Battery Stats",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -1522,14 +1607,14 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC",
         "hide": 0,
         "includeAll": false,
         "label": "Car",
         "multi": false,
         "name": "car_id",
         "options": [],
-        "query": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "query": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1545,14 +1630,14 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "select unit_of_length from settings limit 1;",
+        "definition": "SELECT unit_of_length FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
         "label": "",
         "multi": false,
         "name": "length_unit",
         "options": [],
-        "query": "select unit_of_length from settings limit 1;",
+        "query": "SELECT unit_of_length FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1568,14 +1653,33 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "select base_url from settings limit 1;",
+        "definition": "SELECT preferred_range FROM settings LIMIT 1",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "preferred_range",
+        "options": [],
+        "query": "SELECT preferred_range FROM settings LIMIT 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
+        "definition": "SELECT base_url FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
         "label": "",
         "multi": false,
         "name": "base_url",
         "options": [],
-        "query": "select base_url from settings limit 1;",
+        "query": "SELECT base_url FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1591,13 +1695,13 @@
           "type": "postgres",
           "uid": "TeslaMate"
         },
-        "definition": "-- CONCATENATED JOIN QUERIES TO IMPROVE PERFORMANCE\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 2024-01-20\n-- By @jheredianet - Twitter: @juanheredia",
+        "definition": "-- CONCATENATED JOIN QUERIES TO IMPROVE PERFORMANCE\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 2024-03-19\n-- By @jheredianet - Twitter: @juanheredia",
         "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "aux",
         "options": [],
-        "query": "WITH DerivatedEfficiency AS (\n    SELECT (charge_energy_added / NULLIF(end_rated_range_km - start_rated_range_km, 0))::numeric * 100.0 as \"efficiency\",\n        count(*) as count FROM  charging_processes \n    WHERE car_id = $car_id  \n        AND duration_min > 10  \n        AND end_battery_level <= 95  \n        AND start_rated_range_km IS NOT NULL  \n        AND end_rated_range_km IS NOT NULL  \n        AND charge_energy_added > 0\n    GROUP BY  1\n    ORDER BY  2 DESC\n    LIMIT 1\n),\naux\tAS\n(\n\tSELECT cp.charge_energy_added,\n\t\tcp.car_id, \n               CASE WHEN (SELECT efficiency FROM DerivatedEfficiency) IS NULL THEN (SELECT efficiency FROM cars WHERE id = 1) * 100.0\n               ELSE (SELECT efficiency FROM DerivatedEfficiency) END AS rated_efficiency,\n\t\t(cp.end_rated_range_km - cp.start_rated_range_km) AS added_range_km\n\tFROM charging_processes cp\n\t\tJOIN (SELECT charging_process_id, MAX(date) as date\n\t\tFROM charges\n\t\tGROUP BY charging_process_id) AS last_charges\n\t\tON cp.id = last_charges.charging_process_id\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id AND c.date = last_charges.date\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.end_rated_range_km > cp.start_rated_range_km\n\tORDER BY cp.end_date DESC \n\tLIMIT 1\n),  \nCurrentCapacity\t AS\n(\n\tSELECT AVG(Capacity) AS CurrentCapacity FROM\n  (SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS Capacity\t\n    FROM charging_processes cp\n\t  INNER JOIN charges c\tON cp.id = c.charging_process_id\n    INNER JOIN aux ON cp.car_id = aux.car_id\n\t  WHERE cp.car_id = $car_id AND cp.charge_energy_added >= aux.rated_efficiency \n    GROUP BY  cp.charge_energy_added, cp.end_date\n    ORDER BY cp.end_date DESC \n    LIMIT 5\n  ) AS lastEstimatedCapacity\n), \nMaxCapacity AS\n(\n   SELECT AVG(c.rated_battery_range_km * aux.rated_efficiency  / c.usable_battery_level) AS MaxCapacity, cp.id\n   FROM charging_processes cp\n\tJOIN (SELECT charging_process_id, MAX(date) as date FROM charges \n                    WHERE usable_battery_level > 0 GROUP BY charging_process_id) AS last_charges\t\n        ON cp.id = last_charges.charging_process_id\n\tINNER JOIN charges c ON c.charging_process_id = cp.id AND c.date = last_charges.date\n\tINNER JOIN positions p ON p.id = cp.position_id\n        INNER JOIN aux ON cp.car_id = aux.car_id\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.charge_energy_added >= aux.rated_efficiency \n\tGROUP BY cp.id \n        ORDER BY 1 DESC \n        LIMIT 1\n), \nCurrentRange AS\n(\n    SELECT\n\t\tfloor(extract(epoch from date)/86400)*86400 AS timecurrent,\n\t\tCASE WHEN sum(usable_battery_level) = 0 THEN sum(rated_battery_range_km) * 100\n\t\t     ELSE sum(rated_battery_range_km) / sum(usable_battery_level) * 100\n        END AS rated_range_km\n\tFROM (\n\t\tSELECT battery_level, usable_battery_level, date,  rated_battery_range_km from charges c \n\t\tJOIN charging_processes p ON p.id = c.charging_process_id \n\t\tWHERE p.car_id = $car_id AND usable_battery_level IS NOT NULL) AS data\n\tGROUP BY 1\n\tORDER BY 1 DESC\n\tLIMIT 1\n), \nMaxRange AS\n(\n    SELECT\n\t\tfloor(extract(epoch from date)/86400)*86400 AS time,\n\t    CASE WHEN sum(usable_battery_level) = 0 THEN sum(rated_battery_range_km) * 100\n\t\t     ELSE sum(rated_battery_range_km) / sum(usable_battery_level) * 100\n\t    END AS max_rated_range_km\n    FROM (\n\t\tSELECT battery_level, usable_battery_level, date,  rated_battery_range_km from charges c \n\t\tJOIN charging_processes p ON p.id = c.charging_process_id \n\t\tWHERE p.car_id = $car_id AND usable_battery_level IS NOT NULL) AS data\n\tGROUP BY 1\n\tORDER BY 2 DESC\n\tLIMIT 1\n) \nSELECT  CONCAT('{\"LastChargekWhAdded\": ', aux.charge_energy_added, \n  ', \"LastMileageAdded\" : ', convert_km(aux.added_range_km,'$length_unit'),\n  ', \"MaxRange\": ', convert_km(MaxRange.max_rated_range_km,'$length_unit'),\n  ', \"CurrentRange\": ',convert_km(CurrentRange.rated_range_km,'$length_unit'),\n  ', \"MaxCapacity\": ', MaxCapacity.MaxCapacity,\n  ', \"CurrentCapacity\": ', CASE WHEN CurrentCapacity.CurrentCapacity IS NULL THEN 1 ELSE CurrentCapacity.CurrentCapacity END,\n  ', \"RatedEfficiency\": ',aux.rated_efficiency, '}') \nFROM MaxRange, CurrentRange, Aux, MaxCapacity, CurrentCapacity;",
+        "query": "WITH Aux AS\n(\n\tSELECT \n\t\tcar_id, \n\t\tCOALESCE(efficiency, (SELECT efficiency FROM cars WHERE id = car_id) * 100.0) AS rated_efficiency\n\tFROM (\n\t\tSELECT \n\t\t\t(charge_energy_added / NULLIF(end_rated_range_km - start_rated_range_km, 0))::numeric * 100.0 AS efficiency,\n    \t    count(*) AS count,\n\t\t\t$car_id AS car_id \n\t\tFROM  charging_processes \n    \tWHERE car_id = $car_id  \n    \t    AND duration_min > 10  \n    \t    AND end_battery_level <= 95  \n    \t    AND start_rated_range_km IS NOT NULL  \n    \t    AND end_rated_range_km IS NOT NULL  \n    \t    AND charge_energy_added > 0.01\n    \tGROUP BY  1\n    \tORDER BY  2 DESC, 1 DESC\n    \tLIMIT 1\n\t\t) AS DerivatedEfficiency\n),\nCurrentCapacity\t AS\n(\n\tSELECT AVG(Capacity) AS Capacity\n\tFROM (\n\t\tSELECT (100.0 * cp.charge_energy_added) / GREATEST(1, (cp.end_battery_level - cp.start_battery_level)) AS Capacity\n\t\tFROM charging_processes  cp   INNER JOIN aux ON \n    \t    cp.car_id = aux.car_id\n\t\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n    \t    AND cp.charge_energy_added >= aux.rated_efficiency\n\t\tORDER BY cp.end_date DESC\n\t\tLIMIT 10\n\t) AS lastCharges\n), \nMaxCapacity AS\n(\nSELECT MAX((100.0 * cp.charge_energy_added) / GREATEST(1,(cp.end_battery_level - cp.start_battery_level))) AS Capacity\n\tFROM charging_processes  cp   INNER JOIN aux ON cp.car_id = aux.car_id\n\tWHERE cp.car_id = $car_id\n\tAND cp.end_date IS NOT NULL\n        AND cp.charge_energy_added >= aux.rated_efficiency\n), \nCurrentRange AS\n(\n    SELECT (range * 100.0 / usable_battery_level) AS range\n\tFROM (\n\t\t(SELECT date, [[preferred_range]]_battery_range_km AS range, usable_battery_level AS usable_battery_level\n\t\t\tFROM positions\tWHERE car_id = $car_id AND [[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level > 0  ORDER BY date DESC LIMIT 1)\n\t\tUNION ALL\n\t\t(SELECT date, [[preferred_range]]_battery_range_km AS range, usable_battery_level as usable_battery_level\n\t\t\tFROM charges c JOIN charging_processes p ON p.id = c.charging_process_id\n\t\t\tWHERE p.car_id = $car_id AND usable_battery_level > 0 ORDER BY date DESC\tLIMIT 1)\n\t) AS data\n\tORDER BY date DESC\n\tLIMIT 1\n), \nMaxRange AS\n(\n    SELECT (range * 100.0 / usable_battery_level) AS range\n\tFROM (\n\t\t(SELECT [[preferred_range]]_battery_range_km AS range, usable_battery_level AS usable_battery_level\n\t\t\tFROM positions\tWHERE car_id = $car_id AND [[preferred_range]]_battery_range_km IS NOT NULL AND usable_battery_level > 0  ORDER BY range DESC LIMIT 1)\n\t\tUNION ALL\n\t\t(SELECT [[preferred_range]]_battery_range_km AS range, usable_battery_level as usable_battery_level\n\t\t\tFROM charges c JOIN charging_processes p ON p.id = c.charging_process_id\n\t\t\tWHERE p.car_id = $car_id AND usable_battery_level > 0 ORDER BY range DESC\tLIMIT 1)\n\t) AS data\n\tORDER BY range DESC\n\tLIMIT 1\n) \nSELECT  CONCAT('{\"MaxRange\": ', convert_km(MaxRange.range,'$length_unit'),\n  ', \"CurrentRange\": ',convert_km(CurrentRange.range,'$length_unit'),\n  ', \"MaxCapacity\": ', MaxCapacity.Capacity,\n  ', \"CurrentCapacity\": ', CASE WHEN CurrentCapacity.Capacity IS NULL THEN 1 ELSE CurrentCapacity.Capacity END,\n  ', \"RatedEfficiency\": ',aux.rated_efficiency, '}') \nFROM MaxRange, CurrentRange, Aux, MaxCapacity, CurrentCapacity",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1654,6 +1758,6 @@
   "timezone": "browser",
   "title": "Battery Health",
   "uid": "jchmRiqUfXgRx",
-  "version": 19,
+  "version": 20,
   "weekStart": ""
 }
