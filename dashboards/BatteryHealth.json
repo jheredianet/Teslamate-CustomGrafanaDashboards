@@ -348,7 +348,7 @@
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "description": "",
+      "description": "已记录是保存在Teslamate数据库中的行驶距离。\n\n里程是自使用Teslamate以来车辆行驶的距离。\n\n因此，如果两个值之间存在差异，那么这就是由于某些原因行驶记录没有完全记录下来的距离，例如由于错误或意外重启，以及Teslamate未能记录的情况，可能是因为缺乏连接、无信号区域，或者它已经停止服务。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -395,13 +395,43 @@
             "type": "postgres",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "select ROUND(convert_km(sum(distance)::numeric, '$length_unit'),0)|| ' $length_unit' as \"已记录\"\r\nfrom drives \r\nwhere car_id = $car_id;\r\n",
+          "refId": "Logged",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(convert_km((max(odometer) - min(odometer))::numeric, '$length_unit'),0)|| ' $length_unit' as \"已记录\"\nfrom positions where car_id = $car_id;",
-          "refId": "DistanceLogged",
+          "rawSql": "SELECT ROUND(convert_km((max(odometer) - min(odometer))::numeric, '$length_unit'),0)|| ' $length_unit' as \"里程\"\nfrom positions where car_id = $car_id;",
+          "refId": "Mileage",
           "select": [
             [
               {
@@ -412,6 +442,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "cars",
           "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
@@ -457,7 +504,7 @@
           ]
         }
       ],
-      "title": "里程",
+      "title": "总里程",
       "type": "stat"
     },
     {
@@ -1607,6 +1654,6 @@
   "timezone": "browser",
   "title": "电池健康",
   "uid": "jchmRiqUfXgRx",
-  "version": 18,
+  "version": 19,
   "weekStart": ""
 }
