@@ -1179,7 +1179,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT '2024.3.18' AS \"当前版本\"",
+          "rawSql": "SELECT '2024.3.21' AS \"当前版本\"",
           "refId": "DashboardVersion",
           "sql": {
             "columns": [
