@@ -663,7 +663,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
-      "description": "This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate. So, the more data you have logged from your brand new car the better.\n\n**Degradation** is just an estimated value to have a reference, measured on **usable battery level** of every charging session with enough kWh added (in order to avoid dirty data from the sample), calculated according to the rated efficiency of the car.",
+      "description": "这个仪表板旨在根据记录在Teslamate中的数据查看电池健康状况。因此，从您全新汽车开始记录的数据越多越好。\n\n**损耗**只是一个估算值，用于提供参考，它是根据每次充电会话的**可用电池电量**以及添加的足够kWh量（为了避免样本中的脏数据）计算的，并根据汽车的额定效率来计算。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -753,7 +753,7 @@
           ]
         }
       ],
-      "title": "Estimated Degradation",
+      "title": "预估损耗",
       "type": "gauge"
     },
     {
@@ -852,7 +852,7 @@
           ]
         }
       ],
-      "title": "Battery Health",
+      "title": "电池健康",
       "type": "bargauge"
     },
     {
@@ -860,7 +860,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
-      "description": "\"Charging cycles\" are estimations based on the whole energy added to the battery.\n\n\"Charge Efficiency\" is estimated on the difference between energy used from the charger and energy added to the battery.",
+      "description": "\"充电周期\"是基于添加到电池的整体能量来估算的。\n\n\"充电效率\"是根据充电器使用的能量与添加到电池的能量之间的差异来估算的。",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -884,6 +884,10 @@
               {
                 "id": "unit",
                 "value": "kwatth"
+              },
+              {
+                "id": "displayName",
+                "value": "总充电量"
               }
             ]
           },
@@ -896,6 +900,34 @@
               {
                 "id": "unit",
                 "value": "kwatth"
+              },
+              {
+                "id": "displayName",
+                "value": "总用电量"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total charges"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "充电次数"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Charging cycles"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "充电周期"
               }
             ]
           },
@@ -908,6 +940,10 @@
               {
                 "id": "unit",
                 "value": "percent"
+              },
+              {
+                "id": "displayName",
+                "value": "充电效率"
               }
             ]
           }
@@ -1133,7 +1169,7 @@
           }
         }
       ],
-      "title": "Battery Stats",
+      "title": "电池统计",
       "type": "stat"
     },
     {
@@ -1254,7 +1290,7 @@
           ]
         }
       ],
-      "title": "当前电量",
+      "title": "当前电量(%)",
       "type": "bargauge"
     },
     {
@@ -1393,7 +1429,7 @@
           ]
         }
       ],
-      "title": "当前容量",
+      "title": "当前电量",
       "type": "bargauge"
     },
     {

@@ -222,7 +222,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "荷电状态 (%)"
+                "value": "当前电量 (%)"
               }
             ]
           },
