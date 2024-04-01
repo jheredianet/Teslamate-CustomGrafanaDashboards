@@ -1179,7 +1179,11 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
+<<<<<<< HEAD
           "rawSql": "SELECT '2024.3.21' AS \"当前版本\"",
+=======
+          "rawSql": "SELECT '2024.3.30' AS \"Current Version\"",
+>>>>>>> upstream/main
           "refId": "DashboardVersion",
           "sql": {
             "columns": [
