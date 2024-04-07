@@ -1,4 +1,43 @@
 {
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "geomap",
+      "name": "Geomap",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.4.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-postgresql-datasource",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -66,7 +105,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "PC98BA2F4D77E1A42"
+        "uid": "TeslaMate"
       },
       "description": "This is a special dashboard to load while driving. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Drive\" button at the top right corner, to enter in Kiosk mode:\n\n - If you are driving, you will see the information from the start time of the current drive until now and it will refesh automatically every 30 seconds.\n\n - If you are just browsing (not driving) you will see the information of the last drive.",
       "fieldConfig": {
@@ -1946,11 +1985,7 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": true,
-          "text": "Skipper",
-          "value": "1"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -1973,11 +2008,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "mi",
-          "value": "mi"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -1999,11 +2030,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "F",
-          "value": "F"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2025,11 +2052,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "ideal",
-          "value": "ideal"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2052,11 +2075,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "ft",
-          "value": "ft"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2075,11 +2094,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "3347",
-          "value": "3347"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2098,11 +2113,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1714378653000",
-          "value": "1714378653000"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2121,11 +2132,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1714380193000",
-          "value": "1714380193000"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2144,11 +2151,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "46.95832727272727",
-          "value": "46.95832727272727"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2167,11 +2170,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "13.6",
-          "value": "13.6"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2192,8 +2191,8 @@
     ]
   },
   "time": {
-    "from": "2024-04-29T08:17:33.000Z",
-    "to": "2024-04-29T08:43:13.000Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {
     "hidden": false,
@@ -2224,6 +2223,6 @@
   "timezone": "",
   "title": "Current Drive View",
   "uid": "jchmkOuP_Fggz",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }
