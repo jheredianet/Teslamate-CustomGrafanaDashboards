@@ -968,6 +968,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "groupBy": [
@@ -988,7 +989,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "WITH start_process AS ( SELECT date FROM charges \twhere charging_process_id=$charging_processes \tORDER BY DATE ASC \tLIMIT 1 ) SELECT EXTRACT(EPOCH FROM (charges.date - start_process.date)) AS \"Elapsed\" FROM charges, start_process WHERE charging_process_id = $charging_processes AND $__timeFilter(charges.date) order by charges.date desc LIMIT 1",
+          "rawSql": "SELECT EXTRACT(EPOCH FROM (end_date - start_date)) AS \"Elapsed\" FROM \r\n  (SELECT min(date) as start_date FROM charges where charging_process_id=$charging_processes) s\r\n  CROSS JOIN \r\n  (SELECT max(date) as end_date FROM charges where charging_process_id=$charging_processes) e",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1005,6 +1006,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "tags": [],
           "timeColumn": "time",
           "where": [
@@ -1911,18 +1929,77 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          },
-          "unit": "celsius"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_f/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "fahrenheit"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*_c/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/outdoor*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Outdoor"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/inside*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Inside"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/driver*/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Driver"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
@@ -1955,11 +2032,12 @@
             "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_celsius(outside_temp, '$temp_unit')) as \"Outdoor\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_celsius(outside_temp, '$temp_unit')) as outdoor_$temp_unit FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
           "refId": "Outdoor",
           "select": [
             [
@@ -1971,6 +2049,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -1985,12 +2080,13 @@
             "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "time_series",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_celsius(inside_temp, '$temp_unit')) AS \"Inside\" FROM positions WHERE car_id = $car_id and inside_temp is not null AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_celsius(inside_temp, '$temp_unit')) AS inside_$temp_unit FROM positions WHERE car_id = $car_id and inside_temp is not null AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
           "refId": "Inside",
           "select": [
             [
@@ -2002,6 +2098,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -2016,12 +2129,13 @@
             "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "time_series",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT \t$__timeGroupAlias(date,$__interval), \tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as \"Driver\" FROM positions WHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "rawSql": "SELECT \t$__timeGroupAlias(date,$__interval), \tavg(convert_celsius(driver_temp_setting, '$temp_unit')) as driver_$temp_unit FROM positions WHERE driver_temp_setting IS NOT NULL AND car_id = $car_id AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
           "refId": "Driver",
           "select": [
             [
@@ -2033,6 +2147,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "drives",
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
@@ -2048,7 +2179,6 @@
       "type": "stat"
     }
   ],
-  "refresh": "10s",
   "schemaVersion": 39,
   "tags": [
     "TeslamateCustomDashboards"
@@ -2231,6 +2361,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
