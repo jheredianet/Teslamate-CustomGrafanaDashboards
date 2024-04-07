@@ -116,7 +116,6 @@
       "tooltip": "Show Current Charge Data",
       "type": "link",
       "url": "d/jchm9RxutVS7a/current-charge-view?kiosk&var-car_id=${car_id}&from=${current_charge_time}&to=${current_end_time}&var-BatteryCapacity=${BatteryCapacity}&var-charging_processes=${charging_processes}&var-temp_unit=${temp_unit}&var-length_unit=${length_unit}&var-preferred_range=${preferred_range}"
-
     }
   ],
   "liveNow": false,
@@ -1835,7 +1834,7 @@
             "uid": "TeslaMate"
           },
           "editorMode": "code",
-          "format": "time_series",
+          "format": "table",
           "group": [],
           "groupBy": [],
           "hide": false,
@@ -1844,7 +1843,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_km([[preferred_range]]_battery_range_km, '$length_unit')) as start_$length_unit\r\nFROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 asc limit 1\r\n",
+          "rawSql": "SELECT MIN(convert_km([[preferred_range]]_battery_range_km, '$length_unit')) as start_$length_unit\r\nFROM charges WHERE charging_process_id = $charging_processes",
           "refId": "Initial Range",
           "resultFormat": "time_series",
           "select": [
@@ -1903,7 +1902,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(convert_km(end_charge - start_charge, '$length_unit'),0) as added_$length_unit \r\nFROM\r\n(SELECT $__timeGroupAlias(date,$__interval), avg([[preferred_range]]_battery_range_km) as start_charge\r\nFROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 asc limit 1) s\r\nCROSS JOIN (\r\nSELECT $__timeGroupAlias(date,$__interval), avg([[preferred_range]]_battery_range_km) as end_charge\r\nFROM positions WHERE $__timeFilter(date) GROUP BY 1 ORDER BY 1 desc limit 1) e",
+          "rawSql": "SELECT ROUND(convert_km(end_range - start_range, '$length_unit'),0) as added_$length_unit \r\nFROM\r\n(SELECT MIN([[preferred_range]]_battery_range_km) as start_range\r\nFROM charges WHERE charging_process_id = $charging_processes) s\r\nCROSS JOIN (\r\nSELECT MAX([[preferred_range]]_battery_range_km) as  end_range \r\nFROM charges WHERE charging_process_id = $charging_processes) e",
           "refId": "Range Added",
           "resultFormat": "time_series",
           "select": [
@@ -1962,7 +1961,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(convert_km([[preferred_range]]_battery_range_km, '$length_unit')) as current_$length_unit \r\nFROM positions WHERE $__timeFilter(date) GROUP BY 1 ORDER BY 1 desc limit 1",
+          "rawSql": "SELECT MAX(convert_km([[preferred_range]]_battery_range_km, '$length_unit')) as  current_$length_unit \r\nFROM charges WHERE charging_process_id = $charging_processes",
           "refId": "Current Range",
           "resultFormat": "time_series",
           "select": [
@@ -2024,7 +2023,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2281,11 +2281,7 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "Ambrosio",
-          "value": "2"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
@@ -2460,6 +2456,6 @@
   "timezone": "",
   "title": "Current Charge View",
   "uid": "jchm9RxutVS7a",
-  "version": 4,
+  "version": 10,
   "weekStart": ""
 }
