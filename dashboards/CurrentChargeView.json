@@ -115,7 +115,8 @@
       "title": "Current Charge",
       "tooltip": "Show Current Charge Data",
       "type": "link",
-      "url": "d/jchm9RxutVS7a/current-charge-view?kiosk&var-car_id=${car_id}&from=${current_charge_time}&to=${current_end_time}&var-BatteryCapacity=${BatteryCapacity}&var-charging_processes=${charging_processes}&var-temp_unit=${temp_unit}&var-length_unit=${length_unit}"
+      "url": "d/jchm9RxutVS7a/current-charge-view?kiosk&var-car_id=${car_id}&from=${current_charge_time}&to=${current_end_time}&var-BatteryCapacity=${BatteryCapacity}&var-charging_processes=${charging_processes}&var-temp_unit=${temp_unit}&var-length_unit=${length_unit}&var-preferred_range=${preferred_range}"
+
     }
   ],
   "liveNow": false,
