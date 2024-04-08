@@ -711,7 +711,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tCASE WHEN '$length_unit' = 'km' THEN $efficiency\n\t     WHEN '$length_unit' = 'mi' THEN $efficiency * 1.60934\n\tEND as \"efficiency_$length_unit\"",
+          "rawSql": "SELECT\n\t(CASE WHEN '$length_unit' = 'km' THEN $efficiency\n\t     WHEN '$length_unit' = 'mi' THEN $efficiency * 1.60934\n\tEND) * 10 as \"efficiency_$length_unit\"",
           "refId": "A",
           "select": [
             [
