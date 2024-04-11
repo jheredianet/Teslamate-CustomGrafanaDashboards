@@ -277,7 +277,7 @@ Do not take the dashboards much less upload or merge them to other repositories 
 
 ## License
 
-Licensed under the [GPL-3.0 license](./LICENSE).
+Licensed under the [MIT license][license-url].
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
