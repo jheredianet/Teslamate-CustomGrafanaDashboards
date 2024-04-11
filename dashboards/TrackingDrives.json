@@ -108,10 +108,10 @@
           },
           "custom": {
             "axisBorderShow": false,
-            "axisCenteredZero": false,
+            "axisCenteredZero": true,
             "axisColorMode": "text",
             "axisLabel": "",
-            "axisPlacement": "auto",
+            "axisPlacement": "left",
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 0,
@@ -122,7 +122,7 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -144,8 +144,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -183,18 +182,6 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "elevation_m"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Elevation (m)"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "speed_kmh"
             },
             "properties": [
@@ -225,6 +212,13 @@
               {
                 "id": "displayName",
                 "value": "SOC (%)"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
               }
             ]
           },
@@ -238,36 +232,6 @@
                 "id": "color",
                 "value": {
                   "fixedColor": "semi-dark-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Elevation"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#ccccdc",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Elevation (m)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
                   "mode": "fixed"
                 }
               }
@@ -290,93 +254,48 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "Rated Efficiency (kWh/100km)"
+              "id": "byRegexp",
+              "options": "/elevation_*/"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "SOC (%)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-purple",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Speed (km/h)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "speed_kmh"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Elevation"
-            },
-            "properties": [
-              {
-                "id": "decimals",
-                "value": 0
+                "id": "displayName",
+                "value": "Elevation"
               },
               {
-                "id": "min",
-                "value": 0
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Elevation (m)"
+              "options": "elevation_ft"
             },
             "properties": [
               {
-                "id": "decimals",
-                "value": 0
-              },
+                "id": "unit",
+                "value": "lengthft"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "elevation_m"
+            },
+            "properties": [
               {
-                "id": "min",
-                "value": 0
+                "id": "unit",
+                "value": "lengthm"
               }
             ]
           }
@@ -410,6 +329,7 @@
             "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "time_series",
           "group": [],
           "hide": false,
@@ -427,6 +347,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "charging",
           "timeColumn": "Datum",
           "timeColumnType": "timestamp",
