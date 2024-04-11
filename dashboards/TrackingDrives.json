@@ -144,7 +144,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1135,11 +1136,12 @@
             "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit'  as \"Up\" from height where diff > 0",
+          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\nselect ROUND(convert_m(sum(diff), '$alternative_length_unit')::numeric,0) || ' $alternative_length_unit'  as \"Up\" from height where diff > 0",
           "refId": "A",
           "select": [
             [
@@ -1151,6 +1153,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "drives",
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
@@ -1167,12 +1186,13 @@
             "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\n\t\n\t\nselect convert_m(sum(diff), '$alternative_length_unit') || ' $alternative_length_unit' as \"Down\" from height where diff < 0",
+          "rawSql": "WITH height as (SELECT\n\televation-LAG(elevation,1) over ( order BY\n\tdate ASC ) as diff\nFROM\n\tpositions\nWHERE\n car_id = $car_id AND (date BETWEEN (SELECT start_date FROM drives WHERE id = $journey) AND (SELECT end_date FROM drives WHERE id = $journey))\nORDER BY\n\tdate ASC\n\t)\n\t\n\t\nselect ROUND(convert_m(sum(diff), '$alternative_length_unit')::numeric,0) || ' $alternative_length_unit' as \"Down\" from height where diff < 0",
           "refId": "B",
           "select": [
             [
@@ -1184,6 +1204,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "drives",
           "timeColumn": "start_date",
           "timeColumnType": "timestamp",
@@ -1377,6 +1414,6 @@
   "timezone": "",
   "title": "Tracking Drives",
   "uid": "jchmX8upc6ZRk",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
