@@ -2811,7 +2811,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               },
               {
                 "id": "custom.cellOptions",
@@ -2971,12 +2971,38 @@
             },
             "properties": [
               {
+                "id": "unit",
+                "value": "fahrenheit"
+              },
+              {
                 "id": "displayName",
                 "value": "Temperature"
               },
               {
-                "id": "unit",
-                "value": "fahrenheit"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-blue",
+                      "value": null
+                    },
+                    {
+                      "color": "super-light-green",
+                      "value": 50
+                    },
+                    {
+                      "color": "super-light-red",
+                      "value": 68
+                    }
+                  ]
+                }
               },
               {
                 "id": "custom.align",
