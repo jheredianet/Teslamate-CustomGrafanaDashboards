@@ -527,11 +527,11 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "km / h"
+                "value": "Range added"
               },
               {
                 "id": "unit",
-                "value": "lengthkm"
+                "value": "velocitykmh"
               },
               {
                 "id": "custom.align"
@@ -542,7 +542,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 70
+                "value": 120
               }
             ]
           },
@@ -634,18 +634,22 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "mi / h"
+                "value": "Range added"
               },
               {
                 "id": "unit",
-                "value": "none"
+                "value": "velocitymph"
               },
               {
                 "id": "custom.align"
               },
               {
+                "id": "decimals",
+                "value": 0
+              },
+              {
                 "id": "custom.minWidth",
-                "value": 70
+                "value": 120
               }
             ]
           },
