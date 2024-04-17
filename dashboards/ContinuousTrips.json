@@ -210,6 +210,22 @@
               {
                 "id": "custom.minWidth",
                 "value": 200
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "max",
+                "value": 400
               }
             ]
           },
@@ -816,6 +832,6 @@
   "timezone": "",
   "title": "Continuous Trips",
   "uid": "jchmY8upc6ZRk",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

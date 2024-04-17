@@ -2665,7 +2665,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "right"
+                "value": "center"
               }
             ]
           },
@@ -2687,7 +2687,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               }
             ]
           },
@@ -2725,7 +2725,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               },
               {
                 "id": "custom.cellOptions",
@@ -2791,7 +2791,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               }
             ]
           },
@@ -2811,7 +2811,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               },
               {
                 "id": "custom.cellOptions",
@@ -2855,7 +2855,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               }
             ]
           },
@@ -2875,11 +2875,11 @@
               },
               {
                 "id": "custom.width",
-                "value": 200
+                "value": 203
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               }
             ]
           },
@@ -2918,7 +2918,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               }
             ]
           },
@@ -2938,7 +2938,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 200
+                "value": 203
               },
               {
                 "id": "noValue",
@@ -2960,7 +2960,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "center"
               }
             ]
           },
@@ -2971,12 +2971,38 @@
             },
             "properties": [
               {
+                "id": "unit",
+                "value": "fahrenheit"
+              },
+              {
                 "id": "displayName",
                 "value": "Temperature"
               },
               {
-                "id": "unit",
-                "value": "fahrenheit"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-blue",
+                      "value": null
+                    },
+                    {
+                      "color": "super-light-green",
+                      "value": 50
+                    },
+                    {
+                      "color": "super-light-red",
+                      "value": 68
+                    }
+                  ]
+                }
               },
               {
                 "id": "custom.align",
@@ -3224,6 +3250,7 @@
             "indexByName": {
               "avg_consumption_kwh": 8,
               "avg_outside_temp_c": 3,
+              "avg_outside_temp_f": 3,
               "cnt_charges": 7,
               "cost_charges": 5,
               "date": 1,
@@ -3235,7 +3262,8 @@
               "efficiency_charged_net_km_temp": 13,
               "efficiency_net_km": 9,
               "sum_consumption_kwh": 6,
-              "sum_distance_km": 2
+              "sum_distance_km": 2,
+              "sum_distance_mi": 2
             },
             "renameByName": {
               "avg_consumption_kwh": "Avg charged",
