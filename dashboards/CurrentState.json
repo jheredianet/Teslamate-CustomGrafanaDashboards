@@ -1256,145 +1256,192 @@
       "type": "stat"
     },
     {
+{
+  "datasource": {
+    "type": "postgres",
+    "uid": "TeslaMate"
+  },
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "hideFrom": {
+          "tooltip": false,
+          "viz": false,
+          "legend": false
+        }
+      },
+      "color": {
+        "mode": "palette-classic"
+      },
+      "mappings": [
+        {
+          "type": "value",
+          "options": {
+            "0": {
+              "color": "#C0D8FF",
+              "index": 0,
+              "text": "online"
+            },
+            "1": {
+              "color": "purple",
+              "index": 1,
+              "text": "driving"
+            },
+            "2": {
+              "color": "yellow",
+              "index": 2,
+              "text": "charging"
+            },
+            "3": {
+              "color": "super-light-orange",
+              "index": 3,
+              "text": "offline"
+            },
+            "4": {
+              "color": "green",
+              "index": 4,
+              "text": "asleep"
+            },
+            "5": {
+              "color": "super-light-blue",
+              "index": 5,
+              "text": "online"
+            },
+            "6": {
+              "color": "red",
+              "index": 6,
+              "text": "updating"
+            },
+            "null": {
+              "index": 7,
+              "text": "N/A"
+            }
+          }
+        }
+      ],
+      "noValue": "0",
+      "unit": "dtdhms"
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "online"
+        },
+        "properties": [
+          {
+            "id": "color",
+            "value": {
+              "mode": "fixed",
+              "fixedColor": "#6ed0e0"
+            }
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "driving"
+        },
+        "properties": [
+          {
+            "id": "color",
+            "value": {
+              "mode": "fixed",
+              "fixedColor": "#8f3bb8"
+            }
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "charging"
+        },
+        "properties": [
+          {
+            "id": "color",
+            "value": {
+              "mode": "fixed",
+              "fixedColor": "#F2CC0C"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "gridPos": {
+    "h": 9,
+    "w": 9,
+    "x": 15,
+    "y": 8
+  },
+  "id": 41,
+  "options": {
+    "reduceOptions": {
+      "values": true,
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": "/^total_time$/"
+    },
+    "pieType": "pie",
+    "tooltip": {
+      "mode": "single",
+      "sort": "none"
+    },
+    "legend": {
+      "showLegend": true,
+      "displayMode": "table",
+      "placement": "right",
+      "values": [
+        "value",
+        "percent"
+      ]
+    },
+    "displayLabels": [
+      "percent",
+      "name"
+    ]
+  },
+  "pluginVersion": "8.5.15",
+  "targets": [
+    {
       "datasource": {
         "type": "postgres",
         "uid": "TeslaMate"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "super-light-blue",
-                  "index": 0,
-                  "text": "online"
-                },
-                "1": {
-                  "color": "purple",
-                  "index": 1,
-                  "text": "driving"
-                },
-                "2": {
-                  "color": "yellow",
-                  "index": 2,
-                  "text": "charging"
-                },
-                "3": {
-                  "color": "super-light-orange",
-                  "index": 3,
-                  "text": "offline"
-                },
-                "4": {
-                  "color": "green",
-                  "index": 4,
-                  "text": "asleep"
-                },
-                "5": {
-                  "color": "super-light-blue",
-                  "index": 5,
-                  "text": "online"
-                },
-                "6": {
-                  "color": "red",
-                  "index": 6,
-                  "text": "updating"
-                },
-                "null": {
-                  "index": 7,
-                  "text": "N/A"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "noValue": "0",
-          "unit": "dtdhms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 9,
-        "x": 15,
-        "y": 8
-      },
-      "id": 41,
-      "options": {
-        "displayLabels": [
-          "percent",
-          "name"
-        ],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value",
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^total_time$/",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.5.15",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "TeslaMate"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH states AS (\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [2, 0]) AS state\r\n  FROM charging_processes\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [1, 0]) AS state\r\n  FROM drives\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    start_date AS date,\r\n    CASE\r\n      WHEN state = 'offline' THEN 3\r\n      WHEN state = 'asleep' THEN 4\r\n      WHEN state = 'online' THEN 5\r\n    END AS state\r\n  FROM states\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [6, 0]) AS state\r\n  FROM updates\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n), aux AS (\r\n  SELECT $__timeFrom() :: timestamp AS date, (SELECT state FROM states WHERE date <= $__timeFrom() ORDER BY date DESC LIMIT 1) AS state, false AS include\r\n  UNION\r\n  SELECT date, state, true AS include FROM states\r\n  UNION\r\n  SELECT $__timeTo() :: timestamp as date, NULL AS state, true as include\r\n  ORDER BY date\r\n), states_elapsed AS (\r\n  SELECT \r\n    date, state AS current_state, include,\r\n    LAG(state) OVER (ORDER BY date) AS state,\r\n    LAG(date) OVER (ORDER BY date) AS last_state_time,\r\n    date - LAG(date) OVER (ORDER BY date) AS elapsed_time\r\n  FROM aux \r\n)\r\nSELECT \r\n    CASE\r\n      WHEN state = 0 OR state = 5 THEN 'online'\r\n      WHEN state = 1 THEN 'driving'\r\n      WHEN state = 2 THEN 'charging'\r\n      WHEN state = 3 THEN 'offline'\r\n      WHEN state = 4 THEN 'asleep'\r\n      WHEN state = 6 THEN 'updating'\r\n    END AS state,\r\n    EXTRACT(EPOCH FROM SUM(elapsed_time)) as Total_Time\r\nFROM states_elapsed\r\nWHERE $__timeFilter(date) AND include\r\nGROUP BY 1\r\n\r\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "efficiency"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "cars",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
+      "format": "table",
+      "group": [],
+      "metricColumn": "none",
+      "rawQuery": true,
+      "rawSql": "WITH states AS (\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [2, 0]) AS state\r\n  FROM charging_processes\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [1, 0]) AS state\r\n  FROM drives\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    start_date AS date,\r\n    CASE\r\n      WHEN state = 'offline' THEN 3\r\n      WHEN state = 'asleep' THEN 4\r\n      WHEN state = 'online' THEN 5\r\n    END AS state\r\n  FROM states\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n  UNION\r\n  SELECT\r\n    unnest(ARRAY [start_date + interval '1 second', end_date]) AS date,\r\n    unnest(ARRAY [6, 0]) AS state\r\n  FROM updates\r\n  WHERE\r\n    car_id = $car_id AND \r\n    ($__timeFrom() :: timestamp - interval '30 day') < start_date AND \r\n    (end_date < ($__timeTo() :: timestamp + interval '30 day') OR end_date IS NULL)\r\n), aux AS (\r\n  SELECT $__timeFrom() :: timestamp AS date, (SELECT state FROM states WHERE date <= $__timeFrom() ORDER BY date DESC LIMIT 1) AS state, false AS include\r\n  UNION\r\n  SELECT date, state, true AS include FROM states\r\n  UNION\r\n  SELECT $__timeTo() :: timestamp as date, NULL AS state, true as include\r\n  ORDER BY date\r\n), states_elapsed AS (\r\n  SELECT \r\n    date, state AS current_state, include,\r\n    LAG(state) OVER (ORDER BY date) AS state,\r\n    LAG(date) OVER (ORDER BY date) AS last_state_time,\r\n    date - LAG(date) OVER (ORDER BY date) AS elapsed_time\r\n  FROM aux \r\n)\r\nSELECT \r\n    CASE\r\n      WHEN state = 0 OR state = 5 THEN 'online'\r\n      WHEN state = 1 THEN 'driving'\r\n      WHEN state = 2 THEN 'charging'\r\n      WHEN state = 3 THEN 'offline'\r\n      WHEN state = 4 THEN 'asleep'\r\n      WHEN state = 6 THEN 'updating'\r\n    END AS state,\r\n    EXTRACT(EPOCH FROM SUM(elapsed_time)) as Total_Time\r\nFROM states_elapsed\r\nWHERE $__timeFilter(date) AND include\r\nGROUP BY 1\r\n\r\n",
+      "refId": "A",
+      "select": [
+        [
+          {
+            "params": [
+              "efficiency"
+            ],
+            "type": "column"
+          }
+        ]
       ],
-      "title": "States",
-      "type": "piechart"
-    },
+      "table": "cars",
+      "timeColumn": "inserted_at",
+      "timeColumnType": "timestamp",
+      "where": [
+        {
+          "name": "$__timeFilter",
+          "params": [],
+          "type": "macro"
+        }
+      ]
+    }
+  ],
+  "title": "States",
+  "type": "piechart"
+}
     {
       "datasource": {
         "type": "postgres",
