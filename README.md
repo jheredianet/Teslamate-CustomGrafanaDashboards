@@ -124,13 +124,7 @@ ___
 
 ### [Battery Health](./dashboards/BatteryHealth.json)
 
-This dashboard is meant to have a look of the Battery health based on the data logged in Teslamate.
-So, the more data you have logged from your brand new car the better.
-
-**Degradation** is just an estimated value to have a reference, measured on **usable battery level** of the last 5 charging sessions, with enough kWh added (in order to avoid dirty data from the sample), calculated according to the rated efficiency of the car. So, it's important that you have at least one charge session with enough kWh.
-On the other hand, you'll see a plotly chart that represents the evolution of the car's battery capacity during its entire lifetime.
-
-Finally, there is an important improvement for those who have not used Teslamate since they got their new car, or for those who have bought it second hand. Now it is possible to set the max range to 100% and the battery capacity of the car battery when it was new in order to get a better and accurate estimation.
+This dashboard is already integrated on the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
