@@ -209,6 +209,16 @@ With this dashboard you may find your incomplete drives or charges that have bee
 
 ![Incomplete Data](./screenshots/IncompleteData.png)
 
+
+
+### [Range Degradation](./dashboards/RangeDegradation.json)
+
+In this dashboard you may analize your mileage and the range degradation by a selected period.
+
+So you may have an idea of how much of range is lost as well as if there were any failure in Teslamate logging your data.  
+
+![Range Degradation](./screenshots/RangeDegradation.png)
+
 ### [Mileage Stats](./dashboards/MileageStats.json)
 
 With this dashboard you may analize your mileage and number of drives by year, month, week or day.
