@@ -115,7 +115,7 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -205,7 +205,6 @@
         "y": 0
       },
       "id": 38,
-      "interval": "1M",
       "options": {
         "legend": {
           "calcs": [
@@ -261,7 +260,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT  $__timeGroup(cp.start_date, $__interval) AS time, \r\n        AVG(cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"Max [[preferred_range]] range ($__interval avg) [[[length_unit]]]\"\r\nFROM charging_processes cp\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nGROUP BY 1\r\nORDER BY 1",
+          "rawSql": "SELECT  $__timeGroup(cp.start_date, $interval) AS time, \r\n        AVG(cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"Max [[preferred_range]] range ($interval avg) [[[length_unit]]]\"\r\nFROM charging_processes cp\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nGROUP BY 1\r\nORDER BY 1",
           "refId": "B",
           "sql": {
             "columns": [
@@ -772,6 +771,44 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "1d",
+          "value": "1d"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Interval AVG",
+        "multi": false,
+        "name": "interval",
+        "options": [
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": true,
+            "text": "15d",
+            "value": "15d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1d,7d,15d,30d ",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -786,6 +823,6 @@
   "timezone": "browser",
   "title": "Range Degradation",
   "uid": "jchmRiqUfXgm",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
