@@ -91,7 +91,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "TeslaMate"
       },
       "description": "",
       "fieldConfig": {
@@ -226,13 +226,13 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT        $__time(cp.start_date), \r\n              (cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"range\",\r\n              convert_km(p.odometer::numeric,'$length_unit') AS \"Odometer [[[length_unit]]]\"\r\nFROM charging_processes cp\r\n  INNER JOIN positions p ON cp.position_id = p.id\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nand cp.end_battery_level >= $SOC\r\nORDER by cp.start_date\r\n",
+          "rawSql": "SELECT        $__time(cp.start_date), \r\n              (cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"range\",\r\n              convert_km(p.odometer::numeric,'$length_unit') AS \"Odometer [[[length_unit]]]\"\r\nFROM charging_processes cp\r\n  INNER JOIN positions p ON cp.position_id = p.id\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nORDER by cp.start_date\r\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -255,13 +255,13 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT  $__timeGroup(cp.start_date,'1M') AS time, \r\n        AVG(cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"Max [[preferred_range]] range (monthly avg) [[[length_unit]]]\"\r\nFROM charging_processes cp\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nand cp.end_battery_level >= $SOC\r\nGROUP BY 1\r\nORDER BY 1",
+          "rawSql": "SELECT  $__timeGroup(cp.start_date,'1M') AS time, \r\n        AVG(cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"Max [[preferred_range]] range (monthly avg) [[[length_unit]]]\"\r\nFROM charging_processes cp\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nGROUP BY 1\r\nORDER BY 1",
           "refId": "B",
           "sql": {
             "columns": [
@@ -288,9 +288,9 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "TeslaMate"
       },
-      "description": "\"Logged\" is the distance traveled that is saved on Teslamate database.\n\n\"Mileage\" is the distance the car has traveled since using Teslamate.\n\nSo, if there is a difference between both values, it is the distance that for some reason a drive hasn't been fully recorded, for example due to a bug or an unexpected restart and that Teslamate has not been able to record, either due to lack of connection, areas without signal, or that it has been out of service.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -337,13 +337,13 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "select ROUND(convert_km(sum(distance)::numeric, '$length_unit'),0)|| ' $length_unit' as \"Logged\"\r\nfrom drives \r\nwhere car_id = $car_id;\r\n",
+          "rawSql": "select ROUND(convert_km(sum(distance)::numeric, '$length_unit'),0)|| ' $length_unit' as \"Logged\"\r\nfrom drives \r\nwhere car_id = $car_id AND $__timeFilter(start_date)\r\n",
           "refId": "Looged",
           "sql": {
             "columns": [
@@ -366,7 +366,7 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "table",
@@ -374,7 +374,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(convert_km((max(end_km) - min(start_km))::numeric, '$length_unit'),0)|| ' $length_unit' as \"Mileage\"\nFROM drives WHERE car_id = $car_id;",
+          "rawSql": "SELECT ROUND(convert_km((max(end_km) - min(start_km))::numeric, '$length_unit'),0)|| ' $length_unit' as \"Mileage\"\nFROM drives WHERE car_id = $car_id AND $__timeFilter(start_date)",
           "refId": "Mileage",
           "select": [
             [
@@ -417,26 +417,14 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "table",
-          "group": [],
           "hide": false,
-          "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(convert_km(max(end_km)::numeric, '$length_unit'),0) || ' $length_unit' as \"Odometer\"\nFROM drives WHERE car_id =  $car_id;",
-          "refId": "Odometer",
-          "select": [
-            [
-              {
-                "params": [
-                  "efficiency"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
+          "rawSql": "SELECT (\r\n (SELECT ROUND(convert_km((max(end_km) - min(start_km))::numeric, '$length_unit'),0) FROM drives WHERE car_id = $car_id AND $__timeFilter(start_date)) - \r\n (SELECT ROUND(convert_km(sum(distance)::numeric, '$length_unit'),0) from drives where car_id = $car_id AND $__timeFilter(start_date)) || ' $length_unit'\r\n)\r\nAS \"Data lost (not logged)\"\r\n",
+          "refId": "A",
           "sql": {
             "columns": [
               {
@@ -453,28 +441,18 @@
               }
             ],
             "limit": 50
-          },
-          "table": "cars",
-          "timeColumn": "inserted_at",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          }
         }
       ],
-      "title": "Trips",
+      "title": "Trips (this period)",
       "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "${DS_TESLAMATE}"
+        "uid": "TeslaMate"
       },
-      "description": "\"Charging cycles\" are estimations based on the whole energy added to the battery.\n\n\"Charge Efficiency\" is estimated on the difference between energy used from the charger and energy added to the battery.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -561,13 +539,13 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\r\n\tCOUNT(*) AS \"Total charges\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND charge_energy_added > 0.01\r\n\t",
+          "rawSql": "SELECT\r\n\tCOUNT(*) AS \"Total charges\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND $__timeFilter(start_date) AND charge_energy_added > 0.01\r\n\t",
           "refId": "Total charges",
           "sql": {
             "columns": [
@@ -590,14 +568,14 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tsum(charge_energy_added) as \"Total energy added\"\nFROM\n\tcharging_processes\nWHERE\n\tcar_id = $car_id AND charge_energy_added > 0.01",
+          "rawSql": "SELECT\n\tsum(charge_energy_added) as \"Total energy added\"\nFROM\n\tcharging_processes\nWHERE\n\tcar_id = $car_id AND $__timeFilter(start_date) AND charge_energy_added > 0.01",
           "refId": "Total energy added",
           "select": [
             [
@@ -640,13 +618,13 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\r\n\tSUM(charge_energy_used) AS \"Total energy used\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND charge_energy_added > 0.01\r\n",
+          "rawSql": "SELECT\r\n\tSUM(charge_energy_used) AS \"Total energy used\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND $__timeFilter(start_date) AND charge_energy_added > 0.01\r\n",
           "refId": "Total energy used",
           "sql": {
             "columns": [
@@ -669,13 +647,13 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "${DS_TESLAMATE}"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\r\n\tSUM(charge_energy_added) * 100 / SUM(charge_energy_used) AS \"Charge Efficiency\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND charge_energy_added > 0.01\r\n",
+          "rawSql": "SELECT\r\n\tSUM(charge_energy_added) * 100 / SUM(charge_energy_used) AS \"Charge Efficiency\"\r\nFROM\r\n\tcharging_processes\r\nWHERE\r\n\tcar_id = $car_id AND $__timeFilter(start_date) AND charge_energy_added > 0.01\r\n",
           "refId": "Charge Efficiency",
           "sql": {
             "columns": [
@@ -696,7 +674,7 @@
           }
         }
       ],
-      "title": "Battery Stats",
+      "title": "Battery Stats (this period)",
       "type": "stat"
     }
   ],
@@ -711,7 +689,7 @@
         "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "TeslaMate"
         },
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC",
         "hide": 0,
@@ -734,7 +712,7 @@
         "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "TeslaMate"
         },
         "definition": "SELECT unit_of_length FROM settings LIMIT 1",
         "hide": 2,
@@ -757,7 +735,7 @@
         "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "TeslaMate"
         },
         "definition": "SELECT preferred_range FROM settings LIMIT 1",
         "hide": 2,
@@ -776,7 +754,7 @@
         "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
-          "uid": "${DS_TESLAMATE}"
+          "uid": "TeslaMate"
         },
         "definition": "SELECT base_url FROM settings LIMIT 1",
         "hide": 2,
@@ -794,74 +772,6 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "10",
-          "value": "10"
-        },
-        "hide": 0,
-        "includeAll": false,
-        "label": "Min Charging SOC",
-        "multi": false,
-        "name": "SOC",
-        "options": [
-          {
-            "selected": false,
-            "text": "100",
-            "value": "100"
-          },
-          {
-            "selected": false,
-            "text": "90",
-            "value": "90"
-          },
-          {
-            "selected": false,
-            "text": "80",
-            "value": "80"
-          },
-          {
-            "selected": false,
-            "text": "70",
-            "value": "70"
-          },
-          {
-            "selected": false,
-            "text": "60",
-            "value": "60"
-          },
-          {
-            "selected": false,
-            "text": "50",
-            "value": "50"
-          },
-          {
-            "selected": false,
-            "text": "40",
-            "value": "40"
-          },
-          {
-            "selected": false,
-            "text": "30",
-            "value": "30"
-          },
-          {
-            "selected": false,
-            "text": "20",
-            "value": "20"
-          },
-          {
-            "selected": true,
-            "text": "10",
-            "value": "10"
-          }
-        ],
-        "query": "100,90,80,70,60,50,40,30,20,10",
-        "queryValue": "",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
@@ -874,8 +784,8 @@
     "hidden": false
   },
   "timezone": "browser",
-  "title": "Degradation",
-  "uid": "jchmRiqUfXgHm",
+  "title": "Range Degradation",
+  "uid": "jchmRiqUfXgm",
   "version": 1,
   "weekStart": ""
 }
