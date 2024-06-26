@@ -152,7 +152,7 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/.monthly*/"
+              "options": "/.avg*/"
             },
             "properties": [
               {
@@ -205,10 +205,10 @@
         "y": 0
       },
       "id": 38,
+      "interval": "1M",
       "options": {
         "legend": {
           "calcs": [
-            "mean",
             "max",
             "min"
           ],
@@ -261,7 +261,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT  $__timeGroup(cp.start_date,'1M') AS time, \r\n        AVG(cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"Max [[preferred_range]] range (monthly avg) [[[length_unit]]]\"\r\nFROM charging_processes cp\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nGROUP BY 1\r\nORDER BY 1",
+          "rawSql": "SELECT  $__timeGroup(cp.start_date, $__interval) AS time, \r\n        AVG(cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"Max [[preferred_range]] range ($__interval avg) [[[length_unit]]]\"\r\nFROM charging_processes cp\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nGROUP BY 1\r\nORDER BY 1",
           "refId": "B",
           "sql": {
             "columns": [
