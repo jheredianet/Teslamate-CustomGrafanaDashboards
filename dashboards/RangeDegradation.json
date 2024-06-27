@@ -231,7 +231,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT        $__time(cp.start_date), \r\n              (cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"range\",\r\n              convert_km(p.odometer::numeric,'$length_unit') AS \"Odometer [[[length_unit]]]\"\r\nFROM charging_processes cp\r\n  INNER JOIN positions p ON cp.position_id = p.id\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nORDER by cp.start_date\r\n",
+          "rawSql": "SELECT        $__time(cp.start_date), \r\n              convert_km((cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100)::numeric,'$length_unit') AS \"range\",\r\n              convert_km(p.odometer::numeric,'$length_unit') AS \"Odometer [[[length_unit]]]\"\r\nFROM charging_processes cp\r\n  INNER JOIN positions p ON cp.position_id = p.id\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nORDER by cp.start_date\r\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -260,7 +260,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT  $__timeGroup(cp.start_date, $interval) AS time, \r\n        AVG(cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100) AS \"Max [[preferred_range]] range ($interval avg) [[[length_unit]]]\"\r\nFROM charging_processes cp\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nGROUP BY 1\r\nORDER BY 1",
+          "rawSql": "SELECT  $__timeGroup(cp.start_date, $interval) AS time, \r\n        AVG(convert_km((cp.end_[[preferred_range]]_range_km / cp.end_battery_level * 100)::numeric,'$length_unit')) AS \"Max [[preferred_range]] range ($interval avg) [[[length_unit]]]\"\r\nFROM charging_processes cp\r\nWHERE $__timeFilter(cp.start_date) and cp.car_id = $car_id\r\nand cp.duration_min > 10 \r\nGROUP BY 1\r\nORDER BY 1",
           "refId": "B",
           "sql": {
             "columns": [
@@ -775,8 +775,8 @@
       {
         "current": {
           "selected": true,
-          "text": "1d",
-          "value": "1d"
+          "text": "15d",
+          "value": "15d"
         },
         "hide": 0,
         "includeAll": false,
@@ -823,6 +823,6 @@
   "timezone": "browser",
   "title": "Range Degradation",
   "uid": "jchmRiqUfXgm",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
