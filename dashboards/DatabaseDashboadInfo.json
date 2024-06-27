@@ -1180,7 +1180,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT '2024.6.24' AS \"Current Version\"",
+          "rawSql": "SELECT '2024.6.27' AS \"Current Version\"",
           "refId": "DashboardVersion",
           "sql": {
             "columns": [
