@@ -124,7 +124,7 @@ ___
 
 ### [Battery Health](./dashboards/BatteryHealth.json)
 
-This dashboard is already integrated on the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community.
+This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
