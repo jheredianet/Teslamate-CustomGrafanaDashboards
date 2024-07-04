@@ -124,13 +124,13 @@ ___
 
 ### [Battery Health](./dashboards/BatteryHealth.json)
 
-This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community.
+This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the same name **Battery Health**.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
 ### [Browse Charges](./dashboards/BrowseCharges.json)
 
-This dasboard is used to browse your charges by Geofence, Location, Type, Cost and Duration in order to have an accurate Total of kWh added and their respective costs.
+This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the name **Charges**.
 
 ![Browse Charges](./screenshots/BrowseCharges.png)
 
