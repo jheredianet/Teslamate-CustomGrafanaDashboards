@@ -5,7 +5,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.4.0"
+      "version": "11.0.0"
     },
     {
       "type": "datasource",
@@ -79,7 +79,9 @@
       "icon": "external link",
       "includeVars": false,
       "keepTime": false,
-      "tags": [],
+      "tags": [
+        "TeslamateCustomDashboards"
+      ],
       "targetBlank": false,
       "title": "Custom Dashboards",
       "tooltip": "",
@@ -189,6 +191,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         },
@@ -298,6 +301,7 @@
         "series": [],
         "seriesMapping": "auto",
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -400,7 +404,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -487,7 +491,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
           "datasource": {
@@ -525,9 +529,7 @@
   ],
   "refresh": "",
   "schemaVersion": 39,
-  "tags": [
-    "teslaCustom"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
@@ -605,6 +607,7 @@
           "uid": "TeslaMate"
         },
         "definition": "SELECT\n\tcoalesce(sum(cost), 0)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id;\n\t",
+        "error": {},
         "hide": 2,
         "includeAll": false,
         "multi": false,
@@ -624,6 +627,7 @@
           "uid": "TeslaMate"
         },
         "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\n\tWHERE \n\t        cp.car_id = $car_id AND c.fast_charger_present IS true\n\t\tAND c.charger_voltage = 2\n\t\tAND COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.display_name), '')))) ILIKE '%supercharger%'\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost), 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
+        "error": {},
         "hide": 2,
         "includeAll": false,
         "multi": false,
@@ -662,6 +666,7 @@
           "uid": "TeslaMate"
         },
         "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n\t\tcp.car_id = $car_id AND c.charger_voltage != 2\n        GROUP BY 1\n)\nSELECT\n       coalesce(sum(cp.cost) , 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.cost IS NOT NULL\n  AND cp.id IN (data.charging_process_id);",
+        "error": {},
         "hide": 2,
         "includeAll": false,
         "multi": false,
@@ -700,6 +705,7 @@
           "uid": "TeslaMate"
         },
         "definition": "SELECT convert_km((max(odometer) - min(odometer))::numeric, '$length_unit')\nfrom positions where car_id = $car_id AND $__timeFilter(date)",
+        "error": {},
         "hide": 2,
         "includeAll": false,
         "multi": false,
@@ -781,7 +787,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "367000",
           "value": "367000"
         },
@@ -806,6 +812,7 @@
     "from": "now-10y",
     "to": "now"
   },
+  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {
     "hidden": false,
     "refresh_intervals": [],
