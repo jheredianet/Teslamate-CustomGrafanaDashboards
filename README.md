@@ -209,8 +209,6 @@ With this dashboard you may find your incomplete drives or charges that have bee
 
 ![Incomplete Data](./screenshots/IncompleteData.png)
 
-
-
 ### [Range Degradation](./dashboards/RangeDegradation.json)
 
 In this dashboard you may analize your mileage and the range degradation by a selected period.
