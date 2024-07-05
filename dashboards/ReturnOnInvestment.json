@@ -705,7 +705,9 @@
   ],
   "refresh": "",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "TeslamateCustomDashboards"
+  ],
   "templating": {
     "list": [
       {
