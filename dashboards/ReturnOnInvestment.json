@@ -37,6 +37,7 @@
       {
         "$$hashKey": "object:75",
         "builtIn": 1,
+        "definition": "TeslaMate|U2FsdGVkX1/cEWK+8cz7pjEKXtzJnDN7b21ZDXt1MGneFGPWTLqOPtxKmu02mJPLzi/f29I+NBHd3vi0FB8R4Xn0+GtobWDgk6VAVSBTdSNniOKO8i2WPlhRaOsl2+hG7gnZ7wrf1Th2nxR7f1uYCrbwOek0IzkfLzrkjh7gkr6inT6bbDuJqrmogZajLxmAMrQ6V+/vHxBRGiwjJhgiEeq3hM1q2h04JKkNiZ8RHbsF5Cd/xd8Q9u0JVrZzIrtnhM/SFlaApU7RtRMu8CSj1llTX7WEOj6VDZAMSf+XUAanWdk725kEPN9MNu89o2zEq5P3E3cju8IbbBdPzXLV3oVuzD6/tMnxFToIIV1E/BrpF7s2RtNa8+KJJ1PF8xgs6m+/KTD2hy+WsP0636AgObRAmYg7+qotGrgNvpNPdE0EgrB7WHYlV7R/1q66bcq6tCe51X1Un70k+zo+K6AK0o4B1H6IyMlEVuRH/Fz8QVl9aYu2ztd08RbuKJlYVKpkH+pxVETAO9MclYQ90tzE6TfwDZrQZzsAlMenr4s1ZB1OlFXjLjVjnddnUilzO76cqv4yI2THQEuyQ47nuVQ4gUbx02K59vMQhns3C01JOAYokOaSXe66Y7QYdMlk09Lf|aes-256-cbc",
         "datasource": "-- Grafana --",
         "enable": true,
         "hide": true,
@@ -93,13 +94,13 @@
   "panels": [
     {
       "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "TeslaMate"
+        "type": "datasource",
+        "uid": "-- Dashboard --"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "continuous-RdYlGr"
           },
           "custom": {
             "axisBorderShow": false,
@@ -109,7 +110,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 13,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -117,7 +118,14 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "dash": [
+                10,
+                10
+              ],
+              "fill": "dash"
+            },
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -151,26 +159,18 @@
         },
         "overrides": [
           {
-            "__systemRef": "hideSeriesFrom",
             "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "car_value_pls_el_savings"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
+              "id": "byName",
+              "options": "car_value_pls_el_savings"
             },
             "properties": [
               {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
+                "id": "custom.gradientMode",
+                "value": "scheme"
+              },
+              {
+                "id": "displayName",
+                "value": "Depreciated Car Value + Cumulative Savings"
               }
             ]
           }
@@ -201,34 +201,27 @@
       "targets": [
         {
           "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "TeslaMate"
+            "type": "datasource",
+            "uid": "-- Dashboard --"
           },
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "WITH periodic_mileage AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        SUM(end_km - start_km) AS total_mileage\r\n    FROM\r\n        drives\r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\nperiod_cost AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        SUM(cost) AS total_cost\r\n    FROM\r\n        charging_processes \r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        DATE_TRUNC('$period', start_date)\r\n),\r\ncum_mileage AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_mileage,\r\n        SUM(total_mileage) OVER (ORDER BY period_start) AS cum_mileage\r\n    FROM\r\n        periodic_mileage\r\n),\r\ncum_cost AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_cost,\r\n        SUM(total_cost) OVER (ORDER BY period_start) AS cum_el_cost\r\n    FROM\r\n        period_cost\r\n),\r\ncar_current_value AS (\r\n    SELECT\r\n        $car_cost AS car_current_value\r\n)\r\nSELECT\r\n    cm.period_number,\r\n    mm.total_mileage AS periodic_mileage,\r\n    mc.total_cost AS period_el_cost,\r\n    mc.total_cost/mm.total_mileage AS period_cost_per_km,\r\n    cm.cum_mileage,\r\n    cc.cum_el_cost,\r\n    cm.cum_mileage - cc.cum_el_cost AS cum_el_savings,\r\n    car_current_value * (-0.002363 * cm.period_number + 0.786) AS depreciated_car_value,\r\n    (car_current_value * (-0.002363 * cm.period_number + 0.786) + (cm.cum_mileage * 1 - cc.cum_el_cost)) AS car_value_pls_el_savings\r\nFROM\r\n    cum_mileage cm\r\nLEFT JOIN\r\n    cum_cost cc ON cm.period_number = cc.period_number\r\nLEFT JOIN\r\n    periodic_mileage mm ON cm.period_start = mm.period_start\r\nLEFT JOIN\r\n    period_cost mc ON cm.period_start = mc.period_start\r\nCROSS JOIN\r\n    car_current_value\r\nORDER BY\r\n    cm.period_number;\r\n",
-          "refId": "A",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          }
+          "panelId": 77,
+          "refId": "A"
         }
       ],
       "title": "Break-Even Chart",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "car_value_pls_el_savings",
+                "period_number"
+              ]
+            }
+          }
+        }
+      ],
       "type": "trend"
     },
     {
@@ -236,11 +229,11 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
-      "description": "Depr_Factor = 0.786-0.002363*(years*12)",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "continuous-YlRd"
           },
           "custom": {
             "axisBorderShow": false,
@@ -261,6 +254,7 @@
             },
             "show": "points+lines"
           },
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -276,7 +270,32 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "period_number"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Period [month]"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percent_depreciated"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Depreciated [%]"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 10,
@@ -288,15 +307,16 @@
       "options": {
         "dims": {
           "exclude": [
-            "months"
-          ],
-          "x": "years"
+            "months",
+            "depreciation_time",
+            "depreciation_mileage"
+          ]
         },
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "series": [],
         "seriesMapping": "auto",
@@ -315,9 +335,8 @@
           },
           "editorMode": "code",
           "format": "table",
-          "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\r\n    generate_series(1, 16) AS Years,\r\n    generate_series(12, 192, 12) AS Months,\r\n    ROUND(0.786 - 0.002363 * generate_series(12, 192,12), 2) AS \"Depreciated Value Factor\"\r\n",
+          "rawSql": "WITH periodic_mileage AS (\r\n    SELECT\r\n        DATE_TRUNC('month', start_date) AS period_start,\r\n        convert_km(SUM(end_km - start_km)::numeric, '$length_unit') AS total_mileage\r\n    FROM\r\n        drives\r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\ncum_mileage AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_mileage,\r\n        SUM(total_mileage) OVER (ORDER BY period_start) AS cum_mileage\r\n    FROM\r\n        periodic_mileage\r\n),\r\nBreakEven AS (\r\nSELECT\r\n    cm.period_number,\r\n    cm.cum_mileage * (0.20 / CASE WHEN '$length_unit' = 'mi' THEN 1 ELSE 1.60934 END) AS depreciation_mileage,\r\n    ($depreciated_value - (cm.period_number - 1) * 5.0 / 12) AS depreciation_time\r\nFROM\r\n    cum_mileage cm\r\nLEFT JOIN\r\n    periodic_mileage mm ON cm.period_start = mm.period_start\r\nORDER BY\r\n    cm.period_number\r\n)\r\nSELECT \r\n    period_number,\r\n    ($car_cost  - depreciation_mileage - (($car_cost  - depreciation_mileage) * depreciation_time / 100)) * 100 / $car_cost AS percent_depreciated\r\nFROM BreakEven",
           "refId": "A",
           "sql": {
             "columns": [
@@ -338,7 +357,7 @@
           }
         }
       ],
-      "title": "Depreciation over years",
+      "title": "Depreciation over time",
       "type": "xychart"
     },
     {
@@ -353,7 +372,8 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": false
+            "inspect": false,
+            "minWidth": 100
           },
           "mappings": [],
           "thresholds": {
@@ -374,20 +394,220 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "monthly_cost_per_km"
+              "options": "period_number"
             },
             "properties": [
               {
+                "id": "displayName",
+                "value": "Period [$period]"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "periodic_mileage"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Mileage [$length_unit]"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "period_el_cost"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Energy Cost"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
                 "id": "decimals",
                 "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "period_cost_per_mileage"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Cost per $length_unit"
+              },
+              {
+                "id": "custom.width",
+                "value": 105
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cum_mileage"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Cumulative Mileage"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cum_el_cost"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Cumulative Energy Cost"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cum_el_savings"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Cumulative Savings"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "depreciated_car_value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Depreciated Car Value"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "car_value_pls_el_savings"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Depreciated Car Value + Cumulative Savings"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "depreciation_mileage"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Depreciation per $length_unit"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "depreciation_time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Depreciation per age"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.width",
+                "value": 160
+              },
+              {
+                "id": "unit",
+                "value": "percent"
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 16,
+        "h": 14,
+        "w": 24,
         "x": 0,
         "y": 10
       },
@@ -414,7 +634,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH periodic_mileage AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        SUM(end_km - start_km) AS total_mileage\r\n    FROM\r\n        drives\r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\nperiod_cost AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        SUM(cost) AS total_cost\r\n    FROM\r\n        charging_processes \r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        DATE_TRUNC('$period', start_date)\r\n),\r\ncum_mileage AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_mileage,\r\n        SUM(total_mileage) OVER (ORDER BY period_start) AS cum_mileage\r\n    FROM\r\n        periodic_mileage\r\n),\r\ncum_cost AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_cost,\r\n        SUM(total_cost) OVER (ORDER BY period_start) AS cum_el_cost\r\n    FROM\r\n        period_cost\r\n),\r\ncar_current_value AS (\r\n    SELECT\r\n        $car_cost AS car_current_value\r\n)\r\nSELECT\r\n    cm.period_number,\r\n    mm.total_mileage AS periodic_mileage,\r\n    mc.total_cost AS period_el_cost,\r\n    mc.total_cost/mm.total_mileage AS period_cost_per_km,\r\n    cm.cum_mileage,\r\n    cc.cum_el_cost,\r\n    cm.cum_mileage - cc.cum_el_cost AS cum_el_savings,\r\n    car_current_value * (-0.002363 * cm.period_number + 0.786) AS depreciated_car_value,\r\n    (car_current_value * (-0.002363 * cm.period_number + 0.786) + (cm.cum_mileage * 1 - cc.cum_el_cost)) AS car_value_pls_el_savings\r\nFROM\r\n    cum_mileage cm\r\nLEFT JOIN\r\n    cum_cost cc ON cm.period_number = cc.period_number\r\nLEFT JOIN\r\n    periodic_mileage mm ON cm.period_start = mm.period_start\r\nLEFT JOIN\r\n    period_cost mc ON cm.period_start = mc.period_start\r\nCROSS JOIN\r\n    car_current_value\r\nORDER BY\r\n    cm.period_number;\r\n",
+          "rawSql": "WITH periodic_mileage AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        convert_km(SUM(end_km - start_km)::numeric, '$length_unit') AS total_mileage\r\n    FROM\r\n        drives\r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\nperiod_cost AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        SUM(cost) AS total_cost\r\n    FROM\r\n        charging_processes \r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        DATE_TRUNC('$period', start_date)\r\n),\r\ncum_mileage AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_mileage,\r\n        SUM(total_mileage) OVER (ORDER BY period_start) AS cum_mileage\r\n    FROM\r\n        periodic_mileage\r\n),\r\ncum_cost AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_cost,\r\n        SUM(total_cost) OVER (ORDER BY period_start) AS cum_el_cost\r\n    FROM\r\n        period_cost\r\n),\r\ncar_current_value AS (\r\n    SELECT\r\n        $car_cost AS car_current_value\r\n),\r\nBreakEven AS (\r\nSELECT\r\n    cm.period_number,\r\n    mm.total_mileage AS periodic_mileage,\r\n    mc.total_cost AS period_el_cost,\r\n    mc.total_cost/mm.total_mileage AS period_cost_per_mileage,\r\n    cm.cum_mileage,\r\n    cc.cum_el_cost,\r\n    cm.cum_mileage * (0.20 / CASE WHEN '$length_unit' = 'mi' THEN 1 ELSE 1.60934 END) AS depreciation_mileage,\r\n    ($depreciated_value - (cm.period_number - 1) * 5.0 / CASE WHEN '$period' = 'year' THEN 1 ELSE 12 END) AS depreciation_time,\r\n    cm.cum_mileage * $fuel_price - cc.cum_el_cost AS cum_el_savings, car_current_value\r\nFROM\r\n    cum_mileage cm\r\nLEFT JOIN\r\n    cum_cost cc ON cm.period_number = cc.period_number\r\nLEFT JOIN\r\n    periodic_mileage mm ON cm.period_start = mm.period_start\r\nLEFT JOIN\r\n    period_cost mc ON cm.period_start = mc.period_start\r\nCROSS JOIN\r\n    car_current_value\r\nORDER BY\r\n    cm.period_number\r\n)\r\nSELECT \r\n    period_number, periodic_mileage, period_el_cost, period_cost_per_mileage, cum_mileage, cum_el_cost, depreciation_mileage, depreciation_time, cum_el_savings,\r\n    car_current_value - depreciation_mileage - ((car_current_value - depreciation_mileage) * depreciation_time / 100) AS depreciated_car_value,\r\n    (car_current_value - depreciation_mileage - ((car_current_value - depreciation_mileage) * depreciation_time / 100)) + (cum_mileage * $fuel_price - cum_el_cost) AS car_value_pls_el_savings\r\nFROM BreakEven",
           "refId": "A",
           "sql": {
             "columns": [
@@ -436,94 +656,6 @@
         }
       ],
       "title": "Break-Even Table",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "TeslaMate"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 16,
-        "y": 10
-      },
-      "id": 74,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "TeslaMate"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "hide": false,
-          "rawQuery": true,
-          "rawSql": "SELECT\r\n    generate_series(1, 16) AS Years,\r\n    generate_series(12, 192, 12) AS Months,\r\n    ROUND(0.786 - 0.002363 * generate_series(12, 192,12), 2) AS \"Depreciated Value Factor\"\r\n",
-          "refId": "A",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          }
-        }
-      ],
-      "title": "Depreciation over years",
       "type": "table"
     }
   ],
@@ -601,180 +733,24 @@
         "useTags": false
       },
       {
-        "current": {},
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "TeslaMate"
-        },
-        "definition": "SELECT\n\tcoalesce(sum(cost), 0)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id;\n\t",
-        "error": {},
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "TotalCost",
-        "options": [],
-        "query": "SELECT\n\tcoalesce(sum(cost), 0)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id;\n\t",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "TeslaMate"
-        },
-        "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\n\tWHERE \n\t        cp.car_id = $car_id AND c.fast_charger_present IS true\n\t\tAND c.charger_voltage = 2\n\t\tAND COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.display_name), '')))) ILIKE '%supercharger%'\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost), 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
-        "error": {},
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "SucCost",
-        "options": [],
-        "query": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\n\tWHERE \n\t        cp.car_id = $car_id AND c.fast_charger_present IS true\n\t\tAND c.charger_voltage = 2\n\t\tAND COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.display_name), '')))) ILIKE '%supercharger%'\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost), 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "TeslaMate"
-        },
-        "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n              cp.car_id = $car_id AND c.charger_voltage = 2\n             AND c.fast_charger_present IS true\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost) - $SucCost , 0)\t\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "DCCost",
-        "options": [],
-        "query": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n              cp.car_id = $car_id AND c.charger_voltage = 2\n             AND c.fast_charger_present IS true\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost) - $SucCost , 0)\t\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "TeslaMate"
-        },
-        "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n\t\tcp.car_id = $car_id AND c.charger_voltage != 2\n        GROUP BY 1\n)\nSELECT\n       coalesce(sum(cp.cost) , 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.cost IS NOT NULL\n  AND cp.id IN (data.charging_process_id);",
-        "error": {},
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "ACCost",
-        "options": [],
-        "query": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n\t\tcp.car_id = $car_id AND c.charger_voltage != 2\n        GROUP BY 1\n)\nSELECT\n       coalesce(sum(cp.cost) , 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.cost IS NOT NULL\n  AND cp.id IN (data.charging_process_id);",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "TeslaMate"
-        },
-        "definition": "select current_setting('TIMEZONE'), name from pg_timezone_names where abbrev ~ '^[a-zA-Z]{3,4}$' and name not like 'posix%' order by 2;",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "timezone",
-        "options": [],
-        "query": "select current_setting('TIMEZONE'), name from pg_timezone_names where abbrev ~ '^[a-zA-Z]{3,4}$' and name not like 'posix%' order by 2;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "TeslaMate"
-        },
-        "definition": "SELECT convert_km((max(odometer) - min(odometer))::numeric, '$length_unit')\nfrom positions where car_id = $car_id AND $__timeFilter(date)",
-        "error": {},
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "distance_driven",
-        "options": [],
-        "query": "SELECT convert_km((max(odometer) - min(odometer))::numeric, '$length_unit')\nfrom positions where car_id = $car_id AND $__timeFilter(date)",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "TeslaMate"
-        },
-        "definition": "select unit_of_temperature from settings limit 1;",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "temp_unit",
-        "options": [],
-        "query": "select unit_of_temperature from settings limit 1;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "grafana-postgresql-datasource",
-          "uid": "TeslaMate"
-        },
-        "definition": "select preferred_range from settings limit 1;",
-        "hide": 2,
-        "includeAll": false,
-        "multi": false,
-        "name": "preferred_range",
-        "options": [],
-        "query": "select preferred_range from settings limit 1;",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
         "auto": false,
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
-          "selected": false,
-          "text": "month",
-          "value": "month"
+          "selected": true,
+          "text": "year",
+          "value": "year"
         },
         "hide": 0,
         "name": "period",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "month",
             "value": "month"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "year",
             "value": "year"
           }
@@ -787,9 +763,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "367000",
-          "value": "367000"
+          "selected": false,
+          "text": "30000",
+          "value": "30000"
         },
         "description": "Cost of the car to be recovered over time",
         "hide": 0,
@@ -798,23 +774,64 @@
         "options": [
           {
             "selected": true,
-            "text": "367000",
-            "value": "367000"
+            "text": "30000",
+            "value": "30000"
           }
         ],
-        "query": "367000",
+        "query": "30000",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "20",
+          "value": "20"
+        },
+        "hide": 0,
+        "label": "Depreciation percentage for age (first year %)",
+        "name": "depreciated_value",
+        "options": [
+          {
+            "selected": true,
+            "text": "20",
+            "value": "20"
+          }
+        ],
+        "query": "20",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "0.15",
+          "value": "0.15"
+        },
+        "description": "Fuel price per [[length_unit]]",
+        "hide": 0,
+        "label": "Fuel price per [[length_unit]]",
+        "name": "fuel_price",
+        "options": [
+          {
+            "selected": true,
+            "text": "0.15",
+            "value": "0.15"
+          }
+        ],
+        "query": "0.15",
         "skipUrlSync": false,
         "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "now-10y",
+    "from": "now-5y",
     "to": "now"
   },
   "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "refresh_intervals": [],
     "time_options": [
       "5m",
@@ -829,8 +846,8 @@
     ]
   },
   "timezone": "",
-  "title": "Return on Investment",
-  "uid": "jchmAdd4SiQgWa",
-  "version": 1,
+  "title": "Return on Investment1",
+  "uid": "jchmAdd4SiQgWa1",
+  "version": 30,
   "weekStart": ""
 }
