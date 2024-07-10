@@ -784,8 +784,8 @@
         "auto_min": "10s",
         "current": {
           "selected": true,
-          "text": "month",
-          "value": "month"
+          "text": "year",
+          "value": "year"
         },
         "hide": 0,
         "name": "period",
