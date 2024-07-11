@@ -122,6 +122,13 @@ ___
 
 ## Screenshots
 
+### [Amortization Tracker](./dashboards/AmortizationTracker.json)
+
+This dashboard aims to show the depreciation value of the car over time and its journey.
+Depreciating a car by its mileage can be done using various methods. A common approach is to use a depreciation rate per mile or to create a depreciation curve based on data. On the other hand, the depreciation of a car due to age can vary depending on several factors such as the make, model, overall condition of the vehicle, and demand in the market. Here you can put your costs, rates and other variable values to have and idea of the depreciated car value and fuel savings.
+
+![Amortization Tracker](./screenshots/AmortizationTracker.png)
+
 ### [Battery Health](./dashboards/BatteryHealth.json)
 
 This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the same name **Battery Health**.
