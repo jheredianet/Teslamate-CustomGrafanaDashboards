@@ -673,34 +673,33 @@
         "y": 16
       },
       "id": 79,
-      "panels": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "TeslaMate"
-          },
-          "gridPos": {
-            "h": 29,
-            "w": 24,
-            "x": 0,
-            "y": 17
-          },
-          "id": 78,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "# Return of investment\n\nThis panel aims to show the depreciation value of the car over time and its journey.\n\nDepreciating a car by its mileage can be done using various methods. A common approach is to use a depreciation rate per mile or to create a depreciation curve based on data. On the other hand, the depreciation of a car due to age can vary depending on several factors such as the make, model, overall condition of the vehicle, and demand in the market.\n\nGenerally, it is estimated that a new car loses approximately 15% to 20% of its value in the first year. From there, the rate of depreciation tends to gradually decrease. Below is a rough estimate of the annual depreciation in the first few years:\n\n- First year: Around 15% to 20%.\n- Second year: Around 10% to 15%.\n- Third year and beyond: Around 5% to 10% annually.\n\nIt is important to remember that these values ​​are approximate and may vary depending on individual circumstances. Also, some car models may hold their value better than others.\n\nAditionally, some studies and experts suggest that a car loses a certain amount of value per mile driven. For instance, here we are using a standard rate $0.20 per mile or kilometer (depending on your prefered length unit)\n\n## Considerations for values ​​in text boxes\n\nIn this panel we have both estimations: **Drepreciation per Mileage** and **Depreciation per Age**\n\nSo fist of all you have to select:\n\n- Period to estimate (yearly or monthly)\n- Cost of your car\n- Depreciation percent % (of the first year). 20% by default as explained before\n- Loss rate per mile of kilometer. 0.2 (currency) by default as explained before\n- Fuel price per mile of kilometer of your previous car (or a generic on equivalent to your actual Tesla)\n  \n  To calculate the cost per miles/kilometer of your car, you first need to determine how much it consumes in liters per 100 miles/kilometers. Then you can divide Consumption by mileage.\n\n  For example: let's say  a car consumes 6 liters per 100km, we can calculate the actual consumption: 6/100 = 0.06 L/km\n  \n  Now, to determine the cost per kilometer, we multiply the actual consumption by the price of a liter of fuel. For example 0.06L/km × 1.8€/L =0.108€/km\n\n  Therefore, the cost per kilometer for your car would be approximately 0.108€. That's the value expected on the Fuel price textbox.\n\n## Data shown in the table\n\n- **Period**: Could be 'month' or 'year' dependig what you've selected in the drop down list. So if selected as 'month', its going to be the data accumulated from 1st month at which TeslaMate started logging data, So 1,2,3 will be the month numbers. If \"period\" is selcted as 'year', then its the year numbers.\n- **Mileage**: is the number of kms/miles (depending on your prefered length unit) the car has driven in that period.\n- **Energy Cost**: is the cost spent for electricity in that particular period.\n- **Cost per km or mi**  is *energy cost* / *Mileage*\n- **Cumulative Mileage** is the cumulative mileage for that particular period.\n- **Cumulative Cost** is the cumulative cost for electricity for that particular period.\n- **Depreciation per km or mi** is the depreciation by mileage explained at the begining.\n- **Depreciation per age** is the depreciation by time explained at the begining.\n- **Cumulative Savings** is running cost savings for driving an electric car when compared to a fossil fuel car, based on the value enter in the *Fuel price* textbox.\n- **Depreciated Car Value** is the estimated actual price based on the depreciation per age and mileage.  \n- **Depreciated Car Value + Savings** is simply adding *Depreciated Car Value* + *Cumulative Savings*. So the expectation is like when one can get the Break-Even for the money we put into buying the car by driving at a cheaper electricity cost when compared to driving a fossil fuel car.\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "11.1.0",
-          "type": "text"
-        }
-      ],
+      "panels": [],
       "title": "Help",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "gridPos": {
+        "h": 29,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 78,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Return of investment\n\nThis panel aims to show the depreciation value of the car over time and its journey.\n\nDepreciating a car by its mileage can be done using various methods. A common approach is to use a depreciation rate per mile or to create a depreciation curve based on data. On the other hand, the depreciation of a car due to age can vary depending on several factors such as the make, model, overall condition of the vehicle, and demand in the market.\n\nGenerally, it is estimated that a new car loses approximately 15% to 20% of its value in the first year. From there, the rate of depreciation tends to gradually decrease. Below is a rough estimate of the annual depreciation in the first few years:\n\n- First year: Around 15% to 20%.\n- Second year: Around 10% to 15%.\n- Third year and beyond: Around 5% to 10% annually.\n\nIt is important to remember that these values ​​are approximate and may vary depending on individual circumstances. Also, some car models may hold their value better than others.\n\nAditionally, some studies and experts suggest that a car loses a certain amount of value per mile driven. For instance, here we are using a standard rate 0.20 (use your currency) per mile or kilometer (depending on your prefered length unit)\n\n## Considerations for values ​​in text boxes\n\nIn this panel we have both estimations: **Drepreciation per Mileage** and **Depreciation per Age**\n\nSo fist of all you have to select:\n\n- Period to estimate (yearly or monthly)\n- Cost of your car\n- Depreciation percent % (of the first year). 20% by default as explained before\n- Loss rate per mile of kilometer. 0.2 (your currency) by default as explained before\n- Fuel price per mile of kilometer of your previous car (or a generic on equivalent to your actual Tesla)\n  \n  To calculate the cost per miles/kilometer of your car, you first need to determine how much it consumes in liters per 100 miles/kilometers. Then you can divide Consumption by mileage.\n\n  For example: let's say a car consumes 6 liters per 100km and the fuel costs 1.8€ per liter, we can calculate the actual consumption: 6/100 = 0.06 L/km\n  \n  Now, to determine the cost per kilometer, we multiply the actual consumption by the price of a liter of fuel (use your currency). For example 0.06L/km × 1.8€/L =0.108€/km (use miles or kms).\n  \n  Therefore, the cost per kilometer for your car would be approximately 0.108€. That's the value expected on the Fuel price textbox.\n\n## Data shown in the table\n\n- **Period**: Could be 'month' or 'year' dependig what you've selected in the drop down list. So if selected as 'month', its going to be the data accumulated from 1st month at which TeslaMate started logging data, So 1,2,3 will be the month numbers. If \"period\" is selcted as 'year', then its the year numbers.\n- **Mileage**: is the number of kms/miles (depending on your prefered length unit) the car has driven in that period.\n- **Energy Cost**: is the cost spent for electricity in that particular period.\n- **Cost per km or mi**  is *energy cost* / *Mileage*\n- **Cumulative Mileage** is the cumulative mileage for that particular period.\n- **Cumulative Cost** is the cumulative cost for electricity for that particular period.\n- **Depreciation per km or mi** is the depreciation by mileage explained at the begining.\n- **Depreciation per age** is the depreciation by time explained at the begining.\n- **Cumulative Savings** is running cost savings for driving an electric car when compared to a fossil fuel car, based on the value enter in the *Fuel price* textbox.\n- **Depreciated Car Value** is the estimated actual price based on the depreciation per age and mileage.  \n- **Depreciated Car Value + Savings** is simply adding *Depreciated Car Value* + *Cumulative Savings*. So the expectation is like when one can get the Break-Even for the money we put into buying the car by driving at a cheaper electricity cost when compared to driving a fossil fuel car.\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "11.1.0",
+      "type": "text"
     }
   ],
   "refresh": "",
