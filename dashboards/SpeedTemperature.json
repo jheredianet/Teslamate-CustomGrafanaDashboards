@@ -1,0 +1,2253 @@
+{
+    "__elements": {},
+    "__requires": [
+      {
+        "type": "panel",
+        "id": "barchart",
+        "name": "Bar chart",
+        "version": ""
+      },
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "11.0.0"
+      },
+      {
+        "type": "datasource",
+        "id": "postgres",
+        "name": "PostgreSQL",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "table",
+        "name": "Table",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "timeseries",
+        "name": "Time series",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "xychart",
+        "name": "XY Chart",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 25,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "pluginVersion": "11.0.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "TeslaMate"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "WITH S3 AS (\n  SELECT \n    speed, temperature, COUNT(*) as samples,\n    ROUND(AVG((power/speed)*1000), 1) AS consumption\n  FROM (\n    SELECT \n      ROUND(speed/($speed_step*1.0))*$speed_step AS speed,\n      ROUND(AVG(outside_temp/($temperature_step*1.0)) OVER(ORDER BY date ROWS BETWEEN 50 PRECEDING AND 50 FOLLOWING))*$temperature_step AS temperature,\n      power\n    FROM \n      positions WHERE car_id = $car_id and speed > 0 AND \n      (id%(100/$datapoints)::integer = 0 OR outside_temp IS NOT NULL) AND $__timeFilter(date)\n  ) S1 WHERE temperature IS NOT NULL AND speed > 0 GROUP BY temperature, speed\n)\n\nSELECT\n  speed, temperature, consumption, \n  (1000*('$aux'::json -> 'CurrentCapacity')::text::float/consumption) as range, \n  ROUND(100*(samples*speed)/(select sum(speed*samples) from S3), 3) as distance_percentage,\n  ROUND((samples*speed)/(select sum(speed*samples) from S3 S4 WHERE S4.temperature = S3.temperature), 3) as at_temperature_percentage\nFROM S3 WHERE consumption != 0 AND speed > 0 AND samples > (200*($datapoints/100.0)) ORDER BY temperature DESC, speed ASC",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Consumption data",
+        "type": "table"
+      },
+      {
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 20,
+        "title": "Speed and temperature statistics",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "mode": "basic",
+                "type": "color-background"
+              },
+              "inspect": false,
+              "width": 65
+            },
+            "decimals": 0,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "transparent",
+                  "value": null
+                },
+                {
+                  "color": "#399e2f",
+                  "value": 0
+                },
+                {
+                  "color": "#4d9e28",
+                  "value": 110
+                },
+                {
+                  "color": "#5d9e21",
+                  "value": 120
+                },
+                {
+                  "color": "#6b9d1a",
+                  "value": 130
+                },
+                {
+                  "color": "#799d15",
+                  "value": 140
+                },
+                {
+                  "color": "#859c12",
+                  "value": 150
+                },
+                {
+                  "color": "#919a10",
+                  "value": 160
+                },
+                {
+                  "color": "#9c9a12",
+                  "value": 170
+                },
+                {
+                  "color": "#a08b00",
+                  "value": 180
+                },
+                {
+                  "color": "#a27c00",
+                  "value": 190
+                },
+                {
+                  "color": "#a46c00",
+                  "value": 200
+                },
+                {
+                  "color": "#a45c00",
+                  "value": 210
+                },
+                {
+                  "color": "#a34b00",
+                  "value": 220
+                },
+                {
+                  "color": "#a13908",
+                  "value": 230
+                },
+                {
+                  "color": "#9d2312",
+                  "value": 240
+                },
+                {
+                  "color": "#9d0223",
+                  "value": 260
+                },
+                {
+                  "color": "#990032",
+                  "value": 280
+                },
+                {
+                  "color": "#8f003f",
+                  "value": 320
+                },
+                {
+                  "color": "#85004a",
+                  "value": 400
+                },
+                {
+                  "color": "#7a0056",
+                  "value": 500
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 120
+                },
+                {
+                  "id": "displayName",
+                  "value": "Speed/temp"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "transparent",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "velocitykmh"
+                },
+                {
+                  "id": "decimals",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 15,
+          "w": 12,
+          "x": 0,
+          "y": 2
+        },
+        "id": 7,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "last"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "Speed/temp"
+            }
+          ]
+        },
+        "pluginVersion": "11.0.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 25,
+            "refId": "A"
+          }
+        ],
+        "title": "Consumption at speed and temperature",
+        "transformations": [
+          {
+            "id": "groupingToMatrix",
+            "options": {
+              "columnField": "temperature",
+              "emptyValue": "null",
+              "rowField": "speed",
+              "valueField": "consumption"
+            }
+          },
+          {
+            "id": "convertFieldType",
+            "options": {
+              "conversions": [
+                {
+                  "destinationType": "number",
+                  "targetField": "speed\\temperature"
+                }
+              ],
+              "fields": {}
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "mode": "basic",
+                "type": "color-background"
+              },
+              "filterable": false,
+              "inspect": false,
+              "width": 65
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "transparent",
+                  "value": null
+                },
+                {
+                  "color": "#7a0056",
+                  "value": 10
+                },
+                {
+                  "color": "#85004a",
+                  "value": 140
+                },
+                {
+                  "color": "#8f003f",
+                  "value": 175
+                },
+                {
+                  "color": "#990032",
+                  "value": 200
+                },
+                {
+                  "color": "#9d0223",
+                  "value": 215
+                },
+                {
+                  "color": "#9d2312",
+                  "value": 230
+                },
+                {
+                  "color": "#a13908",
+                  "value": 245
+                },
+                {
+                  "color": "#a34b00",
+                  "value": 255
+                },
+                {
+                  "color": "#a45c00",
+                  "value": 265
+                },
+                {
+                  "color": "#a46c00",
+                  "value": 280
+                },
+                {
+                  "color": "#a27c00",
+                  "value": 295
+                },
+                {
+                  "color": "#a08b00",
+                  "value": 310
+                },
+                {
+                  "color": "#9c9a12",
+                  "value": 330
+                },
+                {
+                  "color": "#919a10",
+                  "value": 350
+                },
+                {
+                  "color": "#859c12",
+                  "value": 370
+                },
+                {
+                  "color": "#799d15",
+                  "value": 400
+                },
+                {
+                  "color": "#6b9d1a",
+                  "value": 430
+                },
+                {
+                  "color": "#5d9e21",
+                  "value": 470
+                },
+                {
+                  "color": "#4d9e28",
+                  "value": 510
+                },
+                {
+                  "color": "#399e2f",
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 120
+                },
+                {
+                  "id": "displayName",
+                  "value": "Speed/temp"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "transparent",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "velocitykmh"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 15,
+          "w": 12,
+          "x": 12,
+          "y": 2
+        },
+        "id": 15,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "last"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "Speed/temp"
+            }
+          ]
+        },
+        "pluginVersion": "11.0.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 25,
+            "refId": "A"
+          }
+        ],
+        "title": "Range at speed and temperature",
+        "transformations": [
+          {
+            "id": "groupingToMatrix",
+            "options": {
+              "columnField": "temperature",
+              "emptyValue": "null",
+              "rowField": "speed",
+              "valueField": "range"
+            }
+          },
+          {
+            "id": "convertFieldType",
+            "options": {
+              "conversions": [
+                {
+                  "destinationType": "number",
+                  "targetField": "speed\\temperature"
+                }
+              ],
+              "fields": {}
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "mode": "basic",
+                "type": "color-background"
+              },
+              "inspect": false,
+              "width": 65
+            },
+            "decimals": 2,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#303036",
+                  "value": null
+                },
+                {
+                  "color": "#333348",
+                  "value": 0.1
+                },
+                {
+                  "color": "#35365b",
+                  "value": 0.2
+                },
+                {
+                  "color": "#37386e",
+                  "value": 0.3
+                },
+                {
+                  "color": "#393a81",
+                  "value": 1
+                },
+                {
+                  "color": "#3b3c95",
+                  "value": 1.25
+                },
+                {
+                  "color": "#3e3da8",
+                  "value": 1.5
+                },
+                {
+                  "color": "#413ebb",
+                  "value": 1.75
+                },
+                {
+                  "color": "#463ecf",
+                  "value": 2
+                },
+                {
+                  "color": "#4d3de2",
+                  "value": 2.25
+                },
+                {
+                  "color": "#583de2",
+                  "value": 2.5
+                },
+                {
+                  "color": "#623de2",
+                  "value": 2.75
+                },
+                {
+                  "color": "#6b3de3",
+                  "value": 3
+                },
+                {
+                  "color": "#743ce3",
+                  "value": 3.25
+                },
+                {
+                  "color": "#7c3ce3",
+                  "value": 3.5
+                },
+                {
+                  "color": "#833ce3",
+                  "value": 3.75
+                },
+                {
+                  "color": "#8b3ce2",
+                  "value": 4
+                },
+                {
+                  "color": "#923ce2",
+                  "value": 4.25
+                },
+                {
+                  "color": "#993ce2",
+                  "value": 4.5
+                },
+                {
+                  "color": "#a440e1",
+                  "value": 5
+                },
+                {
+                  "color": "#af45e1",
+                  "value": 5.5
+                },
+                {
+                  "color": "#b94ae1",
+                  "value": 6
+                },
+                {
+                  "color": "#c350e0",
+                  "value": 7
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 120
+                },
+                {
+                  "id": "displayName",
+                  "value": "Speed/temp"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "transparent",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed\\temperature"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "velocitykmh"
+                },
+                {
+                  "id": "decimals",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 15,
+          "w": 12,
+          "x": 0,
+          "y": 17
+        },
+        "id": 24,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "last"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "Speed/temp"
+            }
+          ]
+        },
+        "pluginVersion": "11.0.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 25,
+            "refId": "A"
+          }
+        ],
+        "title": "Percentage of distance driven at speed and temperature",
+        "transformations": [
+          {
+            "id": "groupingToMatrix",
+            "options": {
+              "columnField": "temperature",
+              "emptyValue": "null",
+              "rowField": "speed",
+              "valueField": "distance_percentage"
+            }
+          },
+          {
+            "id": "convertFieldType",
+            "options": {
+              "conversions": [
+                {
+                  "destinationType": "number",
+                  "targetField": "speed\\temperature"
+                }
+              ],
+              "fields": {}
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "axisSoftMax": 30,
+              "fillOpacity": 100,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 0,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "decimals": 1,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#5747ff",
+                  "value": null
+                },
+                {
+                  "color": "#3a63fe",
+                  "value": -25
+                },
+                {
+                  "color": "#2c77f6",
+                  "value": -20
+                },
+                {
+                  "color": "#3b88e9",
+                  "value": -15
+                },
+                {
+                  "color": "#5696da",
+                  "value": -10
+                },
+                {
+                  "color": "#76a1c9",
+                  "value": -5
+                },
+                {
+                  "color": "#9facb0",
+                  "value": 0
+                },
+                {
+                  "color": "#c3b584",
+                  "value": 5
+                },
+                {
+                  "color": "#c09945",
+                  "value": 10
+                },
+                {
+                  "color": "#bd8533",
+                  "value": 15
+                },
+                {
+                  "color": "#bb7025",
+                  "value": 20
+                },
+                {
+                  "color": "#b8591b",
+                  "value": 25
+                },
+                {
+                  "color": "#b53f18",
+                  "value": 30
+                },
+                {
+                  "color": "#b01919",
+                  "value": 35
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "temperature"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "celsius"
+                },
+                {
+                  "id": "decimals",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "temperature_consumption (sum)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                },
+                {
+                  "id": "decimals",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 15,
+          "w": 6,
+          "x": 12,
+          "y": 17
+        },
+        "id": 16,
+        "options": {
+          "barRadius": 0.1,
+          "barWidth": 0.7,
+          "colorByField": "temperature",
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "orientation": "vertical",
+          "showValue": "never",
+          "stacking": "none",
+          "text": {
+            "valueSize": 23
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          },
+          "xField": "temperature",
+          "xTickLabelRotation": -45,
+          "xTickLabelSpacing": 0
+        },
+        "pluginVersion": "10.1.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 25,
+            "refId": "A"
+          }
+        ],
+        "title": "Consumption at temperature",
+        "transformations": [
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "temperature_consumption",
+              "binary": {
+                "left": "at_temperature_percentage",
+                "operator": "*",
+                "reducer": "sum",
+                "right": "consumption"
+              },
+              "mode": "binary",
+              "reduce": {
+                "reducer": "sum"
+              }
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "consumption": {
+                  "aggregations": [
+                    "mean"
+                  ]
+                },
+                "range": {
+                  "aggregations": []
+                },
+                "temperature": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "temperature_consumption": {
+                  "aggregations": [
+                    "sum"
+                  ],
+                  "operation": "aggregate"
+                }
+              }
+            }
+          },
+          {
+            "id": "sortBy",
+            "options": {
+              "fields": {},
+              "sort": [
+                {
+                  "field": "temperature"
+                }
+              ]
+            }
+          }
+        ],
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "#37872D",
+              "mode": "thresholds"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 100,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 0,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "decimals": 0,
+            "mappings": [],
+            "max": 600,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#5747ff",
+                  "value": null
+                },
+                {
+                  "color": "#3a63fe",
+                  "value": -25
+                },
+                {
+                  "color": "#2c77f6",
+                  "value": -20
+                },
+                {
+                  "color": "#3b88e9",
+                  "value": -15
+                },
+                {
+                  "color": "#5696da",
+                  "value": -10
+                },
+                {
+                  "color": "#76a1c9",
+                  "value": -5
+                },
+                {
+                  "color": "#9facb0",
+                  "value": 0
+                },
+                {
+                  "color": "#c3b584",
+                  "value": 5
+                },
+                {
+                  "color": "#c09945",
+                  "value": 10
+                },
+                {
+                  "color": "#bd8533",
+                  "value": 15
+                },
+                {
+                  "color": "#bb7025",
+                  "value": 20
+                },
+                {
+                  "color": "#b8591b",
+                  "value": 25
+                },
+                {
+                  "color": "#b53f18",
+                  "value": 30
+                },
+                {
+                  "color": "#b01919",
+                  "value": 35
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "range * at_temperature_percentage (sum)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "lengthkm"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "temperature"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "celsius"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 15,
+          "w": 6,
+          "x": 18,
+          "y": 17
+        },
+        "id": 22,
+        "options": {
+          "barRadius": 0.1,
+          "barWidth": 0.7,
+          "colorByField": "temperature",
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "orientation": "vertical",
+          "showValue": "never",
+          "stacking": "none",
+          "text": {
+            "valueSize": 23
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          },
+          "xField": "temperature",
+          "xTickLabelRotation": -45,
+          "xTickLabelSpacing": 0
+        },
+        "pluginVersion": "10.1.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 25,
+            "refId": "A"
+          }
+        ],
+        "title": "Range at temperature",
+        "transformations": [
+          {
+            "id": "calculateField",
+            "options": {
+              "binary": {
+                "left": "range",
+                "operator": "*",
+                "reducer": "sum",
+                "right": "at_temperature_percentage"
+              },
+              "mode": "binary",
+              "reduce": {
+                "reducer": "sum"
+              }
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "range * at_temperature_percentage": {
+                  "aggregations": [
+                    "sum"
+                  ],
+                  "operation": "aggregate"
+                },
+                "temperature": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                }
+              }
+            }
+          },
+          {
+            "id": "sortBy",
+            "options": {
+              "fields": {},
+              "sort": [
+                {
+                  "field": "temperature"
+                }
+              ]
+            }
+          }
+        ],
+        "type": "barchart"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 32
+        },
+        "id": 19,
+        "panels": [],
+        "title": "Distance related statistics",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 100,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 0,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "decimals": 0,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#5747ff",
+                  "value": null
+                },
+                {
+                  "color": "#3a63fe",
+                  "value": -25
+                },
+                {
+                  "color": "#2c77f6",
+                  "value": -20
+                },
+                {
+                  "color": "#3b88e9",
+                  "value": -15
+                },
+                {
+                  "color": "#5696da",
+                  "value": -10
+                },
+                {
+                  "color": "#76a1c9",
+                  "value": -5
+                },
+                {
+                  "color": "#9facb0",
+                  "value": 0
+                },
+                {
+                  "color": "#c3b584",
+                  "value": 5
+                },
+                {
+                  "color": "#c09945",
+                  "value": 10
+                },
+                {
+                  "color": "#bd8533",
+                  "value": 15
+                },
+                {
+                  "color": "#bb7025",
+                  "value": 20
+                },
+                {
+                  "color": "#b8591b",
+                  "value": 25
+                },
+                {
+                  "color": "#b53f18",
+                  "value": 30
+                },
+                {
+                  "color": "#b01919",
+                  "value": 35
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "distance_percentage (sum)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "temperature"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "celsius"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 10,
+          "x": 0,
+          "y": 33
+        },
+        "id": 14,
+        "options": {
+          "barRadius": 0.1,
+          "barWidth": 0.7,
+          "colorByField": "temperature",
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "orientation": "auto",
+          "showValue": "never",
+          "stacking": "none",
+          "text": {
+            "valueSize": 23
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          },
+          "xField": "temperature",
+          "xTickLabelRotation": -45,
+          "xTickLabelSpacing": 0
+        },
+        "pluginVersion": "10.1.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 25,
+            "refId": "A"
+          }
+        ],
+        "title": "Percentage of distance driven at temperature",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "distance_percentage": {
+                  "aggregations": [
+                    "sum"
+                  ],
+                  "operation": "aggregate"
+                },
+                "temperature": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                }
+              }
+            }
+          },
+          {
+            "id": "sortBy",
+            "options": {
+              "fields": {},
+              "sort": [
+                {
+                  "field": "temperature"
+                }
+              ]
+            }
+          }
+        ],
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "decimals": 1,
+            "mappings": [],
+            "noValue": "0",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "speed"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "velocitykmh"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "distance_percentage (sum)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "percent"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 14,
+          "x": 10,
+          "y": 33
+        },
+        "id": 11,
+        "options": {
+          "barRadius": 0.1,
+          "barWidth": 0.7,
+          "colorByField": "speed",
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "orientation": "auto",
+          "showValue": "never",
+          "stacking": "none",
+          "text": {
+            "valueSize": 22
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          },
+          "xField": "speed",
+          "xTickLabelRotation": -45,
+          "xTickLabelSpacing": 0
+        },
+        "pluginVersion": "10.1.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 25,
+            "refId": "A"
+          }
+        ],
+        "title": "Percentage of distance driven at speed",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "distance_percentage": {
+                  "aggregations": [
+                    "sum"
+                  ],
+                  "operation": "aggregate"
+                },
+                "speed": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                }
+              }
+            }
+          }
+        ],
+        "type": "barchart"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 41
+        },
+        "id": 21,
+        "panels": [],
+        "title": "Other statistics",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "axisSoftMin": 0,
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "pointSize": {
+                "fixed": 5
+              },
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "show": "lines"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "consumption"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "temperature"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "celsius"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "temperature3"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "celsius"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "consumption3"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 13,
+          "w": 9,
+          "x": 0,
+          "y": 42
+        },
+        "id": 9,
+        "options": {
+          "dims": {
+            "frame": 0
+          },
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "series": [
+            {
+              "name": "Under 10 km",
+              "pointColor": {
+                "fixed": "dark-green"
+              },
+              "pointSize": {
+                "fixed": 50.5,
+                "max": 100,
+                "min": 1
+              },
+              "x": "temperature",
+              "y": "consumption"
+            },
+            {
+              "name": "Over 20 km",
+              "pointColor": {
+                "fixed": "dark-orange"
+              },
+              "x": "temperature3",
+              "y": "consumption3"
+            }
+          ],
+          "seriesMapping": "manual",
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "TeslaMate"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "hide": false,
+            "rawQuery": true,
+            "rawSql": "SELECT \n  temperature, AVG(consumption) AS consumption\nFROM (\n  SELECT \n    ROUND(outside_temp_avg/($temperature_step*1.0)) * $temperature_step AS temperature, \n    (NULLIF(GREATEST(start_rated_range_km - end_rated_range_km, 0), 0)*cars.efficiency * (1000/distance)) AS consumption\n  FROM \n    drives JOIN cars ON drives.car_id = cars.id WHERE drives.car_id = $car_id AND distance BETWEEN 1 AND 10\n) S1 GROUP BY temperature ORDER BY temperature ASC\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "TeslaMate"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "hide": false,
+            "rawQuery": true,
+            "rawSql": "SELECT \n  temperature AS temperature3, AVG(consumption) AS consumption3\nfrom (\n  SELECT \n    ROUND(outside_temp_avg/($temperature_step*1.0)) * $temperature_step AS temperature, \n    (NULLIF(GREATEST(start_rated_range_km - end_rated_range_km, 0), 0)*cars.efficiency * (1000/distance)) AS consumption\n  FROM \n    drives JOIN cars ON drives.car_id = cars.id WHERE drives.car_id = $car_id AND distance > 20 \n) S1 GROUP BY temperature ORDER BY temperature ASC",
+            "refId": "C",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Short and long trip consumption at temperature",
+        "type": "xychart"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "TeslaMate"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "light-yellow",
+              "mode": "fixed",
+              "seriesBy": "last"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": true,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "left",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 25,
+              "gradientMode": "scheme",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "smooth",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 2,
+              "pointSize": 3,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "decimals": 0,
+            "mappings": [],
+            "max": 400,
+            "min": -300,
+            "noValue": "0",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-blue",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 0
+                },
+                {
+                  "color": "orange",
+                  "value": 10
+                }
+              ]
+            },
+            "unit": "watth"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "consumption"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "dark-green",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.lineWidth",
+                  "value": 4
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "temperature"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "celsius"
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "min",
+                  "value": -30
+                },
+                {
+                  "id": "max",
+                  "value": 40
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 13,
+          "w": 15,
+          "x": 9,
+          "y": 42
+        },
+        "id": 23,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "maxHeight": 600,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "TeslaMate"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \n  start_date::date AS time,\n  consumption/(distance/100) AS consumption\nFROM (\n  SELECT \n    start_date,\n    SUM(distance*consumption/100) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS consumption,\n    SUM(distance) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS distance\n  FROM (\n    SELECT \n      start_date, SUM(distance) AS distance, \n      SUM(distance*consumption)/SUM(distance) AS consumption\n    FROM (\n      SELECT \n        TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,\n        (end_km-start_km) AS distance,\n        (NULLIF(GREATEST(start_rated_range_km - end_rated_range_km, 0), 0)*cars.efficiency * (1000/distance)) AS consumption\n      FROM \n        drives JOIN cars ON drives.car_id = cars.id  WHERE drives.car_id = 1 \n    ) S1 WHERE consumption > 0 GROUP BY start_date ORDER BY start_date ASC\n  ) S2 GROUP BY start_date, distance, consumption ORDER BY start_date\n) S3 ORDER BY start_date",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "TeslaMate"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "hide": false,
+            "rawQuery": true,
+            "rawSql": "SELECT \n  start_date::date as time,\n  round(temperature, 1) as temperature\nFROM (\n  SELECT \n    start_date,\n    AVG(temperature) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS temperature\n  FROM (\n    SELECT \n      start_date, avg(temperature) as temperature\n    FROM \n      (\n        SELECT \n          to_char(start_date, 'YYYY-MM-DD') as start_date,\n          --(end_km-start_km) as distance,\n          outside_temp_avg as temperature\n        FROM \n          drives join cars on drives.car_id = cars.id  where drives.car_id = 1 \n      ) S1 group by start_date order by start_date asc\n  ) S2 group by start_date, temperature order by start_date\n) S3 order by start_date",
+            "refId": "B",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Consumption and temperature by date",
+        "type": "timeseries"
+      }
+    ],
+    "refresh": "",
+    "schemaVersion": 39,
+    "tags": [
+      "TeslamateCustomDashboards"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {},
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "car_id",
+          "options": [],
+          "query": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {},
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "definition": "select unit_of_length from settings limit 1;",
+          "hide": 2,
+          "includeAll": false,
+          "multi": false,
+          "name": "length_unit",
+          "options": [],
+          "query": "select unit_of_length from settings limit 1;",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {},
+          "datasource": {
+            "type": "postgres",
+            "uid": "TeslaMate"
+          },
+          "definition": "-- CONCATENATED JOIN QUERIES TO IMPROVE PERFORMANCE\nWITH\naux\tAS\n(\n\tSELECT cp.charge_energy_added,\n\t\tcp.car_id, cp.charge_energy_added / (cp.end_rated_range_km - cp.start_rated_range_km) * 100.0 AS rated_efficiency,\n\t\t(cp.end_rated_range_km - cp.start_rated_range_km) AS added_range_km\n\tFROM charging_processes cp\n\t\tJOIN (SELECT charging_process_id, MAX(date) as date\n\t\tFROM charges\n\t\tGROUP BY charging_process_id) AS last_charges\n\t\tON cp.id = last_charges.charging_process_id\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id AND c.date = last_charges.date\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.end_rated_range_km > cp.start_rated_range_km\n\tORDER BY cp.end_date DESC \n\tLIMIT 1\n),  \nCurrentCapacity\t AS\n(\n\tSELECT AVG(Capacity) AS CurrentCapacity FROM\n  (SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS Capacity\t\n    FROM charging_processes cp\n\t  INNER JOIN charges c\tON cp.id = c.charging_process_id\n    INNER JOIN aux ON cp.car_id = aux.car_id\n\t  WHERE cp.car_id = $car_id AND cp.charge_energy_added >= aux.rated_efficiency AND cp.end_date >= date_trunc('month', current_date - interval '1 month') \n    GROUP BY  cp.charge_energy_added, cp.end_date\n  ) AS lastEstimatedCapacity\n), \nMaxCapacity AS\n(\n\tSELECT MAX(c.rated_battery_range_km * cars.efficiency * 100.0 / c.usable_battery_level) AS MaxCapacity\n\tFROM charging_processes cp\n\t\tJOIN (SELECT charging_process_id, MAX(date) as date\n\t\tFROM charges\n\t\tGROUP BY charging_process_id) AS last_charges\n\t\tON cp.id = last_charges.charging_process_id\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id AND c.date = last_charges.date\n\t\tINNER JOIN cars ON cp.car_id = cars.id\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.end_rated_range_km > cp.start_rated_range_km\n\t\tAND c.charge_energy_added >= cars. Efficiency\n), \nCurrentRange AS\n(\n    SELECT\n\t\tfloor(extract(epoch from date)/86400)*86400 AS timecurrent,\n\t\tsum(rated_battery_range_km) / sum(usable_battery_level) * 100 AS rated_range_km\n\tFROM (\n\t\tSELECT battery_level, usable_battery_level, date,  rated_battery_range_km from charges c \n\t\tJOIN charging_processes p ON p.id = c.charging_process_id \n\t\tWHERE p.car_id = $car_id AND usable_battery_level IS NOT NULL) AS data\n\tGROUP BY 1\n\tORDER BY 1 DESC\n\tLIMIT 1\n), \nMaxRange AS\n(\n    SELECT\n\t\tfloor(extract(epoch from date)/86400)*86400 AS time,\n\t\tsum(rated_battery_range_km) / sum(usable_battery_level) * 100 AS max_rated_range_km\n\tFROM (\n\t\tSELECT battery_level, usable_battery_level, date,  rated_battery_range_km from charges c \n\t\tJOIN charging_processes p ON p.id = c.charging_process_id \n\t\tWHERE p.car_id = $car_id AND usable_battery_level IS NOT NULL) AS data\n\tGROUP BY 1\n\tORDER BY 2 DESC\n\tLIMIT 1\n) \nSELECT  CONCAT('{\"LastChargekWhAdded\": ', aux.charge_energy_added, \n  ', \"LastMileageAdded\" : ', convert_km(aux.added_range_km,'$length_unit'),\n  ', \"MaxRange\": ', convert_km(MaxRange.max_rated_range_km,'$length_unit'),\n  ', \"CurrentRange\": ',convert_km(CurrentRange.rated_range_km,'$length_unit'),\n  ', \"MaxCapacity\": ', MaxCapacity.MaxCapacity,\n  ', \"CurrentCapacity\": ',CurrentCapacity.CurrentCapacity,\n  ', \"RatedEfficiency\": ',aux.rated_efficiency, '}') \nFROM MaxRange, CurrentRange, Aux, MaxCapacity, CurrentCapacity;\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 16/04/2023\n-- By @jheredianet - Twitter: @juanheredia",
+          "hide": 2,
+          "includeAll": false,
+          "multi": false,
+          "name": "aux",
+          "options": [],
+          "query": "-- CONCATENATED JOIN QUERIES TO IMPROVE PERFORMANCE\nWITH\naux\tAS\n(\n\tSELECT cp.charge_energy_added,\n\t\tcp.car_id, cp.charge_energy_added / (cp.end_rated_range_km - cp.start_rated_range_km) * 100.0 AS rated_efficiency,\n\t\t(cp.end_rated_range_km - cp.start_rated_range_km) AS added_range_km\n\tFROM charging_processes cp\n\t\tJOIN (SELECT charging_process_id, MAX(date) as date\n\t\tFROM charges\n\t\tGROUP BY charging_process_id) AS last_charges\n\t\tON cp.id = last_charges.charging_process_id\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id AND c.date = last_charges.date\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.end_rated_range_km > cp.start_rated_range_km\n\tORDER BY cp.end_date DESC \n\tLIMIT 1\n),  \nCurrentCapacity\t AS\n(\n\tSELECT AVG(Capacity) AS CurrentCapacity FROM\n  (SELECT (100.0 * cp.charge_energy_added) / (GREATEST(1,MAX(usable_battery_level) - MIN(usable_battery_level))) AS Capacity\t\n    FROM charging_processes cp\n\t  INNER JOIN charges c\tON cp.id = c.charging_process_id\n    INNER JOIN aux ON cp.car_id = aux.car_id\n\t  WHERE cp.car_id = $car_id AND cp.charge_energy_added >= aux.rated_efficiency AND cp.end_date >= date_trunc('month', current_date - interval '1 month') \n    GROUP BY  cp.charge_energy_added, cp.end_date\n  ) AS lastEstimatedCapacity\n), \nMaxCapacity AS\n(\n\tSELECT MAX(c.rated_battery_range_km * cars.efficiency * 100.0 / c.usable_battery_level) AS MaxCapacity\n\tFROM charging_processes cp\n\t\tJOIN (SELECT charging_process_id, MAX(date) as date\n\t\tFROM charges\n\t\tGROUP BY charging_process_id) AS last_charges\n\t\tON cp.id = last_charges.charging_process_id\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id AND c.date = last_charges.date\n\t\tINNER JOIN cars ON cp.car_id = cars.id\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.end_rated_range_km > cp.start_rated_range_km\n\t\tAND c.charge_energy_added >= cars. Efficiency\n), \nCurrentRange AS\n(\n    SELECT\n\t\tfloor(extract(epoch from date)/86400)*86400 AS timecurrent,\n\t\tsum(rated_battery_range_km) / sum(usable_battery_level) * 100 AS rated_range_km\n\tFROM (\n\t\tSELECT battery_level, usable_battery_level, date,  rated_battery_range_km from charges c \n\t\tJOIN charging_processes p ON p.id = c.charging_process_id \n\t\tWHERE p.car_id = $car_id AND usable_battery_level IS NOT NULL) AS data\n\tGROUP BY 1\n\tORDER BY 1 DESC\n\tLIMIT 1\n), \nMaxRange AS\n(\n    SELECT\n\t\tfloor(extract(epoch from date)/86400)*86400 AS time,\n\t\tsum(rated_battery_range_km) / sum(usable_battery_level) * 100 AS max_rated_range_km\n\tFROM (\n\t\tSELECT battery_level, usable_battery_level, date,  rated_battery_range_km from charges c \n\t\tJOIN charging_processes p ON p.id = c.charging_process_id \n\t\tWHERE p.car_id = $car_id AND usable_battery_level IS NOT NULL) AS data\n\tGROUP BY 1\n\tORDER BY 2 DESC\n\tLIMIT 1\n) \nSELECT  CONCAT('{\"LastChargekWhAdded\": ', aux.charge_energy_added, \n  ', \"LastMileageAdded\" : ', convert_km(aux.added_range_km,'$length_unit'),\n  ', \"MaxRange\": ', convert_km(MaxRange.max_rated_range_km,'$length_unit'),\n  ', \"CurrentRange\": ',convert_km(CurrentRange.rated_range_km,'$length_unit'),\n  ', \"MaxCapacity\": ', MaxCapacity.MaxCapacity,\n  ', \"CurrentCapacity\": ',CurrentCapacity.CurrentCapacity,\n  ', \"RatedEfficiency\": ',aux.rated_efficiency, '}') \nFROM MaxRange, CurrentRange, Aux, MaxCapacity, CurrentCapacity;\n-- The following query is the result of many tests and hours of work. This panel is for your own personal use. \n-- If you think you can improve it and contribute, please create a pull request and do not take it to your repository, \n-- much less upload it to another repository as if the original idea were yours, nor do you share it on social media\n-- without mentioning the author. Respect the ingenuity and work of others. Cheers!\n-- 16/04/2023\n-- By @jheredianet - Twitter: @juanheredia",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "100%",
+            "value": "100"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Used datapoints",
+          "multi": false,
+          "name": "datapoints",
+          "options": [
+            {
+              "selected": true,
+              "text": "100%",
+              "value": "100"
+            },
+            {
+              "selected": false,
+              "text": "50%",
+              "value": "50"
+            },
+            {
+              "selected": false,
+              "text": "20%",
+              "value": "20"
+            },
+            {
+              "selected": false,
+              "text": "10%",
+              "value": "10"
+            }
+          ],
+          "query": "100% : 100, 50% : 50, 20% : 20, 10% : 10",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "10",
+            "value": "10"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Speed step",
+          "multi": false,
+          "name": "speed_step",
+          "options": [
+            {
+              "selected": false,
+              "text": "20",
+              "value": "20"
+            },
+            {
+              "selected": true,
+              "text": "10",
+              "value": "10"
+            },
+            {
+              "selected": false,
+              "text": "5",
+              "value": "5"
+            }
+          ],
+          "query": "20, 10, 5",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "5",
+            "value": "5"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Temperature step",
+          "multi": false,
+          "name": "temperature_step",
+          "options": [
+            {
+              "selected": false,
+              "text": "10",
+              "value": "10"
+            },
+            {
+              "selected": true,
+              "text": "5",
+              "value": "5"
+            },
+            {
+              "selected": false,
+              "text": "2.5",
+              "value": "2.5"
+            }
+          ],
+          "query": "10, 5, 2.5",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "2024-01-10T22:00:00.000Z",
+      "to": "now"
+    },
+    "timeRangeUpdatedDuringEditOrView": false,
+    "timepicker": {},
+    "timezone": "",
+    "title": "Speed and temperature",
+    "uid": "fdroz7gmu9z40b",
+    "version": 4,
+    "weekStart": ""
+  }
