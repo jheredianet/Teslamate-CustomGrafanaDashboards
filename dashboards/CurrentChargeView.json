@@ -1843,7 +1843,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT MIN(convert_km([[preferred_range]]_battery_range_km, '$length_unit')) as start_$length_unit\r\nFROM charges WHERE charging_process_id = $charging_processes",
+          "rawSql": "SELECT MIN(convert_km(${preferred_range}_battery_range_km, '$length_unit')) as start_$length_unit\r\nFROM charges WHERE charging_process_id = $charging_processes",
           "refId": "Initial Range",
           "resultFormat": "time_series",
           "select": [
@@ -1902,7 +1902,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(convert_km(end_range - start_range, '$length_unit'),0) as added_$length_unit \r\nFROM\r\n(SELECT MIN([[preferred_range]]_battery_range_km) as start_range\r\nFROM charges WHERE charging_process_id = $charging_processes) s\r\nCROSS JOIN (\r\nSELECT MAX([[preferred_range]]_battery_range_km) as  end_range \r\nFROM charges WHERE charging_process_id = $charging_processes) e",
+          "rawSql": "SELECT ROUND(convert_km(end_range - start_range, '$length_unit'),0) as added_$length_unit \r\nFROM\r\n(SELECT MIN(${preferred_range}_battery_range_km) as start_range\r\nFROM charges WHERE charging_process_id = $charging_processes) s\r\nCROSS JOIN (\r\nSELECT MAX(${preferred_range}_battery_range_km) as  end_range \r\nFROM charges WHERE charging_process_id = $charging_processes) e",
           "refId": "Range Added",
           "resultFormat": "time_series",
           "select": [
@@ -1961,7 +1961,7 @@
           "orderByTime": "ASC",
           "policy": "default",
           "rawQuery": true,
-          "rawSql": "SELECT MAX(convert_km([[preferred_range]]_battery_range_km, '$length_unit')) as  current_$length_unit \r\nFROM charges WHERE charging_process_id = $charging_processes",
+          "rawSql": "SELECT MAX(convert_km(${preferred_range}_battery_range_km, '$length_unit')) as  current_$length_unit \r\nFROM charges WHERE charging_process_id = $charging_processes",
           "refId": "Current Range",
           "resultFormat": "time_series",
           "select": [
@@ -2350,7 +2350,7 @@
         "multi": false,
         "name": "BatteryCapacity",
         "options": [],
-        "query": "WITH Aux AS\n(SELECT car_id,\n\t\tCOALESCE(efficiency, \n\t\t(SELECT efficiency\n\t\t\tFROM cars WHERE id = $car_id) * 100) AS efficiency\n\tFROM (\n\t\tSELECT ROUND((charge_energy_added / NULLIF(end_rated_range_km - start_rated_range_km, 0))::numeric, 3) * 100 as efficiency,\n\t\t\tCOUNT(*) as count, $car_id AS car_id \n\t\tFROM charging_processes\n\t\tWHERE car_id = $car_id\n\t\t\tAND duration_min > 10\n\t\t\tAND end_battery_level <= 95\n\t\t\tAND start_rated_range_km IS NOT NULL\n\t\t\tAND end_rated_range_km IS NOT NULL\n\t\t\tAND charge_energy_added > 0\n\t\tGROUP BY 1\n\t\tORDER BY 2 DESC\n\t\tLIMIT 1\n\t) AS DerivatedEfficiency\n),\nCurrentCapacity\t AS\n(SELECT AVG(Capacity) AS CurrentCapacity \nFROM (\nSELECT \n\tc.[[preferred_range]]_battery_range_km * aux.efficiency / c.usable_battery_level AS Capacity \n\tFROM charging_processes cp\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id \n                INNER JOIN aux ON cp.car_id = aux.car_id\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.charge_energy_added >= aux.efficiency\n\t\tAND c.usable_battery_level > 0\n\t ORDER BY cp.end_date DESC LIMIT 10) AS lastCharges\n)\nSELECT CurrentCapacity FROM CurrentCapacity",
+        "query": "WITH Aux AS\n(SELECT car_id,\n\t\tCOALESCE(efficiency, \n\t\t(SELECT efficiency\n\t\t\tFROM cars WHERE id = $car_id) * 100) AS efficiency\n\tFROM (\n\t\tSELECT ROUND((charge_energy_added / NULLIF(end_rated_range_km - start_rated_range_km, 0))::numeric, 3) * 100 as efficiency,\n\t\t\tCOUNT(*) as count, $car_id AS car_id \n\t\tFROM charging_processes\n\t\tWHERE car_id = $car_id\n\t\t\tAND duration_min > 10\n\t\t\tAND end_battery_level <= 95\n\t\t\tAND start_rated_range_km IS NOT NULL\n\t\t\tAND end_rated_range_km IS NOT NULL\n\t\t\tAND charge_energy_added > 0\n\t\tGROUP BY 1\n\t\tORDER BY 2 DESC\n\t\tLIMIT 1\n\t) AS DerivatedEfficiency\n),\nCurrentCapacity\t AS\n(SELECT AVG(Capacity) AS CurrentCapacity \nFROM (\nSELECT \n\tc.${preferred_range}_battery_range_km * aux.efficiency / c.usable_battery_level AS Capacity \n\tFROM charging_processes cp\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id \n                INNER JOIN aux ON cp.car_id = aux.car_id\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.charge_energy_added >= aux.efficiency\n\t\tAND c.usable_battery_level > 0\n\t ORDER BY cp.end_date DESC LIMIT 10) AS lastCharges\n)\nSELECT CurrentCapacity FROM CurrentCapacity",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
