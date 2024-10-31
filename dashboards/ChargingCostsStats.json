@@ -11,7 +11,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.3.0"
+      "version": "11.0.6+security-01"
     },
     {
       "type": "datasource",
@@ -162,7 +162,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -252,7 +252,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -342,7 +342,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -432,7 +432,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -525,7 +525,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -664,11 +664,11 @@
           "values": false
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -784,7 +784,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -900,7 +900,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1016,7 +1016,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1151,7 +1151,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1241,7 +1241,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1331,7 +1331,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1421,7 +1421,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1511,7 +1511,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1596,7 +1596,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1683,7 +1683,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1800,7 +1800,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -1917,7 +1917,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -2067,7 +2067,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -2202,7 +2202,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -2337,7 +2337,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -2490,7 +2490,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.0.6+security-01",
       "targets": [
         {
           "datasource": {
@@ -2562,8 +2562,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "#EAB839",
@@ -2636,8 +2635,7 @@
                   "mode": "percentage",
                   "steps": [
                     {
-                      "color": "super-light-orange",
-                      "value": null
+                      "color": "super-light-orange"
                     },
                     {
                       "color": "light-orange",
@@ -2832,8 +2830,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "super-light-blue",
-                      "value": null
+                      "color": "super-light-blue"
                     },
                     {
                       "color": "super-light-green",
@@ -3047,8 +3044,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "super-light-blue",
-                      "value": null
+                      "color": "super-light-blue"
                     },
                     {
                       "color": "super-light-green",
@@ -3116,7 +3112,6 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -3398,7 +3393,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 39,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -3411,13 +3406,17 @@
           "uid": "TeslaMate"
         },
         "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "hide": 0,
         "includeAll": false,
         "label": "Car",
+        "multi": false,
         "name": "car_id",
         "options": [],
         "query": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3429,11 +3428,14 @@
         "definition": "select base_url from settings limit 1;",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "base_url",
         "options": [],
         "query": "select base_url from settings limit 1;",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3445,11 +3447,14 @@
         "definition": "select unit_of_length from settings limit 1;",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "length_unit",
         "options": [],
         "query": "select unit_of_length from settings limit 1;",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3461,11 +3466,14 @@
         "definition": "SELECT\n\tcoalesce(sum(cost), 0)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id;\n\t",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "TotalCost",
         "options": [],
         "query": "SELECT\n\tcoalesce(sum(cost), 0)\nFROM\n\tcharging_processes\nWHERE\n\t$__timeFilter(end_date)\n\tAND car_id = $car_id;\n\t",
         "refresh": 2,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3477,11 +3485,14 @@
         "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\n\tWHERE \n\t        cp.car_id = $car_id AND c.fast_charger_present\n\t\tAND (COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.display_name), '')))) ILIKE '%supercharger%'  OR c.fast_charger_brand = 'Tesla')\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost), 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "SucCost",
         "options": [],
         "query": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tLEFT JOIN addresses addr ON addr.id = cp.address_id\n\tLEFT JOIN geofences geo ON geo.id = geofence_id\n\tWHERE \n\t        cp.car_id = $car_id AND c.fast_charger_present\n\t\tAND (COALESCE(geo.name, CONCAT_WS(', ', COALESCE(addr.name, nullif(CONCAT_WS(' ', addr.display_name), '')))) ILIKE '%supercharger%'  OR c.fast_charger_brand = 'Tesla')\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost), 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
         "refresh": 2,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3493,11 +3504,14 @@
         "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n              cp.car_id = $car_id AND c.fast_charger_present\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost) - $SucCost , 0)\t\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "DCCost",
         "options": [],
         "query": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n              cp.car_id = $car_id AND c.fast_charger_present\n\tGROUP BY 1\n)\nSELECT\n        coalesce(sum(cp.cost) - $SucCost , 0)\t\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.id IN (data.charging_process_id);",
         "refresh": 2,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3509,11 +3523,14 @@
         "definition": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n\t\tcp.car_id = $car_id AND c.charger_voltage != 2\n                AND c.fast_charger_present IS NOT true\n        GROUP BY 1\n)\nSELECT\n       coalesce(sum(cp.cost) , 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.cost IS NOT NULL\n  AND cp.id IN (data.charging_process_id);",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "ACCost",
         "options": [],
         "query": "WITH data AS (\n\tSELECT c.charging_process_id \n\tFROM charges c\n\tLEFT JOIN charging_processes cp ON cp.id = c.charging_process_id\n\tWHERE \n\t\tcp.car_id = $car_id AND c.charger_voltage != 2\n                AND c.fast_charger_present IS NOT true\n        GROUP BY 1\n)\nSELECT\n       coalesce(sum(cp.cost) , 0)\nFROM\n\tcharging_processes cp, data\nWHERE\n  $__timeFilter(end_date)\n  AND cp.cost IS NOT NULL\n  AND cp.id IN (data.charging_process_id);",
         "refresh": 2,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3525,11 +3542,14 @@
         "definition": "SELECT ROUND(convert_km((max(end_km) - min(start_km))::numeric, '$length_unit'),0) as \"Mileage\"\nFROM drives WHERE car_id = $car_id AND $__timeFilter(end_date)",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "distance_driven",
         "options": [],
         "query": "SELECT ROUND(convert_km((max(end_km) - min(start_km))::numeric, '$length_unit'),0) as \"Mileage\"\nFROM drives WHERE car_id = $car_id AND $__timeFilter(end_date)",
         "refresh": 2,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3541,11 +3561,14 @@
         "definition": "select unit_of_temperature from settings limit 1;",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "temp_unit",
         "options": [],
         "query": "select unit_of_temperature from settings limit 1;",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3557,11 +3580,14 @@
         "definition": "select preferred_range from settings limit 1;",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "preferred_range",
         "options": [],
         "query": "select preferred_range from settings limit 1;",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -3572,13 +3598,17 @@
         },
         "definition": "SELECT name FROM geofences ORDER BY id",
         "description": "Geofence to display energy added at",
+        "hide": 0,
         "includeAll": false,
         "label": "Geofence",
+        "multi": false,
         "name": "geofence",
         "options": [],
         "query": "SELECT name FROM geofences ORDER BY id",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       }
     ]
@@ -3587,12 +3617,13 @@
     "from": "now-10y",
     "to": "now"
   },
+  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {
     "refresh_intervals": []
   },
   "timezone": "",
   "title": "Charging Costs Stats",
   "uid": "jchmDdLe5uFVk",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }
