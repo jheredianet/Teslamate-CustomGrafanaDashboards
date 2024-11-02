@@ -11,11 +11,11 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.1.2"
+      "version": "11.2.3"
     },
     {
       "type": "datasource",
-      "id": "postgres",
+      "id": "grafana-postgresql-datasource",
       "name": "PostgreSQL",
       "version": "1.0.0"
     },
@@ -40,9 +40,9 @@
           "type": "datasource",
           "uid": "grafana"
         },
+        "definition": "TeslaMate|U2FsdGVkX1/cEWK+8cz7pjEKXtzJnDN7b21ZDXt1MGneFGPWTLqOPtxKmu02mJPLzi/f29I+NBHd3vi0FB8R4Xn0+GtobWDgk6VAVSBTdSNniOKO8i2WPlhRaOsl2+hG7gnZ7wrf1Th2nxR7f1uYCrbwOek0IzkfLzrkjh7gkr6inT6bbDuJqrmogZajLxmAMrQ6V+/vHxBRGiwjJhgiEeq3hM1q2h04JKkNiZ8RHbsF5Cd/xd8Q9u0JVrZzIrtnhM/SFlaApU7RtRMu8CSj1llTX7WEOj6VDZAMSf+XUAanWdk725kEPN9MNu89o2zEq5P3E3cju8IbbBdPzXLV3oVuzD6/tMnxFToIIV1E/BrpF7s2RtNa8+KJJ1PF8xgs6m+/KTD2hy+WsP0636AgObRAmYg7+qotGrgNvpNPdE0EgrB7WHYlV7R/1q66bcq6tCe51X1Un70k+zo+K6AK0o4B1H6IyMlEVuRH/Fz8QVl9aYu2ztd08RbuKJlYVKpkH+pxVETAO9MclYQ90tzE6TfwDZrQZzsAlMenr4s1ZB1OlFXjLjVjnddnUilzO76cqv4yI2THQEuyQ47nuVQ4gUbx02K59vMQhns3C01JOAYokOaSXe66Y7QYdMlk09Lf|aes-256-cbc",
         "enable": true,
         "hide": true,
-        "definition": "TeslaMate|U2FsdGVkX1/cEWK+8cz7pjEKXtzJnDN7b21ZDXt1MGneFGPWTLqOPtxKmu02mJPLzi/f29I+NBHd3vi0FB8R4Xn0+GtobWDgk6VAVSBTdSNniOKO8i2WPlhRaOsl2+hG7gnZ7wrf1Th2nxR7f1uYCrbwOek0IzkfLzrkjh7gkr6inT6bbDuJqrmogZajLxmAMrQ6V+/vHxBRGiwjJhgiEeq3hM1q2h04JKkNiZ8RHbsF5Cd/xd8Q9u0JVrZzIrtnhM/SFlaApU7RtRMu8CSj1llTX7WEOj6VDZAMSf+XUAanWdk725kEPN9MNu89o2zEq5P3E3cju8IbbBdPzXLV3oVuzD6/tMnxFToIIV1E/BrpF7s2RtNa8+KJJ1PF8xgs6m+/KTD2hy+WsP0636AgObRAmYg7+qotGrgNvpNPdE0EgrB7WHYlV7R/1q66bcq6tCe51X1Un70k+zo+K6AK0o4B1H6IyMlEVuRH/Fz8QVl9aYu2ztd08RbuKJlYVKpkH+pxVETAO9MclYQ90tzE6TfwDZrQZzsAlMenr4s1ZB1OlFXjLjVjnddnUilzO76cqv4yI2THQEuyQ47nuVQ4gUbx02K59vMQhns3C01JOAYokOaSXe66Y7QYdMlk09Lf|aes-256-cbc",
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "target": {
@@ -96,7 +96,7 @@
   "panels": [
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -369,7 +369,6 @@
         "y": 0
       },
       "id": 2,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -384,18 +383,19 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.2.3",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n    BinnedData.speed_bin AS speed_range_$length_unit,\r\n    convert_km(BinnedData.total_odometer_distance::numeric, '$length_unit') AS avg_distance_$length_unit,\r\n    BinnedData.avg_speed * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 0.621371 END AS avg_speed_$length_unit,\r\n    ((BinnedData.total_energy_consumed / (BinnedData.total_distance * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 0.621371 END)) * 1000 ) / (BinnedData.avg_speed * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 0.621371 END) AS avg_consumption_$length_unit,\r\n    avg_power\r\nFROM\r\n    (SELECT\r\n        CASE\r\n            WHEN elevation_diff >= 1 THEN 'Uphill'\r\n            WHEN elevation_diff <= -1 THEN 'Downhill'\r\n            ELSE 'Flat'\r\n        END AS terrain_type,\r\n        ROUND(speed * CASE WHEN '$length_unit' = 'km' THEN 1 WHEN '$length_unit' = 'mi' THEN 0.621371 END / 10, 0) * 10 AS speed_bin,\r\n        AVG(power) AS avg_power,\r\n        SUM(power::integer * speed::integer / 60.0) AS total_energy_consumed,\r\n        SUM(speed / 60.0) AS total_distance,\r\n        SUM(odometer_distance) AS total_odometer_distance,\r\n        AVG(speed) AS avg_speed,\r\n        car_id\r\n    FROM\r\n        (SELECT\r\n            drives.car_id,\r\n            positions.speed,\r\n            positions.power,\r\n            positions.elevation - LAG(positions.elevation) OVER (PARTITION BY positions.drive_id ORDER BY positions.date) AS elevation_diff,\r\n            positions.odometer - LAG(positions.odometer) OVER (PARTITION BY positions.drive_id ORDER BY positions.date) AS odometer_distance\r\n        FROM\r\n            drives\r\n        JOIN positions ON drives.id = positions.drive_id\r\n        WHERE\r\n            $__timeFilter(drives.start_date)\r\n            AND drives.car_id = $car_id\r\n            AND drives.end_date IS NOT NULL\r\n            AND drives.distance >= convert_km($min_distance::numeric, '$length_unit')\r\n        ) AS DifferentialData\r\n    GROUP BY speed_bin, terrain_type, car_id\r\n    ) AS BinnedData\r\nJOIN cars ON BinnedData.car_id = cars.id\r\nWHERE BinnedData.terrain_type = '$terrain_type'\r\n    AND BinnedData.total_distance > 0 \r\n    AND BinnedData.total_odometer_distance > 0\r\n    AND BinnedData.speed_bin >= $min_speed_segment\r\nORDER BY BinnedData.speed_bin DESC;\r\n",
+          "rawSql": "SELECT\r\n    BinnedData.speed_bin AS speed_range_$length_unit,\r\n    convert_km(BinnedData.total_odometer_distance::numeric, '$length_unit') AS avg_distance_$length_unit,\r\n    convert_km(BinnedData.avg_speed, '$length_unit') AS avg_speed_$length_unit,\r\n    ((BinnedData.total_energy_consumed / convert_km(BinnedData.total_distance, '$length_unit')) * 1000 ) / convert_km(BinnedData.avg_speed, '$length_unit') AS avg_consumption_$length_unit,\r\n    avg_power\r\nFROM\r\n    (SELECT\r\n        CASE\r\n            WHEN elevation_diff >= 1 THEN 'Uphill'\r\n            WHEN elevation_diff <= -1 THEN 'Downhill'\r\n            ELSE 'Flat'\r\n        END AS terrain_type,\r\n        ROUND(convert_km(speed, '$length_unit') / 10, 0) * 10 AS speed_bin,\r\n        AVG(power) AS avg_power,\r\n        SUM(power::integer * speed::integer / 60.0) AS total_energy_consumed,\r\n        SUM(speed / 60.0) AS total_distance,\r\n        SUM(odometer_distance) AS total_odometer_distance,\r\n        AVG(speed) AS avg_speed,\r\n        car_id\r\n    FROM\r\n        (SELECT\r\n            drives.car_id,\r\n            positions.speed,\r\n            positions.power,\r\n            positions.elevation - LAG(positions.elevation) OVER (PARTITION BY positions.drive_id ORDER BY positions.date) AS elevation_diff,\r\n            positions.odometer - LAG(positions.odometer) OVER (PARTITION BY positions.drive_id ORDER BY positions.date) AS odometer_distance\r\n        FROM\r\n            drives\r\n        JOIN positions ON drives.id = positions.drive_id\r\n        WHERE\r\n            $__timeFilter(drives.start_date)\r\n            AND drives.car_id = $car_id\r\n            AND drives.end_date IS NOT NULL\r\n            AND drives.distance >= convert_km($min_distance::numeric, '$length_unit')\r\n        ) AS DifferentialData\r\n    GROUP BY speed_bin, terrain_type, car_id\r\n    ) AS BinnedData\r\nJOIN cars ON BinnedData.car_id = cars.id\r\nWHERE BinnedData.terrain_type = '$terrain_type'\r\n    AND BinnedData.total_distance > 0 \r\n    AND BinnedData.total_odometer_distance > 0\r\n    AND BinnedData.speed_bin >= $min_speed_segment\r\nORDER BY BinnedData.speed_bin DESC;\r\n",
           "refId": "A",
           "select": [
             [
@@ -407,6 +407,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "addresses",
           "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
@@ -424,7 +441,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -476,7 +493,6 @@
         "y": 0
       },
       "id": 6,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -488,6 +504,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -495,13 +512,15 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.2.3",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "format": "table",
@@ -537,7 +556,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -590,7 +609,6 @@
         "y": 6
       },
       "id": 4,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -602,6 +620,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -609,20 +628,23 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.2.3",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  sum((start_${preferred_range}_range_km - end_${preferred_range}_range_km) * cars.efficiency) / sum(distance) * 1000 * \n    CASE WHEN '$length_unit' = 'km' THEN 1\n         WHEN '$length_unit' = 'mi' THEN 1.60934\n    END AS \"consumption_$length_unit\"\nfrom drives \ninner join cars on cars.id = car_id\nwhere $__timeFilter(end_date) \n  and distance is not null and\n  start_${preferred_range}_range_km - end_${preferred_range}_range_km >= 0.1 and\n  car_id = $car_id",
+          "rawSql": "select \n  sum((start_${preferred_range}_range_km - end_${preferred_range}_range_km) * cars.efficiency) / convert_km(sum(distance)::numeric, '$length_unit') * 1000 as \"consumption_$length_unit\"\nfrom drives \ninner join cars on cars.id = car_id\nwhere $__timeFilter(end_date) \n  and distance is not null and\n  start_${preferred_range}_range_km - end_${preferred_range}_range_km >= 0.1 and\n  car_id = $car_id",
           "refId": "A",
           "select": [
             [
@@ -634,6 +656,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "addresses",
           "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
@@ -651,7 +690,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -704,7 +743,6 @@
         "y": 6
       },
       "id": 8,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -716,6 +754,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -723,20 +762,23 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.2.3",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH d1 AS (\n\tSELECT\n\t\tc.car_id,\n\t\tlag(end_${preferred_range}_range_km) OVER (ORDER BY start_date) - start_${preferred_range}_range_km AS range_loss,\n\t\tp.odometer - lag(p.odometer) OVER (ORDER BY start_date) AS distance\n\tFROM\n\t\tcharging_processes c\n\tLEFT JOIN positions p ON p.id = c.position_id \n\tWHERE\n\t  $__timeFilter(end_date)\n\t  and end_date IS NOT NULL AND\n\t  c.car_id = $car_id\n\tORDER BY\n\t\tstart_date\n),\nd2 AS (\nSELECT\n\tcar_id,\n\tsum(range_loss) AS range_loss,\n\tsum(distance) AS distance\nFROM\n\td1\nWHERE\n\tdistance > 0 AND range_loss >= 0\nGROUP BY\n\tcar_id\n)\nSELECT\nrange_loss * c.efficiency / distance * 1000 *\n  CASE WHEN '$length_unit' = 'km' THEN 1\n       WHEN '$length_unit' = 'mi' THEN 1.60934\n  END AS \"consumption_$length_unit\"\nFROM\n\td2\n\tLEFT JOIN cars c ON c.id = car_id",
+          "rawSql": "WITH d1 AS (\n\tSELECT\n\t\tc.car_id,\n\t\tlag(end_${preferred_range}_range_km) OVER (ORDER BY start_date) - start_${preferred_range}_range_km AS range_loss,\n\t\tp.odometer - lag(p.odometer) OVER (ORDER BY start_date) AS distance\n\tFROM\n\t\tcharging_processes c\n\tLEFT JOIN positions p ON p.id = c.position_id \n\tWHERE\n\t  $__timeFilter(end_date)\n\t  and end_date IS NOT NULL AND\n\t  c.car_id = $car_id\n\tORDER BY\n\t\tstart_date\n),\nd2 AS (\nSELECT\n\tcar_id,\n\tsum(range_loss) AS range_loss,\n\tsum(distance) AS distance\nFROM\n\td1\nWHERE\n\tdistance > 0 AND range_loss >= 0\nGROUP BY\n\tcar_id\n)\nSELECT\nrange_loss * c.efficiency / convert_km(distance::numeric, '$length_unit') * 1000 as \"consumption_$length_unit\"\nFROM\n\td2\n\tLEFT JOIN cars c ON c.id = car_id",
           "refId": "A",
           "select": [
             [
@@ -748,6 +790,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "addresses",
           "timeColumn": "inserted_at",
           "timeColumnType": "timestamp",
@@ -765,7 +824,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -820,13 +879,13 @@
         "y": 6
       },
       "id": 14,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -834,20 +893,23 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.2.3",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n\tCASE WHEN '$length_unit' = 'km' THEN efficiency\n\t     WHEN '$length_unit' = 'mi' THEN efficiency * 1.60934\n\tEND * 1000 as \"efficiency_$length_unit\"\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
+          "rawSql": "SELECT\n  efficiency / convert_km(1, '$length_unit') * 1000 as \"efficiency_$length_unit\"\nFROM\n\tcars\nWHERE\n\tid = $car_id;",
           "refId": "A",
           "select": [
             [
@@ -859,6 +921,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "charges",
           "timeColumn": "date",
           "timeColumnType": "timestamp",
@@ -876,7 +955,7 @@
     },
     {
       "datasource": {
-        "type": "postgres",
+        "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
       "fieldConfig": {
@@ -922,11 +1001,12 @@
         "y": 13
       },
       "id": 16,
-      "links": [],
       "options": {
         "displayMode": "gradient",
+        "maxVizHeight": 300,
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -936,13 +1016,14 @@
           "values": true
         },
         "showUnfilled": false,
+        "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.2.3",
       "targets": [
         {
           "datasource": {
-            "type": "postgres",
+            "type": "grafana-postgresql-datasource",
             "uid": "TeslaMate"
           },
           "editorMode": "code",
@@ -994,8 +1075,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -1004,17 +1084,17 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "definition": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, RIGHT(vin, 6)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
         "hide": 0,
         "includeAll": false,
         "label": "Car",
         "multi": false,
         "name": "car_id",
         "options": [],
-        "query": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "query": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, RIGHT(vin, 6)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1027,7 +1107,7 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
         "definition": "select unit_of_length from settings limit 1;",
@@ -1050,7 +1130,7 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
         "definition": "select preferred_range from settings limit 1;",
@@ -1071,7 +1151,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "50",
           "value": "50"
         },
@@ -1114,7 +1194,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "25",
           "value": "25"
         },
@@ -1173,7 +1253,7 @@
       {
         "current": {},
         "datasource": {
-          "type": "postgres",
+          "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
         "definition": "select base_url from settings limit 1;",
@@ -1195,7 +1275,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "Flat",
           "value": "Flat"
         },
@@ -1249,6 +1329,6 @@
   "timezone": "",
   "title": "Speed Rates",
   "uid": "jchmfu4SiQgWz",
-  "version": 10,
+  "version": 1,
   "weekStart": ""
 }

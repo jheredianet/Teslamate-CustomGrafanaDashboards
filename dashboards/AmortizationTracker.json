@@ -5,7 +5,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.1.0"
+      "version": "11.2.3"
     },
     {
       "type": "datasource",
@@ -115,6 +115,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 13,
             "gradientMode": "none",
@@ -203,7 +204,6 @@
         },
         "xField": "period_number"
       },
-      "pluginVersion": "10.4.0",
       "targets": [
         {
           "datasource": {
@@ -247,14 +247,17 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "fillOpacity": 50,
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "pointShape": "circle",
             "pointSize": {
               "fixed": 9
             },
+            "pointStrokeWidth": 1,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -311,28 +314,50 @@
       },
       "id": 75,
       "options": {
-        "dims": {
-          "exclude": [
-            "months",
-            "depreciation_time",
-            "depreciation_mileage"
-          ]
-        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": false
         },
-        "series": [],
-        "seriesMapping": "auto",
+        "mapping": "auto",
+        "series": [
+          {
+            "frame": {
+              "matcher": {
+                "id": "byIndex",
+                "options": 0
+              }
+            },
+            "x": {
+              "matcher": {
+                "id": "byType",
+                "options": "number"
+              }
+            },
+            "y": {
+              "exclude": {
+                "id": "byNames",
+                "options": [
+                  "months",
+                  "depreciation_time",
+                  "depreciation_mileage"
+                ]
+              },
+              "matcher": {
+                "id": "byType",
+                "options": "number"
+              }
+            }
+          }
+        ],
         "tooltip": {
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.2.3",
       "targets": [
         {
           "datasource": {
@@ -342,7 +367,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH periodic_mileage AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        convert_km(SUM(end_km - start_km)::numeric, '$length_unit') AS total_mileage\r\n    FROM\r\n        drives\r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\ncum_mileage AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_mileage,\r\n        SUM(total_mileage) OVER (ORDER BY period_start) AS cum_mileage\r\n    FROM\r\n        periodic_mileage\r\n),\r\nBreakEven AS (\r\nSELECT\r\n    cm.period_number,\r\n    cm.cum_mileage * (0.20 / CASE WHEN '$length_unit' = 'mi' THEN 1 ELSE 1.60934 END) AS depreciation_mileage,\r\n    ($depreciated_value - (cm.period_number - 1) * 5.0 / 12) AS depreciation_time\r\nFROM\r\n    cum_mileage cm\r\nLEFT JOIN\r\n    periodic_mileage mm ON cm.period_start = mm.period_start\r\nORDER BY\r\n    cm.period_number\r\n)\r\nSELECT \r\n    period_number,\r\n    ($car_cost  - depreciation_mileage - (($car_cost  - depreciation_mileage) * depreciation_time / 100)) * 100 / $car_cost AS percent_depreciated\r\nFROM BreakEven",
+          "rawSql": "WITH periodic_mileage AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', TIMEZONE('UTC', start_date)) AS period_start,\r\n        convert_km(SUM(end_km - start_km)::numeric, '$length_unit') AS total_mileage\r\n    FROM\r\n        drives\r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\ncum_mileage AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_mileage,\r\n        SUM(total_mileage) OVER (ORDER BY period_start) AS cum_mileage\r\n    FROM\r\n        periodic_mileage\r\n),\r\nBreakEven AS (\r\nSELECT\r\n    cm.period_number,\r\n    cm.cum_mileage * $loss_rate AS depreciation_mileage,\r\n    ($depreciated_value - (cm.period_number - 1) * 5.0 / 12) AS depreciation_time\r\nFROM\r\n    cum_mileage cm\r\nLEFT JOIN\r\n    periodic_mileage mm ON cm.period_start = mm.period_start\r\nORDER BY\r\n    cm.period_number\r\n)\r\nSELECT \r\n    period_number,\r\n    ($car_cost  - depreciation_mileage - (($car_cost  - depreciation_mileage) * depreciation_time / 100)) * 100 / $car_cost AS percent_depreciated\r\nFROM BreakEven",
           "refId": "A",
           "sql": {
             "columns": [
@@ -630,7 +655,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.1.0",
+      "pluginVersion": "11.2.3",
       "targets": [
         {
           "datasource": {
@@ -640,7 +665,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH periodic_mileage AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        convert_km(SUM(end_km - start_km)::numeric, '$length_unit') AS total_mileage\r\n    FROM\r\n        drives\r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\nperiod_cost AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', start_date) AS period_start,\r\n        SUM(cost) AS total_cost\r\n    FROM\r\n        charging_processes \r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        DATE_TRUNC('$period', start_date)\r\n),\r\ncum_mileage AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_mileage,\r\n        SUM(total_mileage) OVER (ORDER BY period_start) AS cum_mileage\r\n    FROM\r\n        periodic_mileage\r\n),\r\ncum_cost AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_cost,\r\n        SUM(total_cost) OVER (ORDER BY period_start) AS cum_el_cost\r\n    FROM\r\n        period_cost\r\n),\r\ncar_current_value AS (\r\n    SELECT\r\n        $car_cost AS car_current_value\r\n),\r\nBreakEven AS (\r\nSELECT\r\n    cm.period_number,\r\n    mm.total_mileage AS periodic_mileage,\r\n    mc.total_cost AS period_el_cost,\r\n    mc.total_cost/mm.total_mileage AS period_cost_per_mileage,\r\n    cm.cum_mileage,\r\n    cc.cum_el_cost,\r\n    cm.cum_mileage * ($loss_rate / CASE WHEN '$length_unit' = 'mi' THEN 1 ELSE 1.60934 END) AS depreciation_mileage,\r\n    ($depreciated_value - (cm.period_number - 1) * 5.0 / CASE WHEN '$period' = 'year' THEN 1 ELSE 12 END) AS depreciation_time,\r\n    cm.cum_mileage * $fuel_price - cc.cum_el_cost AS cum_el_savings, car_current_value\r\nFROM\r\n    cum_mileage cm\r\nLEFT JOIN\r\n    cum_cost cc ON cm.period_number = cc.period_number\r\nLEFT JOIN\r\n    periodic_mileage mm ON cm.period_start = mm.period_start\r\nLEFT JOIN\r\n    period_cost mc ON cm.period_start = mc.period_start\r\nCROSS JOIN\r\n    car_current_value\r\nORDER BY\r\n    cm.period_number\r\n)\r\nSELECT \r\n    period_number, periodic_mileage, period_el_cost, period_cost_per_mileage, cum_mileage, cum_el_cost, depreciation_mileage, depreciation_time, cum_el_savings,\r\n    car_current_value - depreciation_mileage - ((car_current_value - depreciation_mileage) * depreciation_time / 100) AS depreciated_car_value,\r\n    (car_current_value - depreciation_mileage - ((car_current_value - depreciation_mileage) * depreciation_time / 100)) + (cum_mileage * $fuel_price - cum_el_cost) AS car_value_pls_el_savings\r\nFROM BreakEven",
+          "rawSql": "WITH periodic_mileage AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', TIMEZONE('UTC', start_date)) AS period_start,\r\n        convert_km(SUM(end_km - start_km)::numeric, '$length_unit') AS total_mileage\r\n    FROM\r\n        drives\r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\nperiod_cost AS (\r\n    SELECT\r\n        DATE_TRUNC('$period', TIMEZONE('UTC', start_date)) AS period_start,\r\n        SUM(cost) AS total_cost\r\n    FROM\r\n        charging_processes \r\n    WHERE\r\n        car_id = $car_id \r\n    GROUP BY\r\n        period_start\r\n),\r\ncum_mileage AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_mileage,\r\n        SUM(total_mileage) OVER (ORDER BY period_start) AS cum_mileage\r\n    FROM\r\n        periodic_mileage\r\n),\r\ncum_cost AS (\r\n    SELECT\r\n        ROW_NUMBER() OVER () AS period_number,\r\n        period_start,\r\n        total_cost,\r\n        SUM(total_cost) OVER (ORDER BY period_start) AS cum_el_cost\r\n    FROM\r\n        period_cost\r\n),\r\ncar_current_value AS (\r\n    SELECT\r\n        $car_cost AS car_current_value\r\n),\r\nBreakEven AS (\r\nSELECT\r\n    cm.period_number,\r\n    mm.total_mileage AS periodic_mileage,\r\n    mc.total_cost AS period_el_cost,\r\n    mc.total_cost/mm.total_mileage AS period_cost_per_mileage,\r\n    cm.cum_mileage,\r\n    cc.cum_el_cost,\r\n    cm.cum_mileage * $loss_rate AS depreciation_mileage,\r\n    ($depreciated_value - (cm.period_number - 1) * 5.0 / CASE WHEN '$period' = 'year' THEN 1 ELSE 12 END) AS depreciation_time,\r\n    cm.cum_mileage * $fuel_price - cc.cum_el_cost AS cum_el_savings, car_current_value\r\nFROM\r\n    cum_mileage cm\r\nLEFT JOIN\r\n    cum_cost cc ON cm.period_number = cc.period_number\r\nLEFT JOIN\r\n    periodic_mileage mm ON cm.period_start = mm.period_start\r\nLEFT JOIN\r\n    period_cost mc ON cm.period_start = mc.period_start\r\nCROSS JOIN\r\n    car_current_value\r\nORDER BY\r\n    cm.period_number\r\n)\r\nSELECT \r\n    period_number, periodic_mileage, period_el_cost, period_cost_per_mileage, cum_mileage, cum_el_cost, depreciation_mileage, depreciation_time, cum_el_savings,\r\n    car_current_value - depreciation_mileage - ((car_current_value - depreciation_mileage) * depreciation_time / 100) AS depreciated_car_value,\r\n    (car_current_value - depreciation_mileage - ((car_current_value - depreciation_mileage) * depreciation_time / 100)) + (cum_mileage * $fuel_price - cum_el_cost) AS car_value_pls_el_savings\r\nFROM BreakEven",
           "refId": "A",
           "sql": {
             "columns": [
@@ -698,7 +723,7 @@
         "content": "# Amortization Tracker\n\nThis dashboard aims to show the depreciation value of the car over time and its journey.\n\nDepreciating a car by its mileage can be done using various methods. A common approach is to use a depreciation rate per mile or to create a depreciation curve based on data. On the other hand, the depreciation of a car due to age can vary depending on several factors such as the make, model, overall condition of the vehicle, and demand in the market.\n\nGenerally, it is estimated that a new car loses approximately 15% to 20% of its value in the first year. From there, the rate of depreciation tends to gradually decrease. Below is a rough estimate of the annual depreciation in the first few years:\n\n- First year: Around 15% to 20%.\n- Second year: Around 10% to 15%.\n- Third year and beyond: Around 5% to 10% annually.\n\nIt is important to remember that these values ​​are approximate and may vary depending on individual circumstances. Also, some car models may hold their value better than others.\n\nAditionally, some studies and experts suggest that a car loses a certain amount of value per mile driven. For instance, here we are using a standard rate 0.20 (use your currency) per mile or kilometer (depending on your prefered length unit)\n\n## Considerations for values ​​in text boxes\n\nIn this panel we have both estimations: **Drepreciation per Mileage** and **Depreciation per Age**\n\nSo fist of all you have to select:\n\n- Period to estimate (yearly or monthly)\n- Cost of your car\n- Depreciation percent % (of the first year). 20% by default as explained before\n- Loss rate per mile of kilometer. 0.2 (your currency) by default as explained before\n- Fuel price per mile of kilometer of your previous car (or a generic on equivalent to your actual Tesla)\n  \n  To calculate the cost per miles/kilometer of your car, you first need to determine how much it consumes in liters per 100 miles/kilometers. Then you can divide Consumption by mileage.\n\n  For example: let's say a car consumes 6 liters per 100km and the fuel costs 1.8€ per liter, we can calculate the actual consumption: 6/100 = 0.06 L/km\n  \n  Now, to determine the cost per kilometer, we multiply the actual consumption by the price of a liter of fuel (use your currency). For example 0.06L/km × 1.8€/L =0.108€/km (use miles or kms).\n  \n  Therefore, the cost per kilometer for your car would be approximately 0.108€. That's the value expected on the Fuel price textbox.\n\n## Data shown in the table\n\n- **Period**: Could be 'month' or 'year' dependig what you've selected in the drop down list. So if selected as 'month', its going to be the data accumulated from 1st month at which TeslaMate started logging data, So 1,2,3 will be the month numbers. If \"period\" is selcted as 'year', then its the year numbers.\n- **Mileage**: is the number of kms/miles (depending on your prefered length unit) the car has driven in that period.\n- **Energy Cost**: is the cost spent for electricity in that particular period.\n- **Cost per km or mi**  is *energy cost* / *Mileage*\n- **Cumulative Mileage** is the cumulative mileage for that particular period.\n- **Cumulative Cost** is the cumulative cost for electricity for that particular period.\n- **Depreciation per km or mi** is the depreciation by mileage explained at the begining.\n- **Depreciation per age** is the depreciation by time explained at the begining.\n- **Cumulative Savings** is running cost savings for driving an electric car when compared to a fossil fuel car, based on the value enter in the *Fuel price* textbox.\n- **Depreciated Car Value** is the estimated actual price based on the depreciation per age and mileage.  \n- **Depreciated Car Value + Savings** is simply adding *Depreciated Car Value* + *Cumulative Savings*. So the expectation is like when one can get the Break-Even for the money we put into buying the car by driving at a cheaper electricity cost when compared to driving a fossil fuel car.\n",
         "mode": "markdown"
       },
-      "pluginVersion": "11.1.0",
+      "pluginVersion": "11.2.3",
       "type": "text"
     }
   ],
@@ -715,14 +740,14 @@
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "definition": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, RIGHT(vin, 6)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
         "hide": 0,
         "includeAll": false,
         "label": "Car",
         "multi": false,
         "name": "car_id",
         "options": [],
-        "query": "SELECT name AS __text, id AS __value FROM cars ORDER BY display_priority ASC, name ASC;",
+        "query": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, RIGHT(vin, 6)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -782,7 +807,7 @@
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "year",
           "value": "year"
         },
@@ -790,12 +815,12 @@
         "name": "period",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "month",
             "value": "month"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "year",
             "value": "year"
           }
