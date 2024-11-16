@@ -694,7 +694,7 @@
               "type": "auto"
             },
             "inspect": false,
-            "width": 100
+            "minWidth": 80
           },
           "mappings": [],
           "thresholds": {
@@ -724,7 +724,8 @@
                 "value": "auto"
               },
               {
-                "id": "custom.width"
+                "id": "custom.minWidth",
+                "value": 160
               }
             ]
           }
@@ -797,7 +798,8 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": false
+            "inspect": false,
+            "minWidth": 160
           },
           "mappings": [],
           "thresholds": {
@@ -826,8 +828,8 @@
                 "value": "right"
               },
               {
-                "id": "custom.width",
-                "value": 150
+                "id": "custom.minWidth",
+                "value": 100
               }
             ]
           }
@@ -902,7 +904,7 @@
               "type": "auto"
             },
             "inspect": false,
-            "width": 120
+            "minWidth": 110
           },
           "mappings": [],
           "thresholds": {
@@ -929,6 +931,10 @@
               {
                 "id": "unit",
                 "value": "bytes"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 100
               }
             ]
           },
@@ -939,12 +945,12 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 200
-              },
-              {
                 "id": "custom.align",
                 "value": "auto"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 160
               }
             ]
           },
@@ -955,11 +961,24 @@
             },
             "properties": [
               {
-                "id": "custom.width"
-              },
-              {
                 "id": "custom.align",
                 "value": "auto"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tuples Fetched"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 130
               }
             ]
           }
@@ -1046,7 +1065,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 8,
+        "w": 6,
         "x": 0,
         "y": 21
       },
@@ -1151,8 +1170,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 8,
-        "x": 8,
+        "w": 6,
+        "x": 6,
         "y": 21
       },
       "id": 50,
@@ -1235,6 +1254,85 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 21
+      },
+      "id": 51,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^version$/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT regexp_replace(version(), 'PostgreSQL ([^ ]+) .*', '\\1') AS version;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "PostgreSQL Version",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1263,8 +1361,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 18,
         "y": 21
       },
       "id": 43,
@@ -1990,6 +2088,10 @@
       },
       {
         "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "TeslaMate"
+        },
         "definition": "select base_url from settings limit 1;",
         "hide": 2,
         "includeAll": false,
