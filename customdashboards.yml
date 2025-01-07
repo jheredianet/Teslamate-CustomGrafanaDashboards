@@ -7,7 +7,7 @@ providers:
   folderUid: jchmTmCuGrDa
   type: file
   disableDeletion: false
-  editable: true
+  allowUiUpdates: true
   updateIntervalSeconds: 86400
   options:
     path: /TeslamateCustomDashboards
