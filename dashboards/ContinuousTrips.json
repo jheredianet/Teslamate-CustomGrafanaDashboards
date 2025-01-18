@@ -1,45 +1,16 @@
 {
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "10.4.0"
-    },
-    {
-      "type": "datasource",
-      "id": "grafana-postgresql-datasource",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:24",
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
-        "definition": "TeslaMate|U2FsdGVkX1/cEWK+8cz7pjEKXtzJnDN7b21ZDXt1MGneFGPWTLqOPtxKmu02mJPLzi/f29I+NBHd3vi0FB8R4Xn0+GtobWDgk6VAVSBTdSNniOKO8i2WPlhRaOsl2+hG7gnZ7wrf1Th2nxR7f1uYCrbwOek0IzkfLzrkjh7gkr6inT6bbDuJqrmogZajLxmAMrQ6V+/vHxBRGiwjJhgiEeq3hM1q2h04JKkNiZ8RHbsF5Cd/xd8Q9u0JVrZzIrtnhM/SFlaApU7RtRMu8CSj1llTX7WEOj6VDZAMSf+XUAanWdk725kEPN9MNu89o2zEq5P3E3cju8IbbBdPzXLV3oVuzD6/tMnxFToIIV1E/BrpF7s2RtNa8+KJJ1PF8xgs6m+/KTD2hy+WsP0636AgObRAmYg7+qotGrgNvpNPdE0EgrB7WHYlV7R/1q66bcq6tCe51X1Un70k+zo+K6AK0o4B1H6IyMlEVuRH/Fz8QVl9aYu2ztd08RbuKJlYVKpkH+pxVETAO9MclYQ90tzE6TfwDZrQZzsAlMenr4s1ZB1OlFXjLjVjnddnUilzO76cqv4yI2THQEuyQ47nuVQ4gUbx02K59vMQhns3C01JOAYokOaSXe66Y7QYdMlk09Lf|aes-256-cbc",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
@@ -47,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 1,
   "links": [
     {
       "icon": "dashboard",
@@ -81,7 +52,6 @@
       "url": ""
     }
   ],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -281,7 +251,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg Speed"
+                "value": "Ø Speed"
               },
               {
                 "id": "custom.minWidth",
@@ -301,7 +271,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Avg Speed"
+                "value": "Ø Speed"
               },
               {
                 "id": "custom.minWidth",
@@ -349,7 +319,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 65
+                "value": 75
               }
             ]
           },
@@ -389,7 +359,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 90
+                "value": 100
               }
             ]
           },
@@ -469,7 +439,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Consumption gross"
+                "value": "Ø Consumption (gross)"
               }
             ]
           },
@@ -485,11 +455,11 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 150
+                "value": 180
               },
               {
                 "id": "displayName",
-                "value": "Consumption gross"
+                "value": "Ø Consumption (gross)"
               }
             ]
           },
@@ -501,7 +471,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Energy"
+                "value": "Energy consumed (gross)"
               },
               {
                 "id": "decimals",
@@ -509,7 +479,7 @@
               },
               {
                 "id": "custom.minWidth",
-                "value": 90
+                "value": 196
               },
               {
                 "id": "unit",
@@ -525,7 +495,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Efficiency"
+                "value": "Full Efficiency"
               },
               {
                 "id": "unit",
@@ -538,32 +508,27 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "type": "color-text"
-                }
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "super-light-red",
-                      "value": null
-                    },
-                    {
-                      "color": "super-light-yellow",
-                      "value": 0.65
-                    },
-                    {
-                      "color": "light-green",
-                      "value": 0.99
-                    }
-                  ]
+                  "mode": "basic",
+                  "type": "gauge"
                 }
               },
               {
                 "id": "custom.minWidth",
-                "value": 100
+                "value": 120
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-RdYlGr"
+                }
               }
             ]
           }
@@ -589,7 +554,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "",
@@ -603,7 +568,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH \r\ntrip AS (\r\n   SELECT start_date sd, end_date ed, distance, duration_min, start_usable_battery_level, end_usable_battery_level, \r\n      outside_temp_avg, power_max, speed_max, start_${preferred_range}_range_km, end_${preferred_range}_range_km\r\n    FROM drives INNER JOIN (\r\n      SELECT drive_id, MIN(usable_battery_level) AS end_usable_battery_level, MAX(usable_battery_level) AS start_usable_battery_level\r\n        FROM (\r\n            SELECT p.drive_id, p.usable_battery_level, ROW_NUMBER() OVER (PARTITION BY p.drive_id ORDER BY date) AS row_num\r\n            FROM drives d INNER JOIN positions p ON p.drive_id = d.id\r\n            WHERE d.car_id = $car_id\r\n              AND $__timeFilter(p.date)\r\n              AND d.end_date IS NOT NULL\r\n              AND d.duration_min > 0\r\n              AND d.start_${preferred_range}_range_km > d.end_${preferred_range}_range_km\r\n              AND p.usable_battery_level IS NOT NULL\r\n        ) AS pos\r\n      GROUP BY drive_id\r\n    ) AS filter_drives ON filter_drives.drive_id = drives.id\r\n),\r\ncp AS (\r\n    SELECT car_id, start_date, end_date, COALESCE(LAG(start_date) OVER(ORDER BY start_date DESC), now()) next_date, start_battery_level, end_battery_level\r\n    FROM charging_processes WHERE $__timeFilter(start_date) AND car_id = $car_id\r\n),\r\ndriven AS (\r\nSELECT cp.car_id, cp.start_date, cp.end_date, cp.next_date, \r\n        MIN(trip.sd) trip_start_date, \r\n        MAX(trip.ed) trip_end_date,\r\n        SUM(convert_km(trip.distance::numeric, '$length_unit')) AS distance_$length_unit, \r\n        MAX(convert_km(trip.speed_max::numeric, '$length_unit')) AS speed_max_$length_unit,\r\n        SUM(trip.duration_min) duration_min,\r\n        MAX(trip.start_usable_battery_level) start_soc, \r\n        MIN(trip.end_usable_battery_level) end_soc, \r\n        AVG(convert_celsius(trip.outside_temp_avg, '$temp_unit')) AS avg_temp_$temp_unit, \r\n        MAX(trip.power_max) AS power_max, \r\n        convert_km((MAX(trip.start_${preferred_range}_range_km) - MIN(trip.end_${preferred_range}_range_km))::numeric, '$length_unit') AS range_diff_$length_unit \r\n\tFROM cp\tINNER JOIN trip ON trip.sd BETWEEN cp.start_date and cp.next_date\r\n  GROUP BY cp.car_id, cp.start_date, cp.end_date, cp.next_date\r\n)\r\nSELECT \r\n    ROUND(EXTRACT(epoch FROM start_date) - 10) * 1000 AS start_date_ts, ROUND(EXTRACT(epoch FROM next_date) + 10) * 1000 AS end_date_ts, start_date, next_date end_date,\r\n    distance_$length_unit, duration_min * 60 as duration_min, \r\n    (distance_$length_unit / duration_min * 60) as speed_$length_unit, \r\n    start_soc as \"% Start\", end_soc as \"% End\", avg_temp_$temp_unit, power_max, speed_max_$length_unit,\r\n    (range_diff_$length_unit * car.efficiency) consumption_kwh, \r\n    (range_diff_$length_unit * car.efficiency / distance_$length_unit * 1000.0) consumption_kWh_$length_unit,\r\n    (distance_$length_unit / range_diff_$length_unit) efficiency\r\nFROM driven\r\nINNER JOIN cars car ON car.id = driven.car_id\r\nWHERE distance_$length_unit >= $min_dist AND (distance_$length_unit / duration_min * 60) >= $min_avg_speed\r\nORDER BY start_date DESC\r\n",
+          "rawSql": "WITH \r\ntrip AS (\r\n   SELECT start_date sd, end_date ed, distance, duration_min, start_usable_battery_level, end_usable_battery_level, \r\n      outside_temp_avg, power_max, speed_max, start_${preferred_range}_range_km, end_${preferred_range}_range_km\r\n    FROM drives INNER JOIN (\r\n      SELECT drive_id, start_usable_battery_level, end_usable_battery_level\r\n        FROM (\r\n            select\r\n              p.drive_id,\r\n              first_value(p.usable_battery_level) over (partition by p.drive_id order by date ROWS BETWEEN unbounded PRECEDING AND unbounded FOLLOWING) as start_usable_battery_level,\r\n              last_value(p.usable_battery_level) over (partition by p.drive_id order by date ROWS BETWEEN unbounded PRECEDING AND unbounded FOLLOWING) as end_usable_battery_level\r\n            FROM drives d\r\n              INNER JOIN positions p ON p.drive_id = d.id\r\n            WHERE d.car_id = $car_id\r\n              AND $__timeFilter(p.date)\r\n              AND d.end_date IS NOT NULL\r\n              AND d.duration_min > 0\r\n              AND p.ideal_battery_range_km IS NOT NULL\r\n              AND p.car_id = $car_id\r\n        ) AS pos\r\n      GROUP BY 1, 2, 3\r\n    ) AS filter_drives ON filter_drives.drive_id = drives.id\r\n),\r\ncp AS (\r\n    SELECT car_id, start_date, end_date, COALESCE(LAG(start_date) OVER(ORDER BY start_date DESC), now()) next_date,\r\n      lag(start_battery_level) over (order by start_date desc) as next_start_battery_level, end_battery_level\r\n    FROM charging_processes WHERE $__timeFilter(start_date) AND car_id = $car_id\r\n),\r\ndriven AS (\r\nSELECT cp.car_id, cp.start_date, cp.end_date, cp.next_date, \r\n        MIN(trip.sd) trip_start_date, \r\n        MAX(trip.ed) trip_end_date,\r\n        SUM(convert_km(trip.distance::numeric, '$length_unit')) AS distance_$length_unit, \r\n        MAX(convert_km(trip.speed_max::numeric, '$length_unit')) AS speed_max_$length_unit,\r\n        SUM(trip.duration_min) duration_min,\r\n        greatest(MAX(trip.start_usable_battery_level), cp.end_battery_level) start_soc, \r\n        least(MIN(trip.end_usable_battery_level), cp.next_start_battery_level) end_soc, \r\n        AVG(convert_celsius(trip.outside_temp_avg, '$temp_unit')) AS avg_temp_$temp_unit, \r\n        MAX(trip.power_max) AS power_max, \r\n        convert_km((MAX(trip.start_${preferred_range}_range_km) - MIN(trip.end_${preferred_range}_range_km))::numeric, '$length_unit') AS range_diff_$length_unit \r\n\tFROM cp\tINNER JOIN trip ON trip.sd BETWEEN cp.start_date and cp.next_date\r\n  GROUP BY cp.car_id, cp.start_date, cp.end_date, cp.next_date, cp.next_start_battery_level, cp.end_battery_level\r\n)\r\nSELECT \r\n    ROUND(EXTRACT(epoch FROM start_date) - 10) * 1000 AS start_date_ts, ROUND(EXTRACT(epoch FROM next_date) + 10) * 1000 AS end_date_ts, start_date, next_date end_date,\r\n    distance_$length_unit, duration_min * 60 as duration_min, \r\n    (distance_$length_unit / duration_min * 60) as speed_$length_unit, \r\n    start_soc as \"% Start\", end_soc as \"% End\", avg_temp_$temp_unit, power_max, speed_max_$length_unit,\r\n    (range_diff_$length_unit * car.efficiency) consumption_kwh, \r\n    (range_diff_$length_unit * car.efficiency / distance_$length_unit * 1000.0) consumption_kWh_$length_unit,\r\n    (distance_$length_unit / range_diff_$length_unit) efficiency\r\nFROM driven\r\nINNER JOIN cars car ON car.id = driven.car_id\r\nWHERE distance_$length_unit >= $min_dist AND (distance_$length_unit / duration_min * 60) >= $min_avg_speed\r\nORDER BY start_date DESC\r\n",
           "refId": "A",
           "select": [
             [
@@ -646,8 +611,9 @@
       "type": "table"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -660,17 +626,13 @@
           "uid": "TeslaMate"
         },
         "definition": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC",
-        "hide": 0,
         "includeAll": false,
         "label": "Car",
-        "multi": false,
         "name": "car_id",
         "options": [],
         "query": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
@@ -683,18 +645,12 @@
         "hide": 2,
         "includeAll": false,
         "label": "length unit",
-        "multi": false,
         "name": "length_unit",
         "options": [],
         "query": "SELECT unit_of_length FROM settings limit 1",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "current": {},
@@ -705,19 +661,12 @@
         "definition": "SELECT base_url FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
-        "label": "",
-        "multi": false,
         "name": "base_url",
         "options": [],
         "query": "SELECT base_url FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "current": {},
@@ -728,14 +677,11 @@
         "definition": "SELECT preferred_range FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "preferred_range",
         "options": [],
         "query": "SELECT preferred_range FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
@@ -747,24 +693,18 @@
         "definition": "SELECT unit_of_temperature FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "temp_unit",
         "options": [],
         "query": "SELECT unit_of_temperature FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
           "text": "0",
           "value": "0"
         },
-        "hide": 0,
-        "includeAll": false,
         "label": "Distance >=",
         "name": "min_dist",
         "options": [
@@ -775,16 +715,13 @@
           }
         ],
         "query": "0",
-        "skipUrlSync": false,
         "type": "textbox"
       },
       {
         "current": {
-          "selected": false,
           "text": "0",
           "value": "0"
         },
-        "hide": 0,
         "label": "Avg Speed >=",
         "name": "min_avg_speed",
         "options": [
@@ -795,7 +732,6 @@
           }
         ],
         "query": "0",
-        "skipUrlSync": false,
         "type": "textbox"
       }
     ]
@@ -804,34 +740,10 @@
     "from": "now-1M",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
+  "timepicker": {},
   "timezone": "",
   "title": "Continuous Trips",
   "uid": "jchmY8upc6ZRk",
-  "version": 7,
+  "version": 1,
   "weekStart": ""
 }
