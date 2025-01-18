@@ -1324,11 +1324,11 @@
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT TO_CHAR(start_date, 'YYYY') as year FROM drives\nWHERE car_id = $car_id\nGROUP BY 1\nORDER BY 1 DESC;",
+        "definition": "SELECT TO_CHAR(timezone('utc', start_date), 'YYYY') as year FROM drives\nWHERE car_id = $car_id\nGROUP BY 1\nORDER BY 1 DESC;",
         "includeAll": false,
         "name": "Year",
         "options": [],
-        "query": "SELECT TO_CHAR(start_date, 'YYYY') as year FROM drives\nWHERE car_id = $car_id\nGROUP BY 1\nORDER BY 1 DESC;",
+        "query": "SELECT TO_CHAR(timezone('utc', start_date), 'YYYY') as year FROM drives\nWHERE car_id = $car_id\nGROUP BY 1\nORDER BY 1 DESC;",
         "refresh": 1,
         "regex": "",
         "type": "query"
@@ -1339,11 +1339,11 @@
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
+        "definition": "(SELECT TO_CHAR(timezone('UTC', start_date), 'MM') as month FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(timezone('UTC', start_date), 'MM') as month FROM drives WHERE car_id = $car_id AND TO_CHAR(timezone('UTC', start_date), 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
         "includeAll": false,
         "name": "Month",
         "options": [],
-        "query": "(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'MM') as month FROM drives WHERE car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
+        "query": "(SELECT TO_CHAR(timezone('UTC', start_date), 'MM') as month FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(timezone('UTC', start_date), 'MM') as month FROM drives WHERE car_id = $car_id AND TO_CHAR(timezone('UTC', start_date), 'YYYY') = '$Year'\nGROUP BY 1\nORDER BY 1);",
         "refresh": 1,
         "regex": "",
         "type": "query"
@@ -1354,11 +1354,11 @@
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "(SELECT TO_CHAR(start_date, 'DD') as day FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'DD') as day FROM drives \nWHERE  car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'  AND TO_CHAR(start_date, 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
+        "definition": "(SELECT TO_CHAR(timezone('UTC', start_date), 'DD') as day FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(timezone('UTC', start_date), 'DD') as day FROM drives \nWHERE  car_id = $car_id AND TO_CHAR(timezone('UTC', start_date), 'YYYY') = '$Year'  AND TO_CHAR(timezone('UTC', start_date), 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
         "includeAll": false,
         "name": "Day",
         "options": [],
-        "query": "(SELECT TO_CHAR(start_date, 'DD') as day FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(start_date, 'DD') as day FROM drives \nWHERE  car_id = $car_id AND TO_CHAR(start_date, 'YYYY') = '$Year'  AND TO_CHAR(start_date, 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
+        "query": "(SELECT TO_CHAR(timezone('UTC', start_date), 'DD') as day FROM drives WHERE car_id = $car_id ORDER BY start_date DESC LIMIT 1)\nUNION ALL\n(SELECT TO_CHAR(timezone('UTC', start_date), 'DD') as day FROM drives \nWHERE  car_id = $car_id AND TO_CHAR(timezone('UTC', start_date), 'YYYY') = '$Year'  AND TO_CHAR(timezone('UTC', start_date), 'MM') = '$Month'\nGROUP BY 1 ORDER BY 1);",
         "refresh": 1,
         "regex": "",
         "type": "query"
@@ -1369,12 +1369,12 @@
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "WITH data AS (\n  SELECT\n    drives.id as drive_id,\n    start_date,\n    COALESCE(start_geofence.name, CONCAT_WS(', ', COALESCE(start_address.name, nullif(CONCAT_WS(' ', start_address.road, start_address.house_number), '')), start_address.city)) AS start_address,\n    COALESCE(end_geofence.name, CONCAT_WS(', ', COALESCE(end_address.name, nullif(CONCAT_WS(' ', end_address.road, end_address.house_number), '')), end_address.city)) AS end_address\n  FROM drives\n  LEFT JOIN addresses start_address ON start_address_id = start_address.id\n  LEFT JOIN addresses end_address ON end_address_id = end_address.id\n  LEFT JOIN positions start_position ON start_position_id = start_position.id\n  LEFT JOIN positions end_position ON end_position_id = end_position.id\n  LEFT JOIN geofences start_geofence ON start_geofence_id = start_geofence.id\n  LEFT JOIN geofences end_geofence ON end_geofence_id = end_geofence.id\n  LEFT JOIN cars car ON car.id = drives.car_id\n  WHERE drives.car_id = $car_id AND start_date::date = '$Year-$Month-$Day' AND distance > 0 \n  ORDER BY start_date DESC\n)\nSELECT\n    'route=\"' || to_char(start_date:: timestamp, 'YYYY-MM-DD')  || ' ' || start_address || ' ---> ' || end_address || '\" id=\"' || drive_id || '\"'AS journey\nFROM data;",
+        "definition": "WITH data AS (\n  SELECT\n    drives.id as drive_id,\n    start_date,\n    COALESCE(start_geofence.name, CONCAT_WS(', ', COALESCE(start_address.name, nullif(CONCAT_WS(' ', start_address.road, start_address.house_number), '')), start_address.city)) AS start_address,\n    COALESCE(end_geofence.name, CONCAT_WS(', ', COALESCE(end_address.name, nullif(CONCAT_WS(' ', end_address.road, end_address.house_number), '')), end_address.city)) AS end_address\n  FROM drives\n  LEFT JOIN addresses start_address ON start_address_id = start_address.id\n  LEFT JOIN addresses end_address ON end_address_id = end_address.id\n  LEFT JOIN positions start_position ON start_position_id = start_position.id\n  LEFT JOIN positions end_position ON end_position_id = end_position.id\n  LEFT JOIN geofences start_geofence ON start_geofence_id = start_geofence.id\n  LEFT JOIN geofences end_geofence ON end_geofence_id = end_geofence.id\n  LEFT JOIN cars car ON car.id = drives.car_id\n  WHERE drives.car_id = $car_id AND timezone('UTC', start_date)::date = '$Year-$Month-$Day' AND distance > 0 \n  ORDER BY start_date DESC\n)\nSELECT\n    'route=\"' || to_char(timezone('UTC', start_date):: timestamp, 'YYYY-MM-DD')  || ' ' || start_address || ' ---> ' || end_address || '\" id=\"' || drive_id || '\"'AS journey\nFROM data;",
         "includeAll": false,
         "label": "Journey",
         "name": "journey",
         "options": [],
-        "query": "WITH data AS (\n  SELECT\n    drives.id as drive_id,\n    start_date,\n    COALESCE(start_geofence.name, CONCAT_WS(', ', COALESCE(start_address.name, nullif(CONCAT_WS(' ', start_address.road, start_address.house_number), '')), start_address.city)) AS start_address,\n    COALESCE(end_geofence.name, CONCAT_WS(', ', COALESCE(end_address.name, nullif(CONCAT_WS(' ', end_address.road, end_address.house_number), '')), end_address.city)) AS end_address\n  FROM drives\n  LEFT JOIN addresses start_address ON start_address_id = start_address.id\n  LEFT JOIN addresses end_address ON end_address_id = end_address.id\n  LEFT JOIN positions start_position ON start_position_id = start_position.id\n  LEFT JOIN positions end_position ON end_position_id = end_position.id\n  LEFT JOIN geofences start_geofence ON start_geofence_id = start_geofence.id\n  LEFT JOIN geofences end_geofence ON end_geofence_id = end_geofence.id\n  LEFT JOIN cars car ON car.id = drives.car_id\n  WHERE drives.car_id = $car_id AND start_date::date = '$Year-$Month-$Day' AND distance > 0 \n  ORDER BY start_date DESC\n)\nSELECT\n    'route=\"' || to_char(start_date:: timestamp, 'YYYY-MM-DD')  || ' ' || start_address || ' ---> ' || end_address || '\" id=\"' || drive_id || '\"'AS journey\nFROM data;",
+        "query": "WITH data AS (\n  SELECT\n    drives.id as drive_id,\n    start_date,\n    COALESCE(start_geofence.name, CONCAT_WS(', ', COALESCE(start_address.name, nullif(CONCAT_WS(' ', start_address.road, start_address.house_number), '')), start_address.city)) AS start_address,\n    COALESCE(end_geofence.name, CONCAT_WS(', ', COALESCE(end_address.name, nullif(CONCAT_WS(' ', end_address.road, end_address.house_number), '')), end_address.city)) AS end_address\n  FROM drives\n  LEFT JOIN addresses start_address ON start_address_id = start_address.id\n  LEFT JOIN addresses end_address ON end_address_id = end_address.id\n  LEFT JOIN positions start_position ON start_position_id = start_position.id\n  LEFT JOIN positions end_position ON end_position_id = end_position.id\n  LEFT JOIN geofences start_geofence ON start_geofence_id = start_geofence.id\n  LEFT JOIN geofences end_geofence ON end_geofence_id = end_geofence.id\n  LEFT JOIN cars car ON car.id = drives.car_id\n  WHERE drives.car_id = $car_id AND timezone('UTC', start_date)::date = '$Year-$Month-$Day' AND distance > 0 \n  ORDER BY start_date DESC\n)\nSELECT\n    'route=\"' || to_char(timezone('UTC', start_date):: timestamp, 'YYYY-MM-DD')  || ' ' || start_address || ' ---> ' || end_address || '\" id=\"' || drive_id || '\"'AS journey\nFROM data;",
         "refresh": 1,
         "regex": "/route=\"(?<text>[^\"]+)|id=\"(?<value>[^\"]+)/g",
         "type": "query"
