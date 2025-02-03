@@ -1,60 +1,16 @@
 {
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.2.3"
-    },
-    {
-      "type": "datasource",
-      "id": "grafana-postgresql-datasource",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "trend",
-      "name": "Trend",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "xychart",
-      "name": "XY Chart",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:75",
         "builtIn": 1,
-        "datasource": "-- Grafana --",
-        "definition": "TeslaMate|U2FsdGVkX1/cEWK+8cz7pjEKXtzJnDN7b21ZDXt1MGneFGPWTLqOPtxKmu02mJPLzi/f29I+NBHd3vi0FB8R4Xn0+GtobWDgk6VAVSBTdSNniOKO8i2WPlhRaOsl2+hG7gnZ7wrf1Th2nxR7f1uYCrbwOek0IzkfLzrkjh7gkr6inT6bbDuJqrmogZajLxmAMrQ6V+/vHxBRGiwjJhgiEeq3hM1q2h04JKkNiZ8RHbsF5Cd/xd8Q9u0JVrZzIrtnhM/SFlaApU7RtRMu8CSj1llTX7WEOj6VDZAMSf+XUAanWdk725kEPN9MNu89o2zEq5P3E3cju8IbbBdPzXLV3oVuzD6/tMnxFToIIV1E/BrpF7s2RtNa8+KJJ1PF8xgs6m+/KTD2hy+WsP0636AgObRAmYg7+qotGrgNvpNPdE0EgrB7WHYlV7R/1q66bcq6tCe51X1Un70k+zo+K6AK0o4B1H6IyMlEVuRH/Fz8QVl9aYu2ztd08RbuKJlYVKpkH+pxVETAO9MclYQ90tzE6TfwDZrQZzsAlMenr4s1ZB1OlFXjLjVjnddnUilzO76cqv4yI2THQEuyQ47nuVQ4gUbx02K59vMQhns3C01JOAYokOaSXe66Y7QYdMlk09Lf|aes-256-cbc",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
@@ -62,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
   "links": [
     {
       "icon": "dashboard",
@@ -96,7 +51,6 @@
       "url": ""
     }
   ],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -204,6 +158,7 @@
         },
         "xField": "period_number"
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -357,7 +312,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.2.3",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -655,7 +610,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.2.3",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -703,9 +658,9 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "TeslaMate"
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
       },
       "gridPos": {
         "h": 29,
@@ -723,12 +678,14 @@
         "content": "# Amortization Tracker\n\nThis dashboard aims to show the depreciation value of the car over time and its journey.\n\nDepreciating a car by its mileage can be done using various methods. A common approach is to use a depreciation rate per mile or to create a depreciation curve based on data. On the other hand, the depreciation of a car due to age can vary depending on several factors such as the make, model, overall condition of the vehicle, and demand in the market.\n\nGenerally, it is estimated that a new car loses approximately 15% to 20% of its value in the first year. From there, the rate of depreciation tends to gradually decrease. Below is a rough estimate of the annual depreciation in the first few years:\n\n- First year: Around 15% to 20%.\n- Second year: Around 10% to 15%.\n- Third year and beyond: Around 5% to 10% annually.\n\nIt is important to remember that these values ​​are approximate and may vary depending on individual circumstances. Also, some car models may hold their value better than others.\n\nAditionally, some studies and experts suggest that a car loses a certain amount of value per mile driven. For instance, here we are using a standard rate 0.20 (use your currency) per mile or kilometer (depending on your prefered length unit)\n\n## Considerations for values ​​in text boxes\n\nIn this panel we have both estimations: **Drepreciation per Mileage** and **Depreciation per Age**\n\nSo fist of all you have to select:\n\n- Period to estimate (yearly or monthly)\n- Cost of your car\n- Depreciation percent % (of the first year). 20% by default as explained before\n- Loss rate per mile of kilometer. 0.2 (your currency) by default as explained before\n- Fuel price per mile of kilometer of your previous car (or a generic on equivalent to your actual Tesla)\n  \n  To calculate the cost per miles/kilometer of your car, you first need to determine how much it consumes in liters per 100 miles/kilometers. Then you can divide Consumption by mileage.\n\n  For example: let's say a car consumes 6 liters per 100km and the fuel costs 1.8€ per liter, we can calculate the actual consumption: 6/100 = 0.06 L/km\n  \n  Now, to determine the cost per kilometer, we multiply the actual consumption by the price of a liter of fuel (use your currency). For example 0.06L/km × 1.8€/L =0.108€/km (use miles or kms).\n  \n  Therefore, the cost per kilometer for your car would be approximately 0.108€. That's the value expected on the Fuel price textbox.\n\n## Data shown in the table\n\n- **Period**: Could be 'month' or 'year' dependig what you've selected in the drop down list. So if selected as 'month', its going to be the data accumulated from 1st month at which TeslaMate started logging data, So 1,2,3 will be the month numbers. If \"period\" is selcted as 'year', then its the year numbers.\n- **Mileage**: is the number of kms/miles (depending on your prefered length unit) the car has driven in that period.\n- **Energy Cost**: is the cost spent for electricity in that particular period.\n- **Cost per km or mi**  is *energy cost* / *Mileage*\n- **Cumulative Mileage** is the cumulative mileage for that particular period.\n- **Cumulative Cost** is the cumulative cost for electricity for that particular period.\n- **Depreciation per km or mi** is the depreciation by mileage explained at the begining.\n- **Depreciation per age** is the depreciation by time explained at the begining.\n- **Cumulative Savings** is running cost savings for driving an electric car when compared to a fossil fuel car, based on the value enter in the *Fuel price* textbox.\n- **Depreciated Car Value** is the estimated actual price based on the depreciation per age and mileage.  \n- **Depreciated Car Value + Savings** is simply adding *Depreciated Car Value* + *Cumulative Savings*. So the expectation is like when one can get the Break-Even for the money we put into buying the car by driving at a cheaper electricity cost when compared to driving a fossil fuel car.\n",
         "mode": "markdown"
       },
-      "pluginVersion": "11.2.3",
+      "pluginVersion": "11.4.0",
+      "title": "",
       "type": "text"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -740,22 +697,15 @@
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, RIGHT(vin, 6)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
-        "hide": 0,
+        "definition": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
         "includeAll": false,
         "label": "Car",
-        "multi": false,
         "name": "car_id",
         "options": [],
-        "query": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, RIGHT(vin, 6)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
+        "query": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "current": {},
@@ -766,19 +716,12 @@
         "definition": "select base_url from settings limit 1;",
         "hide": 2,
         "includeAll": false,
-        "label": "",
-        "multi": false,
         "name": "base_url",
         "options": [],
         "query": "select base_url from settings limit 1;",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "current": {},
@@ -789,29 +732,21 @@
         "definition": "select unit_of_length from settings limit 1;",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "length_unit",
         "options": [],
         "query": "select unit_of_length from settings limit 1;",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "auto": false,
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
-          "selected": false,
           "text": "year",
           "value": "year"
         },
-        "hide": 0,
         "name": "period",
         "options": [
           {
@@ -825,20 +760,16 @@
             "value": "year"
           }
         ],
-        "query": "month, year",
-        "queryValue": "",
+        "query": "month,year",
         "refresh": 2,
-        "skipUrlSync": false,
         "type": "interval"
       },
       {
         "current": {
-          "selected": false,
           "text": "40000",
           "value": "40000"
         },
         "description": "Cost of the car to be recovered over time",
-        "hide": 0,
         "label": "Cost of the car",
         "name": "car_cost",
         "options": [
@@ -849,17 +780,14 @@
           }
         ],
         "query": "40000",
-        "skipUrlSync": false,
         "type": "textbox"
       },
       {
         "current": {
-          "selected": false,
           "text": "20",
           "value": "20"
         },
         "description": "Depreciation percentage for age (first year %)",
-        "hide": 0,
         "label": "Depreciation percentage",
         "name": "depreciated_value",
         "options": [
@@ -870,17 +798,14 @@
           }
         ],
         "query": "20",
-        "skipUrlSync": false,
         "type": "textbox"
       },
       {
         "current": {
-          "selected": false,
           "text": "0.20",
           "value": "0.20"
         },
         "description": "Loss per mile or km driven",
-        "hide": 0,
         "label": "Loss rate per mileage",
         "name": "loss_rate",
         "options": [
@@ -891,17 +816,14 @@
           }
         ],
         "query": "0.20",
-        "skipUrlSync": false,
         "type": "textbox"
       },
       {
         "current": {
-          "selected": false,
           "text": "0.108",
           "value": "0.108"
         },
         "description": "Fuel price per mile or km driven on a combustion car",
-        "hide": 0,
         "label": "Fuel price",
         "name": "fuel_price",
         "options": [
@@ -912,7 +834,6 @@
           }
         ],
         "query": "0.108",
-        "skipUrlSync": false,
         "type": "textbox"
       }
     ]
@@ -923,18 +844,7 @@
   },
   "timepicker": {
     "hidden": true,
-    "refresh_intervals": [],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
+    "refresh_intervals": []
   },
   "timezone": "browser",
   "title": "Amortization Tracker",
