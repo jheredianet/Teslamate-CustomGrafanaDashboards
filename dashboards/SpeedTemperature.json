@@ -1327,8 +1327,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#5747ff",
-                "value": null
+                "color": "#5747ff"
               },
               {
                 "color": "#3a63fe",
@@ -1541,8 +1540,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1702,8 +1700,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1942,8 +1939,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-blue",
-                "value": null
+                "color": "dark-blue"
               },
               {
                 "color": "#EAB839",
@@ -2319,6 +2315,21 @@
         "name": "temp_unit",
         "options": [],
         "query": "select unit_of_temperature FROM settings LIMIT 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "definition": "SELECT base_url FROM settings LIMIT 1",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "base_url",
+        "options": [],
+        "query": "SELECT base_url FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
