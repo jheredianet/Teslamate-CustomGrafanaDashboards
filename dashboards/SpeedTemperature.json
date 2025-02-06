@@ -173,7 +173,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH SpeedData AS (\n  SELECT \n    speed,\n    temperature,\n    COUNT(*) as samples,\n    ROUND(AVG((power / speed) * 1000), 1) AS consumption\n  FROM (\n    SELECT \n      ROUND(convert_km(speed::numeric, '$length_unit') / ($speed_step * 1.0)) * $speed_step AS speed,\n      ROUND(AVG(convert_celsius(outside_temp, '$temp_unit') / ($temperature_step * 1.0)) OVER(ORDER BY date ROWS BETWEEN 50 PRECEDING AND 50 FOLLOWING)) * $temperature_step AS temperature,\n      power\n    FROM positions \n    WHERE $__timeFilter(date) AND car_id = $car_id AND speed > 0 AND (id % (100 / $datapoints)::integer = 0 OR outside_temp IS NOT NULL)\n  ) AS RawData\n  WHERE temperature IS NOT NULL AND speed > 0 \n  GROUP BY temperature, speed\n)\nSELECT\n  speed, temperature,\n  consumption, \n  (1000 * $current_capacity / consumption) AS range,\n  ROUND(100 * (samples * speed) / (SELECT SUM(speed * samples) FROM SpeedData), 3) AS distance_percentage,\n  ROUND((samples * speed) / (SELECT SUM(speed * samples) FROM SpeedData AS SampleData WHERE SampleData.temperature = SpeedData.temperature), 3) AS at_temperature_percentage\nFROM SpeedData \nWHERE consumption > 0 AND speed > 0 AND samples > (200*($datapoints/100.0)) ",
+          "rawSql": "WITH SpeedData AS (\n  SELECT \n    speed,\n    temperature,\n    COUNT(*) as samples,\n    ROUND(AVG((power / speed) * 1000), 1) AS consumption\n  FROM (\n    SELECT \n      ROUND(convert_km(speed::numeric, '$length_unit') / ($speed_step * 1.0)) * $speed_step AS speed,\n      ROUND(AVG(convert_celsius(outside_temp, '$temp_unit') / ($temperature_step * 1.0)) OVER(ORDER BY date ROWS BETWEEN 50 PRECEDING AND 50 FOLLOWING)) * $temperature_step AS temperature,\n      power\n    FROM positions \n    WHERE $__timeFilter(date) AND car_id = $car_id AND speed > 0 AND (id % (100 / $datapoints)::integer = 0 OR outside_temp IS NOT NULL)\n  ) AS RawData\n  WHERE temperature IS NOT NULL AND speed > 0 \n  GROUP BY temperature, speed\n)\nSELECT\n  speed, temperature,\n  consumption, \n  (1000 * $current_capacity / consumption) AS range,\n  ROUND(100 * (samples * speed) / (SELECT SUM(speed * samples) FROM SpeedData), 3) AS distance_percentage,\n  ROUND((samples * speed) / (SELECT SUM(speed * samples) FROM SpeedData AS SampleData WHERE SampleData.temperature = SpeedData.temperature), 3) AS at_temperature_percentage\nFROM SpeedData \nWHERE consumption > 0 AND speed > 0 AND samples > (200*($datapoints/100.0)) \nORDER BY speed",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1328,7 +1328,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#5747ff"
+                "color": "#5747ff",
+                "value": null
               },
               {
                 "color": "#3a63fe",
@@ -1541,7 +1542,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -2324,6 +2326,10 @@
       },
       {
         "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "TeslaMate"
+        },
         "definition": "SELECT base_url FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
@@ -2347,6 +2353,6 @@
   "timezone": "",
   "title": "Speed & Temperature",
   "uid": "jchm_9z40b",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
