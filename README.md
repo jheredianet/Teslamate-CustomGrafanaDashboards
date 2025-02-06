@@ -239,6 +239,12 @@ Likewise, you can see the Top speeds you reached and how long it lasted.
 
 ![Speed Rates](./screenshots/SpeedRates.png)
 
+### [Speed & Temperature](./dashboards/SpeedTemperature.json)
+
+In this dashboard you can browse and analyse the car consumption by temperature in short and long stretches. This way you can see the average consumption depending on the temperature to better understand the efficiency of the car in cold or hot climates.
+
+![Speed Temperature](./screenshots/SpeedTemperature.png)
+
 ### [Tracking Drives](./dashboards/TrackingDrives.json)
 
 This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph
