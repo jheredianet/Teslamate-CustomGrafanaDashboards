@@ -240,11 +240,12 @@
           }
         ],
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -400,7 +401,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -501,7 +502,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -603,7 +604,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -705,7 +706,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -806,7 +807,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -908,7 +909,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -981,7 +982,7 @@
         "content": "#### DC Charing curves by Carrier\n\nTo analyse data with this dashboard, it's important that you \nhave Geo-Fences added related with the name of the carrier\nyou have recharged your car, or you may want to edit \nperiodically the **name** field of the **addresses** table,\nso that it contains its name. \n\nFor example, if **Teslamate** geolocates the name as \n*\"Esso Purley Way\"* you may modify it to \n*\"Esso Purley Way - IONITY\"* or *\"IONITY Esso Purley Way\"*, \nthen you can filter using\nthe textbox above as **IONITY** to show all the charging curves\nof all charging sessions at that carrier.",
         "mode": "markdown"
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "title": "",
       "type": "text"
     }

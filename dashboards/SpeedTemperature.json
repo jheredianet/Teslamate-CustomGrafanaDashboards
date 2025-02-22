@@ -1308,8 +1308,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#5747ff",
-                "value": null
+                "color": "#5747ff"
               },
               {
                 "color": "#3a63fe",
@@ -1523,8 +1522,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1685,8 +1683,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1926,8 +1923,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-blue",
-                "value": null
+                "color": "dark-blue"
               },
               {
                 "color": "#EAB839",
@@ -2194,7 +2190,10 @@
         "type": "custom"
       },
       {
-        "current": {},
+        "current": {
+          "text": "10",
+          "value": "10"
+        },
         "includeAll": false,
         "label": "Speed step",
         "name": "speed_step",
@@ -2219,7 +2218,10 @@
         "type": "custom"
       },
       {
-        "current": {},
+        "current": {
+          "text": "5",
+          "value": "5"
+        },
         "includeAll": false,
         "label": "Temperature step",
         "name": "temperature_step",

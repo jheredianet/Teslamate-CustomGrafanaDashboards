@@ -253,11 +253,12 @@
           }
         ],
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -562,11 +563,12 @@
           }
         ],
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -734,11 +736,12 @@
           "values": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -869,6 +872,7 @@
         "showValue": "auto",
         "stacking": "none",
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         },
@@ -876,7 +880,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
