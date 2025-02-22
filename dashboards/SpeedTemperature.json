@@ -1,43 +1,4 @@
 {
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "barchart",
-      "name": "Bar chart",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.2.3"
-    },
-    {
-      "type": "datasource",
-      "id": "grafana-postgresql-datasource",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "xychart",
-      "name": "XY Chart",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -58,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 1,
   "links": [
     {
       "asDropdown": false,
@@ -101,7 +62,6 @@
       "url": ""
     }
   ],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -163,7 +123,7 @@
           }
         ]
       },
-      "pluginVersion": "11.2.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -373,7 +333,7 @@
           }
         ]
       },
-      "pluginVersion": "11.2.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -573,7 +533,7 @@
           }
         ]
       },
-      "pluginVersion": "11.2.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -782,7 +742,7 @@
           }
         ]
       },
-      "pluginVersion": "11.2.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -981,6 +941,7 @@
           "valueSize": 23
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
@@ -989,7 +950,7 @@
         "xTickLabelRotation": -45,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1007,10 +968,19 @@
           "options": {
             "alias": "temperature_consumption",
             "binary": {
-              "left": "at_temperature_percentage",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "at_temperature_percentage"
+                }
+              },
               "operator": "*",
-              "reducer": "sum",
-              "right": "consumption"
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "consumption"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -1208,6 +1178,7 @@
           "valueSize": 23
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
@@ -1216,7 +1187,7 @@
         "xTickLabelRotation": -45,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1234,10 +1205,19 @@
           "options": {
             "alias": "",
             "binary": {
-              "left": "range",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "range"
+                }
+              },
               "operator": "*",
-              "reducer": "sum",
-              "right": "at_temperature_percentage"
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "at_temperature_percentage"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -1451,6 +1431,7 @@
           "valueSize": 23
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
@@ -1459,7 +1440,7 @@
         "xTickLabelRotation": -45,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1610,6 +1591,7 @@
           "valueSize": 22
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
@@ -1618,7 +1600,7 @@
         "xTickLabelRotation": -45,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1703,7 +1685,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1819,12 +1802,13 @@
           }
         ],
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.2.3",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1942,7 +1926,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-blue"
+                "color": "dark-blue",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -2068,11 +2053,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -2082,7 +2069,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  start_date::date AS time,\n  consumption/(convert_km(distance::numeric, '$length_unit')/100) AS consumption\nFROM (\n  SELECT \n    start_date,\n    SUM(distance*consumption/100) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS consumption,\n    SUM(distance) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS distance\n  FROM (\n    SELECT \n      start_date, SUM(distance) AS distance, \n      SUM(distance*consumption)/SUM(distance) AS consumption\n    FROM (\n      SELECT \n        TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,\n        (end_km-start_km) AS distance,\n        (NULLIF(GREATEST(start_rated_range_km - end_rated_range_km, 0), 0)*cars.efficiency * (1000/distance)) AS consumption\n      FROM \n        drives JOIN cars ON drives.car_id = cars.id  WHERE drives.car_id = 1 \n    ) S1 WHERE consumption > 0 GROUP BY start_date ORDER BY start_date ASC\n  ) S2 GROUP BY start_date, distance, consumption ORDER BY start_date\n) S3 ORDER BY start_date\n          ",
+          "rawSql": "SELECT \n  start_date::date AS time,\n  consumption/(convert_km(distance::numeric, '$length_unit')/100) AS consumption\nFROM (\n  SELECT \n    start_date,\n    SUM(distance*consumption/100) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS consumption,\n    SUM(distance) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS distance\n  FROM (\n    SELECT \n      start_date, SUM(distance) AS distance, \n      SUM(distance*consumption)/SUM(distance) AS consumption\n    FROM (\n      SELECT \n        TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,\n        (end_km-start_km) AS distance,\n        (NULLIF(GREATEST(start_rated_range_km - end_rated_range_km, 0), 0)*cars.efficiency * (1000/distance)) AS consumption\n      FROM \n        drives JOIN cars ON drives.car_id = cars.id  WHERE drives.car_id = $car_id\n    ) S1 WHERE consumption > 0 GROUP BY start_date ORDER BY start_date ASC\n  ) S2 GROUP BY start_date, distance, consumption ORDER BY start_date\n) S3 ORDER BY start_date\n          ",
           "refId": "A",
           "sql": {
             "columns": [
@@ -2111,7 +2098,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  start_date::date as time,\n  ROUND(convert_celsius(temperature, '$temp_unit')) AS temperature_$temp_unit\nFROM (\n  SELECT \n    start_date,\n    AVG(temperature) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS temperature\n  FROM (\n    SELECT \n      start_date, avg(temperature) as temperature\n    FROM \n      (\n        SELECT \n          to_char(start_date, 'YYYY-MM-DD') as start_date,\n          --(end_km-start_km) as distance,\n          outside_temp_avg as temperature\n        FROM \n          drives join cars on drives.car_id = cars.id  where drives.car_id = 1 \n      ) S1 group by start_date order by start_date asc\n  ) S2 group by start_date, temperature order by start_date\n) S3 order by start_date",
+          "rawSql": "SELECT \n  start_date::date as time,\n  ROUND(convert_celsius(temperature, '$temp_unit')) AS temperature_$temp_unit\nFROM (\n  SELECT \n    start_date,\n    AVG(temperature) OVER(ORDER BY start_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS temperature\n  FROM (\n    SELECT \n      start_date, avg(temperature) as temperature\n    FROM \n      (\n        SELECT \n          to_char(start_date, 'YYYY-MM-DD') as start_date,\n          --(end_km-start_km) as distance,\n          outside_temp_avg as temperature\n        FROM \n          drives join cars on drives.car_id = cars.id  where drives.car_id = $car_id\n      ) S1 group by start_date order by start_date asc\n  ) S2 group by start_date, temperature order by start_date\n) S3 order by start_date",
           "refId": "B",
           "sql": {
             "columns": [
@@ -2136,8 +2123,9 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -2150,17 +2138,13 @@
           "uid": "TeslaMate"
         },
         "definition": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC",
-        "hide": 0,
         "includeAll": false,
         "label": "Car",
-        "multi": false,
         "name": "car_id",
         "options": [],
         "query": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
@@ -2172,26 +2156,17 @@
         "definition": "WITH Aux AS\n(SELECT car_id,\n\t\tCOALESCE(efficiency, \n\t\t(SELECT efficiency\n\t\t\tFROM cars WHERE id = $car_id) * 100) AS efficiency\n\tFROM (\n\t\tSELECT ROUND((charge_energy_added / NULLIF(end_rated_range_km - start_rated_range_km, 0))::numeric, 3) * 100 as efficiency,\n\t\t\tCOUNT(*) as count, $car_id AS car_id \n\t\tFROM charging_processes\n\t\tWHERE car_id = $car_id\n\t\t\tAND duration_min > 10\n\t\t\tAND end_battery_level <= 95\n\t\t\tAND start_rated_range_km IS NOT NULL\n\t\t\tAND end_rated_range_km IS NOT NULL\n\t\t\tAND charge_energy_added > 0\n\t\tGROUP BY 1\n\t\tORDER BY 2 DESC\n\t\tLIMIT 1\n\t) AS DerivatedEfficiency\n),\nCurrentCapacity\t AS\n(\n\tSELECT AVG(Capacity) AS Capacity\nFROM (\nSELECT \n\tc.rated_battery_range_km * aux.efficiency / c.usable_battery_level AS Capacity\n\tFROM charging_processes cp\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id \n                INNER JOIN aux ON cp.car_id = aux.car_id\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.charge_energy_added >= aux.efficiency\n\t\tAND c.usable_battery_level > 0\n\t ORDER BY cp.end_date DESC LIMIT 10) AS lastCharges\n)\nSELECT Capacity FROM CurrentCapacity",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "current_capacity",
         "options": [],
         "query": "WITH Aux AS\n(SELECT car_id,\n\t\tCOALESCE(efficiency, \n\t\t(SELECT efficiency\n\t\t\tFROM cars WHERE id = $car_id) * 100) AS efficiency\n\tFROM (\n\t\tSELECT ROUND((charge_energy_added / NULLIF(end_rated_range_km - start_rated_range_km, 0))::numeric, 3) * 100 as efficiency,\n\t\t\tCOUNT(*) as count, $car_id AS car_id \n\t\tFROM charging_processes\n\t\tWHERE car_id = $car_id\n\t\t\tAND duration_min > 10\n\t\t\tAND end_battery_level <= 95\n\t\t\tAND start_rated_range_km IS NOT NULL\n\t\t\tAND end_rated_range_km IS NOT NULL\n\t\t\tAND charge_energy_added > 0\n\t\tGROUP BY 1\n\t\tORDER BY 2 DESC\n\t\tLIMIT 1\n\t) AS DerivatedEfficiency\n),\nCurrentCapacity\t AS\n(\n\tSELECT AVG(Capacity) AS Capacity\nFROM (\nSELECT \n\tc.rated_battery_range_km * aux.efficiency / c.usable_battery_level AS Capacity\n\tFROM charging_processes cp\n\t\tINNER JOIN charges c\n\t\tON c.charging_process_id = cp.id \n                INNER JOIN aux ON cp.car_id = aux.car_id\n\tWHERE cp.car_id = $car_id\n\t\tAND cp.end_date IS NOT NULL\n\t\tAND cp.charge_energy_added >= aux.efficiency\n\t\tAND c.usable_battery_level > 0\n\t ORDER BY cp.end_date DESC LIMIT 10) AS lastCharges\n)\nSELECT Capacity FROM CurrentCapacity",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "100%",
-          "value": "100"
-        },
-        "hide": 0,
+        "current": {},
         "includeAll": false,
         "label": "Used datapoints",
-        "multi": false,
         "name": "datapoints",
         "options": [
           {
@@ -2216,20 +2191,12 @@
           }
         ],
         "query": "100% : 100, 50% : 50, 20% : 20, 10% : 10",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "10",
-          "value": "10"
-        },
-        "hide": 0,
+        "current": {},
         "includeAll": false,
         "label": "Speed step",
-        "multi": false,
         "name": "speed_step",
         "options": [
           {
@@ -2249,20 +2216,12 @@
           }
         ],
         "query": "20, 10, 5",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "5",
-          "value": "5"
-        },
-        "hide": 0,
+        "current": {},
         "includeAll": false,
         "label": "Temperature step",
-        "multi": false,
         "name": "temperature_step",
         "options": [
           {
@@ -2282,8 +2241,6 @@
           }
         ],
         "query": "10, 5, 2.5",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
@@ -2295,14 +2252,11 @@
         "definition": "SELECT unit_of_length FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "length_unit",
         "options": [],
         "query": "SELECT unit_of_length FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
@@ -2314,14 +2268,11 @@
         "definition": "select unit_of_temperature FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "temp_unit",
         "options": [],
         "query": "select unit_of_temperature FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
@@ -2333,14 +2284,11 @@
         "definition": "SELECT base_url FROM settings LIMIT 1",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "base_url",
         "options": [],
         "query": "SELECT base_url FROM settings LIMIT 1",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       }
     ]
@@ -2353,6 +2301,6 @@
   "timezone": "",
   "title": "Speed & Temperature",
   "uid": "jchm_9z40b",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
