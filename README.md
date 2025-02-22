@@ -270,10 +270,11 @@ If you are able to contibute or improve this project, please fork the repository
 ### Steps to create a pull request
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/NewFeature`)
-3. Commit your Changes (`git commit -m 'Add some NewFeature'`)
-4. Push to the Branch (`git push origin feature/NewFeature`)
-5. Open a Pull Request
+2. Change to the "develop" Branch (`git checkout develop`)
+3. Create your Feature Branch (`git checkout -b feature/NewFeature`)
+4. Commit your Changes (`git commit -m 'Add some NewFeature'`)
+5. Push to the Branch (`git push origin feature/NewFeature`)
+6. Open a Pull Request
 
 Do not take the dashboards much less upload or merge them to other repositories as if the original idea were yours, nor do you share it on social media without mentioning the author. Please, **respect the ingenuity and work of others**. Enjoy!
 
