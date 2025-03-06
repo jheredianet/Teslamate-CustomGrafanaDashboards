@@ -1,4 +1,37 @@
 {
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.2.3"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-postgresql-datasource",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "xychart",
+      "name": "XY Chart",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -19,7 +52,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 1,
+  "id": null,
   "links": [
     {
       "icon": "dashboard",
@@ -253,7 +286,6 @@
           }
         ],
         "tooltip": {
-          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
@@ -563,7 +595,6 @@
           }
         ],
         "tooltip": {
-          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
@@ -582,7 +613,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  c.battery_level as \"SOC\",\r\n  round(avg(c.charger_power), 0) as \"Power\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\",\r\n  p.start_date as \"start_date\",\r\n  p.end_date as \"end_date\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND c.battery_level >= $filter_soc_from AND c.battery_level <= $filter_soc_to\r\n AND charger_power >= $filter_power_from AND charger_power <= $filter_power_to\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) NOT ILIKE '%supercharger%' \r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, p.start_date, p.end_date, to_char(c.date, 'YYYY-MM-dd')",
+          "rawSql": "SELECT\r\n  c.battery_level as \"SOC\",\r\n  round(avg(c.charger_power), 0) as \"Power\",\r\n  c.charging_process_id as \"charging_process_id\",\r\n  COALESCE(g.name, a.name) || ' ' || to_char(c.date, 'YYYY-MM-dd') as \"Charge\",\r\n  p.start_date as \"start_date\",\r\n  p.end_date as \"end_date\"\r\nFROM\r\n  charges c\r\nJOIN charging_processes p ON p.id = c.charging_process_id \r\nJOIN addresses a ON a.id = p.address_id\r\nLEFT JOIN geofences g ON g.id = p.geofence_id\r\nWHERE\r\n  $__timeFilter(date)\r\n AND p.car_id = $car_id\r\n AND c.battery_level >= $filter_soc_from AND c.battery_level <= $filter_soc_to\r\n AND charger_power >= $filter_power_from AND charger_power <= $filter_power_to\r\n AND c.fast_charger_present\r\n AND COALESCE(g.name, a.name) NOT ILIKE '%supercharger%' OR COALESCE(g.name, a.name) IS NULL\r\nGROUP BY c.battery_level, c.charging_process_id, a.name, g.name, p.start_date, p.end_date, to_char(c.date, 'YYYY-MM-dd')",
           "refId": "A",
           "select": [
             [
@@ -736,7 +767,6 @@
           "values": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
@@ -776,7 +806,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "piechart"
     },
     {
@@ -872,7 +901,6 @@
         "showValue": "auto",
         "stacking": "none",
         "tooltip": {
-          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         },
@@ -917,7 +945,6 @@
       "type": "barchart"
     }
   ],
-  "preload": false,
   "refresh": "",
   "schemaVersion": 40,
   "tags": [
@@ -932,13 +959,17 @@
           "uid": "TeslaMate"
         },
         "definition": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
+        "hide": 0,
         "includeAll": false,
         "label": "Car",
+        "multi": false,
         "name": "car_id",
         "options": [],
         "query": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -950,11 +981,14 @@
         "definition": "select base_url from settings limit 1;",
         "hide": 2,
         "includeAll": false,
+        "multi": false,
         "name": "base_url",
         "options": [],
         "query": "select base_url from settings limit 1;",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "type": "query"
       },
       {
@@ -962,6 +996,7 @@
           "text": "0",
           "value": "0"
         },
+        "hide": 0,
         "label": "Power >=",
         "name": "filter_power_from",
         "options": [
@@ -972,6 +1007,7 @@
           }
         ],
         "query": "0",
+        "skipUrlSync": false,
         "type": "textbox"
       },
       {
@@ -979,6 +1015,7 @@
           "text": "260",
           "value": "260"
         },
+        "hide": 0,
         "label": "Power <=",
         "name": "filter_power_to",
         "options": [
@@ -989,6 +1026,7 @@
           }
         ],
         "query": "260",
+        "skipUrlSync": false,
         "type": "textbox"
       },
       {
@@ -996,6 +1034,7 @@
           "text": "0",
           "value": "0"
         },
+        "hide": 0,
         "label": "SOC >=",
         "name": "filter_soc_from",
         "options": [
@@ -1006,6 +1045,7 @@
           }
         ],
         "query": "0",
+        "skipUrlSync": false,
         "type": "textbox"
       },
       {
@@ -1013,6 +1053,7 @@
           "text": "100",
           "value": "100"
         },
+        "hide": 0,
         "label": "SOC <=",
         "name": "filter_soc_to",
         "options": [
@@ -1023,6 +1064,7 @@
           }
         ],
         "query": "100",
+        "skipUrlSync": false,
         "type": "textbox"
       }
     ]
@@ -1035,6 +1077,6 @@
   "timezone": "",
   "title": "Charging Curve Stats",
   "uid": "jchmXpkIkhmRz",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
