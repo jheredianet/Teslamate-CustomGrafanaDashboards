@@ -195,7 +195,7 @@ Additionally, you can see the states stats of the selected period.
 
 ### [Database Information](./dashboards/CurrentState.json)
 
-Unlike the other dashboards, this is a specific one to view database information: size, number of records, indexes, and generic information on drives and charges.
+This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the name **Database Information**.
 
 ![Database Information](./screenshots/DatabaseInfo.png)
 
