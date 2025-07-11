@@ -117,7 +117,7 @@ The following steps let you import the JSON files into your setup if you don't w
 
 ## Tips on Dashboards
 
-Have in mind that each dashboard may have an "Information" icon (as shown in the following image). If you point on it, you'll have aditional information on the current panel. Try to check it while you are browsing or analizing your data.
+Have in mind that each dashboard may have an "Information" icon (as shown in the following image). If you point on it, you'll have aditional information on the current panel. Try to check it while you are browsing or analyzing your data.
 
 ![InfoIcon](./screenshots/help/infoicon.png)
 ___
@@ -220,7 +220,7 @@ With this dashboard you may find your incomplete drives or charges that have bee
 
 ### [Range Degradation](./dashboards/RangeDegradation.json)
 
-In this dashboard you may analize your mileage and the range degradation by a selected period.
+In this dashboard you may analyze your mileage and the range degradation by a selected period.
 
 So you may have an idea of how much of range is lost as well as if there were any failure in Teslamate logging your data.  
 
@@ -228,7 +228,7 @@ So you may have an idea of how much of range is lost as well as if there were an
 
 ### [Mileage Stats](./dashboards/MileageStats.json)
 
-With this dashboard you may analize your mileage and number of drives by year, month, week or day.
+With this dashboard you may analyze your mileage and number of drives by year, month, week or day.
 
 The dashboard shows a table with the selected period, time driven, distance, number of drives and efficiency then a bar chart to have a better look for comparison.  
 
@@ -249,8 +249,8 @@ In this dashboard you can browse and analyse the car consumption by temperature 
 
 ### [Tracking Drives](./dashboards/TrackingDrives.json)
 
-This dashboard is meant to analize a drive based on a date you select, then you can pass the pointer over the lines in graph
-to see data details and a blue point in the map tranking the route. With this option you can analized a specific point location in the map,
+This dashboard is meant to analyze a drive based on a date you select, then you can pass the pointer over the lines in graph
+to see data details and a blue point in the map tranking the route. With this option you can analyze a specific point location in the map,
 to see the speed, power, SOC, elevation and if battery heater was on.
 
 Be aware that the drive you select in the dropdown list from the top could be outside the time range of the Timeline graph,
