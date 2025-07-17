@@ -2340,12 +2340,12 @@
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
         },
-        "definition": "SELECT\n    AVG(Capacity) AS Capacity\nFROM (\n    SELECT \n        c.rated_battery_range_km * $efficiency / c.usable_battery_level AS Capacity\n    FROM charging_processes cp\n        INNER JOIN charges c ON c.charging_process_id = cp.id \n    WHERE\n        cp.car_id = $car_id\n        AND cp.end_date IS NOT NULL\n        AND cp.charge_energy_added >= $efficiency\n        AND c.usable_battery_level > 0\n    ORDER BY cp.end_date DESC, cp.date DESC\n    LIMIT 100\n)",
+        "definition": "SELECT\n    AVG(Capacity) AS Capacity\nFROM (\n    SELECT \n        c.rated_battery_range_km * $efficiency / c.usable_battery_level AS Capacity\n    FROM charging_processes cp\n        INNER JOIN charges c ON c.charging_process_id = cp.id \n    WHERE\n        cp.car_id = $car_id\n        AND cp.end_date IS NOT NULL\n        AND cp.charge_energy_added >= $efficiency\n        AND c.usable_battery_level > 0\n    ORDER BY cp.end_date DESC\n    LIMIT 100\n)",
         "hide": 2,
         "includeAll": false,
         "name": "BatteryCapacity",
         "options": [],
-        "query": "SELECT\n    AVG(Capacity) AS Capacity\nFROM (\n    SELECT \n        c.rated_battery_range_km * $efficiency / c.usable_battery_level AS Capacity\n    FROM charging_processes cp\n        INNER JOIN charges c ON c.charging_process_id = cp.id \n    WHERE\n        cp.car_id = $car_id\n        AND cp.end_date IS NOT NULL\n        AND cp.charge_energy_added >= $efficiency\n        AND c.usable_battery_level > 0\n    ORDER BY cp.end_date DESC, cp.date DESC\n    LIMIT 100\n)",
+        "query": "SELECT\n    AVG(Capacity) AS Capacity\nFROM (\n    SELECT \n        c.rated_battery_range_km * $efficiency / c.usable_battery_level AS Capacity\n    FROM charging_processes cp\n        INNER JOIN charges c ON c.charging_process_id = cp.id \n    WHERE\n        cp.car_id = $car_id\n        AND cp.end_date IS NOT NULL\n        AND cp.charge_energy_added >= $efficiency\n        AND c.usable_battery_level > 0\n    ORDER BY cp.end_date DESC\n    LIMIT 100\n)",
         "refresh": 2,
         "regex": "",
         "type": "query"
