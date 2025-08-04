@@ -1176,9 +1176,11 @@
       "maxDataPoints": 50000,
       "options": {
         "basemap": {
-          "config": {},
+          "config": {
+            "url": "https://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"
+          },
           "name": "Layer 0",
-          "type": "osm-standard"
+          "type": "xyz"
         },
         "controls": {
           "mouseWheelZoom": true,
