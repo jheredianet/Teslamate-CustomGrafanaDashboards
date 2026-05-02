@@ -1,0 +1,215 @@
+name: Raw SQL Diff
+
+on:
+  pull_request:
+    paths:
+      - 'dashboards/*.json'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  rawsql-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Comment rawSql diffs
+        uses: actions/github-script@v7
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const cp = require('child_process');
+
+            const pr = context.payload.pull_request;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const marker = '<!-- rawsql-diff-comment -->';
+
+            function getChangedDashboardFiles() {
+              const files = [];
+              let page = 1;
+              return (async () => {
+                while (true) {
+                  const resp = await github.rest.pulls.listFiles({
+                    owner,
+                    repo,
+                    pull_number: pr.number,
+                    per_page: 100,
+                    page,
+                  });
+
+                  if (resp.data.length === 0) break;
+
+                  for (const file of resp.data) {
+                    if (file.filename.startsWith('dashboards/') && file.filename.endsWith('.json')) {
+                      files.push(file.filename);
+                    }
+                  }
+
+                  if (resp.data.length < 100) break;
+                  page += 1;
+                }
+                return files;
+              })();
+            }
+
+            function readGitFile(sha, filename) {
+              try {
+                return cp.execSync(`git show ${sha}:${filename}`, { encoding: 'utf8' });
+              } catch {
+                return null;
+              }
+            }
+
+            function collectRawSql(obj, acc = []) {
+              if (Array.isArray(obj)) {
+                for (const item of obj) collectRawSql(item, acc);
+                return acc;
+              }
+              if (obj && typeof obj === 'object') {
+                for (const [key, value] of Object.entries(obj)) {
+                  if (key === 'rawSql' && typeof value === 'string') {
+                    acc.push(value.replace(/\r\n/g, '\n'));
+                  } else {
+                    collectRawSql(value, acc);
+                  }
+                }
+              }
+              return acc;
+            }
+
+            function splitLines(text) {
+              return text.split('\n');
+            }
+
+            function diffLines(before, after) {
+              const a = splitLines(before);
+              const b = splitLines(after);
+              const n = a.length;
+              const m = b.length;
+              const dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+
+              for (let i = n - 1; i >= 0; i--) {
+                for (let j = m - 1; j >= 0; j--) {
+                  dp[i][j] = a[i] === b[j]
+                    ? dp[i + 1][j + 1] + 1
+                    : Math.max(dp[i + 1][j], dp[i][j + 1]);
+                }
+              }
+
+              let i = 0;
+              let j = 0;
+              const out = [];
+
+              while (i < n && j < m) {
+                if (a[i] === b[j]) {
+                  out.push(`  ${a[i]}`);
+                  i += 1;
+                  j += 1;
+                } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+                  out.push(`- ${a[i]}`);
+                  i += 1;
+                } else {
+                  out.push(`+ ${b[j]}`);
+                  j += 1;
+                }
+              }
+
+              while (i < n) {
+                out.push(`- ${a[i]}`);
+                i += 1;
+              }
+              while (j < m) {
+                out.push(`+ ${b[j]}`);
+                j += 1;
+              }
+
+              return out.join('\n');
+            }
+
+            function computeRawSqlDiffs(baseContent, headContent) {
+              const baseJson = JSON.parse(baseContent);
+              const headJson = JSON.parse(headContent);
+              const baseSql = collectRawSql(baseJson);
+              const headSql = collectRawSql(headJson);
+
+              const max = Math.max(baseSql.length, headSql.length);
+              const diffs = [];
+
+              for (let idx = 0; idx < max; idx++) {
+                const before = baseSql[idx] ?? '';
+                const after = headSql[idx] ?? '';
+                if (before !== after) {
+                  diffs.push({
+                    index: idx + 1,
+                    diff: diffLines(before, after),
+                  });
+                }
+              }
+              return diffs;
+            }
+
+            const files = await getChangedDashboardFiles();
+
+            const sections = [];
+            for (const file of files) {
+              const baseContent = readGitFile(process.env.BASE_SHA, file);
+              const headContent = readGitFile(process.env.HEAD_SHA, file);
+
+              if (!baseContent || !headContent) continue;
+
+              let diffs;
+              try {
+                diffs = computeRawSqlDiffs(baseContent, headContent);
+              } catch (err) {
+                sections.push(`### ${file}\nUnable to parse dashboard JSON: ${err.message}`);
+                continue;
+              }
+
+              if (diffs.length === 0) continue;
+
+              const rendered = diffs.map(d => `#### rawSql #${d.index}\n\n\`\`\`diff\n${d.diff}\n\`\`\``).join('\n\n');
+              sections.push(`### ${file}\n${rendered}`);
+            }
+
+            const body = sections.length
+              ? `${marker}\n## rawSql line-by-line diff\n\n${sections.join('\n\n')}`
+              : `${marker}\nNo rawSql changes detected in modified dashboards.`;
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number: pr.number,
+              per_page: 100,
+            });
+
+            const existing = comments.find(c =>
+              c.user.type === 'Bot' &&
+              c.body &&
+              c.body.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: pr.number,
+                body,
+              });
+            }
