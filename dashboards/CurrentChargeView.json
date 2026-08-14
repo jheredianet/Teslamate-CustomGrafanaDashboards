@@ -1426,7 +1426,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Current"
+              "options": "AC Input Current"
             },
             "properties": [
               {
@@ -1443,6 +1443,7 @@
         "x": 12,
         "y": 10
       },
+      "description": "AC input current reported by the vehicle's onboard charger. DC fast charging does not expose battery-pack current through this field, so no value is shown.",
       "id": 49,
       "options": {
         "colorMode": "value",
@@ -1474,7 +1475,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(case when charger_voltage > 2 then charger_actual_current else ((2.85 + (usable_battery_level * 0.013)) * 96) * charger_power / 100 end) as \"Current\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(CASE WHEN charger_power > 0 AND charger_phases >= 1 AND charger_actual_current > 0 THEN charger_actual_current END) AS \"AC Input Current\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
           "refId": "Current",
           "select": [
             [
@@ -1529,6 +1530,7 @@
         "x": 15,
         "y": 10
       },
+      "description": "AC input voltage reported by the vehicle's onboard charger. DC fast charging does not expose battery-pack voltage through this field, so no value is shown.",
       "id": 47,
       "options": {
         "colorMode": "value",
@@ -1540,7 +1542,7 @@
           "calcs": [
             "mean"
           ],
-          "fields": "/^Volt$/",
+          "fields": "/^AC Input Voltage$/",
           "values": false
         },
         "showPercentChange": false,
@@ -1559,7 +1561,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(case when charger_voltage > 2 then charger_voltage else charger_power / GREATEST(0.1, (((2.85 + (usable_battery_level * 0.013)) * 96.0) * charger_power / 100.0)) * 1000.0 end) as \"Volt\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
+          "rawSql": "SELECT $__timeGroupAlias(date,$__interval), avg(CASE WHEN charger_power > 0 AND charger_phases >= 1 AND charger_voltage > 2 THEN charger_voltage END) AS \"AC Input Voltage\" FROM charges WHERE charging_process_id = $charging_processes AND $__timeFilter(date) GROUP BY 1 ORDER BY 1 ",
           "refId": "Voltage",
           "select": [
             [
