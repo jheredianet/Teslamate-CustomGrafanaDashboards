@@ -19,7 +19,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
   "links": [
     {
       "asDropdown": true,
@@ -81,8 +80,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
-                "value": null
+                "color": "dark-red"
               },
               {
                 "color": "semi-dark-green",
@@ -189,7 +187,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "bargauge"
     },
     {
@@ -210,8 +207,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
-                "value": null
+                "color": "dark-red"
               },
               {
                 "color": "dark-green",
@@ -318,7 +314,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "bargauge"
     },
     {
@@ -341,8 +336,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
-                "value": null
+                "color": "light-orange"
               }
             ]
           },
@@ -429,15 +423,10 @@
           ]
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
       "description": "Load this dashboard to while you are in a charging session. When you open this dashboard it will show the last 15 minutes, but you should click the \"Current Charge\" button at the top right corner, to enter in Kiosk mode:\n\n- If you are charging, you will see the information from the start time of the current charge session until now and it will refesh automatically every 30 seconds.\n\n- If you are just browsing (not charging) you will see the information of the last charge session.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 4,
         "w": 3,
@@ -455,7 +444,6 @@
         "mode": "html"
       },
       "pluginVersion": "11.5.2",
-      "title": "",
       "type": "text"
     },
     {
@@ -478,8 +466,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
-                "value": null
+                "color": "light-orange"
               }
             ]
           },
@@ -565,8 +552,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
-                "value": null
+                "color": "super-light-blue"
               }
             ]
           }
@@ -631,7 +617,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
@@ -682,8 +667,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -823,7 +807,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "timeseries"
     },
     {
@@ -843,8 +826,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -952,7 +934,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
@@ -968,8 +949,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
-                "value": null
+                "color": "super-light-blue"
               }
             ]
           },
@@ -1076,7 +1056,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
@@ -1102,8 +1081,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1284,7 +1262,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "geomap"
     },
     {
@@ -1303,8 +1280,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1405,6 +1381,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
+      "description": "AC input current reported by the vehicle's onboard charger. DC fast charging does not expose battery-pack current through this field, so no value is shown.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1416,8 +1393,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1443,7 +1419,6 @@
         "x": 12,
         "y": 10
       },
-      "description": "AC input current reported by the vehicle's onboard charger. DC fast charging does not expose battery-pack current through this field, so no value is shown.",
       "id": 49,
       "options": {
         "colorMode": "value",
@@ -1497,7 +1472,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
@@ -1505,6 +1479,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
+      "description": "AC input voltage reported by the vehicle's onboard charger. DC fast charging does not expose battery-pack voltage through this field, so no value is shown.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1515,8 +1490,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1530,7 +1504,6 @@
         "x": 15,
         "y": 10
       },
-      "description": "AC input voltage reported by the vehicle's onboard charger. DC fast charging does not expose battery-pack voltage through this field, so no value is shown.",
       "id": 47,
       "options": {
         "colorMode": "value",
@@ -1583,7 +1556,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
@@ -1602,8 +1574,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1670,7 +1641,6 @@
           ]
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
@@ -1690,8 +1660,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "orange",
-                "value": null
+                "color": "orange"
               }
             ]
           }
@@ -1982,8 +1951,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2231,12 +2199,11 @@
           ]
         }
       ],
-      "title": "",
       "type": "stat"
     }
   ],
   "preload": false,
-  "schemaVersion": 40,
+  "schemaVersion": 42,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -2392,7 +2359,8 @@
   },
   "timezone": "",
   "title": "Current Charge View",
+  "weekStart": "",
+  "version": 3,
   "uid": "jchm9RxutVS7a",
-  "version": 2,
-  "weekStart": ""
+  "id": 12
 }
