@@ -19,7 +19,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 14,
   "links": [
     {
       "icon": "dashboard",
@@ -623,7 +622,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -720,6 +719,8 @@
   "timepicker": {},
   "timezone": "",
   "title": "Mileage Stats",
+  "weekStart": "",
+  "version": 9,
   "uid": "jchmNjtMTFx",
-  "version": 8
+  "id": 14
 }

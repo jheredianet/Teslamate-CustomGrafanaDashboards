@@ -79,8 +79,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow",
-                "value": null
+                "color": "light-yellow"
               }
             ]
           },
@@ -169,8 +168,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow",
-                "value": null
+                "color": "light-yellow"
               }
             ]
           },
@@ -259,8 +257,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow",
-                "value": null
+                "color": "light-yellow"
               }
             ]
           },
@@ -349,8 +346,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow",
-                "value": null
+                "color": "light-yellow"
               }
             ]
           },
@@ -443,8 +439,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           },
@@ -677,8 +672,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -793,8 +787,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -927,8 +920,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1062,8 +1054,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1178,8 +1169,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
-                "value": null
+                "color": "super-light-blue"
               }
             ]
           }
@@ -1268,8 +1258,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
-                "value": null
+                "color": "super-light-blue"
               }
             ]
           }
@@ -1358,8 +1347,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
-                "value": null
+                "color": "super-light-blue"
               }
             ]
           }
@@ -1448,8 +1436,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-blue",
-                "value": null
+                "color": "super-light-blue"
               }
             ]
           }
@@ -1539,8 +1526,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
-                "value": null
+                "color": "light-orange"
               }
             ]
           }
@@ -1626,8 +1612,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
-                "value": null
+                "color": "light-orange"
               }
             ]
           }
@@ -1711,8 +1696,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
-                "value": null
+                "color": "light-orange"
               }
             ]
           },
@@ -1846,8 +1830,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-orange",
-                "value": null
+                "color": "light-orange"
               }
             ]
           },
@@ -1998,8 +1981,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2159,8 +2141,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2320,8 +2301,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2481,8 +2461,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3630,7 +3609,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 42,
   "tags": [
     "TeslamateCustomDashboards"
   ],
@@ -3824,7 +3803,8 @@
   },
   "timezone": "",
   "title": "Charging Costs Stats",
+  "weekStart": "",
+  "version": 2,
   "uid": "jchmDdLe5uFVk",
-  "version": 1,
-  "weekStart": ""
+  "id": 11
 }
