@@ -131,13 +131,13 @@ Depreciating a car by its mileage can be done using various methods. A common ap
 
 ![Amortization Tracker](./screenshots/AmortizationTracker.png)
 
-### [Battery Health](./dashboards/BatteryHealth.json)
+### [Battery Health](https://docs.teslamate.org/docs/screenshots/#battery-health)
 
 This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the same name **Battery Health**.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
-### [Browse Charges](./dashboards/BrowseCharges.json)
+### [Browse Charges](https://docs.teslamate.org/docs/screenshots/#charges)
 
 This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the name **Charges**.
 
@@ -195,13 +195,13 @@ Additionally, you can see the states stats of the selected period.
 
 ![Current State](./screenshots/CurrentState.png)
 
-### [Database Information](./dashboards/CurrentState.json)
+### [Database Information](https://docs.teslamate.org/docs/screenshots/#database-information)
 
 This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the name **Database Information**.
 
 ![Database Information](./screenshots/DatabaseInfo.png)
 
-### [DC Charging Curves By Carrier](./dashboards/DC_ChargingCurvesByCarrier.json)
+### [DC Charging Curves By Carrier](./dashboards/DCChargingCurvesByCarrier.json)
 
 This dasboard is browse your DC charge sessions by charger carriers.
 
@@ -290,7 +290,7 @@ Do not take the dashboards much less upload or merge them to other repositories 
 
 ## Credits
 
-- Author: [Juan Carlos Heredia](https://infoinnova.net/contacto/)
+- Author: [Juan Carlos Heredia](https://infoinnova.net/about)
 - Based on/forked from [Adrian Kumpf](https://github.com/adriankumpf/teslamate) original code, with improvement of custom Grafana Dashboards (see [contributions history](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/graphs/contributors)).
 
 ## License
