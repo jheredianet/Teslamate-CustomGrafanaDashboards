@@ -96,3 +96,7 @@ ipch/
 *.opendb
 *.opensdf
 *.sdf
+
+# Python bytecode cache (scripts/)
+__pycache__/
+*.py[cod]

@@ -1,0 +1,30 @@
+name: Validate dashboards
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "dashboards/**"
+      - "scripts/validate_dashboards.py"
+      - ".github/workflows/validate-dashboards.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "dashboards/**"
+      - "scripts/validate_dashboards.py"
+      - ".github/workflows/validate-dashboards.yml"
+  workflow_dispatch:
+
+jobs:
+  static:
+    name: JSON and query conventions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Validate dashboards
+        run: python3 scripts/validate_dashboards.py --no-sql

@@ -278,6 +278,34 @@ If you are able to contibute or improve this project, please fork the repository
 5. Push to the Branch (`git push origin feature/NewFeature`)
 6. Open a Pull Request
 
+### Validating the dashboards before opening a pull request
+
+Hand editing these JSON files is error prone, so the repository ships a validator. Run it
+before committing:
+
+```bash
+# static checks: JSON, duplicated uids, declared variables, time zone conventions
+python3 scripts/validate_dashboards.py --no-sql
+
+# everything above, plus preparing every SQL statement against a real
+# TeslaMate database (nothing is executed, the queries are only parsed and planned)
+python3 scripts/validate_dashboards.py --docker database
+python3 scripts/validate_dashboards.py --dsn postgres://user:pass@host:5432/teslamate
+```
+
+The SQL level interpolates the Grafana variables and macros the same way Grafana does,
+so it catches the mistakes that would otherwise only show up when a panel is opened:
+a renamed or removed column, a bad join, a type error, a variable that is not declared.
+It needs a migrated TeslaMate schema, either the container of a local installation
+(`--docker`, with `--docker-user` and `--docker-db` if they are not `teslamate`) or any
+reachable PostgreSQL instance (`--dsn`). It refuses to run against a database that does
+not look like TeslaMate, and it only reads: every statement is prepared inside a
+transaction that is rolled back.
+
+The static checks are the ones that run in CI on every pull request
+(`.github/workflows/validate-dashboards.yml`), because they need no database. Warnings do
+not fail the build; add `--strict` if you want them to.
+
 ### Dates and time zones in the queries
 
 Date and time columns in TeslaMate (`start_date`, `end_date`, `date`, ...) are stored as
