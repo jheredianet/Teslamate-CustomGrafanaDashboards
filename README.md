@@ -278,6 +278,61 @@ If you are able to contibute or improve this project, please fork the repository
 5. Push to the Branch (`git push origin feature/NewFeature`)
 6. Open a Pull Request
 
+### Dates and time zones in the queries
+
+Date and time columns in TeslaMate (`start_date`, `end_date`, `date`, ...) are stored as
+`timestamp without time zone`, **always in UTC**. That single fact is behind almost every
+mistake made when editing these dashboards, because SQL cannot tell what a naive timestamp
+means: the same value behaves differently depending on the type it is given.
+
+| Value | Type | Meaning |
+| ----- | ---- | ------- |
+| As stored in the database | `timestamp` (naive) | A UTC wall clock. **Not** local time |
+| After `timezone('UTC', col)` | `timestamptz` | Still the same instant, now unambiguous |
+| After one more conversion to the dashboard zone | `timestamp` (naive) | Local wall clock. This is what `date_trunc` and `to_char` want |
+
+So when grouping a stored column by a local period, **convert it from UTC first**: if you pass
+the raw column straight to the dashboard time zone, the query silently treats a UTC value as if
+it were already local time, and rows near a month, week or day boundary land in the wrong
+bucket (up to 1-2 rows per year, which is why it is so easy to miss).
+
+```sql
+-- WRONG: treats the UTC value as if it were already local time
+date_trunc('month', timezone('$__timezone', start_date), '$__timezone')
+
+-- RIGHT: interpret the column as UTC, then convert to the dashboard time zone
+date_trunc('month', timezone('UTC', start_date), '$__timezone')
+```
+
+Two more details worth keeping in mind:
+
+- **Always quote `$__timezone`.** Grafana replaces it with the zone name without adding quotes
+  (for example `Europe/Madrid`), and `timezone(Europe/Madrid, ...)` is not valid SQL. Write
+  `'$__timezone'`, and remember that it may also return plain `utc`.
+- **When a value is already local** (the result of a `date_trunc`, or a column already
+  converted), do not convert it again. To turn it back into an instant use
+  `timezone('$__timezone', local_value)`; this is what the `date_to` columns of the period
+  tables do to build the links to other dashboards.
+
+An equivalent and sturdier spelling is `AT TIME ZONE`, which keeps the types explicit and does
+not depend on the server session time zone (the `timezone()` function returns a `timestamptz`,
+so any naive result derived from it depends on the session). Both work today because the Grafana
+container runs in UTC; prefer this one if you are adding new panels:
+
+```sql
+-- stored naive UTC -> local naive  (e.g. to group by local month)
+date_trunc('month', start_date AT TIME ZONE 'UTC' AT TIME ZONE '$__timezone')
+
+-- local naive -> instant, in milliseconds (e.g. for a data link)
+EXTRACT(EPOCH FROM (period AT TIME ZONE '$__timezone')) * 1000
+```
+
+Finally, remember that a single query must be consistent whether it groups by local time or by
+UTC, and that the pattern around it (`timezone('UTC', timezone('$__timezone', x))` and similar
+nested calls) is intentional, not a duplication: each call is a different direction of the
+conversion. Before changing one of these expressions, run the old and the new version against
+real data and compare the resulting buckets.
+
 Do not take the dashboards much less upload or merge them to other repositories as if the original idea were yours, nor do you share it on social media without mentioning the author. Please, **respect the ingenuity and work of others**. Enjoy!
 
 ## Donations
