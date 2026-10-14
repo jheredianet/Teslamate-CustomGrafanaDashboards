@@ -188,7 +188,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.0",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -300,7 +300,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -503,7 +503,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.0",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
