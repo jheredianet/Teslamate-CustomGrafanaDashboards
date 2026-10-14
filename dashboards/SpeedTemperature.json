@@ -2680,10 +2680,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "https://teslamate.infoinnova.net",
-          "value": "https://teslamate.infoinnova.net"
-        },
+        "current": {},
         "datasource": {
           "type": "grafana-postgresql-datasource",
           "uid": "TeslaMate"
