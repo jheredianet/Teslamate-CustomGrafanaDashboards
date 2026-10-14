@@ -12,7 +12,10 @@ Two levels of checking, both usable on their own:
    * every ``$variable`` used in a query is declared in the dashboard;
    * ``$__timezone`` is always quoted, and a stored (UTC) column is never
      passed straight to the dashboard time zone (see the README section
-     "Dates and time zones in the queries").
+     "Dates and time zones in the queries");
+   * every panel declares the same ``pluginVersion``, so that editing with
+     a newer Grafana does not silently stamp a different version on some
+     panels.
 
 2. SQL checks (only with ``--dsn`` or ``--docker``):
 
@@ -251,6 +254,36 @@ def used_variables(sql: str) -> set[str]:
     return {n for n in names if "." not in n}
 
 
+def check_panel_plugin_versions(loaded, report: Report) -> None:
+    """Every panel should declare the same Grafana version.
+
+    ``pluginVersion`` is metadata that Grafana stamps when a panel is saved
+    and never uses to migrate anything, but when the dashboards are edited
+    with different Grafana versions it drifts: a panel saved long ago keeps
+    an old value, which is misleading and turns a one line change into a
+    diff over many panels. See the README section on contributing.
+    """
+    versions: dict[str, list[str]] = {}
+    for name, dashboard in loaded:
+        for panel in walk_panels(dashboard.get("panels")):
+            version = panel.get("pluginVersion")
+            if version:
+                versions.setdefault(version, []).append(f"{name}: {panel.get('title')}")
+
+    if len(versions) <= 1:
+        return
+
+    majority = max(versions, key=lambda v: len(versions[v]))
+    for version, panels in sorted(versions.items()):
+        if version == majority:
+            continue
+        report.error(
+            "dashboards",
+            f"{len(panels)} panel(s) declare pluginVersion {version!r}, expected {majority!r}",
+            "panels: " + "; ".join(panels[:5]) + (" ..." if len(panels) > 5 else ""),
+        )
+
+
 def static_checks(root: str, report: Report) -> list[tuple[str, dict]]:
     files = sorted(glob.glob(os.path.join(root, "dashboards", "*.json")))
     if not files:
@@ -335,6 +368,7 @@ def static_checks(root: str, report: Report) -> list[tuple[str, dict]]:
                         f"wrap it first: timezone('UTC', {column})",
                     )
 
+    check_panel_plugin_versions(loaded, report)
     return loaded
 
 
