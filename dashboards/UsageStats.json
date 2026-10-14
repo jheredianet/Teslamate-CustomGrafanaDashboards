@@ -221,6 +221,10 @@
                   "fixedColor": "green",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "unit",
+                "value": "$currency"
               }
             ]
           },
@@ -279,7 +283,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH dr AS (\n  SELECT sum(d.distance) AS km, count(*) AS n, sum(d.duration_min) AS mins, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n), ch AS (\n  SELECT sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n)\nSELECT convert_km(dr.km::numeric, '$length_unit')                         AS \"distance_$length_unit\",\n       dr.n                                                    AS \"Drives\",\n       dr.mins * 60                                            AS \"Time driving\",\n       ch.kwh                                                  AS \"Energy charged\",\n       ch.cost                                                 AS \"Charging cost\",\n       dr.km * $ice_consumption / 100 * $fuel_price - ch.cost  AS \"Saved vs. combustion-engine car\",\n       dr.km * $ice_consumption / 100 * 2.31                   AS \"Tailpipe CO₂ avoided\",\n       dr.kwh_used * 1000 / NULLIF(convert_km(dr.km::numeric, '$length_unit'), 0) AS \"consumption_$length_unit\"\nFROM dr, ch",
+          "rawSql": "WITH dr AS (\n  SELECT sum(d.distance) AS km, count(*) AS n, sum(d.duration_min) AS mins, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n), ch AS (\n  SELECT sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n)\nSELECT convert_km(dr.km::numeric, '$length_unit')                         AS \"distance_$length_unit\",\n       dr.n                                                    AS \"Drives\",\n       dr.mins * 60                                            AS \"Time driving\",\n       ch.kwh                                                  AS \"Energy charged\",\n       ch.cost                                                 AS \"Charging cost\",\n       dr.km * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price - ch.cost  AS \"Saved vs. combustion-engine car\",\n       dr.km * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * 2.31                   AS \"Tailpipe CO₂ avoided\",\n       dr.kwh_used * 1000 / NULLIF(convert_km(dr.km::numeric, '$length_unit'), 0) AS \"consumption_$length_unit\"\nFROM dr, ch",
           "refId": "A"
         }
       ],
@@ -1841,7 +1845,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH dm AS (\n  SELECT date_trunc('month', timezone('UTC', d.start_date), '$__timezone') AS month,\n         sum(d.distance) AS km, count(*) AS drives, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n  GROUP BY 1\n), cm AS (\n  SELECT date_trunc('month', timezone('UTC', cp.start_date), '$__timezone') AS month,\n         sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n  GROUP BY 1\n)\nSELECT to_char(COALESCE(dm.month, cm.month) AT TIME ZONE '$__timezone', 'YYYY-MM')   AS \"Month\",\n       convert_km(COALESCE(dm.km, 0)::numeric, '$length_unit')                        AS \"distance_$length_unit\",\n       COALESCE(dm.drives, 0)                                              AS \"Drives\",\n       COALESCE(cm.kwh, 0)                                                 AS \"Energy charged\",\n       COALESCE(cm.cost, 0)                                                AS \"Charging cost\",\n       cm.cost * 100 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)          AS \"cost_per_100_$length_unit\",\n       dm.kwh_used * 1000 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)     AS \"consumption_$length_unit\",\n       COALESCE(dm.km, 0) * $ice_consumption / 100 * $fuel_price\n         - COALESCE(cm.cost, 0)                                            AS \"Saved vs. combustion-engine car\"\nFROM dm\nFULL JOIN cm ON cm.month = dm.month\nORDER BY 1",
+          "rawSql": "WITH dm AS (\n  SELECT date_trunc('month', timezone('UTC', d.start_date), '$__timezone') AS month,\n         sum(d.distance) AS km, count(*) AS drives, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n  GROUP BY 1\n), cm AS (\n  SELECT date_trunc('month', timezone('UTC', cp.start_date), '$__timezone') AS month,\n         sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n  GROUP BY 1\n)\nSELECT to_char(COALESCE(dm.month, cm.month) AT TIME ZONE '$__timezone', 'YYYY-MM')   AS \"Month\",\n       convert_km(COALESCE(dm.km, 0)::numeric, '$length_unit')                        AS \"distance_$length_unit\",\n       COALESCE(dm.drives, 0)                                              AS \"Drives\",\n       COALESCE(cm.kwh, 0)                                                 AS \"Energy charged\",\n       COALESCE(cm.cost, 0)                                                AS \"Charging cost\",\n       cm.cost * 100 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)          AS \"cost_per_100_$length_unit\",\n       dm.kwh_used * 1000 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)     AS \"consumption_$length_unit\",\n       COALESCE(dm.km, 0) * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price\n         - COALESCE(cm.cost, 0)                                            AS \"Saved vs. combustion-engine car\"\nFROM dm\nFULL JOIN cm ON cm.month = dm.month\nORDER BY 1",
           "refId": "A"
         }
       ],
@@ -2020,6 +2024,10 @@
                 "value": 2
               },
               {
+                "id": "unit",
+                "value": "$currency"
+              },
+              {
                 "id": "custom.cellOptions",
                 "value": {
                   "type": "color-text"
@@ -2085,7 +2093,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH dm AS (\n  SELECT date_trunc('month', timezone('UTC', d.start_date), '$__timezone') AS month,\n         sum(d.distance) AS km, count(*) AS drives, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n  GROUP BY 1\n), cm AS (\n  SELECT date_trunc('month', timezone('UTC', cp.start_date), '$__timezone') AS month,\n         sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n  GROUP BY 1\n)\nSELECT to_char(COALESCE(dm.month, cm.month) AT TIME ZONE '$__timezone', 'YYYY-MM')   AS \"Month\",\n       convert_km(COALESCE(dm.km, 0)::numeric, '$length_unit')                        AS \"distance_$length_unit\",\n       COALESCE(dm.drives, 0)                                              AS \"Drives\",\n       COALESCE(cm.kwh, 0)                                                 AS \"Energy charged\",\n       COALESCE(cm.cost, 0)                                                AS \"Charging cost\",\n       cm.cost * 100 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)          AS \"cost_per_100_$length_unit\",\n       dm.kwh_used * 1000 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)     AS \"consumption_$length_unit\",\n       COALESCE(dm.km, 0) * $ice_consumption / 100 * $fuel_price\n         - COALESCE(cm.cost, 0)                                            AS \"Savings\"\nFROM dm\nFULL JOIN cm ON cm.month = dm.month\nORDER BY 1",
+          "rawSql": "WITH dm AS (\n  SELECT date_trunc('month', timezone('UTC', d.start_date), '$__timezone') AS month,\n         sum(d.distance) AS km, count(*) AS drives, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n  GROUP BY 1\n), cm AS (\n  SELECT date_trunc('month', timezone('UTC', cp.start_date), '$__timezone') AS month,\n         sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n  GROUP BY 1\n)\nSELECT to_char(COALESCE(dm.month, cm.month) AT TIME ZONE '$__timezone', 'YYYY-MM')   AS \"Month\",\n       convert_km(COALESCE(dm.km, 0)::numeric, '$length_unit')                        AS \"distance_$length_unit\",\n       COALESCE(dm.drives, 0)                                              AS \"Drives\",\n       COALESCE(cm.kwh, 0)                                                 AS \"Energy charged\",\n       COALESCE(cm.cost, 0)                                                AS \"Charging cost\",\n       cm.cost * 100 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)          AS \"cost_per_100_$length_unit\",\n       dm.kwh_used * 1000 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)     AS \"consumption_$length_unit\",\n       COALESCE(dm.km, 0) * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price\n         - COALESCE(cm.cost, 0)                                            AS \"Savings\"\nFROM dm\nFULL JOIN cm ON cm.month = dm.month\nORDER BY 1",
           "refId": "A",
           "sql": {
             "columns": [
@@ -2208,7 +2216,7 @@
           "text": "1.55",
           "value": "1.55"
         },
-        "description": "Price of a litre of fuel for the comparison (use a dot as decimal separator)",
+        "description": "Price of a litre of fuel (use a dot as decimal separator). It is always per litre, also when the consumption is in MPG",
         "label": "Fuel price / L",
         "name": "fuel_price",
         "options": [
@@ -2226,8 +2234,8 @@
           "text": "6.5",
           "value": "6.5"
         },
-        "description": "Consumption of the combustion-engine car you compare against",
-        "label": "Combustion L/100 km",
+        "description": "Consumption of the car you compare against, in the unit selected in Fuel units (L/100 km, MPG US or MPG UK)",
+        "label": "Fuel consumption",
         "name": "ice_consumption",
         "options": [
           {
@@ -2238,6 +2246,67 @@
         ],
         "query": "6.5",
         "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "L/100 km",
+          "value": "l100"
+        },
+        "includeAll": false,
+        "label": "Fuel units",
+        "name": "fuel_units",
+        "options": [
+          {
+            "selected": true,
+            "text": "L/100 km",
+            "value": "l100"
+          },
+          {
+            "selected": false,
+            "text": "MPG (US)",
+            "value": "mpg_us"
+          },
+          {
+            "selected": false,
+            "text": "MPG (UK)",
+            "value": "mpg_uk"
+          }
+        ],
+        "query": "l100 : L/100 km, mpg_us : MPG (US), mpg_uk : MPG (UK)",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "EUR",
+          "value": "currencyEUR"
+        },
+        "includeAll": false,
+        "label": "Currency",
+        "name": "currency",
+        "options": [
+          {
+            "selected": true,
+            "text": "EUR",
+            "value": "currencyEUR"
+          },
+          {
+            "selected": false,
+            "text": "USD",
+            "value": "currencyUSD"
+          },
+          {
+            "selected": false,
+            "text": "GBP",
+            "value": "currencyGBP"
+          },
+          {
+            "selected": false,
+            "text": "CHF",
+            "value": "currencyCHF"
+          }
+        ],
+        "query": "currencyEUR : EUR, currencyUSD : USD, currencyGBP : GBP, currencyCHF : CHF",
+        "type": "custom"
       },
       {
         "current": {
