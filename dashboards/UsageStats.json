@@ -37,6 +37,20 @@
       ],
       "title": "Dashboards",
       "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "TeslamateCustomDashboards"
+      ],
+      "targetBlank": false,
+      "title": "Custom Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
     }
   ],
   "panels": [
@@ -2039,7 +2053,7 @@
   "refresh": "",
   "schemaVersion": 42,
   "tags": [
-    "tesla"
+    "TeslamateCustomDashboards"
   ],
   "templating": {
     "list": [
