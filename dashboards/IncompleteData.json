@@ -411,7 +411,7 @@
         },
         "datasource": {
           "type": "grafana-postgresql-datasource",
-          "uid": "fe4twmpt3sem8c"
+          "uid": "TeslaMate"
         },
         "definition": "select unit_of_length from settings limit 1;",
         "hide": 2,
@@ -430,7 +430,7 @@
         },
         "datasource": {
           "type": "grafana-postgresql-datasource",
-          "uid": "fe4twmpt3sem8c"
+          "uid": "TeslaMate"
         },
         "definition": "select preferred_range from settings limit 1;",
         "hide": 2,

@@ -579,7 +579,7 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "fe4twmpt3sem8c"
+            "uid": "TeslaMate"
           },
           "editorMode": "code",
           "format": "table",
