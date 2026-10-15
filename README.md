@@ -260,6 +260,26 @@ Tip: On Grafana you can press "h" to get a keyboard shortcuts if you want to cha
 
 ![Tracking Drives](./screenshots/TrackingDrives.gif)
 
+### [Usage Stats](./dashboards/UsageStats.json)
+
+This dashboard is a summary of how you use the car over the selected period, by default the current year.
+
+The header shows the distance driven, the number of drives, the time behind the wheel, the energy charged and its cost, together with the saving and the avoided CO₂ estimated against a combustion-engine car.
+
+Below it you have a table with your records, your driving habits (the hour you usually leave and the days you drive the most), the efficiency by outside temperature and by average speed, the distribution and the cost of your charges with the top 10 locations, and a month by month table with the distance, the consumption, the cost per 100 km or 100 mi and the saving compared with a combustion-engine car.
+
+The saving and the avoided CO₂ are rough estimates. They compare the distance you drove with the car you would have used instead, so they are calculated with the consumption and the fuel price you enter in the variables at the top:
+
+- **Fuel units** selects how you want to enter the consumption: **L/100 km**, **MPG (US)** or **MPG (UK)**, and the dashboard converts it internally, so the result is the same whichever you pick.
+- **Fuel price / L** is always the price **per litre**, also when the consumption is in MPG.
+- **Currency** is only for the display, it sets the symbol of the saving columns.
+
+The avoided CO₂ uses the usual factor for petrol, 2.31 kg per litre, so with a diesel car it is an approximation.
+
+Charges without a recorded cost are valued at the default price per kWh, which is 0 by default so they are left out of the cost. Set that variable if you want them counted.
+
+![Usage Stats](./screenshots/UsageStats.png)
+
 ## Contributing
 
 The following dashboards, queries and design are the result of many tests and hours of work.
