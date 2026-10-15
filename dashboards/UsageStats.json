@@ -96,36 +96,13 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "distance_km"
+              "options": "Distance",
+              "scope": "series"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "km"
-              },
-              {
                 "id": "displayName",
-                "value": "Distance"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "distance_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "mi"
-              },
-              {
-                "id": "displayName",
-                "value": "Distance"
+                "value": "Distance ($length_unit)"
               },
               {
                 "id": "decimals",
@@ -206,13 +183,18 @@
               {
                 "id": "decimals",
                 "value": 2
+              },
+              {
+                "id": "displayName",
+                "value": "Charging cost ($currency)"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Saved vs. combustion-engine car"
+              "options": "Savings",
+              "scope": "series"
             },
             "properties": [
               {
@@ -223,8 +205,8 @@
                 }
               },
               {
-                "id": "unit",
-                "value": "$currency"
+                "id": "displayName",
+                "value": "Savings ($currency)"
               }
             ]
           },
@@ -283,8 +265,25 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH dr AS (\n  SELECT sum(d.distance) AS km, count(*) AS n, sum(d.duration_min) AS mins, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n), ch AS (\n  SELECT sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n)\nSELECT convert_km(dr.km::numeric, '$length_unit')                         AS \"distance_$length_unit\",\n       dr.n                                                    AS \"Drives\",\n       dr.mins * 60                                            AS \"Time driving\",\n       ch.kwh                                                  AS \"Energy charged\",\n       ch.cost                                                 AS \"Charging cost\",\n       dr.km * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price - ch.cost  AS \"Saved vs. combustion-engine car\",\n       dr.km * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * 2.31                   AS \"Tailpipe CO₂ avoided\",\n       dr.kwh_used * 1000 / NULLIF(convert_km(dr.km::numeric, '$length_unit'), 0) AS \"consumption_$length_unit\"\nFROM dr, ch",
-          "refId": "A"
+          "rawSql": "WITH dr AS (\n  SELECT sum(d.distance) AS km, count(*) AS n, sum(d.duration_min) AS mins, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n), ch AS (\n  SELECT sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n)\nSELECT convert_km(dr.km::numeric, '$length_unit')                         AS \"Distance\",\n       dr.n                                                    AS \"Drives\",\n       dr.mins * 60                                            AS \"Time driving\",\n       ch.kwh                                                  AS \"Energy charged\",\n       ch.cost                                                 AS \"Charging cost\",\n       dr.kwh_used * 1000 / NULLIF(convert_km(dr.km::numeric, '$length_unit'), 0) AS \"consumption_$length_unit\",\n       dr.km * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price - ch.cost  AS \"Savings\",\n       dr.km * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * 2.31                   AS \"Tailpipe CO₂ avoided\"\nFROM dr, ch",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
         }
       ],
       "type": "stat"
@@ -371,7 +370,7 @@
         ]
       },
       "gridPos": {
-        "h": 15,
+        "h": 16,
         "w": 24,
         "x": 0,
         "y": 6
@@ -391,8 +390,25 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n)\nSELECT rec AS \"Record\", val AS \"Value\", day AS \"Date\", place AS \"Where\"\nFROM (\n(SELECT 1 AS ord, '🛣️ Longest drive'::text AS rec, (round(convert_km(d.distance::numeric, '$length_unit')) || ' $length_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.distance DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 2 AS ord, '⏱️ Longest time behind the wheel'::text AS rec, ((d.duration_min / 60) || ' h ' || lpad((d.duration_min % 60)::text, 2, '0') || ' min')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.duration_min DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 3 AS ord, '📅 Most distance in one day'::text AS rec, (round(convert_km(sum(d.distance)::numeric, '$length_unit')) || ' $length_unit in ' || count(*) || CASE WHEN count(*) = 1 THEN ' drive' ELSE ' drives' END)::text AS val, (min(to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD')))::text AS day, (array_to_string((array_agg(DISTINCT COALESCE(ea.city, ea.county, ea.name)))[1:4], ', '))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    GROUP BY (timezone('UTC', d.start_date) AT TIME ZONE '$__timezone')::date\n    ORDER BY sum(d.distance) DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 4 AS ord, '🏎️ Top speed'::text AS rec, (round(convert_km(d.speed_max::numeric, '$length_unit')) || CASE '$length_unit' WHEN 'km' THEN ' km/h' ELSE ' mph' END)::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.speed_max DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 5 AS ord, '⚡ Max power'::text AS rec, (d.power_max || ' kW')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.power_max DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 6 AS ord, '🔋 Max regen'::text AS rec, (abs(d.power_min) || ' kW')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.power_min ASC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 7 AS ord, '🌱 Most efficient drive (20 km / 12 mi or longer)'::text AS rec, (round(((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency * 1000 / convert_km(d.distance::numeric, '$length_unit'))::numeric) || ' Wh/$length_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 20 AND d.start_${preferred_range}_range_km > d.end_${preferred_range}_range_km\n    ORDER BY (d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency / d.distance ASC LIMIT 1)\n  UNION ALL\n  (SELECT 8 AS ord, '🥶 Coldest drive'::text AS rec, (round(convert_celsius(d.outside_temp_avg, '$temp_unit'), 1) || ' °$temp_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 5\n    ORDER BY d.outside_temp_avg ASC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 9 AS ord, '🥵 Hottest drive'::text AS rec, (round(convert_celsius(d.outside_temp_avg, '$temp_unit'), 1) || ' °$temp_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 5\n    ORDER BY d.outside_temp_avg DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 10 AS ord, '🚀 Fastest charge'::text AS rec, (ct.max_kw || ' kW')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM ct JOIN charging_processes cp ON cp.id = ct.id\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE true\n    ORDER BY ct.max_kw DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 11 AS ord, '🔌 Most energy in one charge'::text AS rec, (round(cp.charge_energy_added, 1) || ' kWh')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL AND cp.end_date IS NOT NULL\n    ORDER BY cp.charge_energy_added DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 12 AS ord, '💸 Most expensive charge'::text AS rec, (to_char(cp.cost, 'FM999990.00'))::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL AND cp.end_date IS NOT NULL\n      AND cp.cost IS NOT NULL\n    ORDER BY cp.cost DESC LIMIT 1)\n  UNION ALL\n  (SELECT 13 AS ord, '🤑 Cheapest paid charge per kWh (≥ 5 kWh)'::text AS rec, (to_char(cp.cost / greatest(cp.charge_energy_added, cp.charge_energy_used), 'FM0.000') || ' / kWh')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL AND cp.end_date IS NOT NULL\n      AND cp.cost > 0 AND greatest(cp.charge_energy_added, cp.charge_energy_used) >= 5\n    ORDER BY cp.cost / greatest(cp.charge_energy_added, cp.charge_energy_used) ASC LIMIT 1)\n  UNION ALL\n  (SELECT 14 AS ord, '🪫 Lowest battery when plugging in'::text AS rec, (cp.start_battery_level || ' %')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL AND cp.end_date IS NOT NULL\n    ORDER BY cp.start_battery_level ASC NULLS LAST LIMIT 1)\n) r\nWHERE val IS NOT NULL\nORDER BY ord",
-          "refId": "A"
+          "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n)\nSELECT rec AS \"Record\", val AS \"Value\", day AS \"Date\", place AS \"Where\"\nFROM (\n(SELECT 1 AS ord, '🛣️ Longest drive'::text AS rec, (round(convert_km(d.distance::numeric, '$length_unit')) || ' $length_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.distance DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 2 AS ord, '⏱️ Longest time behind the wheel'::text AS rec, ((d.duration_min / 60) || ' h ' || lpad((d.duration_min % 60)::text, 2, '0') || ' min')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.duration_min DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 3 AS ord, '📅 Most distance in one day'::text AS rec, (round(convert_km(sum(d.distance)::numeric, '$length_unit')) || ' $length_unit in ' || count(*) || CASE WHEN count(*) = 1 THEN ' drive' ELSE ' drives' END)::text AS val, (min(to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD')))::text AS day, (array_to_string((array_agg(DISTINCT COALESCE(ea.city, ea.county, ea.name)))[1:4], ', '))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    GROUP BY (timezone('UTC', d.start_date) AT TIME ZONE '$__timezone')::date\n    ORDER BY sum(d.distance) DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 4 AS ord, '🏎️ Top speed'::text AS rec, (round(convert_km(d.speed_max::numeric, '$length_unit')) || CASE '$length_unit' WHEN 'km' THEN ' km/h' ELSE ' mph' END)::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.speed_max DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 5 AS ord, '⚡ Max power'::text AS rec, (d.power_max || ' kW')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.power_max DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 6 AS ord, '🔋 Max regen'::text AS rec, (abs(d.power_min) || ' kW')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.power_min ASC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 7 AS ord, '🌱 Most efficient drive (20 km / 12 mi or longer)'::text AS rec, (round(((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency * 1000 / convert_km(d.distance::numeric, '$length_unit'))::numeric) || ' Wh/$length_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 20 AND d.start_${preferred_range}_range_km > d.end_${preferred_range}_range_km\n    ORDER BY (d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency / d.distance ASC LIMIT 1)\n  UNION ALL\n  (SELECT 8 AS ord, '🥶 Coldest drive'::text AS rec, (round(convert_celsius(d.outside_temp_avg, '$temp_unit'), 1) || ' °$temp_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 5\n    ORDER BY d.outside_temp_avg ASC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 9 AS ord, '🥵 Hottest drive'::text AS rec, (round(convert_celsius(d.outside_temp_avg, '$temp_unit'), 1) || ' °$temp_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 5\n    ORDER BY d.outside_temp_avg DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 10 AS ord, '🚀 Fastest charge'::text AS rec, (ct.max_kw || ' kW')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM ct JOIN charging_processes cp ON cp.id = ct.id\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE true\n    ORDER BY ct.max_kw DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 11 AS ord, '🔌 Most energy in one charge'::text AS rec, (round(cp.charge_energy_added, 1) || ' kWh')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL \n    ORDER BY cp.charge_energy_added DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 12 AS ord, '💸 Most expensive charge ($currency)'::text AS rec, (to_char(cp.cost, 'FM999990.00'))::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL \n      AND cp.cost IS NOT NULL\n    ORDER BY cp.cost DESC LIMIT 1)\n  UNION ALL\n  (SELECT 13 AS ord, '🤑 Cheapest paid charge per kWh (≥ 5 kWh)'::text AS rec, (to_char(cp.cost / greatest(cp.charge_energy_added, cp.charge_energy_used), 'FM0.000') || ' / kWh')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n      AND cp.cost > 0 AND greatest(cp.charge_energy_added, cp.charge_energy_used) >= 5\n    ORDER BY cp.cost / greatest(cp.charge_energy_added, cp.charge_energy_used) ASC LIMIT 1)\n  UNION ALL\n  (SELECT 14 AS ord, '🪫 Lowest battery when plugging in'::text AS rec, (cp.start_battery_level || ' %')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n    ORDER BY cp.start_battery_level ASC NULLS LAST LIMIT 1)\n) r\nWHERE val IS NOT NULL\nORDER BY ord",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
         }
       ],
       "title": "Records in the selected time range",
@@ -404,7 +420,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 22
       },
       "id": 5,
       "panels": [],
@@ -460,7 +476,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 22
+        "y": 23
       },
       "id": 6,
       "options": {
@@ -592,7 +608,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 22
+        "y": 23
       },
       "id": 7,
       "options": {
@@ -755,7 +771,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 30
+        "y": 31
       },
       "id": 8,
       "options": {
@@ -778,7 +794,7 @@
           "sort": "none"
         },
         "xField": "Outside temperature",
-        "xTickLabelRotation": 0,
+        "xTickLabelRotation": -45,
         "xTickLabelSpacing": 0
       },
       "pluginVersion": "13.2.2",
@@ -918,7 +934,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 30
+        "y": 31
       },
       "id": 9,
       "options": {
@@ -967,7 +983,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 39
       },
       "id": 10,
       "panels": [],
@@ -1003,7 +1019,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 39
+        "y": 40
       },
       "id": 11,
       "options": {
@@ -1097,7 +1113,8 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Share"
+              "options": "Share of Energy",
+              "scope": "series"
             },
             "properties": [
               {
@@ -1137,7 +1154,8 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Time plugged in"
+              "options": "Time plugged-in",
+              "scope": "series"
             },
             "properties": [
               {
@@ -1168,7 +1186,7 @@
         "h": 9,
         "w": 16,
         "x": 8,
-        "y": 39
+        "y": 40
       },
       "id": 12,
       "options": {
@@ -1185,12 +1203,30 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n), typed AS (\n  SELECT p.id, p.kwh, p.total_cost, p.duration_min, ct.max_kw,\n         CASE\n           WHEN ct.phases IS NULL THEN\n             CASE WHEN COALESCE(ct.tesla, false) OR a.name ILIKE '%supercharger%' OR g.name ILIKE '%supercharger%'\n                  THEN 'Supercharger' ELSE 'DC (other networks)' END\n           WHEN g.name IS NOT NULL THEN g.name\n           ELSE 'AC (outside geofences)'\n         END AS kind,\n         COALESCE(g.name, a.name, nullif(concat_ws(' ', a.road, a.house_number), ''), a.city, a.county,\n                  split_part(a.display_name, ',', 1)) AS place,\n         COALESCE(a.city, a.county) AS city\n  FROM proc p\n  JOIN ct ON ct.id = p.id\n  LEFT JOIN addresses a ON a.id = p.address_id\n  LEFT JOIN geofences g ON g.id = p.geofence_id\n  WHERE p.kwh > 0.01\n)\nSELECT kind                                   AS \"Type\",\n       count(*)                               AS \"Charges\",\n       sum(kwh)                               AS \"Energy\",\n       sum(kwh) * 100 / sum(sum(kwh)) OVER () AS \"Share\",\n       sum(total_cost)                        AS \"Cost\",\n       sum(total_cost) / NULLIF(sum(kwh), 0)  AS \"Cost / kWh\",\n       sum(duration_min) * 60                 AS \"Time plugged in\",\n       max(max_kw)                            AS \"Peak power\"\nFROM typed\nGROUP BY kind\nORDER BY 3 DESC",
-          "refId": "A"
+          "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n), typed AS (\n  SELECT p.id, p.kwh, p.total_cost, p.duration_min, ct.max_kw,\n         CASE\n           WHEN ct.phases IS NULL THEN\n             CASE WHEN COALESCE(ct.tesla, false) OR a.name ILIKE '%supercharger%' OR g.name ILIKE '%supercharger%'\n                  THEN 'Supercharger' ELSE 'DC (other networks)' END\n           WHEN g.name IS NOT NULL THEN g.name\n           ELSE 'AC (outside geofences)'\n         END AS kind,\n         COALESCE(g.name, a.name, nullif(concat_ws(' ', a.road, a.house_number), ''), a.city, a.county,\n                  split_part(a.display_name, ',', 1)) AS place,\n         COALESCE(a.city, a.county) AS city\n  FROM proc p\n  JOIN ct ON ct.id = p.id\n  LEFT JOIN addresses a ON a.id = p.address_id\n  LEFT JOIN geofences g ON g.id = p.geofence_id\n  WHERE p.kwh > 0.01\n)\nSELECT kind                                   AS \"Type\",\n       count(*)                               AS \"Charges\",\n       sum(kwh)                               AS \"Energy\",\n       sum(kwh) * 100 / sum(sum(kwh)) OVER () AS \"Share of Energy\",\n       sum(total_cost)                        AS \"Cost\",\n       sum(total_cost) / NULLIF(sum(kwh), 0)  AS \"Cost / kWh\",\n       sum(duration_min) * 60                 AS \"Time plugged-in\",\n       max(max_kw)                            AS \"Peak power\"\nFROM typed\nGROUP BY kind\nORDER BY 3 DESC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
         }
       ],
-      "title": "Cost by charging type",
-      "type": "table"
+      "title": "Charging breakdown",
+      "type": "table",
+      "description": "Totals and cost of your charges, grouped by charging type and location. AC charges inside a geofence show the geofence name (e.g. Home)."
     },
     {
       "datasource": {
@@ -1241,28 +1277,16 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Share"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Cost"
             },
             "properties": [
               {
                 "id": "decimals",
                 "value": 2
+              },
+              {
+                "id": "displayName",
+                "value": "Cost ($currency)"
               }
             ]
           },
@@ -1275,18 +1299,10 @@
               {
                 "id": "decimals",
                 "value": 3
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time plugged in"
-            },
-            "properties": [
+              },
               {
-                "id": "unit",
-                "value": "dtdurations"
+                "id": "displayName",
+                "value": "Cost ($currency) / kWh"
               }
             ]
           },
@@ -1309,10 +1325,10 @@
         ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 12,
         "w": 14,
         "x": 0,
-        "y": 48
+        "y": 49
       },
       "id": 13,
       "options": {
@@ -1330,7 +1346,24 @@
           "format": "table",
           "rawQuery": true,
           "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n), typed AS (\n  SELECT p.id, p.kwh, p.total_cost, p.duration_min, ct.max_kw,\n         CASE\n           WHEN ct.phases IS NULL THEN\n             CASE WHEN COALESCE(ct.tesla, false) OR a.name ILIKE '%supercharger%' OR g.name ILIKE '%supercharger%'\n                  THEN 'Supercharger' ELSE 'DC (other networks)' END\n           WHEN g.name IS NOT NULL THEN g.name\n           ELSE 'AC (outside geofences)'\n         END AS kind,\n         COALESCE(g.name, a.name, nullif(concat_ws(' ', a.road, a.house_number), ''), a.city, a.county,\n                  split_part(a.display_name, ',', 1)) AS place,\n         COALESCE(a.city, a.county) AS city\n  FROM proc p\n  JOIN ct ON ct.id = p.id\n  LEFT JOIN addresses a ON a.id = p.address_id\n  LEFT JOIN geofences g ON g.id = p.geofence_id\n  WHERE p.kwh > 0.01\n)\nSELECT place                                 AS \"Location\",\n       city                                  AS \"City\",\n       kind                                  AS \"Type\",\n       count(*)                              AS \"Charges\",\n       sum(kwh)                              AS \"Energy\",\n       sum(total_cost)                       AS \"Cost\",\n       sum(total_cost) / NULLIF(sum(kwh), 0) AS \"Cost / kWh\",\n       max(max_kw)                           AS \"Peak power\"\nFROM typed\nGROUP BY place, city, kind\nORDER BY 5 DESC\nLIMIT 10",
-          "refId": "A"
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
         }
       ],
       "title": "Top 10 charging locations",
@@ -1341,6 +1374,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
+      "description": "Number of charging sessions by state of charge when the car was plugged in and unplugged.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1412,10 +1446,10 @@
         ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 12,
         "w": 10,
         "x": 14,
-        "y": 48
+        "y": 49
       },
       "id": 14,
       "options": {
@@ -1455,7 +1489,7 @@
           "refId": "A"
         }
       ],
-      "title": "Battery level when plugging in / unplugging",
+      "title": "Battery level at plug-in and unplug",
       "type": "barchart"
     },
     {
@@ -1464,7 +1498,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 61
       },
       "id": 15,
       "panels": [],
@@ -1809,7 +1843,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 62
       },
       "id": 16,
       "options": {
@@ -1887,7 +1921,25 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "distance_km"
+              "options": "distance",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Distance ($length_unit)"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption",
+              "scope": "series"
             },
             "properties": [
               {
@@ -1896,7 +1948,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Distance"
+                "value": "Consumption (Wh/$length_unit)"
               },
               {
                 "id": "decimals",
@@ -1907,47 +1959,8 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "consumption_km"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Wh/km"
-              },
-              {
-                "id": "displayName",
-                "value": "Consumption"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "consumption_mi"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "Wh/mi"
-              },
-              {
-                "id": "displayName",
-                "value": "Consumption"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "cost_per_100_km"
+              "options": "cost_per_100",
+              "scope": "series"
             },
             "properties": [
               {
@@ -1956,7 +1969,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Cost / 100 km"
+                "value": "Cost ($currency) / 100 ($length_unit)"
               },
               {
                 "id": "decimals",
@@ -1967,36 +1980,21 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cost_per_100_mi"
+              "options": "Energy",
+              "scope": "series"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": "none"
-              },
-              {
-                "id": "displayName",
-                "value": "Cost / 100 mi"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Energy charged"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "kwatth"
+                "value": ""
               },
               {
                 "id": "decimals",
                 "value": 0
+              },
+              {
+                "id": "displayName",
+                "value": "Energy used (kWh)"
               }
             ]
           },
@@ -2009,6 +2007,10 @@
               {
                 "id": "decimals",
                 "value": 2
+              },
+              {
+                "id": "displayName",
+                "value": "Charging cost ($currency)"
               }
             ]
           },
@@ -2022,10 +2024,6 @@
               {
                 "id": "decimals",
                 "value": 2
-              },
-              {
-                "id": "unit",
-                "value": "$currency"
               },
               {
                 "id": "custom.cellOptions",
@@ -2048,6 +2046,10 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Savings ($currency)"
               }
             ]
           },
@@ -2060,17 +2062,17 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 90
+                "value": 100
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 15,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 71
       },
       "id": 17,
       "options": {
@@ -2093,7 +2095,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH dm AS (\n  SELECT date_trunc('month', timezone('UTC', d.start_date), '$__timezone') AS month,\n         sum(d.distance) AS km, count(*) AS drives, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n  GROUP BY 1\n), cm AS (\n  SELECT date_trunc('month', timezone('UTC', cp.start_date), '$__timezone') AS month,\n         sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n  GROUP BY 1\n)\nSELECT to_char(COALESCE(dm.month, cm.month) AT TIME ZONE '$__timezone', 'YYYY-MM')   AS \"Month\",\n       convert_km(COALESCE(dm.km, 0)::numeric, '$length_unit')                        AS \"distance_$length_unit\",\n       COALESCE(dm.drives, 0)                                              AS \"Drives\",\n       COALESCE(cm.kwh, 0)                                                 AS \"Energy charged\",\n       COALESCE(cm.cost, 0)                                                AS \"Charging cost\",\n       cm.cost * 100 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)          AS \"cost_per_100_$length_unit\",\n       dm.kwh_used * 1000 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)     AS \"consumption_$length_unit\",\n       COALESCE(dm.km, 0) * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price\n         - COALESCE(cm.cost, 0)                                            AS \"Savings\"\nFROM dm\nFULL JOIN cm ON cm.month = dm.month\nORDER BY 1",
+          "rawSql": "WITH dm AS (\n  SELECT date_trunc('month', timezone('UTC', d.start_date), '$__timezone') AS month,\n         sum(d.distance) AS km, count(*) AS drives, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n  GROUP BY 1\n), cm AS (\n  SELECT date_trunc('month', timezone('UTC', cp.start_date), '$__timezone') AS month,\n         sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n  GROUP BY 1\n)\nSELECT to_char(COALESCE(dm.month, cm.month) AT TIME ZONE '$__timezone', 'YYYY-MM')   AS \"Month\",\n       convert_km(COALESCE(dm.km, 0)::numeric, '$length_unit')                        AS \"distance\",\n       COALESCE(dm.drives, 0)                                              AS \"Drives\",\n       COALESCE(cm.kwh, 0)                                                 AS \"Energy\",\n       COALESCE(cm.cost, 0)                                                AS \"Charging cost\",\n       cm.cost * 100 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)          AS \"cost_per_100\",\n       dm.kwh_used * 1000 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)     AS \"consumption\",\n       COALESCE(dm.km, 0) * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price\n         - COALESCE(cm.cost, 0)                                            AS \"Savings\"\nFROM dm\nFULL JOIN cm ON cm.month = dm.month\nORDER BY 1",
           "refId": "A",
           "sql": {
             "columns": [
@@ -2213,6 +2215,40 @@
       },
       {
         "current": {
+          "text": "EUR",
+          "value": "currencyEUR"
+        },
+        "includeAll": false,
+        "label": "Currency",
+        "name": "currency",
+        "options": [
+          {
+            "selected": true,
+            "text": "EUR",
+            "value": "currencyEUR"
+          },
+          {
+            "selected": false,
+            "text": "USD",
+            "value": "currencyUSD"
+          },
+          {
+            "selected": false,
+            "text": "GBP",
+            "value": "currencyGBP"
+          },
+          {
+            "selected": false,
+            "text": "CHF",
+            "value": "currencyCHF"
+          }
+        ],
+        "query": "currencyEUR : EUR, currencyUSD : USD, currencyGBP : GBP, currencyCHF : CHF",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "current": {
           "text": "1.55",
           "value": "1.55"
         },
@@ -2273,40 +2309,8 @@
           }
         ],
         "query": "l100 : L/100 km, mpg_us : MPG (US), mpg_uk : MPG (UK)",
-        "type": "custom"
-      },
-      {
-        "current": {
-          "text": "EUR",
-          "value": "currencyEUR"
-        },
-        "includeAll": false,
-        "label": "Currency",
-        "name": "currency",
-        "options": [
-          {
-            "selected": true,
-            "text": "EUR",
-            "value": "currencyEUR"
-          },
-          {
-            "selected": false,
-            "text": "USD",
-            "value": "currencyUSD"
-          },
-          {
-            "selected": false,
-            "text": "GBP",
-            "value": "currencyGBP"
-          },
-          {
-            "selected": false,
-            "text": "CHF",
-            "value": "currencyCHF"
-          }
-        ],
-        "query": "currencyEUR : EUR, currencyUSD : USD, currencyGBP : GBP, currencyCHF : CHF",
-        "type": "custom"
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "current": {
@@ -2336,7 +2340,7 @@
   "timezone": "browser",
   "title": "Usage Stats",
   "weekStart": "",
-  "version": 4,
+  "version": 22,
   "uid": "jchmUsageStats",
   "id": 2775229798563840
 }
