@@ -100,3 +100,4 @@ ipch/
 # Python bytecode cache (scripts/)
 __pycache__/
 *.py[cod]
+HANDOFF-agente.md
