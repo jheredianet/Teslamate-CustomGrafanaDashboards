@@ -298,6 +298,15 @@ If you are able to contibute or improve this project, please fork the repository
 5. Push to the Branch (`git push origin feature/NewFeature`)
 6. Open a Pull Request
 
+### Dashboard file metadata
+
+Two pieces of metadata inside the dashboard JSON files are easy to "fix" by mistake, so this is what is deliberate about them:
+
+- **`schemaVersion` is not unified.** The files declare different values (40, 41, 42). That is the number Grafana uses to know how to migrate a dashboard, and file provisioning upgrades each one on load, so all of them end up with the same internal structure. Normalising them would mean passing every dashboard through a save in Grafana, which rewrites all of them panel by panel and hides the change you actually wanted to make. Grafana rewrites the number anyway the next time the dashboard is saved.
+- **`pluginVersion` is unified, and enforced.** It is only metadata that Grafana stamps when a panel is saved, but a stale value is misleading, and it turns a one line change into a diff that looks like it touches every panel. All the panels declare the same version, and the validator fails when one of them drifts away.
+
+The generated fields (`id`, `version`, the `sql` object the query builder leaves behind) also change on their own when a dashboard is saved from Grafana.
+
 ### Validating the dashboards before opening a pull request
 
 Hand editing these JSON files is error prone, so the repository ships a validator. Run it
