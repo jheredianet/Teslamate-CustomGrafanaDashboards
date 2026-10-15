@@ -957,7 +957,7 @@
           "sort": "none"
         },
         "xField": "Average speed",
-        "xTickLabelRotation": 0,
+        "xTickLabelRotation": -45,
         "xTickLabelSpacing": 0
       },
       "pluginVersion": "13.2.2",
@@ -1069,6 +1069,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "TeslaMate"
       },
+      "description": "Totals and cost of your charges, grouped by charging type and location. AC charges inside a geofence show the geofence name (e.g. Home).",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1225,8 +1226,7 @@
         }
       ],
       "title": "Charging breakdown",
-      "type": "table",
-      "description": "Totals and cost of your charges, grouped by charging type and location. AC charges inside a geofence show the geofence name (e.g. Home)."
+      "type": "table"
     },
     {
       "datasource": {
@@ -2340,7 +2340,7 @@
   "timezone": "browser",
   "title": "Usage Stats",
   "weekStart": "",
-  "version": 22,
+  "version": 1,
   "uid": "jchmUsageStats",
   "id": 2775229798563840
 }
