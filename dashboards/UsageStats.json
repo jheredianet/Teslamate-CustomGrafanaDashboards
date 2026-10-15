@@ -1,0 +1,2346 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Records, driving habits, charging mix and monthly costs, with a comparison against a combustion car.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [
+    {
+      "icon": "dashboard",
+      "tags": [],
+      "targetBlank": true,
+      "title": "TeslaMate",
+      "tooltip": "",
+      "type": "link",
+      "url": "${base_url:raw}"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "tags": [
+        "tesla"
+      ],
+      "title": "Dashboards",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "TeslamateCustomDashboards"
+      ],
+      "targetBlank": false,
+      "title": "Custom Dashboards",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "panels": [],
+      "title": "Summary",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "description": "Savings and avoided CO₂ are estimated against a combustion-engine car using the fuel price and consumption variables. Charges without a recorded cost are valued at the default price per kWh (0 by default).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "super-light-blue",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Distance",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Distance ($length_unit)"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time driving"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Energy charged"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatth"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Charging cost"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "displayName",
+                "value": "Charging cost ($currency)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Savings",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Savings ($currency)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tailpipe CO₂ avoided"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "masskg"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH dr AS (\n  SELECT sum(d.distance) AS km, count(*) AS n, sum(d.duration_min) AS mins, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n), ch AS (\n  SELECT sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n)\nSELECT convert_km(dr.km::numeric, '$length_unit')                         AS \"Distance\",\n       dr.n                                                    AS \"Drives\",\n       dr.mins * 60                                            AS \"Time driving\",\n       ch.kwh                                                  AS \"Energy charged\",\n       ch.cost                                                 AS \"Charging cost\",\n       dr.kwh_used * 1000 / NULLIF(convert_km(dr.km::numeric, '$length_unit'), 0) AS \"consumption_$length_unit\",\n       dr.km * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price - ch.cost  AS \"Savings\",\n       dr.km * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * 2.31                   AS \"Tailpipe CO₂ avoided\"\nFROM dr, ch",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 3,
+      "panels": [],
+      "title": "Records",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Record"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 340
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 230
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n)\nSELECT rec AS \"Record\", val AS \"Value\", day AS \"Date\", place AS \"Where\"\nFROM (\n(SELECT 1 AS ord, '🛣️ Longest drive'::text AS rec, (round(convert_km(d.distance::numeric, '$length_unit')) || ' $length_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.distance DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 2 AS ord, '⏱️ Longest time behind the wheel'::text AS rec, ((d.duration_min / 60) || ' h ' || lpad((d.duration_min % 60)::text, 2, '0') || ' min')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.duration_min DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 3 AS ord, '📅 Most distance in one day'::text AS rec, (round(convert_km(sum(d.distance)::numeric, '$length_unit')) || ' $length_unit in ' || count(*) || CASE WHEN count(*) = 1 THEN ' drive' ELSE ' drives' END)::text AS val, (min(to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD')))::text AS day, (array_to_string((array_agg(DISTINCT COALESCE(ea.city, ea.county, ea.name)))[1:4], ', '))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    GROUP BY (timezone('UTC', d.start_date) AT TIME ZONE '$__timezone')::date\n    ORDER BY sum(d.distance) DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 4 AS ord, '🏎️ Top speed'::text AS rec, (round(convert_km(d.speed_max::numeric, '$length_unit')) || CASE '$length_unit' WHEN 'km' THEN ' km/h' ELSE ' mph' END)::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.speed_max DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 5 AS ord, '⚡ Max power'::text AS rec, (d.power_max || ' kW')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.power_max DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 6 AS ord, '🔋 Max regen'::text AS rec, (abs(d.power_min) || ' kW')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    ORDER BY d.power_min ASC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 7 AS ord, '🌱 Most efficient drive (20 km / 12 mi or longer)'::text AS rec, (round(((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency * 1000 / convert_km(d.distance::numeric, '$length_unit'))::numeric) || ' Wh/$length_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 20 AND d.start_${preferred_range}_range_km > d.end_${preferred_range}_range_km\n    ORDER BY (d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency / d.distance ASC LIMIT 1)\n  UNION ALL\n  (SELECT 8 AS ord, '🥶 Coldest drive'::text AS rec, (round(convert_celsius(d.outside_temp_avg, '$temp_unit'), 1) || ' °$temp_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 5\n    ORDER BY d.outside_temp_avg ASC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 9 AS ord, '🥵 Hottest drive'::text AS rec, (round(convert_celsius(d.outside_temp_avg, '$temp_unit'), 1) || ' °$temp_unit')::text AS val, (to_char((timezone('UTC', d.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (concat_ws(' → ', COALESCE(sa.city, sa.county, sa.name), COALESCE(ea.city, ea.county, ea.name)))::text AS place\n    FROM drives d\n    JOIN cars c ON c.id = d.car_id\n    LEFT JOIN addresses sa ON sa.id = d.start_address_id\n    LEFT JOIN addresses ea ON ea.id = d.end_address_id\n    WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n      AND d.distance >= 5\n    ORDER BY d.outside_temp_avg DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 10 AS ord, '🚀 Fastest charge'::text AS rec, (ct.max_kw || ' kW')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM ct JOIN charging_processes cp ON cp.id = ct.id\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE true\n    ORDER BY ct.max_kw DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 11 AS ord, '🔌 Most energy in one charge'::text AS rec, (round(cp.charge_energy_added, 1) || ' kWh')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL \n    ORDER BY cp.charge_energy_added DESC NULLS LAST LIMIT 1)\n  UNION ALL\n  (SELECT 12 AS ord, '💸 Most expensive charge ($currency)'::text AS rec, (to_char(cp.cost, 'FM999990.00'))::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL \n      AND cp.cost IS NOT NULL\n    ORDER BY cp.cost DESC LIMIT 1)\n  UNION ALL\n  (SELECT 13 AS ord, '🤑 Cheapest paid charge per kWh (≥ 5 kWh)'::text AS rec, (to_char(cp.cost / greatest(cp.charge_energy_added, cp.charge_energy_used), 'FM0.000') || ' / kWh')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n      AND cp.cost > 0 AND greatest(cp.charge_energy_added, cp.charge_energy_used) >= 5\n    ORDER BY cp.cost / greatest(cp.charge_energy_added, cp.charge_energy_used) ASC LIMIT 1)\n  UNION ALL\n  (SELECT 14 AS ord, '🪫 Lowest battery when plugging in'::text AS rec, (cp.start_battery_level || ' %')::text AS val, (to_char((timezone('UTC', cp.start_date) AT TIME ZONE '$__timezone'), 'YYYY-MM-DD'))::text AS day, (COALESCE(g.name, a.name, a.city, a.county, split_part(a.display_name, ',', 1)))::text AS place\n    FROM charging_processes cp\n    LEFT JOIN addresses a ON a.id = cp.address_id\n    LEFT JOIN geofences g ON g.id = cp.geofence_id\n    WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n    ORDER BY cp.start_battery_level ASC NULLS LAST LIMIT 1)\n) r\nWHERE val IS NOT NULL\nORDER BY ord",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Records in the selected time range",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 5,
+      "panels": [],
+      "title": "Driving",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "description": "Number of drives by departure hour.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "id": 6,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.75,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "vertical",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Hour",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH d AS (\n  SELECT extract(hour FROM (timezone('UTC', start_date) AT TIME ZONE '$__timezone'))::int AS h\n  FROM drives\n  WHERE car_id = $car_id AND $__timeFilter(start_date) AND end_date IS NOT NULL\n)\nSELECT lpad(g::text, 2, '0') || 'h' AS \"Hour\",\n       count(d.h)                  AS \"Drives\"\nFROM generate_series(0, 23) g\nLEFT JOIN d ON d.h = g\nGROUP BY g\nORDER BY g",
+          "refId": "A"
+        }
+      ],
+      "title": "When do you leave?",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              },
+              {
+                "id": "displayName",
+                "value": "Distance"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              },
+              {
+                "id": "displayName",
+                "value": "Distance"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 7,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.75,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "vertical",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Day",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH d AS (\n  SELECT extract(isodow FROM (timezone('UTC', start_date) AT TIME ZONE '$__timezone'))::int AS dow, distance\n  FROM drives\n  WHERE car_id = $car_id AND $__timeFilter(start_date) AND end_date IS NOT NULL\n)\nSELECT (ARRAY['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])[g] AS \"Day\",\n       convert_km(COALESCE(sum(d.distance), 0)::numeric, '$length_unit') AS \"distance_$length_unit\"\nFROM generate_series(1, 7) g\nLEFT JOIN d ON d.dow = g\nGROUP BY g\nORDER BY g",
+          "refId": "A"
+        }
+      ],
+      "title": "Which days do you drive the most?",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "description": "Net consumption by 5° buckets of average outside temperature (buckets with at least 20 km).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "id": 8,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.75,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "vertical",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Outside temperature",
+        "xTickLabelRotation": -45,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH d AS (\n  SELECT (floor(convert_celsius(d.outside_temp_avg, '$temp_unit') / 5) * 5)::int AS b,\n         d.distance, (d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency AS kwh\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    AND d.distance >= 1 AND d.outside_temp_avg IS NOT NULL\n)\nSELECT b || ' to ' || (b + 5) || ' °$temp_unit'                          AS \"Outside temperature\",\n       sum(kwh) * 1000 / convert_km(sum(distance)::numeric, '$length_unit')        AS \"consumption_$length_unit\"\nFROM d\nGROUP BY b\nHAVING sum(distance) >= 20\nORDER BY b",
+          "refId": "A"
+        }
+      ],
+      "title": "Consumption vs. outside temperature",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "description": "Net consumption by average speed of the drive (buckets with at least 20 km).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 9,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.75,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "vertical",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Average speed",
+        "xTickLabelRotation": -45,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH params AS (\n  -- the fastest average speed bucket makes no sense in the same\n  -- value for km/h and mph, so the cap follows the unit\n  SELECT CASE '$length_unit' WHEN 'km' THEN 140 ELSE 90 END AS cap\n), d AS (\n  SELECT LEAST(floor(convert_km(d.distance::numeric, '$length_unit') / (d.duration_min / 60.0) / 10) * 10, (SELECT cap FROM params))::int AS b,\n         d.distance, (d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency AS kwh\n  FROM drives d JOIN cars c ON c.id = d.car_id CROSS JOIN params\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n    AND d.distance >= 1 AND d.duration_min > 0\n)\nSELECT CASE WHEN b = (SELECT cap FROM params) THEN b || '+' ELSE b || '–' || (b + 10) END || CASE '$length_unit' WHEN 'km' THEN ' km/h' ELSE ' mph' END AS \"Average speed\",\n       sum(kwh) * 1000 / convert_km(sum(distance)::numeric, '$length_unit')             AS \"consumption_$length_unit\"\nFROM d\nGROUP BY b\nHAVING sum(distance) >= 20\nORDER BY b",
+          "refId": "A"
+        }
+      ],
+      "title": "Consumption vs. average speed",
+      "type": "barchart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "id": 10,
+      "panels": [],
+      "title": "Charging",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "description": "Energy by charging type. AC charges inside a geofence show the geofence name (e.g. Home).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#73BF69",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 40
+      },
+      "id": 11,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^kWh$/",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n), typed AS (\n  SELECT p.id, p.kwh, p.total_cost, p.duration_min, ct.max_kw,\n         CASE\n           WHEN ct.phases IS NULL THEN\n             CASE WHEN COALESCE(ct.tesla, false) OR a.name ILIKE '%supercharger%' OR g.name ILIKE '%supercharger%'\n                  THEN 'Supercharger' ELSE 'DC (other networks)' END\n           WHEN g.name IS NOT NULL THEN g.name\n           ELSE 'AC (outside geofences)'\n         END AS kind,\n         COALESCE(g.name, a.name, nullif(concat_ws(' ', a.road, a.house_number), ''), a.city, a.county,\n                  split_part(a.display_name, ',', 1)) AS place,\n         COALESCE(a.city, a.county) AS city\n  FROM proc p\n  JOIN ct ON ct.id = p.id\n  LEFT JOIN addresses a ON a.id = p.address_id\n  LEFT JOIN geofences g ON g.id = p.geofence_id\n  WHERE p.kwh > 0.01\n)\nSELECT kind AS \"Type\", sum(kwh) AS \"kWh\"\nFROM typed\nGROUP BY kind\nORDER BY 2 DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Where do you charge?",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "description": "Totals and cost of your charges, grouped by charging type and location. AC charges inside a geofence show the geofence name (e.g. Home).",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Energy"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatth"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Share of Energy",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cost"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cost / kWh"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time plugged-in",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Peak power"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatt"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 16,
+        "x": 8,
+        "y": 40
+      },
+      "id": 12,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n), typed AS (\n  SELECT p.id, p.kwh, p.total_cost, p.duration_min, ct.max_kw,\n         CASE\n           WHEN ct.phases IS NULL THEN\n             CASE WHEN COALESCE(ct.tesla, false) OR a.name ILIKE '%supercharger%' OR g.name ILIKE '%supercharger%'\n                  THEN 'Supercharger' ELSE 'DC (other networks)' END\n           WHEN g.name IS NOT NULL THEN g.name\n           ELSE 'AC (outside geofences)'\n         END AS kind,\n         COALESCE(g.name, a.name, nullif(concat_ws(' ', a.road, a.house_number), ''), a.city, a.county,\n                  split_part(a.display_name, ',', 1)) AS place,\n         COALESCE(a.city, a.county) AS city\n  FROM proc p\n  JOIN ct ON ct.id = p.id\n  LEFT JOIN addresses a ON a.id = p.address_id\n  LEFT JOIN geofences g ON g.id = p.geofence_id\n  WHERE p.kwh > 0.01\n)\nSELECT kind                                   AS \"Type\",\n       count(*)                               AS \"Charges\",\n       sum(kwh)                               AS \"Energy\",\n       sum(kwh) * 100 / sum(sum(kwh)) OVER () AS \"Share of Energy\",\n       sum(total_cost)                        AS \"Cost\",\n       sum(total_cost) / NULLIF(sum(kwh), 0)  AS \"Cost / kWh\",\n       sum(duration_min) * 60                 AS \"Time plugged-in\",\n       max(max_kw)                            AS \"Peak power\"\nFROM typed\nGROUP BY kind\nORDER BY 3 DESC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Charging breakdown",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Energy"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatth"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cost"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "displayName",
+                "value": "Cost ($currency)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cost / kWh"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "displayName",
+                "value": "Cost ($currency) / kWh"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Peak power"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatt"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 14,
+        "x": 0,
+        "y": 49
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH proc AS (\n  SELECT cp.*, greatest(cp.charge_energy_added, cp.charge_energy_used) AS kwh, COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price) AS total_cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n), ct AS (\n  -- one index lookup per charging process (charges_charging_process_id_index)\n  SELECT p.id, x.phases, x.tesla, x.max_kw\n  FROM proc p\n  CROSS JOIN LATERAL (\n    SELECT NULLIF(mode() WITHIN GROUP (ORDER BY ch.charger_phases), 0) AS phases,\n           bool_or(ch.fast_charger_brand = 'Tesla') AS tesla,\n           max(ch.charger_power) AS max_kw\n    FROM charges ch\n    WHERE ch.charging_process_id = p.id\n  ) x\n), typed AS (\n  SELECT p.id, p.kwh, p.total_cost, p.duration_min, ct.max_kw,\n         CASE\n           WHEN ct.phases IS NULL THEN\n             CASE WHEN COALESCE(ct.tesla, false) OR a.name ILIKE '%supercharger%' OR g.name ILIKE '%supercharger%'\n                  THEN 'Supercharger' ELSE 'DC (other networks)' END\n           WHEN g.name IS NOT NULL THEN g.name\n           ELSE 'AC (outside geofences)'\n         END AS kind,\n         COALESCE(g.name, a.name, nullif(concat_ws(' ', a.road, a.house_number), ''), a.city, a.county,\n                  split_part(a.display_name, ',', 1)) AS place,\n         COALESCE(a.city, a.county) AS city\n  FROM proc p\n  JOIN ct ON ct.id = p.id\n  LEFT JOIN addresses a ON a.id = p.address_id\n  LEFT JOIN geofences g ON g.id = p.geofence_id\n  WHERE p.kwh > 0.01\n)\nSELECT place                                 AS \"Location\",\n       city                                  AS \"City\",\n       kind                                  AS \"Type\",\n       count(*)                              AS \"Charges\",\n       sum(kwh)                              AS \"Energy\",\n       sum(total_cost)                       AS \"Cost\",\n       sum(total_cost) / NULLIF(sum(kwh), 0) AS \"Cost / kWh\",\n       max(max_kw)                           AS \"Peak power\"\nFROM typed\nGROUP BY place, city, kind\nORDER BY 5 DESC\nLIMIT 10",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Top 10 charging locations",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "description": "Number of charging sessions by state of charge when the car was plugged in and unplugged.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "When plugging in"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "When unplugging"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 10,
+        "x": 14,
+        "y": 49
+      },
+      "id": 14,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.75,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "vertical",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Battery level",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH cp AS (\n  SELECT start_battery_level, end_battery_level\n  FROM charging_processes\n  WHERE car_id = $car_id AND $__timeFilter(start_date) AND end_date IS NOT NULL\n), lv AS (\n  SELECT LEAST(floor(start_battery_level / 10.0) * 10, 90)::int AS b, 'start' AS k FROM cp\n  UNION ALL\n  SELECT LEAST(floor(end_battery_level / 10.0) * 10, 90)::int, 'end' FROM cp\n)\nSELECT g || '–' || (g + 10) || ' %'            AS \"Battery level\",\n       count(*) FILTER (WHERE lv.k = 'start')  AS \"When plugging in\",\n       count(*) FILTER (WHERE lv.k = 'end')    AS \"When unplugging\"\nFROM generate_series(0, 90, 10) g\nLEFT JOIN lv ON lv.b = g\nGROUP BY g\nORDER BY g",
+          "refId": "A"
+        }
+      ],
+      "title": "Battery level at plug-in and unplug",
+      "type": "barchart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 61
+      },
+      "id": 15,
+      "panels": [],
+      "title": "Month by month",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              },
+              {
+                "id": "displayName",
+                "value": "Distance"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mi"
+              },
+              {
+                "id": "displayName",
+                "value": "Distance"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/km"
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "Wh/mi"
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cost_per_100_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "displayName",
+                "value": "Cost / 100 km"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cost_per_100_mi"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "displayName",
+                "value": "Cost / 100 mi"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Charging cost"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance_mi"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Charging cost"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Drives"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Energy charged"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cost_per_100_km"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cost_per_100_mi"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_km"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption_mi"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Saved vs. combustion-engine car"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 62
+      },
+      "id": 16,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.8,
+        "fullHighlight": false,
+        "groupWidth": 0.75,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "vertical",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Month",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH dm AS (\n  SELECT date_trunc('month', timezone('UTC', d.start_date), '$__timezone') AS month,\n         sum(d.distance) AS km, count(*) AS drives, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n  GROUP BY 1\n), cm AS (\n  SELECT date_trunc('month', timezone('UTC', cp.start_date), '$__timezone') AS month,\n         sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n  GROUP BY 1\n)\nSELECT to_char(COALESCE(dm.month, cm.month) AT TIME ZONE '$__timezone', 'YYYY-MM')   AS \"Month\",\n       convert_km(COALESCE(dm.km, 0)::numeric, '$length_unit')                        AS \"distance_$length_unit\",\n       COALESCE(dm.drives, 0)                                              AS \"Drives\",\n       COALESCE(cm.kwh, 0)                                                 AS \"Energy charged\",\n       COALESCE(cm.cost, 0)                                                AS \"Charging cost\",\n       cm.cost * 100 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)          AS \"cost_per_100_$length_unit\",\n       dm.kwh_used * 1000 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)     AS \"consumption_$length_unit\",\n       COALESCE(dm.km, 0) * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price\n         - COALESCE(cm.cost, 0)                                            AS \"Saved vs. combustion-engine car\"\nFROM dm\nFULL JOIN cm ON cm.month = dm.month\nORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Distance and charging cost per month",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "TeslaMate"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": [
+                "sum"
+              ]
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "distance",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Distance ($length_unit)"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "consumption",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": ""
+              },
+              {
+                "id": "displayName",
+                "value": "Consumption (Wh/$length_unit)"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cost_per_100",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "displayName",
+                "value": "Cost ($currency) / 100 ($length_unit)"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Energy",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": ""
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "displayName",
+                "value": "Energy used (kWh)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Charging cost"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "displayName",
+                "value": "Charging cost ($currency)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Savings",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Savings ($currency)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Month",
+              "scope": "series"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 71
+      },
+      "id": 17,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Month"
+          }
+        ]
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "TeslaMate"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH dm AS (\n  SELECT date_trunc('month', timezone('UTC', d.start_date), '$__timezone') AS month,\n         sum(d.distance) AS km, count(*) AS drives, sum((d.start_${preferred_range}_range_km - d.end_${preferred_range}_range_km) * c.efficiency) AS kwh_used\n  FROM drives d JOIN cars c ON c.id = d.car_id\n  WHERE d.car_id = $car_id AND $__timeFilter(d.start_date) AND d.end_date IS NOT NULL\n  GROUP BY 1\n), cm AS (\n  SELECT date_trunc('month', timezone('UTC', cp.start_date), '$__timezone') AS month,\n         sum(greatest(cp.charge_energy_added, cp.charge_energy_used)) AS kwh, sum(COALESCE(cp.cost, greatest(cp.charge_energy_added, cp.charge_energy_used) * $default_kwh_price)) AS cost\n  FROM charging_processes cp\n  WHERE cp.car_id = $car_id AND $__timeFilter(cp.start_date) AND cp.end_date IS NOT NULL\n  GROUP BY 1\n)\nSELECT to_char(COALESCE(dm.month, cm.month) AT TIME ZONE '$__timezone', 'YYYY-MM')   AS \"Month\",\n       convert_km(COALESCE(dm.km, 0)::numeric, '$length_unit')                        AS \"distance\",\n       COALESCE(dm.drives, 0)                                              AS \"Drives\",\n       COALESCE(cm.kwh, 0)                                                 AS \"Energy\",\n       COALESCE(cm.cost, 0)                                                AS \"Charging cost\",\n       cm.cost * 100 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)          AS \"cost_per_100\",\n       dm.kwh_used * 1000 / NULLIF(convert_km(dm.km::numeric, '$length_unit'), 0)     AS \"consumption\",\n       COALESCE(dm.km, 0) * (CASE '$fuel_units'\n              WHEN 'mpg_us' THEN 235.214583 / NULLIF($ice_consumption::numeric, 0)\n              WHEN 'mpg_uk' THEN 282.480936 / NULLIF($ice_consumption::numeric, 0)\n              ELSE $ice_consumption::numeric END) / 100 * $fuel_price\n         - COALESCE(cm.cost, 0)                                            AS \"Savings\"\nFROM dm\nFULL JOIN cm ON cm.month = dm.month\nORDER BY 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Monthly details",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "TeslamateCustomDashboards"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "TeslaMate"
+        },
+        "definition": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
+        "includeAll": false,
+        "label": "Car",
+        "name": "car_id",
+        "options": [],
+        "query": "SELECT\n    id as __value,\n    CASE WHEN COUNT(id) OVER (PARTITION BY name) > 1 AND name IS NOT NULL THEN CONCAT(name, ' - ', RIGHT(vin, 6)) ELSE COALESCE(name, CONCAT('VIN ', vin)) end as __text \nFROM cars\nORDER BY display_priority ASC, name ASC, vin ASC;",
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "TeslaMate"
+        },
+        "definition": "select unit_of_length from settings limit 1;",
+        "hide": 2,
+        "includeAll": false,
+        "name": "length_unit",
+        "options": [],
+        "query": "select unit_of_length from settings limit 1;",
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "TeslaMate"
+        },
+        "definition": "select unit_of_temperature from settings limit 1;",
+        "hide": 2,
+        "includeAll": false,
+        "name": "temp_unit",
+        "options": [],
+        "query": "select unit_of_temperature from settings limit 1;",
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "TeslaMate"
+        },
+        "definition": "select preferred_range from settings limit 1;",
+        "hide": 2,
+        "includeAll": false,
+        "name": "preferred_range",
+        "options": [],
+        "query": "select preferred_range from settings limit 1;",
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "TeslaMate"
+        },
+        "definition": "select base_url from settings limit 1;",
+        "hide": 2,
+        "includeAll": false,
+        "name": "base_url",
+        "options": [],
+        "query": "select base_url from settings limit 1;",
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "EUR",
+          "value": "currencyEUR"
+        },
+        "includeAll": false,
+        "label": "Currency",
+        "name": "currency",
+        "options": [
+          {
+            "selected": true,
+            "text": "EUR",
+            "value": "currencyEUR"
+          },
+          {
+            "selected": false,
+            "text": "USD",
+            "value": "currencyUSD"
+          },
+          {
+            "selected": false,
+            "text": "GBP",
+            "value": "currencyGBP"
+          },
+          {
+            "selected": false,
+            "text": "CHF",
+            "value": "currencyCHF"
+          }
+        ],
+        "query": "currencyEUR : EUR, currencyUSD : USD, currencyGBP : GBP, currencyCHF : CHF",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "current": {
+          "text": "1.55",
+          "value": "1.55"
+        },
+        "description": "Price of a litre of fuel (use a dot as decimal separator). It is always per litre, also when the consumption is in MPG",
+        "label": "Fuel price / L",
+        "name": "fuel_price",
+        "options": [
+          {
+            "selected": true,
+            "text": "1.55",
+            "value": "1.55"
+          }
+        ],
+        "query": "1.55",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "6.5",
+          "value": "6.5"
+        },
+        "description": "Consumption of the car you compare against, in the unit selected in Fuel units (L/100 km, MPG US or MPG UK)",
+        "label": "Fuel consumption",
+        "name": "ice_consumption",
+        "options": [
+          {
+            "selected": true,
+            "text": "6.5",
+            "value": "6.5"
+          }
+        ],
+        "query": "6.5",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "L/100 km",
+          "value": "l100"
+        },
+        "includeAll": false,
+        "label": "Fuel units",
+        "name": "fuel_units",
+        "options": [
+          {
+            "selected": true,
+            "text": "L/100 km",
+            "value": "l100"
+          },
+          {
+            "selected": false,
+            "text": "MPG (US)",
+            "value": "mpg_us"
+          },
+          {
+            "selected": false,
+            "text": "MPG (UK)",
+            "value": "mpg_uk"
+          }
+        ],
+        "query": "l100 : L/100 km, mpg_us : MPG (US), mpg_uk : MPG (UK)",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "current": {
+          "text": "0.15",
+          "value": "0.15"
+        },
+        "description": "Used only for charges without a recorded cost. 0 = ignore them",
+        "label": "Default price / kWh",
+        "name": "default_kwh_price",
+        "options": [
+          {
+            "selected": true,
+            "text": "0.15",
+            "value": "0.15"
+          }
+        ],
+        "query": "0.15",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now/y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Usage Stats",
+  "weekStart": "",
+  "version": 1,
+  "uid": "jchmUsageStats",
+  "id": 2775229798563840
+}

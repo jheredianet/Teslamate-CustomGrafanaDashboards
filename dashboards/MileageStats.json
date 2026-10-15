@@ -327,7 +327,7 @@
           }
         ]
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -548,7 +548,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {

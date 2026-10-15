@@ -1,6 +1,6 @@
 # TeslaMate Custom Grafana Dashboards
 
-### Last release: [v2026.8.14](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/releases/)
+### Last release: [v2026.10.15](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/releases/)
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -131,13 +131,13 @@ Depreciating a car by its mileage can be done using various methods. A common ap
 
 ![Amortization Tracker](./screenshots/AmortizationTracker.png)
 
-### [Battery Health](./dashboards/BatteryHealth.json)
+### [Battery Health](https://docs.teslamate.org/docs/screenshots/#battery-health)
 
 This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the same name **Battery Health**.
 
 ![Battery Health](./screenshots/BatteryHealth.png)
 
-### [Browse Charges](./dashboards/BrowseCharges.json)
+### [Browse Charges](https://docs.teslamate.org/docs/screenshots/#charges)
 
 This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the name **Charges**.
 
@@ -195,13 +195,13 @@ Additionally, you can see the states stats of the selected period.
 
 ![Current State](./screenshots/CurrentState.png)
 
-### [Database Information](./dashboards/CurrentState.json)
+### [Database Information](https://docs.teslamate.org/docs/screenshots/#database-information)
 
 This dashboard has been already migrated (given) to the core dashboards of Teslamate and will continue developing directly there with the collaboration of all the enthusiasts in the community. You will find it there with the name **Database Information**.
 
 ![Database Information](./screenshots/DatabaseInfo.png)
 
-### [DC Charging Curves By Carrier](./dashboards/DC_ChargingCurvesByCarrier.json)
+### [DC Charging Curves By Carrier](./dashboards/DCChargingCurvesByCarrier.json)
 
 This dasboard is browse your DC charge sessions by charger carriers.
 
@@ -260,6 +260,26 @@ Tip: On Grafana you can press "h" to get a keyboard shortcuts if you want to cha
 
 ![Tracking Drives](./screenshots/TrackingDrives.gif)
 
+### [Usage Stats](./dashboards/UsageStats.json)
+
+This dashboard is a summary of how you use the car over the selected period, by default the current year.
+
+The header shows the distance driven, the number of drives, the time behind the wheel, the energy charged and its cost, together with the saving and the avoided CO₂ estimated against a combustion-engine car.
+
+Below it you have a table with your records, your driving habits (the hour you usually leave and the days you drive the most), the efficiency by outside temperature and by average speed, the distribution and the cost of your charges with the top 10 locations, and a month by month table with the distance, the consumption, the cost per 100 km or 100 mi and the saving compared with a combustion-engine car.
+
+The saving and the avoided CO₂ are rough estimates. They compare the distance you drove with the car you would have used instead, so they are calculated with the consumption and the fuel price you enter in the variables at the top:
+
+- **Fuel units** selects how you want to enter the consumption: **L/100 km**, **MPG (US)** or **MPG (UK)**, and the dashboard converts it internally, so the result is the same whichever you pick.
+- **Fuel price / L** is always the price **per litre**, also when the consumption is in MPG.
+- **Currency** is only for the display, it sets the symbol of the saving columns.
+
+The avoided CO₂ uses the usual factor for petrol, 2.31 kg per litre, so with a diesel car it is an approximation.
+
+Charges without a recorded cost are valued at the default price per kWh, which is 0 by default so they are left out of the cost. Set that variable if you want them counted.
+
+![Usage Stats](./screenshots/UsageStats.png)
+
 ## Contributing
 
 The following dashboards, queries and design are the result of many tests and hours of work.
@@ -278,6 +298,98 @@ If you are able to contibute or improve this project, please fork the repository
 5. Push to the Branch (`git push origin feature/NewFeature`)
 6. Open a Pull Request
 
+### Dashboard file metadata
+
+Two pieces of metadata inside the dashboard JSON files are easy to "fix" by mistake, so this is what is deliberate about them:
+
+- **`schemaVersion` is not unified.** The files declare different values (40, 41, 42). That is the number Grafana uses to know how to migrate a dashboard, and file provisioning upgrades each one on load, so all of them end up with the same internal structure. Normalising them would mean passing every dashboard through a save in Grafana, which rewrites all of them panel by panel and hides the change you actually wanted to make. Grafana rewrites the number anyway the next time the dashboard is saved.
+- **`pluginVersion` is unified, and enforced.** It is only metadata that Grafana stamps when a panel is saved, but a stale value is misleading, and it turns a one line change into a diff that looks like it touches every panel. All the panels declare the same version, and the validator fails when one of them drifts away.
+
+The generated fields (`id`, `version`, the `sql` object the query builder leaves behind) also change on their own when a dashboard is saved from Grafana.
+
+### Validating the dashboards before opening a pull request
+
+Hand editing these JSON files is error prone, so the repository ships a validator. Run it
+before committing:
+
+```bash
+# static checks: JSON, duplicated uids, declared variables, time zone conventions
+python3 scripts/validate_dashboards.py --no-sql
+
+# everything above, plus preparing every SQL statement against a real
+# TeslaMate database (nothing is executed, the queries are only parsed and planned)
+python3 scripts/validate_dashboards.py --docker database
+python3 scripts/validate_dashboards.py --dsn postgres://user:pass@host:5432/teslamate
+```
+
+The SQL level interpolates the Grafana variables and macros the same way Grafana does,
+so it catches the mistakes that would otherwise only show up when a panel is opened:
+a renamed or removed column, a bad join, a type error, a variable that is not declared.
+It needs a migrated TeslaMate schema, either the container of a local installation
+(`--docker`, with `--docker-user` and `--docker-db` if they are not `teslamate`) or any
+reachable PostgreSQL instance (`--dsn`). It refuses to run against a database that does
+not look like TeslaMate, and it only reads: every statement is prepared inside a
+transaction that is rolled back.
+
+The static checks are the ones that run in CI on every pull request
+(`.github/workflows/validate-dashboards.yml`), because they need no database. Warnings do
+not fail the build; add `--strict` if you want them to.
+
+### Dates and time zones in the queries
+
+Date and time columns in TeslaMate (`start_date`, `end_date`, `date`, ...) are stored as
+`timestamp without time zone`, **always in UTC**. That single fact is behind almost every
+mistake made when editing these dashboards, because SQL cannot tell what a naive timestamp
+means: the same value behaves differently depending on the type it is given.
+
+| Value | Type | Meaning |
+| ----- | ---- | ------- |
+| As stored in the database | `timestamp` (naive) | A UTC wall clock. **Not** local time |
+| After `timezone('UTC', col)` | `timestamptz` | Still the same instant, now unambiguous |
+| After one more conversion to the dashboard zone | `timestamp` (naive) | Local wall clock. This is what `date_trunc` and `to_char` want |
+
+So when grouping a stored column by a local period, **convert it from UTC first**: if you pass
+the raw column straight to the dashboard time zone, the query silently treats a UTC value as if
+it were already local time, and rows near a month, week or day boundary land in the wrong
+bucket (up to 1-2 rows per year, which is why it is so easy to miss).
+
+```sql
+-- WRONG: treats the UTC value as if it were already local time
+date_trunc('month', timezone('$__timezone', start_date), '$__timezone')
+
+-- RIGHT: interpret the column as UTC, then convert to the dashboard time zone
+date_trunc('month', timezone('UTC', start_date), '$__timezone')
+```
+
+Two more details worth keeping in mind:
+
+- **Always quote `$__timezone`.** Grafana replaces it with the zone name without adding quotes
+  (for example `Europe/Madrid`), and `timezone(Europe/Madrid, ...)` is not valid SQL. Write
+  `'$__timezone'`, and remember that it may also return plain `utc`.
+- **When a value is already local** (the result of a `date_trunc`, or a column already
+  converted), do not convert it again. To turn it back into an instant use
+  `timezone('$__timezone', local_value)`; this is what the `date_to` columns of the period
+  tables do to build the links to other dashboards.
+
+An equivalent and sturdier spelling is `AT TIME ZONE`, which keeps the types explicit and does
+not depend on the server session time zone (the `timezone()` function returns a `timestamptz`,
+so any naive result derived from it depends on the session). Both work today because the Grafana
+container runs in UTC; prefer this one if you are adding new panels:
+
+```sql
+-- stored naive UTC -> local naive  (e.g. to group by local month)
+date_trunc('month', start_date AT TIME ZONE 'UTC' AT TIME ZONE '$__timezone')
+
+-- local naive -> instant, in milliseconds (e.g. for a data link)
+EXTRACT(EPOCH FROM (period AT TIME ZONE '$__timezone')) * 1000
+```
+
+Finally, remember that a single query must be consistent whether it groups by local time or by
+UTC, and that the pattern around it (`timezone('UTC', timezone('$__timezone', x))` and similar
+nested calls) is intentional, not a duplication: each call is a different direction of the
+conversion. Before changing one of these expressions, run the old and the new version against
+real data and compare the resulting buckets.
+
 Do not take the dashboards much less upload or merge them to other repositories as if the original idea were yours, nor do you share it on social media without mentioning the author. Please, **respect the ingenuity and work of others**. Enjoy!
 
 ## Donations
@@ -290,7 +402,7 @@ Do not take the dashboards much less upload or merge them to other repositories 
 
 ## Credits
 
-- Author: [Juan Carlos Heredia](https://infoinnova.net/contacto/)
+- Author: [Juan Carlos Heredia](https://infoinnova.net/about)
 - Based on/forked from [Adrian Kumpf](https://github.com/adriankumpf/teslamate) original code, with improvement of custom Grafana Dashboards (see [contributions history](https://github.com/jheredianet/Teslamate-CustomGrafanaDashboards/graphs/contributors)).
 
 ## License
