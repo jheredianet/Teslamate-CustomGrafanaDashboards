@@ -55,6 +55,31 @@ services:
 - Save your file and then **recreate** Grafana container (docker-compose up -d)
 - Browse the Grafana Dashboards from the Web and you should have a new "TeslaMate Custom Dashboards" folder
 
+## Italian localized dashboards
+
+The original English dashboard JSON files remain unchanged. An Italian locale pack is available and can be used to generate localized copies with the same dashboard UIDs and unchanged query/technical values.
+
+Generate the Italian dashboards:
+
+```bash
+python3 scripts/generate_localized_dashboards.py \
+  --pack i18n/it.json \
+  --output dashboards-localized/it
+```
+
+To auto-import the Italian copies instead of the English originals, use the generated directory in the Grafana volume mapping:
+
+```yaml
+services:
+  grafana:
+    volumes:
+      - teslamate-grafana-data:/var/lib/grafana
+      - ~/Teslamate-CustomGrafanaDashboards/customdashboards.yml:/etc/grafana/provisioning/dashboards/customdashboards.yml
+      - ~/Teslamate-CustomGrafanaDashboards/dashboards-localized/it:/TeslamateCustomDashboards
+```
+
+After pulling repository updates, run the generator again before restarting Grafana. The locale pack covers dashboard titles, panel titles, labels, legends, tooltips, descriptions and display aliases while keeping variables, datasource identifiers and query values intact.
+
 ## Using other path for repository
 
 Attention! On some VPS from certain providers like Google GCC, the user running docker engine is not the current user so it's home folder is different, or maybe you just want to use a specific folder for your data. If this is the case, it's better to use the **full path** of the repository where you cloned it, instead of using the home path of the current user (~/). So, be sure to modify the path of the volumes section accordingly, as the sample given below:

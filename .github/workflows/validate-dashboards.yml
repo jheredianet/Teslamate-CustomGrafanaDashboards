@@ -6,12 +6,18 @@ on:
     paths:
       - "dashboards/**"
       - "scripts/validate_dashboards.py"
+      - "scripts/generate_localized_dashboards.py"
+      - "scripts/validate_localization.py"
+      - "i18n/**"
       - ".github/workflows/validate-dashboards.yml"
   pull_request:
     branches: [main, develop]
     paths:
       - "dashboards/**"
       - "scripts/validate_dashboards.py"
+      - "scripts/generate_localized_dashboards.py"
+      - "scripts/validate_localization.py"
+      - "i18n/**"
       - ".github/workflows/validate-dashboards.yml"
   workflow_dispatch:
 
@@ -28,3 +34,6 @@ jobs:
 
       - name: Validate dashboards
         run: python3 scripts/validate_dashboards.py --no-sql
+
+      - name: Validate localization
+        run: python3 scripts/validate_localization.py
